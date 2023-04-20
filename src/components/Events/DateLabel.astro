@@ -1,0 +1,47 @@
+---
+const { date, monthStyle, startTime } = Astro.props;
+
+const niceDate = (dateString) => {
+  const date = new Date(dateString);
+  const region = "en-US";
+  const timeZone = "America/Los_Angeles";
+  return {
+    day: date.toLocaleDateString(region, {
+      day: "numeric",
+      timeZone: timeZone,
+    }),
+    month: date.toLocaleDateString(region, {
+      month: "short",
+      timeZone: timeZone,
+    }),
+  };
+};
+---
+
+<div class="date-label">
+  <div class="event-day font-header">{niceDate(date).day}</div>
+  <div class="small-title">{niceDate(date).month}</div>
+</div>
+
+<style>
+  .date-label {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: var(--color-primary-800);
+    color: var(--color-primary-100);
+    border-radius: var(--rounded-corners);
+    padding: 0.5rem 0.75rem;
+    z-index: 10;
+  }
+
+  .event-day {
+    font-size: var(--step-3);
+    color: var(--color-white);
+    line-height: 1;
+  }
+</style>

@@ -1,3 +1,4 @@
+/*  @link https://utopia.fyi/type/calculator?c=320,15,1.2,1280,17,1.2,8,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
 :root {
   --color-white: #fff;
   --color-primary-base: hsl(217, 87%, 15%);
@@ -55,6 +56,9 @@
   --font-weight-text: 400;
   --font-weight-semi: 600;
   --font-weight-header: 900;
+  --rounded-corners: 6px;
+  --rounded-corners-small: 4px;
+  --shadow-base: 0px 4px 16px rgba(0, 0, 0, 0.1);
 }
 
 /*! modern-normalize v1.1.0 | MIT License | https://github.com/sindresorhus/modern-normalize */
@@ -609,4 +613,11 @@ select {
   inline-size: 100%;
   block-size: 100%;
   object-fit: cover;
+}
+
+.center-items {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }

@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import Button from "../components/Button.astro";
 import Feature from "../components/Feature.astro";
 import EventsHome from "../components/Events/EventsHome.astro";
+import CTA from "../components/CTA.astro";
 
 import { sanityClient } from "../lib/sanity";
 import getYouTubeId from "get-youtube-id";
@@ -17,8 +18,9 @@ const services = await getServices();
 const homeYouTubeID = "https://www.youtube.com/live/Gh2c1aAQkJc?feature=share";
 import heroBg from "../assets/images/choir.jpg";
 import churchBg from "../assets/images/church-ext-2.jpg";
-import avatar from "../assets/images/jessica-vaughan-lower.jpg";
+import avatar from "../assets/images/jessica-vaughan-lower-headshot.jpg";
 import tower from "../assets/images/church-ext-4.jpg";
+import worship from "../assets/images/worship.jpg";
 ---
 
 <Layout>
@@ -34,8 +36,8 @@ import tower from "../assets/images/church-ext-4.jpg";
           eiusmod tempor incididunt ut labore et dolore magna aliqua.
         </p>
         <div class="cluster">
-          <Button href="/" theme="primary-light">Worship Live</Button>
-          <a href="/">See all services</a>
+          <Button href="/" theme="white">Easter Events</Button>
+          <a href="/" class="text-step--1">See all services</a>
         </div>
       </div>
       <div class="hero-bg">
@@ -101,7 +103,87 @@ import tower from "../assets/images/church-ext-4.jpg";
             incididunt.
           </p>
           <p class="small-title">— Rev. Jessica Vaughan Lower</p>
-          <Button href="/" width="fit">Meet Us</Button>
+          <div class="meet-grid">
+            <a href="/" class="flow">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 640 512"
+                width="32"
+                height="32"
+                fill="var(--color-primary-800)"
+                ><defs
+                  ><style>
+                    .fa-secondary {
+                      opacity: 0.4;
+                    }
+                  </style></defs
+                ><path
+                  class="fa-primary"
+                  d="M320 0c13.3 0 24 10.7 24 24V48h32c13.3 0 24 10.7 24 24s-10.7 24-24 24H344v46.4L456.7 210c14.5 8.7 23.3 24.3 23.3 41.2V512H384V416c0-35.3-28.7-64-64-64s-64 28.7-64 64v96H160V251.2c0-16.9 8.8-32.5 23.3-41.2L296 142.4V96H264c-13.3 0-24-10.7-24-24s10.7-24 24-24h32V24c0-13.3 10.7-24 24-24z"
+                ></path><path
+                  class="fa-secondary"
+                  d="M160 256L24.9 330.3C9.5 338.8 0 354.9 0 372.4V464c0 26.5 21.5 48 48 48H160V256zM480 512H592c26.5 0 48-21.5 48-48V372.4c0-17.5-9.5-33.6-24.9-42.1L480 256V512z"
+                ></path></svg
+              >
+              <h3 class="small-title">Meet Us</h3>
+              <p class="text-step--1">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              </p>
+            </a>
+            <a href="/" class="flow">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 640 512"
+                width="32"
+                height="32"
+                fill="var(--color-primary-800)"
+              >
+                <defs
+                  ><style>
+                    .fa-secondary {
+                      opacity: 0.4;
+                    }
+                  </style></defs
+                ><path
+                  class="fa-primary"
+                  d="M278.8 .7c3.5 .8 6.9 2.1 10 4.1c7.5 4.6 12.4 11.9 14.3 19.9c1.1 4.6 1.2 9.4 .1 14.1c-.7 3.2-1.9 6.3-3.6 9.3L213.3 199.3c-3.5 6-5.3 12.9-5.3 19.8V304c0 8.8 7.2 16 16 16s16-7.2 16-16V224c0-17.7 14.3-32 32-32s32 14.3 32 32V342.2c0 58-39 108.7-95 123.7l-168.7 45c-9.6 2.6-19.9 .5-27.7-5.5S0 489.9 0 480V384c0-13.8 8.8-26 21.9-30.4l79.2-26.4c6.5-2.2 10.9-8.3 10.9-15.2V238.5c0-15.8 4.7-31.2 13.4-44.4L245.2 14.5c4.6-7.1 11.7-11.8 19.4-13.6c4.6-1.1 9.4-1.2 14.1-.1z"
+                ></path><path
+                  class="fa-secondary"
+                  d="M361.2 .7c-3.5 .8-6.9 2.1-10 4.1c-7.5 4.6-12.4 11.9-14.3 19.9c-1.1 4.6-1.2 9.4-.1 14.1c.7 3.2 1.9 6.3 3.6 9.3l86.4 151.2c3.5 6 5.3 12.9 5.3 19.8V304c0 8.8-7.2 16-16 16s-16-7.2-16-16V224c0-17.7-14.3-32-32-32s-32 14.3-32 32V342.2c0 58 39 108.7 95 123.7l168.7 45c9.6 2.6 19.9 .5 27.7-5.5s12.5-15.4 12.5-25.4V384c0-13.8-8.8-26-21.9-30.4l-79.2-26.4c-6.5-2.2-10.9-8.3-10.9-15.2V238.5c0-15.8-4.7-31.2-13.4-44.4L394.8 14.5C390.1 7.4 383.1 2.7 375.4 .9c-4.6-1.1-9.4-1.2-14.1-.1z"
+                ></path></svg
+              >
+              <h3 class="small-title">Our Beliefs</h3>
+              <p class="text-step--1">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              </p>
+            </a>
+            <a href="/" class="flow">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 640 512"
+                width="32"
+                height="32"
+                fill="var(--color-primary-800)"
+                ><defs
+                  ><style>
+                    .fa-secondary {
+                      opacity: 0.4;
+                    }
+                  </style></defs
+                ><path
+                  class="fa-primary"
+                  d="M89.7 405.1L320 451.2l230.3-46.1c15-3 25.7-16.1 25.7-31.4V28.8l25.7-5.1C621.5 19.7 640 34.8 640 55V421.8c0 15.3-10.8 28.4-25.7 31.4L320 512 25.7 453.1C10.8 450.2 0 437 0 421.8V55C0 34.8 18.5 19.7 38.3 23.7L64 28.8v345c0 15.3 10.8 28.4 25.7 31.4z"
+                ></path><path
+                  class="fa-secondary"
+                  d="M64 373.8c0 15.3 10.8 28.4 25.7 31.4L304 448V32L100.6 2.2C81.3-.7 64 14.3 64 33.8V373.8zM576 33.8c0-19.5-17.3-34.5-36.6-31.7L336 32V448l214.3-42.9c15-3 25.7-16.1 25.7-31.4V33.8z"
+                ></path></svg
+              >
+              <h3 class="small-title">Our History</h3>
+              <p class="text-step--1">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              </p>
+            </a>
+          </div>
         </div>
         <div>
           <img src={tower} alt="" />
@@ -115,7 +197,7 @@ import tower from "../assets/images/church-ext-4.jpg";
       <Feature
         theme="dark"
         layout="image-right"
-        img={tower}
+        img={worship}
         href="/who-we-are/mission-and-beliefs"
       >
         <h2 slot="header" class="text-step-2 color-white">Who We Are</h2>
@@ -126,6 +208,12 @@ import tower from "../assets/images/church-ext-4.jpg";
         <EventsHome>
           <h2 slot="header" class="text-step-4">Upcoming Events</h2>
         </EventsHome>
+      </div>
+    </section>
+    <CTA />
+    <section id="resources">
+      <div class="content-wrapper">
+        <h2 class="text-step-4">Featured Resources</h2>
       </div>
     </section>
   </main>
@@ -249,7 +337,8 @@ import tower from "../assets/images/church-ext-4.jpg";
     }
 
     #welcome,
-    #events {
+    #events,
+    #resources {
       padding-block: 8rem;
     }
 
@@ -258,12 +347,27 @@ import tower from "../assets/images/church-ext-4.jpg";
       gap: 4rem;
     }
 
-    .avatar img {
-      transform: scale(2) translateY(19px);
-    }
-
     #features.flow {
       --flow-space: var(--space-3xl);
+    }
+
+    .meet-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      border-top: 1px solid var(--color-primary-200);
+      margin-top: 2rem;
+      padding-top: 1rem;
+    }
+
+    .meet-grid a {
+      text-decoration: none;
+      border-radius: var(--rounded-corners);
+      padding: 0.75rem;
+    }
+
+    .meet-grid a:hover {
+      background-color: var(--color-primary-100);
     }
   </style>
 </Layout>

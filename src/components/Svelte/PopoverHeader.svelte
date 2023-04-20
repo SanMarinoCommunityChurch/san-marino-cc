@@ -1,10 +1,10 @@
 <script>
-    import { slide } from 'svelte/transition';
+    import { slide, fade } from 'svelte/transition';
     import { Popover, PopoverButton, PopoverPanel } from "@rgossiaux/svelte-headlessui";
 </script>
 
 <Popover as="nav" let:open>
-    <div class="site-nav">
+    <div class="site-nav" style="--menu-toggle-shadow:{open ? "" : "var(--box-shadow)"}">
         <div><slot name="logo"></slot></div>
         <div><slot name="mainNav"></slot></div>
         <div>
@@ -30,7 +30,7 @@
         <div class="rule" style="--opacity:{open ?  "0.15" : "0"}"></div>
         {#if open}
         <div class="nav-panel" transition:slide={{ duration: 200 }}>
-            <div class="nav-wrapper content-wrapper">
+            <div class="nav-wrapper" transition:fade={{ duration: 400, delay: 100 }}>
                 <PopoverPanel static>
                     <slot name="panel"></slot>
                 </PopoverPanel>
@@ -45,6 +45,7 @@
 <style>
 
     .site-nav {
+        --box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
         position: relative;
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -53,7 +54,8 @@
         background-color: var(--color-white);
         padding-block: 1rem;
         padding-inline: var(--space-l);
-        box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1)
+        box-shadow: var(--menu-toggle-shadow);
+        transition: box-shadow 0.2s ease;
     }
 
     .site-nav :nth-child(3) {
@@ -93,13 +95,17 @@
         position: absolute;
         top: 0;
         width: 100%;
-        z-index: 40;
+        z-index: -1;
         background: var(--color-white);
         box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1)
     }
 
-    .nav-wrapper {
+    /* .nav-wrapper {
         padding-block-start: 9rem;
         padding-block-end: 5rem;
+    } */
+
+    .nav-wrapper {
+        width: 100%;
     }
 </style>

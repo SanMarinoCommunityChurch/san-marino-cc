@@ -1,0 +1,51 @@
+---
+import Button from "./Button.astro";
+---
+
+<article>
+  <section class="cta-top">
+    <div class="content-wrapper center-items flow">
+      <h2 class="text-step-4 color-white">New? Start here.</h2>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua.
+      </p>
+      <Button href="/" theme="primary-light">Call to Action</Button>
+    </div>
+  </section>
+  <section class="cta-bottom">
+    <div class="content-wrapper center-items flow">
+      <h3 class="text-step-1">Sign up for email updates</h3>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua.
+      </p>
+    </div>
+  </section>
+</article>
+
+<style>
+  .center-items {
+    flex-direction: column;
+  }
+
+  .cta-top {
+    color: var(--color-primary-200);
+    padding-block-start: 5rem;
+    padding-block-end: 7rem;
+    background-color: var(--color-primary-900);
+  }
+
+  .cta-top .content-wrapper {
+    max-width: 70ch;
+  }
+
+  .cta-bottom .content-wrapper {
+    position: relative;
+    top: -3rem;
+    background-color: var(--color-white);
+    padding: 3rem;
+    border-radius: var(--rounded-corners);
+    box-shadow: var(--shadow-base);
+  }
+</style>

@@ -29,31 +29,61 @@ const { mainNavigation, fullNavigation } = Astro.props;
     </nav>
     <div slot="panel">
       <div class="nav-grid">
-        {
-          fullNavigation.map((navItem) => (
-            <div class="flow">
-              {navItem.img && (
-                <img
-                  src={navItem.img}
-                  alt=""
-                  width={300}
-                  height={200}
-                  class="nav-img"
-                />
-              )}
-              <div class="small-title">{navItem.name}</div>
-              <ul class="flow">
-                {navItem.children.map((navChild) => (
-                  <li>
-                    <a href={`${navItem.slug}/${navChild.slug}`}>
-                      {navChild.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))
-        }
+        <div class="nav-subgrid">
+          {
+            fullNavigation.map(
+              (navItem) =>
+                navItem.name !== "Utility" && (
+                  <div class="flow">
+                    {navItem.img && (
+                      <a
+                        href={`${navItem.slug}/${navItem.children[0].slug}`}
+                        class="img-link"
+                      >
+                        <div class="overlay" />
+                        <img
+                          src={navItem.img}
+                          alt=""
+                          width={300}
+                          height={200}
+                          class="nav-img"
+                        />
+                      </a>
+                    )}
+                    <div class="small-title">{navItem.name}</div>
+                    <ul class="flow">
+                      {navItem.children.map((navChild) => (
+                        <li>
+                          <a href={`${navItem.slug}/${navChild.slug}`}>
+                            {navChild.name}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )
+            )
+          }
+        </div>
+        <div class="nav-utilities flow">
+          {
+            fullNavigation.map(
+              (navItem) =>
+                navItem.name === "Utility" && (
+                  <ul class="flow">
+                    {navItem.children.map((navChild) => (
+                      <li class="utility-item">
+                        <a href={`${navItem.slug}/${navChild.slug}`}>
+                          <div class="small-title">{navChild.name}</div>
+                          <p>{navChild.description}</p>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )
+            )
+          }
+        </div>
       </div>
     </div>
   </PopoverHeader>
@@ -101,12 +131,17 @@ const { mainNavigation, fullNavigation } = Astro.props;
 
   .nav-grid {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(7, 1fr);
     gap: 2rem;
   }
 
+  .nav-grid > :first-child {
+    grid-column: span 5;
+  }
+
   .nav-grid > :last-child {
-    align-self: center;
+    grid-column: span 2;
+    background-color: var(--color-primary-100);
   }
 
   .nav-grid .small-title {
@@ -141,6 +176,69 @@ const { mainNavigation, fullNavigation } = Astro.props;
   .nav-img {
     aspect-ratio: 3/2;
     object-fit: cover;
-    border-radius: 4px;
+    border-radius: var(--rounded-corners);
+  }
+
+  .img-link {
+    position: relative;
+  }
+
+  .img-link .overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-color: var(--color-primary-700);
+    border-radius: var(--rounded-corners);
+    mix-blend-mode: multiply;
+    opacity: 0;
+    transition: all 0.2s ease;
+  }
+
+  .img-link:hover .overlay {
+    opacity: 0.7;
+  }
+
+  .img-link:hover .nav-img {
+    filter: saturate(0);
+  }
+
+  .nav-subgrid,
+  .nav-utilities {
+    padding-block-start: 8rem;
+    padding-block-end: 4rem;
+  }
+
+  .nav-subgrid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2rem;
+    padding-inline-start: 2rem;
+  }
+
+  .nav-utilities {
+    padding-inline: 3rem;
+  }
+
+  .nav-utilities ul.flow {
+    --flow-space: 0.5rem;
+  }
+  
+  .nav-utilities ul a {
+    transition: background-color 0.2s ease;
+    padding: 12px;
+  }
+
+  .nav-utilities ul a:hover {
+    background: var(--color-primary-200);
+  }
+
+    .utility-item a {
+    display: inline-block;
+    padding
+  }
+
+  .utility-item p {
+    font-size: var(--step--2);
+    margin-top: 6px;
   }
 </style>
