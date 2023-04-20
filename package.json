@@ -1,0 +1,24 @@
+{
+  "name": "smcc",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/svelte": "^2.1.0",
+    "astro": "^2.3.0",
+    "svelte": "^3.58.0"
+  },
+  "devDependencies": {
+    "@rgossiaux/svelte-headlessui": "^1.0.2",
+    "@sanity/client": "^5.4.2",
+    "@sanity/image-url": "^1.0.2",
+    "astro-portabletext": "^0.8.0",
+    "get-youtube-id": "^1.0.1"
+  }
+}

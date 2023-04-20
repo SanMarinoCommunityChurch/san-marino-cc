@@ -1,0 +1,269 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Button from "../components/Button.astro";
+import Feature from "../components/Feature.astro";
+import EventsHome from "../components/Events/EventsHome.astro";
+
+import { sanityClient } from "../lib/sanity";
+import getYouTubeId from "get-youtube-id";
+
+const getServices = async () => {
+  const query = `*[_type == "service"] | order(date desc)`;
+  const data = await sanityClient.fetch(query);
+  return data;
+};
+
+const services = await getServices();
+const homeYouTubeID = "https://www.youtube.com/live/Gh2c1aAQkJc?feature=share";
+import heroBg from "../assets/images/choir.jpg";
+import churchBg from "../assets/images/church-ext-2.jpg";
+import avatar from "../assets/images/jessica-vaughan-lower.jpg";
+import tower from "../assets/images/church-ext-4.jpg";
+---
+
+<Layout>
+  <main slot="main">
+    <article class="hero">
+      <div class="content-wrapper flow">
+        <div>
+          <p class="small-title">San Marino Community Church</p>
+          <h1 class="text-step-6 color-white">Join us for Easter!</h1>
+        </div>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </p>
+        <div class="cluster">
+          <Button href="/" theme="primary-light">Worship Live</Button>
+          <a href="/">See all services</a>
+        </div>
+      </div>
+      <div class="hero-bg">
+        <div class="overlay"></div>
+        <img src={heroBg} alt="" />
+      </div>
+    </article>
+    <article class="video-banner">
+      <div class="content-wrapper flex">
+        <a href="/" class="video-link">
+          <div class="frame video">
+            <div class="icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 512 512"
+                width="40"
+                height="40"
+                fill="var(--color-white)"
+                aria-hidden="true"
+                ><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                <path
+                  d="M256 32a224 224 0 1 1 0 448 224 224 0 1 1 0-448zm0 480A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm72.7-256L208 329.7V182.3L328.7 256zM212.5 147.5c-7.4-4.5-16.7-4.7-24.3-.5s-12.3 12.3-12.3 20.9V344c0 8.7 4.7 16.7 12.3 20.9s16.8 4.1 24.3-.5l144-88c7.1-4.4 11.5-12.1 11.5-20.5s-4.4-16.1-11.5-20.5l-144-88z"
+                ></path></svg
+              >
+            </div>
+            <div class="overlay"></div>
+            <img
+              src={`https://img.youtube.com/vi/${getYouTubeId(
+                homeYouTubeID
+              )}/sddefault.jpg`}
+              width="300"
+              height="225"
+            />
+          </div>
+        </a>
+        <div class="flow">
+          <div>
+            <h2 class="small-title color-primary-200">This Sunday</h2>
+            <h3 class="text-step-3 color-white">March 26, 2023</h3>
+          </div>
+          <p>9:00 am traditional & 10:00 am contemporary</p>
+          <div class="cluster">
+            <Button href="/" theme="primary-light">Worship Live</Button>
+            <a href="/" class="text-step--1">See all services</a>
+          </div>
+        </div>
+      </div>
+      <img src={churchBg} class="img-overlay" alt="" />
+    </article>
+    <article id="welcome" class="welcome">
+      <div class="content-wrapper">
+        <div class="flow">
+          <div class="frame avatar">
+            <img src={avatar} />
+          </div>
+          <h2 class="text-step-2">Pastor's Welcome</h2>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem
+            ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum
+            dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+            incididunt.
+          </p>
+          <p class="small-title">— Rev. Jessica Vaughan Lower</p>
+          <Button href="/" width="fit">Meet Us</Button>
+        </div>
+        <div>
+          <img src={tower} alt="" />
+        </div>
+      </div>
+    </article>
+    <section id="features" class="content-wrapper flow">
+      <Feature href="/connect/events">
+        <h2 slot="header" class="text-step-2">Get Involved</h2>
+      </Feature>
+      <Feature
+        theme="dark"
+        layout="image-right"
+        img={tower}
+        href="/who-we-are/mission-and-beliefs"
+      >
+        <h2 slot="header" class="text-step-2 color-white">Who We Are</h2>
+      </Feature>
+    </section>
+    <section id="events">
+      <div class="content-wrapper">
+        <EventsHome>
+          <h2 slot="header" class="text-step-4">Upcoming Events</h2>
+        </EventsHome>
+      </div>
+    </section>
+  </main>
+
+  <style>
+    .hero {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      height: clamp(70vh, 45rem, 80vh);
+      padding-block-start: var(--space-3xl);
+      padding-block-end: var(--space-3xl);
+    }
+
+    .hero .flow {
+      --flow-space: var(--space-m);
+    }
+
+    .hero .content-wrapper {
+      position: relative;
+      z-index: 3;
+      width: 100%;
+      color: var(--color-white);
+    }
+
+    .hero .content-wrapper p {
+      max-width: 66ch;
+    }
+
+    .hero .hero-bg {
+      overflow: hidden;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+
+    .hero .hero-bg .overlay {
+      position: absolute;
+      z-index: 1;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    .hero .hero-bg img {
+      position: relative;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    .video-banner {
+      position: relative;
+      overflow-y: hidden;
+      background: var(--color-primary-900);
+      color: var(--color-primary-100);
+      padding-block: var(--space-xl);
+    }
+
+    .video-banner .content-wrapper {
+      position: relative;
+      z-index: 2;
+    }
+
+    .video-banner .img-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      height: clamp(150%, 50rem, 220%);
+      object-fit: contain;
+      opacity: 0.7;
+      mix-blend-mode: multiply;
+      filter: saturate(0);
+      mask-image: linear-gradient(to right, black, transparent);
+      -webkit-mask-image: linear-gradient(to right, black, transparent);
+    }
+
+    .video-banner .flex {
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-xl);
+    }
+
+    .video-banner .frame {
+      position: relative;
+      max-width: 24rem;
+      border-radius: 4px;
+    }
+
+    .video-banner .frame .icon {
+      position: absolute;
+      z-index: 2;
+      inset: 0;
+      display: flex;
+      width: 100%;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .video-banner .frame .icon svg {
+      transition: 0.2s all ease;
+    }
+
+    .video-banner .frame .overlay {
+      position: absolute;
+      inset: 0;
+      opacity: 0.3;
+      background: var(--color-primary-800);
+      transition: 0.2s all ease-in;
+    }
+
+    .video-banner .video-link:hover .frame .overlay {
+      opacity: 0.5;
+    }
+
+    .video-banner .video-link:hover .frame .icon svg {
+      transform: scale(1.2);
+    }
+
+    #welcome,
+    #events {
+      padding-block: 8rem;
+    }
+
+    #welcome .content-wrapper {
+      display: flex;
+      gap: 4rem;
+    }
+
+    .avatar img {
+      transform: scale(2) translateY(19px);
+    }
+
+    #features.flow {
+      --flow-space: var(--space-3xl);
+    }
+  </style>
+</Layout>

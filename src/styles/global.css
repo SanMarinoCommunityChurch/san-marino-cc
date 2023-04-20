@@ -1,0 +1,612 @@
+:root {
+  --color-white: #fff;
+  --color-primary-base: hsl(217, 87%, 15%);
+  --color-primary-100: hsl(217, 87%, 96%);
+  --color-primary-200: hsl(217, 87%, 90%);
+  --color-primary-300: hsl(217, 87%, 80%);
+  --color-primary-400: hsl(217, 87%, 70%);
+  --color-primary-500: hsl(217, 87%, 60%);
+  --color-primary-600: hsl(217, 87%, 50%);
+  --color-primary-700: hsl(217, 87%, 40%);
+  --color-primary-800: hsl(217, 87%, 30%);
+  --color-primary-900: hsl(217, 87%, 20%);
+  --color-primary-950: hsl(217, 87%, 5%);
+  --color-neutral-100: hsl(209, 34%, 96%);
+  --color-neutral-200: hsl(209, 34%, 90%);
+  --color-neutral-300: hsl(209, 34%, 80%);
+  --color-neutral-400: hsl(209, 34%, 70%);
+  --color-neutral-500: hsl(209, 34%, 60%);
+  --color-neutral-600: hsl(209, 34%, 50%);
+  --color-neutral-700: hsl(209, 34%, 40%);
+  --color-neutral-800: hsl(209, 34%, 30%);
+  --color-neutral-900: hsl(209, 34%, 20%);
+  --color-neutral-950: hsl(209, 34%, 10%);
+  --color-secondary: hsl(189, 35%, 52%);
+  --color-tertiary: hsl(57, 100%, 80%);
+  --color-header-text: var(--color-primary-800);
+  --color-body-text: var(--color-neutral-700);
+  --step--2: clamp(0.65rem, calc(0.62rem + 0.14vw), 0.74rem);
+  --step--1: clamp(0.78rem, calc(0.75rem + 0.17vw), 0.89rem);
+  --step-0: clamp(0.94rem, calc(0.9rem + 0.21vw), 1.06rem);
+  --step-1: clamp(1.13rem, calc(1.08rem + 0.25vw), 1.28rem);
+  --step-2: clamp(1.35rem, calc(1.29rem + 0.3vw), 1.53rem);
+  --step-3: clamp(1.62rem, calc(1.55rem + 0.36vw), 1.84rem);
+  --step-4: clamp(1.94rem, calc(1.86rem + 0.43vw), 2.2rem);
+  --step-5: clamp(2.33rem, calc(2.23rem + 0.52vw), 2.64rem);
+  --step-6: clamp(2.8rem, calc(2.68rem + 0.62vw), 3.17rem);
+  --step-7: clamp(3.36rem, calc(3.21rem + 0.75vw), 3.81rem);
+  --step-8: clamp(4.03rem, calc(3.85rem + 0.9vw), 4.57rem);
+  --space-3xs: clamp(0.25rem, calc(0.25rem + 0vw), 0.25rem);
+  --space-2xs: clamp(0.5rem, calc(0.48rem + 0.1vw), 0.56rem);
+  --space-xs: clamp(0.69rem, calc(0.65rem + 0.21vw), 0.81rem);
+  --space-s: clamp(0.94rem, calc(0.9rem + 0.21vw), 1.06rem);
+  --space-m: clamp(1.44rem, calc(1.38rem + 0.31vw), 1.63rem);
+  --space-l: clamp(1.88rem, calc(1.79rem + 0.42vw), 2.13rem);
+  --space-xl: clamp(2.81rem, calc(2.69rem + 0.63vw), 3.19rem);
+  --space-2xl: clamp(3.75rem, calc(3.58rem + 0.83vw), 4.25rem);
+  --space-3xl: clamp(5.63rem, calc(5.38rem + 1.25vw), 6.38rem);
+  --space-s-l: clamp(0.94rem, calc(0.54rem + 1.98vw), 2.13rem);
+  --gutter: var(--space-s-l);
+  --font-primary: portada-text, var(--font-sans);
+  --font-secondary: freight-sans-pro, var(--font-sans);
+  --font-emphasis: var(--font-sans);
+  --font-sans: system-ui, "Segoe UI", Helvetica, Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji";
+  --font-weight-text: 400;
+  --font-weight-semi: 600;
+  --font-weight-header: 900;
+}
+
+/*! modern-normalize v1.1.0 | MIT License | https://github.com/sindresorhus/modern-normalize */
+
+/*
+Document
+========
+*/
+
+/**
+Use a better box model (opinionated).
+*/
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+
+/**
+1. Correct the line height in all browsers.
+2. Prevent adjustments of font size after orientation changes in iOS.
+3. Use a more readable tab size (opinionated).
+*/
+
+html {
+  line-height: 1.6; /* 1 */
+  -webkit-text-size-adjust: 100%; /* 2 */
+  -moz-tab-size: 4; /* 3 */
+  tab-size: 4; /* 3 */
+}
+
+/*
+Sections
+========
+*/
+
+/**
+1. Remove the margin in all browsers.
+2. Improve consistency of default fonts in all browsers. (https://github.com/sindresorhus/modern-normalize/issues/3)
+*/
+
+body {
+  margin: 0; /* 1 */
+  font-size: var(--step-0);
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-text);
+  color: var(--color-body-text);
+}
+
+/*
+Grouping content
+================
+*/
+
+/**
+1. Add the correct height in Firefox.
+2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)
+*/
+
+hr {
+  height: 0; /* 1 */
+  color: inherit; /* 2 */
+}
+
+/*
+Text-level semantics
+====================
+*/
+
+/**
+Add the correct text decoration in Chrome, Edge, and Safari.
+*/
+
+abbr[title] {
+  text-decoration: underline dotted;
+}
+
+/**
+Add the correct font weight in Edge and Safari.
+*/
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+/**
+1. Improve consistency of default fonts in all browsers. (https://github.com/sindresorhus/modern-normalize/issues/3)
+2. Correct the odd 'em' font sizing in all browsers.
+*/
+
+code,
+kbd,
+samp,
+pre {
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo,
+    monospace; /* 1 */
+  font-size: 1em; /* 2 */
+}
+
+/**
+Add the correct font size in all browsers.
+*/
+
+small {
+  font-size: 80%;
+}
+
+/**
+Prevent 'sub' and 'sup' elements from affecting the line height in all browsers.
+*/
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+
+/*
+Tabular data
+============
+*/
+
+/**
+1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)
+2. Correct table border color inheritance in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)
+*/
+
+table {
+  text-indent: 0; /* 1 */
+  border-color: inherit; /* 2 */
+}
+
+/*
+Forms
+=====
+*/
+
+/**
+1. Change the font styles in all browsers.
+2. Remove the margin in Firefox and Safari.
+*/
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit; /* 1 */
+  font-size: 100%; /* 1 */
+  line-height: 1.15; /* 1 */
+  margin: 0; /* 2 */
+}
+
+/**
+Remove the inheritance of text transform in Edge and Firefox.
+*/
+
+button,
+select {
+  text-transform: none;
+}
+
+/**
+Correct the inability to style clickable types in iOS and Safari.
+*/
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  -webkit-appearance: button;
+}
+
+/**
+Remove the inner border and padding in Firefox.
+*/
+
+::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
+
+/**
+Restore the focus styles unset by the previous rule.
+*/
+
+:-moz-focusring {
+  outline: 1px dotted ButtonText;
+}
+
+/**
+Remove the additional ':invalid' styles in Firefox.
+See: https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737
+*/
+
+:-moz-ui-invalid {
+  box-shadow: none;
+}
+
+/**
+Remove the padding so developers are not caught out when they zero out 'fieldset' elements in all browsers.
+*/
+
+legend {
+  padding: 0;
+}
+
+/**
+Add the correct vertical alignment in Chrome and Firefox.
+*/
+
+progress {
+  vertical-align: baseline;
+}
+
+/**
+Correct the cursor style of increment and decrement buttons in Safari.
+*/
+
+::-webkit-inner-spin-button,
+::-webkit-outer-spin-button {
+  height: auto;
+}
+
+/**
+1. Correct the odd appearance in Chrome and Safari.
+2. Correct the outline style in Safari.
+*/
+
+[type="search"] {
+  -webkit-appearance: textfield; /* 1 */
+  outline-offset: -2px; /* 2 */
+}
+
+/**
+Remove the inner padding in Chrome and Safari on macOS.
+*/
+
+::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/**
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Change font properties to 'inherit' in Safari.
+*/
+
+::-webkit-file-upload-button {
+  -webkit-appearance: button; /* 1 */
+  font: inherit; /* 2 */
+}
+
+/*
+Interactive
+===========
+*/
+
+/*
+Add the correct display in Chrome and Safari.
+*/
+
+summary {
+  display: list-item;
+}
+
+/*
+Other Reset:
+Picallili and Tailwind
+===========
+*/
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+}
+
+blockquote,
+dl,
+dd,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+figure,
+p,
+pre {
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+  font-family: var(--font-secondary);
+  font-weight: var(--font-weight-header);
+  color: var(--color-header-text);
+  line-height: 1.2;
+}
+
+ol,
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+img,
+picture {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Remove all animations and transitions for people that prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Misc utilities */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.relative {
+  position: relative;
+}
+
+.icon {
+  width: 1em;
+  height: 1em;
+}
+
+.icon-small {
+  width: 0.75em;
+  height: 0.75em;
+}
+
+/* Typography utilities */
+.text-step--2 {
+  font-size: var(--step--2);
+}
+
+.text-step--1 {
+  font-size: var(--step--1);
+}
+
+.text-step-0 {
+  font-size: var(--step-0);
+}
+
+.text-step-1 {
+  font-size: var(--step-1);
+}
+
+.text-step-2 {
+  font-size: var(--step-2);
+}
+
+.text-step-3 {
+  font-size: var(--step-3);
+}
+
+.text-step-4 {
+  font-size: var(--step-4);
+}
+
+.text-step-5 {
+  font-size: var(--step-5);
+}
+
+.text-step-6 {
+  font-size: var(--step-6);
+}
+
+.text-step-7 {
+  font-size: var(--step-7);
+}
+
+.text-step-8 {
+  font-size: var(--step-8);
+}
+
+.text-step-9 {
+  font-size: var(--step-9);
+}
+
+.font-header {
+  font-family: var(--font-secondary);
+  font-weight: var(--font-weight-header);
+}
+
+.small-title {
+  font-family: var(--font-secondary);
+  font-weight: var(--font-weight-semi);
+  font-size: var(--step--1);
+  letter-spacing: 2pt;
+  text-transform: uppercase;
+}
+
+:where(a, button):not(.btn, .logo) {
+  text-decoration: underline;
+}
+
+:where(a, button):not(.btn, .logo):hover {
+  text-decoration: none;
+}
+
+.menu-toggle {
+  position: relative;
+  display: block;
+  border: 0;
+  margin: 0;
+  appearance: none;
+  background-color: transparent;
+  color: inherit;
+  cursor: pointer;
+  z-index: 20;
+}
+
+/* Color utilities */
+.color-white {
+  color: var(--color-white);
+}
+
+.color-primary-500 {
+  color: var(--color-primary-500);
+}
+
+.color-primary-200 {
+  color: var(--color-primary-200);
+}
+
+.color-neutral-700 {
+  color: var(--color-neutral-700);
+}
+
+/* Composition utilities */
+.flow {
+  --flow-space: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.flow > * {
+  margin-block: 0;
+}
+
+.flow > * + * {
+  margin-block-start: var(--flow-space);
+}
+
+.flex {
+  display: flex;
+}
+
+.cluster {
+  --cluster-space: 1rem;
+  --justify: flex-start;
+  --align: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cluster-space);
+  justify-content: var(--justify);
+  align-items: var(--align);
+}
+
+.frame {
+  --width: 4;
+  --height: 3;
+  aspect-ratio: var(--width) / var(--height);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.frame.video {
+  --width: 16;
+  --height: 9;
+}
+
+.frame.square {
+  --width: 1;
+  --height: 1;
+}
+
+.frame.avatar {
+  --width: 1;
+  --height: 1;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 9999px;
+}
+
+.frame > img,
+.frame > video {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}

@@ -1,0 +1,177 @@
+---
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+// import SiteFooter from "../components/SiteFooter.astro";
+import "../styles/global.css";
+
+import welcomeImg from "../assets/images/people.jpg";
+import worshipImg from "../assets/images/choir.jpg";
+import connectImg from "../assets/images/contemporary.jpg";
+import aboutImg from "../assets/images/church-garden.jpg";
+import resourcesImg from "../assets/images/church-ext-5.jpg";
+
+const mainNavigation = [
+  {
+    name: "I'm New",
+    href: "/",
+  },
+  {
+    name: "Worship Live",
+    href: "/",
+    button: true,
+  },
+  {
+    name: "FAQ",
+    href: "/",
+  },
+];
+
+const fullNavigation = [
+  {
+    name: "Welcome",
+    slug: "welcome",
+    img: welcomeImg,
+    children: [
+      {
+        name: "I’m New",
+        slug: "visitors",
+      },
+      {
+        name: "Weekly Schedule",
+        slug: "schedule",
+      },
+      {
+        name: "How to Join",
+        slug: "how-to-join",
+      },
+    ],
+  },
+  {
+    name: "Worship",
+    slug: "worship",
+    img: worshipImg,
+    children: [
+      {
+        name: "Worship Live",
+        slug: "live",
+      },
+      {
+        name: "Worship Services",
+        slug: "services",
+      },
+    ],
+  },
+  {
+    name: "Connect",
+    slug: "connect",
+    img: connectImg,
+    children: [
+      {
+        name: "Events & Programs",
+        slug: "events",
+      },
+      {
+        name: "Ministries",
+        slug: "ministries",
+      },
+      {
+        name: "Missions",
+        slug: "missions",
+      },
+      {
+        name: "Pastoral Residency",
+        slug: "pastoral-residency",
+      },
+    ],
+  },
+  {
+    name: "Who We Are",
+    slug: "who-we-are",
+    img: aboutImg,
+    children: [
+      {
+        name: "Mission & Beliefs",
+        slug: "mission-and-beliefs",
+      },
+      {
+        name: "Our History",
+        slug: "our-history",
+      },
+      {
+        name: "Church Leadership",
+        slug: "leadership",
+      },
+    ],
+  },
+  {
+    name: "Resources",
+    slug: "resources",
+    img: resourcesImg,
+    children: [
+      {
+        name: "Blog",
+        slug: "blog",
+      },
+      {
+        name: "Education",
+        slug: "blog",
+      },
+    ],
+  },
+  {
+    name: "",
+    slug: "",
+    children: [
+      {
+        name: "Give",
+        slug: "give",
+        button: true,
+      },
+      {
+        name: "Contact",
+        slug: "contact",
+      },
+      {
+        name: "Calendar",
+        slug: "calendar",
+      },
+      {
+        name: "Nursery School",
+        slug: "nursery-school",
+        external: true,
+      },
+    ],
+  },
+];
+
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <link rel="stylesheet" href="https://use.typekit.net/wsf6agj.css" />
+  </head>
+  <body>
+    <SiteHeader
+      mainNavigation={mainNavigation}
+      fullNavigation={fullNavigation}
+    />
+    <slot name="main" />
+    <SiteFooter fullNavigation={fullNavigation} />
+  </body>
+</html>
+
+<style is:global>
+  .content-wrapper {
+    position: relative;
+    max-width: clamp(16rem, var(--wrapper-max-width, 100vw), 80rem);
+    padding-inline: var(--gutter);
+    margin-inline: auto;
+  }
+</style>

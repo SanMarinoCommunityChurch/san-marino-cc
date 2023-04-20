@@ -1,0 +1,160 @@
+---
+const baseStyles = {
+  solid: "solid",
+  outline: "outline",
+  nav: "navLink",
+  none: "no-style",
+};
+
+const themes = {
+  solid: {
+    primary: "primary",
+    "primary-light": "primary-light",
+    "neutral-light": "neutral-light",
+    "neutral-dark": "neutral-dark",
+    secondary: "secondary",
+  },
+  outline: {
+    primary: "primary",
+    neutral: "neutral",
+    secondary: "secondary",
+  },
+  nav: {
+    neutral: "neutral",
+    primary: "primary",
+  },
+  none: {
+    primary: "primary",
+    "primary-light": "primary-light",
+  },
+};
+
+const sizes = {
+  base: "base",
+  large: "large",
+  none: "no-size",
+};
+
+const widths = {
+  fit: "w-fit",
+};
+
+const {
+  style = "solid",
+  theme = "primary",
+  size = "base",
+  width,
+  href,
+  className,
+  ...props
+} = Astro.props;
+
+const classList = [
+  "btn",
+  baseStyles[style],
+  themes[style][theme],
+  sizes[size],
+  widths[width],
+  className,
+];
+---
+
+{
+  href ? (
+    <a href={href} class:list={classList} {...props}>
+      <slot>Link</slot>
+    </a>
+  ) : (
+    <button class:list={classList} {...props}>
+      <slot>Button</slot>
+    </button>
+  )
+}
+
+<style>
+  button {
+    padding: 0;
+    border: 0;
+    margin: 0;
+    appearance: none;
+    background-color: transparent;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  button,
+  a {
+    font-family: var(--font-secondary);
+    font-weight: var(--font-weight-semi);
+    letter-spacing: 2pt;
+    text-transform: uppercase;
+    border-radius: 4px;
+    color: inherit;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.45rem;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .no-style.primary {
+    color: var(--color-primary-900);
+  }
+
+  .no-style.primary-light {
+    color: var(--color-primary-100);
+  }
+
+  .solid.primary,
+  .navLink.primary {
+    background-color: var(--color-primary-900);
+    color: var(--color-white);
+  }
+
+  .solid.primary:hover,
+  .navLink.primary:hover {
+    background-color: var(--color-primary-950);
+  }
+
+  .solid.primary-light {
+    background-color: var(--color-primary-200);
+    color: var(--color-primary-800);
+  }
+
+  .solid.primary-light:hover {
+    background-color: var(--color-primary-100);
+  }
+
+  .navLink.neutral {
+    background-color: transparent;
+    color: var(--color-header-text);
+  }
+
+  .navLink.neutral:hover {
+    background-color: var(--color-neutral-100);
+  }
+
+  .base {
+    font-size: var(--step--1);
+    line-height: 1.15;
+    padding: 0.75em 1em;
+  }
+
+  .no-size {
+    font-size: var(--step--1);
+    line-height: 1.15;
+    padding: 0;
+  }
+
+  .large {
+    font-size: var(--step-1);
+    line-height: 1.15;
+    padding: 1em 1.5em;
+  }
+
+  .w-fit {
+    width: fit-content;
+  }
+</style>
