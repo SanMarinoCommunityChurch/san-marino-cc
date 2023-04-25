@@ -5,7 +5,7 @@ import Feature from "../components/Feature.astro";
 import EventsHome from "../components/Events/EventsHome.astro";
 import CTA from "../components/CTA.astro";
 
-import { sanityClient } from "../lib/sanity";
+import { sanityClient, getSanityData } from "../lib/sanity";
 import getYouTubeId from "get-youtube-id";
 
 const getServices = async () => {
@@ -21,6 +21,18 @@ import churchBg from "../assets/images/church-ext-2.jpg";
 import avatar from "../assets/images/jessica-vaughan-lower-headshot.jpg";
 import tower from "../assets/images/church-ext-4.jpg";
 import worship from "../assets/images/worship.jpg";
+
+const navQuery = `*[_type == 'navigation' && name == 'Main Navigation'].section[] {
+  _key,
+  name,
+  "image": image.asset->,
+  "slug": slug.current,
+  pages[]->{
+    name,
+    "slug": slug.current
+  }
+}`;
+const sanityNav = await getSanityData(navQuery);
 ---
 
 <Layout>
@@ -215,6 +227,23 @@ import worship from "../assets/images/worship.jpg";
       <div class="content-wrapper">
         <h2 class="text-step-4">Featured Resources</h2>
       </div>
+      {
+        sanityNav.map((item) => (
+          <div>
+            {item.name}
+            <ul>
+              {item.pages.map((page) => (
+                <li>
+                  {page.name}
+                  <a
+                    href={`/${item.slug}/${page.slug}`}
+                  >{`/${item.slug}/${page.slug}`}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
     </section>
   </main>
 
@@ -364,6 +393,7 @@ import worship from "../assets/images/worship.jpg";
       text-decoration: none;
       border-radius: var(--rounded-corners);
       padding: 0.75rem;
+      transition: background-color 0.2s ease;
     }
 
     .meet-grid a:hover {

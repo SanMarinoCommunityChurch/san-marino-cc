@@ -1,0 +1,46 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Button from "../../components/Button.astro";
+import Feature from "../../components/Feature.astro";
+import InnerMenu from "../../components/InnerMenu.astro";
+
+const title = "We're so glad you're here.";
+const eyebrow = "I'm New";
+const localNav = {
+  section: "Welcome",
+  children: [
+    {
+      name: "I'm New",
+      href: "/welcome/i'm-new",
+    },
+    {
+      name: "Weekly Schedule",
+      href: "/welcome/weekly-schedule",
+    },
+    {
+      name: "How to Join",
+      href: "/welcome/how-to-join",
+    },
+  ],
+};
+---
+
+<Layout>
+  <main slot="main">
+    <InnerMenu navigation={localNav} />
+    <article class="content-wrapper">
+      <div class="small-title">{eyebrow}</div>
+      <h1 class="text-step-6">{title}</h1>
+      <p>
+        Here is some helpful information to help you feel more comfortable
+        walking into this new place!
+      </p>
+    </article>
+  </main>
+</Layout>
+
+<style>
+  article {
+    margin-block: var(--space-xl);
+  }
+</style>

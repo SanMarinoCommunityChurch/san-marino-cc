@@ -16,7 +16,7 @@ const { mainNavigation, fullNavigation } = Astro.props;
           mainNavigation.map((navItem) => (
             <li>
               <Button
-                href={navItem.href}
+                href={`/${navItem.href}`}
                 style="nav"
                 theme={!navItem.button ? "neutral" : "primary"}
               >
@@ -37,7 +37,7 @@ const { mainNavigation, fullNavigation } = Astro.props;
                   <div class="flow">
                     {navItem.img && (
                       <a
-                        href={`${navItem.slug}/${navItem.children[0].slug}`}
+                        href={`/${navItem.slug}/${navItem.children[0].slug}`}
                         class="img-link"
                       >
                         <div class="overlay" />
@@ -54,7 +54,7 @@ const { mainNavigation, fullNavigation } = Astro.props;
                     <ul class="flow">
                       {navItem.children.map((navChild) => (
                         <li>
-                          <a href={`${navItem.slug}/${navChild.slug}`}>
+                          <a href={`/${navItem.slug}/${navChild.slug}`}>
                             {navChild.name}
                           </a>
                         </li>
@@ -73,7 +73,7 @@ const { mainNavigation, fullNavigation } = Astro.props;
                   <ul class="flow">
                     {navItem.children.map((navChild) => (
                       <li class="utility-item">
-                        <a href={`${navItem.slug}/${navChild.slug}`}>
+                        <a href={`/${navItem.slug}/${navChild.slug}`}>
                           <div class="small-title">{navChild.name}</div>
                           <p>{navChild.description}</p>
                         </a>

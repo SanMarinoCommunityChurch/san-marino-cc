@@ -17,3 +17,8 @@ export const urlFor = (source) => {
     return;
   }
 };
+
+export const getSanityData = async (GROQquery) => {
+  const data = await sanityClient.fetch(GROQquery);
+  return data;
+};

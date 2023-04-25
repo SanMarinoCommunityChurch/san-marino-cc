@@ -1,4 +1,6 @@
 ---
+import { getSanityData } from "../lib/sanity";
+
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 // import SiteFooter from "../components/SiteFooter.astro";
@@ -13,16 +15,16 @@ import resourcesImg from "../assets/images/church-ext-5.jpg";
 const mainNavigation = [
   {
     name: "I'm New",
-    href: "/",
+    href: "welcome/i'm-new",
   },
   {
     name: "Worship Live",
-    href: "/",
+    href: "worship/worship-live",
     button: true,
   },
   {
     name: "FAQ",
-    href: "/",
+    href: "faq",
   },
 ];
 
@@ -34,11 +36,11 @@ const fullNavigation = [
     children: [
       {
         name: "I’m New",
-        slug: "visitors",
+        slug: "i'm-new",
       },
       {
         name: "Weekly Schedule",
-        slug: "schedule",
+        slug: "weekly-schedule",
       },
       {
         name: "How to Join",
@@ -53,11 +55,11 @@ const fullNavigation = [
     children: [
       {
         name: "Worship Live",
-        slug: "live",
+        slug: "worship-live",
       },
       {
         name: "Worship Services",
-        slug: "services",
+        slug: "worship-services",
       },
     ],
   },

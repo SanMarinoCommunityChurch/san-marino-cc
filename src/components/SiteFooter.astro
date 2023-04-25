@@ -14,7 +14,7 @@ const { fullNavigation } = Astro.props;
             <ul class="flow">
               {navItem.children.map((navChild) => (
                 <li>
-                  <a href={`${navItem.slug}/${navChild.slug}`}>
+                  <a href={`/${navItem.slug}/${navChild.slug}`}>
                     {navChild.name}
                   </a>
                 </li>

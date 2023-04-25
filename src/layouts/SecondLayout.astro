@@ -1,0 +1,17 @@
+---
+import Layout from "./Layout.astro";
+---
+
+<Layout>
+  <main slot="main">
+    <div class="content-wrapper">
+      <slot />
+    </div>
+  </main>
+
+  <style>
+    .content-wrapper {
+      border: 1px solid red;
+    }
+  </style>
+</Layout>

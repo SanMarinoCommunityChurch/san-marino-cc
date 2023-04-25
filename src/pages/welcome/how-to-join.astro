@@ -1,0 +1,40 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Button from "../../components/Button.astro";
+import Feature from "../../components/Feature.astro";
+import InnerMenu from "../../components/InnerMenu.astro";
+
+const title = "How to Join";
+const localNav = {
+  section: "Welcome",
+  children: [
+    {
+      name: "I'm New",
+      href: "/welcome/i'm-new",
+    },
+    {
+      name: "Weekly Schedule",
+      href: "/welcome/weekly-schedule",
+    },
+    {
+      name: "How to Join",
+      href: "/welcome/how-to-join",
+    },
+  ],
+};
+---
+
+<Layout>
+  <main slot="main">
+    <InnerMenu navigation={localNav} />
+    <article class="content-wrapper">
+      <h1>{title}</h1>
+    </article>
+  </main>
+</Layout>
+
+<style>
+  article {
+    margin-block: var(--space-xl);
+  }
+</style>

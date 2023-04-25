@@ -1,0 +1,47 @@
+---
+const { navigation } = Astro.props;
+---
+
+<nav>
+  <div class="content-wrapper cluster">
+    <div class="small-title">{navigation.section}</div>
+    <ul class="cluster">
+      {
+        navigation.children.map((item) => (
+          <li class="text-step--1">
+            <a href={item.href} class="link">
+              {item.name}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</nav>
+
+<style>
+  nav {
+    background-color: var(--color-primary-800);
+    color: var(--color-primary-200);
+    padding-block: var(--space-s);
+  }
+
+  .cluster {
+    --align: center;
+    --justify: center;
+    --cluster-space: 2rem;
+  }
+
+  .link {
+    text-decoration: none;
+    background-color: #ffffff00;
+    padding: 4px 8px 3px;
+    border-radius: var(--rounded-corners-small);
+    transition: background-color 0.1s ease;
+  }
+
+  .link:hover {
+    color: var(--color-primary-100);
+    background-color: #ffffff20;
+  }
+</style>
