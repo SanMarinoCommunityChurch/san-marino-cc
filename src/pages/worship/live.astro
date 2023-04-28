@@ -1,0 +1,122 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Button from "../../components/Button.astro";
+import Feature from "../../components/Feature.astro";
+import InnerHero from "../../components/InnerHero.astro";
+import VideoTabs from "../../components/Svelte/VideoTabs.svelte";
+
+const pageTitle = "Worship Live";
+const eyebrow = "San Marino Community Church";
+const pageDescription =
+  "First time visitor? Here is some helpful information to help you feel more comfortable walking into this new place!";
+---
+
+<Layout title={pageTitle}>
+  <main slot="main">
+    <section class="hero center-items flow">
+      <div class="small-title">{eyebrow}</div>
+      <h1 class="text-step-6">{pageTitle}</h1>
+    </section>
+    <article class="flow">
+      <VideoTabs client:load>
+        <div slot="tab-1" class="video-tab flow">
+          <div>
+            <div class="small-title">9 am Sundays</div>
+            <h2 class="text-step-2">Traditional Worship</h2>
+          </div>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum nulla
+            quod recusandae quae corporis inventore.
+          </p>
+          <div class="underline">Watch Live</div>
+        </div>
+
+        <div slot="panel-1" class="panel-1">
+          <section class="video-wrapper">
+            <iframe
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/XyQNPvZUEP0"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen></iframe>
+          </section>
+          <section class="content-wrapper">Traditional service</section>
+        </div>
+        <div slot="tab-2" class="video-tab flow">
+          <div>
+            <div class="small-title">10 am Sundays</div>
+            <h2 class="text-step-2">Contemporary Worship</h2>
+          </div>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum nulla
+            quod recusandae quae corporis inventore.
+          </p>
+          <div class="underline">Watch Live</div>
+        </div>
+        <div slot="panel-2" class="panel-2">
+          <section class="video-wrapper">
+            <iframe
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/XyQNPvZUEP0"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen></iframe>
+          </section>
+          <section class="content-wrapper">Contemporary service</section>
+        </div>
+      </VideoTabs>
+    </article>
+  </main>
+</Layout>
+
+<style>
+  .hero {
+    position: relative;
+    padding-top: 5rem;
+    padding-bottom: var(--space-2xl);
+  }
+
+  .hero .small-title {
+    color: var(--color-primary-500);
+  }
+
+  .hero.flow {
+    --flow-space: 0.5rem;
+  }
+
+  .video-tab {
+    padding: 2rem;
+    border-radius: var(--rounded-corners);
+  }
+
+  .underline {
+    text-decoration: underline;
+    display: inline-block;
+    width: fit-content;
+  }
+
+  .underline:hover {
+    text-decoration: none;
+  }
+
+  .video-wrapper {
+    background-color: var(--color-neutral-100);
+    margin-block: var(--space-xl);
+    display: flex;
+    justify-content: center;
+  }
+
+  .panel-2 .video-wrapper {
+    background-color: var(--color-secondary-100);
+  }
+
+  .video-wrapper iframe {
+    aspect-ratio: 16/9;
+    width: clamp(20rem, 50vw, 80%);
+    height: auto;
+  }
+</style>

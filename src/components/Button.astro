@@ -89,7 +89,7 @@ const classList = [
   a {
     font-family: var(--font-secondary);
     font-weight: var(--font-weight-semi);
-    letter-spacing: 2pt;
+    letter-spacing: 1.5pt;
     text-transform: uppercase;
     border-radius: 4px;
     color: inherit;
@@ -137,6 +137,15 @@ const classList = [
     background-color: var(--color-primary-100);
   }
 
+  .solid.secondary {
+    background-color: var(--color-secondary-500);
+    color: var(--color-white);
+  }
+
+  .solid.secondary:hover {
+    background-color: var(--color-secondary-700);
+  }
+
   .navLink.neutral {
     background-color: transparent;
     color: var(--color-header-text);
@@ -146,10 +155,21 @@ const classList = [
     background-color: var(--color-neutral-100);
   }
 
+  .outline.primary {
+    border: 1px solid var(--color-primary-700);
+    color: var(--color-primary-800);
+    background-color: transparent;
+  }
+
+  .outline.primary:hover {
+    background-color: var(--color-primary-800);
+    color: var(--color-primary-100);
+  }
+
   .base {
     font-size: var(--step--1);
     line-height: 1.15;
-    padding: 0.75em 1em;
+    padding: 0.75em 1em 0.78rem;
   }
 
   .no-size {

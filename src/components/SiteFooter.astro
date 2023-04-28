@@ -97,4 +97,16 @@ const { fullNavigation } = Astro.props;
   .sub-footer .cluster {
     --justify: space-between;
   }
+
+  @media (max-width: 1024px) {
+    .nav-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .nav-grid {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>

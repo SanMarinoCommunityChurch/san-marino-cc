@@ -22,7 +22,16 @@
   --color-neutral-800: hsl(209, 34%, 30%);
   --color-neutral-900: hsl(209, 34%, 20%);
   --color-neutral-950: hsl(209, 34%, 10%);
-  --color-secondary: hsl(189, 35%, 52%);
+  --color-secondary-50: hsl(188, 33%, 94%);
+  --color-secondary-100: hsl(190, 34%, 86%);
+  --color-secondary-200: hsl(189, 34%, 76%);
+  --color-secondary-300: hsl(188, 35%, 66%);
+  --color-secondary-400: hsl(189, 35%, 57%);
+  --color-secondary-500: hsl(189, 35%, 52%);
+  --color-secondary-600: hsl(189, 32%, 47%);
+  --color-secondary-700: hsl(189, 32%, 42%);
+  --color-secondary-800: hsl(188, 32%, 46%);
+  --color-secondary-900: hsl(188, 32%, 31%);
   --color-tertiary: hsl(57, 100%, 80%);
   --color-header-text: var(--color-primary-800);
   --color-body-text: var(--color-neutral-700);
@@ -58,7 +67,10 @@
   --font-weight-header: 900;
   --rounded-corners: 6px;
   --rounded-corners-small: 4px;
-  --shadow-base: 0px 4px 16px rgba(0, 0, 0, 0.1);
+  --shadow-none: 0px 0px 0px rgb(0 0 0 / 0);
+  --shadow-base: 0px 4px 16px rgb(0 0 0 / 0.05);
+  --shadow-large: 0px 4px 32px rgb(0 0 0 / 0.12);
+  --section-spacer: 10rem;
 }
 
 /*! modern-normalize v1.1.0 | MIT License | https://github.com/sindresorhus/modern-normalize */
@@ -450,6 +462,10 @@ select {
   height: 0.75em;
 }
 
+.mx-auto {
+  margin-inline: auto;
+}
+
 /* Typography utilities */
 .text-step--2 {
   font-size: var(--step--2);
@@ -508,7 +524,7 @@ select {
   font-family: var(--font-secondary);
   font-weight: var(--font-weight-semi);
   font-size: var(--step--1);
-  letter-spacing: 2pt;
+  letter-spacing: 1.5pt;
   text-transform: uppercase;
 }
 
@@ -520,7 +536,14 @@ select {
   text-decoration: none;
 }
 
-.menu-toggle {
+.paragraphs.flow {
+  --flow-space: 1.5rem;
+}
+
+/* Svelte component button resets */
+.menu-toggle,
+.disclosure-button,
+.video-tabs-list button {
   position: relative;
   display: block;
   border: 0;
@@ -530,6 +553,29 @@ select {
   color: inherit;
   cursor: pointer;
   z-index: 20;
+}
+
+.disclosure-button,
+.video-tabs-list button {
+  width: 100%;
+  text-decoration: none;
+  text-align: left;
+  padding: 0;
+}
+
+.video-tabs-list button {
+  border-radius: var(--rounded-corners);
+  background-color: var(--color-primary-100);
+  transition: all 0.3s ease;
+}
+
+.video-tabs-list button.active {
+  color: var(--color-primary-100);
+  background-color: var(--color-primary-800);
+}
+
+.video-tabs-list button.active h2 {
+  color: var(--color-primary-100);
 }
 
 /* Color utilities */
@@ -578,6 +624,36 @@ select {
   gap: var(--cluster-space);
   justify-content: var(--justify);
   align-items: var(--align);
+}
+
+.with-sidebar {
+  --sidebar-gap: 3rem;
+  --sidebar-min-width: 25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sidebar-gap);
+}
+
+.with-sidebar > :last-child {
+  flex-basis: var(--sidebar-min-width);
+  flex-grow: 1;
+}
+
+.with-sidebar > :first-child {
+  flex-basis: 0;
+  flex-grow: 999;
+  min-inline-size: 50%;
+}
+
+.responsive-grid {
+  --gap: 1rem;
+  --item-min-width: 30rem;
+  display: grid;
+  grid-gap: var(--gap);
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(var(--item-min-width), 100%), 1fr)
+  );
 }
 
 .frame {

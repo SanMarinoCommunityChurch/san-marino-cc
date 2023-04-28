@@ -2,19 +2,30 @@
 import Layout from "../../layouts/Layout.astro";
 import Button from "../../components/Button.astro";
 import Feature from "../../components/Feature.astro";
-import InnerMenu from "../../components/InnerMenu.astro";
+import InnerHero from "../../components/InnerHero.astro";
 
-const title = "Weekly Schedule";
+import traditionalImg from "../../assets/images/worship.jpg";
+import contemporaryImg from "../../assets/images/contemporary.jpg";
+
+const contentTitle = "We’re so glad you’re here.";
+const pageTitle = "Weekly Schedule";
+const pageDescription =
+  "Join us every Sunday for traditional worship at 9:00 am or contemporary worship at 10:00 am.";
+
 const localNav = {
   section: "Welcome",
   children: [
     {
-      name: "I'm New",
+      name: "I’m New",
       href: "/welcome/i'm-new",
     },
     {
       name: "Weekly Schedule",
       href: "/welcome/weekly-schedule",
+    },
+    {
+      name: "FAQ",
+      href: "/welcome/faq",
     },
     {
       name: "How to Join",
@@ -24,17 +35,36 @@ const localNav = {
 };
 ---
 
-<Layout>
+<Layout title={pageTitle}>
   <main slot="main">
-    <InnerMenu navigation={localNav} />
-    <article class="content-wrapper">
-      <h1>{title}</h1>
+    <InnerHero
+      localNav={localNav}
+      pageTitle={pageTitle}
+      pageDescription={pageDescription}
+    />
+    <article class="content-wrapper flow">
+      <Feature href="/worship/live" imgSrc={traditionalImg}>
+        <h2 slot="header" class="text-step-2">Traditional Worship</h2>
+        <Fragment slot="CTA">Join Online</Fragment>
+      </Feature>
+      <Feature
+        href="/worship/live"
+        theme="dark"
+        layout="image-right"
+        imgSrc={contemporaryImg}
+      >
+        <h2 slot="header" class="text-step-2">Contemporary Worship</h2>
+        <Fragment slot="CTA">Join Online</Fragment>
+      </Feature>
     </article>
   </main>
 </Layout>
-
 <style>
   article {
-    margin-block: var(--space-xl);
+    margin-block: var(--section-spacer);
+  }
+
+  .content-wrapper.flow {
+    --flow-space: var(--space-3xl);
   }
 </style>

@@ -7,7 +7,8 @@
     <div class="site-nav" style="--menu-toggle-shadow:{open ? "" : "var(--box-shadow)"}">
         <div><slot name="logo"></slot></div>
         <div><slot name="mainNav"></slot></div>
-        <div>
+        <div class="header-buttons cluster">
+            <slot name="headerCTAButton"></slot>
             <PopoverButton class="menu-toggle">
                 <div class="menu-toggle-container" class:open style="--menu-toggle-bg:{open ? "var(--color-neutral-100)" : ""}">
                     {#if open}
@@ -43,7 +44,6 @@
 
 
 <style>
-
     .site-nav {
         --box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
         position: relative;
@@ -107,5 +107,20 @@
 
     .nav-wrapper {
         width: 100%;
+    }
+
+    .header-buttons.cluster {
+        --align: center;
+        --justify: center;
+    }
+
+    @media (max-width: 768px) {
+        .site-nav {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .header-buttons {
+            display: none;
+        }
     }
 </style>

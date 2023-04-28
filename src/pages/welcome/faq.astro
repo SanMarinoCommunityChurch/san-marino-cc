@@ -1,0 +1,77 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Button from "../../components/Button.astro";
+import Feature from "../../components/Feature.astro";
+import InnerHero from "../../components/InnerHero.astro";
+import ImageCard from "../../components/ImageCard.astro";
+import Accordion from "../../components/Svelte/Accordion.svelte";
+
+import placeholderImg from "../../assets/images/worship-2.jpg";
+
+const pagePath = Astro.url.pathname;
+
+const localNav = {
+  section: "Welcome",
+  children: [
+    {
+      name: "I’m New",
+      href: "/welcome/i'm-new",
+    },
+    {
+      name: "Weekly Schedule",
+      href: "/welcome/weekly-schedule",
+    },
+    {
+      name: "FAQ",
+      href: "/welcome/faq",
+    },
+    {
+      name: "How to Join",
+      href: "/welcome/how-to-join",
+    },
+  ],
+};
+
+const pageTitle = "FAQ";
+const pageDescription =
+  "First time visitor? Here is some helpful information to help you feel more comfortable walking into this new place!";
+---
+
+<Layout title={pageTitle}>
+  <main slot="main">
+    <InnerHero
+      localNav={localNav}
+      pageTitle={pageTitle}
+      pageDescription={pageDescription}
+    />
+    <article class="content-wrapper flow">
+      <div class="with-sidebar">
+        <div class="faq flow">
+          <Accordion client:load>
+            <Fragment slot="question">What are your service options?</Fragment>
+            <Fragment slot="answer">
+              <p>
+                We offer <a href="/"
+                  >three different Sunday worship experiences</a
+                >. The first two are live-streamed online and archived to assist
+                you in worshipping whenever is most convenient for you.
+              </p>
+            </Fragment>
+          </Accordion>
+          <Accordion client:load />
+        </div>
+        <div>sidebar</div>
+      </div>
+    </article>
+  </main>
+</Layout>
+
+<style>
+  article {
+    margin-block: var(--section-spacer);
+  }
+
+  .faq.flow {
+    gap: 2rem;
+  }
+</style>

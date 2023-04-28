@@ -2,15 +2,22 @@
 import Layout from "../../layouts/Layout.astro";
 import Button from "../../components/Button.astro";
 import Feature from "../../components/Feature.astro";
-import InnerMenu from "../../components/InnerMenu.astro";
+import InnerHero from "../../components/InnerHero.astro";
+import ImageCard from "../../components/ImageCard.astro";
 
-const title = "We're so glad you're here.";
-const eyebrow = "I'm New";
+import placeholderImg from "../../assets/images/worship-2.jpg";
+import aboutImg from "../../assets/images/church-full.jpg";
+
+const contentTitle = "We’re so glad you’re here.";
+const pageTitle = "I’m New";
+const pageDescription =
+  "We don’t know what encouraged you to look for a church, let alone what brought you to this website for SMCC, but we don’t believe that you’re here by accident.";
+
 const localNav = {
   section: "Welcome",
   children: [
     {
-      name: "I'm New",
+      name: "I’m New",
       href: "/welcome/i'm-new",
     },
     {
@@ -18,29 +25,139 @@ const localNav = {
       href: "/welcome/weekly-schedule",
     },
     {
+      name: "FAQ",
+      href: "/welcome/faq",
+    },
+    {
       name: "How to Join",
       href: "/welcome/how-to-join",
     },
   ],
 };
+
+const opportunities = [
+  {
+    name: "Worship with Us",
+    description: "Join us for our traditional or contemporary Sunday service.",
+  },
+  {
+    name: "Visiting FAQ",
+    description:
+      "Get helpful information on visiting San Marino Community Church.",
+  },
+  {
+    name: "Join a Ministry",
+    description: "Learn how to get involved in one of our many ministries.",
+  },
+];
 ---
 
-<Layout>
+<Layout title={pageTitle}>
   <main slot="main">
-    <InnerMenu navigation={localNav} />
+    <InnerHero
+      localNav={localNav}
+      pageTitle={pageTitle}
+      pageDescription={pageDescription}
+    />
     <article class="content-wrapper">
-      <div class="small-title">{eyebrow}</div>
-      <h1 class="text-step-6">{title}</h1>
-      <p>
-        Here is some helpful information to help you feel more comfortable
-        walking into this new place!
-      </p>
+      <!-- <div class="small-title">{eyebrow}</div> -->
+      <section class="with-sidebar intro">
+        <div>
+          <h2 class="text-step-4">{contentTitle}</h2>
+          <div class="paragraphs flow">
+            <p>
+              In the busy culture we share, it can feel like a challenge to tend
+              to our physical, emotional, and mental health. Often, our
+              spiritual health is the most easily neglected. But we believe that
+              our spiritual life and health is important, particularly given the
+              necessary demands of work, family, school, and social commitments
+              that wrestle for our attention every day.
+            </p>
+            <p>
+              That’s why we at SMCC are committed to being a community of
+              wonder, healing, justice, and joy, because these are the things
+              that are often pushed aside by life’s relentless demand, but they
+              are also the places where God often dwells.
+            </p>
+          </div>
+        </div>
+        <div class="frame">
+          <img src={placeholderImg} alt="" />
+        </div>
+      </section>
+      <div class="frame video feature-img">
+        <img src={aboutImg} alt="" />
+      </div>
+      <section id="opportunities">
+        <h2 class="text-step-4 center-items">Opportunities</h2>
+        <div class="paragraphs flow mx-auto">
+          <p class="center-items">
+            We hope that you will come spend some time with us in one of the
+            ways that feels most welcoming to you, be it in person or online,
+            and that you will encounter the presence of God.
+          </p>
+        </div>
+        <div class="responsive-grid">
+          {
+            opportunities.map((item) => (
+              <ImageCard title={item.name} description={item.description} />
+            ))
+          }
+        </div>
+      </section>
     </article>
   </main>
 </Layout>
 
 <style>
   article {
+    margin-block: var(--section-spacer);
+  }
+
+  .intro.with-sidebar {
+    --sidebar-gap: 6rem;
+    --sidebar-min-width: 30rem;
+    align-items: center;
+  }
+
+  .intro .frame {
+    --width: 1;
+    --height: 1;
+  }
+
+  .intro .frame img {
+    border-radius: var(--rounded-corners);
+  }
+
+  h2 {
+    margin-bottom: var(--space-l);
+  }
+
+  .paragraphs.flow {
+    max-width: 67ch;
+  }
+
+  .feature-img {
+    margin-block: var(--space-3xl);
+  }
+
+  .feature-img img {
+    border-radius: var(--rounded-corners);
+  }
+
+  #opportunities .paragraphs.flow {
+    max-width: 72ch;
+  }
+
+  /* #opportunities .grid {
+    margin-block: var(--space-xl);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  } */
+
+  .responsive-grid {
+    --item-min-width: 24rem;
     margin-block: var(--space-xl);
   }
 </style>

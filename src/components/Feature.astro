@@ -20,7 +20,8 @@ const decorations = {
 const {
   theme = "light",
   layout = "image-left",
-  img = placeholderImg,
+  imgSrc = placeholderImg,
+  imgAlt = "",
   href,
 } = Astro.props;
 ---
@@ -30,21 +31,23 @@ const {
   data-theme={themes[theme]}
   data-layout={layouts[layout]}
 >
-  <div class="frame">
-    <img src={img} alt="" class="feature-img" />
-  </div>
+  <a href={href} class="frame img-link">
+    <img src={imgSrc} alt={imgAlt} class="feature-img" />
+  </a>
   <div class="feature-text flow">
-    <header>
-      <slot name="header">Feature title</slot>
-    </header>
-    <div>
-      <slot name="body"
-        >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor
-        sit amet</slot
-      >
+    <div class="feature-header flow">
+      <header>
+        <slot name="header">Feature title</slot>
+      </header>
+      <div>
+        <slot name="body"
+          >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem
+          ipsum dolor sit amet</slot
+        >
+      </div>
     </div>
-    <footer class="cluster">
+    <footer class="feature-link cluster">
       <Button
         href={href}
         style="none"
@@ -56,6 +59,7 @@ const {
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 448 512"
+        aria-hidden="true"
         width="14"
         height="14"
         fill={themes[theme] == "light"
@@ -94,6 +98,14 @@ const {
     grid-column: span 3;
     padding-left: 1rem;
     padding-right: 0;
+  }
+
+  .feature-text.flow {
+    --flow-space: var(--space-l);
+  }
+
+  .feature-header.flow {
+    --flow-space: var(--space-s);
   }
 
   .feature-bg {
@@ -154,5 +166,39 @@ const {
 
   footer.cluster {
     --cluster-space: 6px;
+  }
+
+  .feature-img {
+    border-radius: var(--rounded-corners);
+    box-shadow: var(--shadow-none);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .feature-img:hover {
+    box-shadow: var(--shadow-large);
+  }
+
+  .feature-link {
+    width: fit-content;
+  }
+
+  .feature-link svg {
+    transition: transform 0.2s ease;
+  }
+
+  .feature-link:hover {
+    opacity: 0.7;
+  }
+
+  .feature-link:hover svg {
+    transform: translateX(3px);
+  }
+
+  .img-link img {
+    transition: transform 0.3s ease;
+  }
+
+  .img-link:hover img {
+    transform: scale(1.06);
   }
 </style>

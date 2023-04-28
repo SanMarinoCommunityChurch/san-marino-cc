@@ -17,7 +17,7 @@ const { mainNavigation, fullNavigation } = Astro.props;
             <li>
               <Button
                 href={`/${navItem.href}`}
-                style="nav"
+                style={!navItem.button ? "nav" : "outline"}
                 theme={!navItem.button ? "neutral" : "primary"}
               >
                 {navItem.name}
@@ -27,6 +27,9 @@ const { mainNavigation, fullNavigation } = Astro.props;
         }
       </ul>
     </nav>
+    <Fragment slot="headerCTAButton">
+      <Button href="/" theme="secondary">Give</Button>
+    </Fragment>
     <div slot="panel">
       <div class="nav-grid">
         <div class="nav-subgrid">
@@ -90,6 +93,10 @@ const { mainNavigation, fullNavigation } = Astro.props;
 </header>
 
 <style>
+  .logo {
+    color: var(--color-primary-800);
+  }
+
   .header {
     position: sticky;
     top: 0;
@@ -232,7 +239,7 @@ const { mainNavigation, fullNavigation } = Astro.props;
     background: var(--color-primary-200);
   }
 
-    .utility-item a {
+  .utility-item a {
     display: inline-block;
     padding
   }
@@ -241,4 +248,15 @@ const { mainNavigation, fullNavigation } = Astro.props;
     font-size: var(--step--2);
     margin-top: 6px;
   }
+
+  @media (max-width: 768px) {
+    .main-nav {
+      display: none;
+    }
+
+    .nav-grid, .nav-subgrid {
+      grid-template-columns: 1fr;
+    }
+  }
+
 </style>
