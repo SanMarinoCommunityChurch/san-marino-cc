@@ -41,12 +41,30 @@ const pageDescription =
       pageTitle={pageTitle}
       pageDescription={pageDescription}
     />
-    <article class="content-wrapper flow"></article>
+    <article class="content-wrapper">
+      <div class="paragraphs flow">
+        <p>
+          Our class provides an opportunity to get acquainted, ask questions,
+          and learn more about our church, our Presbyterian heritage, and our
+          mission. We receive new members by profession of faith upon baptism,
+          reaffirmation of faith, or letter of transfer from another church.
+        </p>
+        <p>
+          We offer membership classes twice a year - once in the fall and once
+          in the spring. If you are interested in becoming a member, please call
+          the Church Office at 626/282-4181.
+        </p>
+      </div>
+    </article>
   </main>
 </Layout>
 
 <style>
   article {
     margin-block: var(--section-spacer);
+  }
+
+  .paragraphs.flow {
+    max-width: var(--paragraph-measure);
   }
 </style>

@@ -94,11 +94,11 @@ const { services } = Astro.props;
     padding: 0.5rem;
     border-radius: var(--rounded-corners);
     border: 2px solid transparent;
-    transition: border 0.3s ease;
+    transition: all 0.2s ease;
   }
 
   a.service-wrapper:hover {
-    border-color: var(--color-primary-200);
+    box-shadow: var(--shadow-large);
   }
 
   .date-label {
@@ -169,7 +169,11 @@ const { services } = Astro.props;
   }
 
   a.service-wrapper:hover .frame .icon svg {
-    transform: scale(1.1);
+    transform: scale(1.25);
+  }
+
+  a.service-wrapper:hover h3 {
+    text-decoration: underline;
   }
 
   @media (max-width: 1024px) {

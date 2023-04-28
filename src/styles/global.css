@@ -32,7 +32,15 @@
   --color-secondary-700: hsl(189, 32%, 42%);
   --color-secondary-800: hsl(188, 32%, 46%);
   --color-secondary-900: hsl(188, 32%, 31%);
-  --color-tertiary: hsl(57, 100%, 80%);
+  /*--color-tertiary: hsl(57, 100%, 80%);*/
+  --color-tertiary-50: hsl(351, 78%, 98%);
+  --color-tertiary-100: hsl(347, 70%, 96%);
+  --color-tertiary-200: hsl(349, 70%, 92%);
+  --color-tertiary-300: hsl(349, 72%, 89%);
+  --color-tertiary-400: hsl(348, 72%, 85%);
+  --color-tertiary-500: hsl(348, 71%, 81%);
+  --color-tertiary-600: hsl(348, 45%, 73%);
+  --color-tertiary-900: hsl(347, 17%, 32%);
   --color-header-text: var(--color-primary-800);
   --color-body-text: var(--color-neutral-700);
   --step--2: clamp(0.65rem, calc(0.62rem + 0.14vw), 0.74rem);
@@ -71,6 +79,7 @@
   --shadow-base: 0px 4px 16px rgb(0 0 0 / 0.05);
   --shadow-large: 0px 4px 32px rgb(0 0 0 / 0.12);
   --section-spacer: 10rem;
+  --paragraph-measure: 67ch;
 }
 
 /*! modern-normalize v1.1.0 | MIT License | https://github.com/sindresorhus/modern-normalize */

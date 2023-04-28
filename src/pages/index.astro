@@ -5,6 +5,7 @@ import FeaturedVideoBanner from "../components/FeaturedVideoBanner.astro";
 import Feature from "../components/Feature.astro";
 import EventsHome from "../components/Events/EventsHome.astro";
 import CTA from "../components/CTA.astro";
+import WelcomeQuestions from "../components/WelcomeQuestions.astro";
 
 import { sanityClient, getSanityData } from "../lib/sanity";
 
@@ -58,6 +59,7 @@ const sanityNav = await getSanityData(navQuery);
       </div>
     </article>
     <FeaturedVideoBanner />
+    <WelcomeQuestions />
     <article id="welcome" class="welcome">
       <div class="content-wrapper">
         <div class="flow">
@@ -257,7 +259,7 @@ const sanityNav = await getSanityData(navQuery);
     #welcome,
     #events,
     #resources {
-      padding-block: 8rem;
+      margin-block: 8rem;
     }
 
     #welcome .content-wrapper {
