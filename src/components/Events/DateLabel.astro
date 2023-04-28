@@ -18,10 +18,11 @@ const niceDate = (dateString) => {
 };
 ---
 
-<div class="date-label">
+<time class="date-label">
   <div class="event-day font-header">{niceDate(date).day}</div>
   <div class="small-title">{niceDate(date).month}</div>
-</div>
+  {startTime && <div>{startTime}</div>}
+</time>
 
 <style>
   .date-label {

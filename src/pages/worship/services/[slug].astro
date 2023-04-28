@@ -1,0 +1,40 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import InnerHero from "../../../components/InnerHero.astro";
+import { getSanityData } from "../../../lib/sanity";
+
+export async function getStaticPaths() {
+  const pages = await getSanityData(`*[_type == 'service']`);
+
+  return pages.map((page) => {
+    return {
+      params: { slug: page.date },
+      props: { page },
+    };
+  });
+}
+
+const { slug } = Astro.params;
+const { page } = Astro.props;
+---
+
+<Layout>
+  <main slot="main">
+    <article>
+      <section class="hero">
+        <div class="content-wrapper flow">
+          <h1 class="text-step-6">{page.name}</h1>
+          {
+            page.serviceType.map((service) => (
+              <div id={service._key}>
+                <h2>{service.name}</h2>
+                <time>{service.serviceTime}</time>
+                {service.video && <div>{service.video.url}</div>}
+              </div>
+            ))
+          }
+        </div>
+      </section>
+    </article>
+  </main>
+</Layout>

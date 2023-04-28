@@ -8,8 +8,6 @@ import Accordion from "../../components/Svelte/Accordion.svelte";
 
 import placeholderImg from "../../assets/images/worship-2.jpg";
 
-const pagePath = Astro.url.pathname;
-
 const localNav = {
   section: "Welcome",
   children: [
@@ -60,7 +58,7 @@ const pageDescription =
           </Accordion>
           <Accordion client:load />
         </div>
-        <div>sidebar</div>
+        <div></div>
       </div>
     </article>
   </main>
@@ -68,7 +66,8 @@ const pageDescription =
 
 <style>
   article {
-    margin-block: var(--section-spacer);
+    margin-top: 7rem;
+    margin-bottom: var(--section-spacer);
   }
 
   .faq.flow {

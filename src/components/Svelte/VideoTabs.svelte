@@ -1,4 +1,5 @@
 <script>
+    import { onMount } from "svelte"
     import { slide, fade } from 'svelte/transition';
     import {
         Tab,
@@ -7,9 +8,41 @@
         TabPanel,
         TabPanels,
     } from "@rgossiaux/svelte-headlessui";
+
+    function updateURLHash(e) {
+      let url = window.location;
+      if (url.hash) {
+        url.hash = "";
+      }
+      switch(e.detail) {
+        case 0:
+          console.log('Changed tab to', e.detail)
+          url.hash = '#traditional'
+          break;
+        case 1:
+          console.log('Changed tab to', e.detail);
+          url.hash = '#contemporary'
+          break;
+      }
+      return url
+    }
+
+    function setDefault(location) {
+      let tabIndex = 0;
+      if (location.hash === '#contemporary') {
+        tabIndex = 1;
+      } 
+      console.log('mounted with', tabIndex);
+      return tabIndex;
+    }
+
+    // onMount(() => {
+    //   setDefault(window.location);
+    // })
+
 </script>
 
-<TabGroup>
+<TabGroup defaultIndex={onMount(() => setDefault(window.location))} on:change={(e) => updateURLHash(e)}>
   <div class="content-wrapper">
     <TabList class="video-tabs-list">
         <div class="flex">

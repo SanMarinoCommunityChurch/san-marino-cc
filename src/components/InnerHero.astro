@@ -16,7 +16,7 @@ const { localNav, pageTitle, pageDescription } = Astro.props;
               <a
                 href={item.href}
                 style={
-                  Astro.url.pathname.slice(1) === item.href &&
+                  Astro.url.pathname === item.href &&
                   "color: var(--color-primary-300)"
                 }
                 class="link"
@@ -98,3 +98,14 @@ const { localNav, pageTitle, pageDescription } = Astro.props;
     background-color: #ffffff20;
   }
 </style>
+
+<script is:inline>
+  const localNav = document.querySelector(".local-nav");
+  const navLinks = localNav.querySelectorAll("a");
+  const currentURL = window.location.pathname;
+  navLinks.forEach((link) => {
+    if (link.pathname + "/" === currentURL || link.pathname === currentURL) {
+      link.style.color = "var(--color-primary-300)";
+    }
+  });
+</script>

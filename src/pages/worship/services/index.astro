@@ -1,0 +1,49 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import Button from "../../../components/Button.astro";
+import Feature from "../../../components/Feature.astro";
+import InnerHero from "../../../components/InnerHero.astro";
+import ServicesList from "../../../components/ServicesList.astro";
+import { getSanityData } from "../../../lib/sanity";
+
+const localNav = {
+  section: "Worship",
+  children: [
+    {
+      name: "Worship Live",
+      href: "/worship/live",
+    },
+    {
+      name: "Worship Services",
+      href: "/worship/services",
+    },
+  ],
+};
+
+const services = await getSanityData(
+  `*[_type == 'service'] | order(date desc)`
+);
+
+const pageTitle = "Worship Services";
+const pageDescription =
+  "Interested in joining the church? Would you like to learn more about San Marino Community Church and its ministries? Then the new member class is for you!";
+---
+
+<Layout title={pageTitle}>
+  <main slot="main">
+    <InnerHero
+      localNav={localNav}
+      pageTitle={pageTitle}
+      pageDescription={pageDescription}
+    />
+    <article class="content-wrapper flow">
+      <ServicesList services={services} />
+    </article>
+  </main>
+</Layout>
+
+<style>
+  article {
+    margin-block: var(--section-spacer);
+  }
+</style>

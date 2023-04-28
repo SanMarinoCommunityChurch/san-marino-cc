@@ -18,4 +18,8 @@ const timeFormatter = (timeString) => {
   });
 };
 
-export { formatDate, timeFormatter };
+const capitalizeFirstLetter = (string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
+export { formatDate, timeFormatter, capitalizeFirstLetter };
