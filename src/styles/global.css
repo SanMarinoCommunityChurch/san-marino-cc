@@ -528,7 +528,7 @@ select {
   text-transform: uppercase;
 }
 
-:where(a, button):not(.btn, .logo) {
+:where(a, button):not(.btn, .logo, .link) {
   text-decoration: underline;
 }
 

@@ -16,7 +16,7 @@ const { localNav, pageTitle, pageDescription } = Astro.props;
               <a
                 href={item.href}
                 style={
-                  Astro.url.pathname === item.href &&
+                  Astro.url.pathname.slice(1) === item.href &&
                   "color: var(--color-primary-300)"
                 }
                 class="link"
