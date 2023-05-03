@@ -25,7 +25,6 @@ const compileServiceTypes = (array) => {
   array.forEach((type) =>
     types.push(`${timeFormatter(type.serviceTime)} ${type.name}`)
   );
-  console.log(types);
   return types;
 };
 ---

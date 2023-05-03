@@ -120,13 +120,15 @@ const { page } = Astro.props;
                 </h2>
               </div>
               <div class="sermon flex">
-                <div class="frame square">
-                  <img src={urlFor(service.preacher.image).url()} alt="" />
-                </div>
-                <div>
-                  <div class="small-title">Sermon by</div>
-                  <a href="#" class="text-step--1">{joinNames(service.preacher)}</a>
-                </div>
+                {service.preacher &&
+                  <div class="frame square">
+                    <img src={urlFor(service.preacher.image).url()} alt="" />
+                  </div>
+                  <div>
+                    <div class="small-title">Sermon by</div>
+                    <a href="#" class="text-step--1">{joinNames(service.preacher)}</a>
+                  </div>
+                }
               </div>
               <PortableText value={service.serviceDescription} />
               <Button href={service.programLink} width="fit">
