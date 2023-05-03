@@ -6,6 +6,7 @@ import Feature from "../components/Feature.astro";
 import EventsHome from "../components/Events/EventsHome.astro";
 import CTA from "../components/CTA.astro";
 import WelcomeQuestions from "../components/WelcomeQuestions.astro";
+import Slider from "../components/Slider.astro";
 
 import { sanityClient, getSanityData } from "../lib/sanity";
 
@@ -185,10 +186,14 @@ const sanityNav = await getSanityData(navQuery);
     </section>
     <CTA />
     <section id="resources">
-      <div class="content-wrapper">
-        <h2 class="text-step-4">Featured Resources</h2>
+      <Slider
+        heading="Featured Resources"
+        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      />
+      <div class="center-items">
+        <Button href="/">See All Resources</Button>
       </div>
-      {
+      <!-- {
         sanityNav.map((item) => (
           <div>
             {item.name}
@@ -204,7 +209,7 @@ const sanityNav = await getSanityData(navQuery);
             </ul>
           </div>
         ))
-      }
+      } -->
     </section>
   </main>
 
@@ -259,7 +264,15 @@ const sanityNav = await getSanityData(navQuery);
     #welcome,
     #events,
     #resources {
-      margin-block: 8rem;
+      margin-block: var(--section-spacer);
+    }
+
+    #resources {
+      margin-top: 4rem;
+    }
+
+    #resources .center-items {
+      margin-top: 4rem;
     }
 
     #welcome .content-wrapper {

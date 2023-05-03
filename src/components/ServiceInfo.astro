@@ -1,0 +1,86 @@
+---
+import Button from "./Button.astro";
+
+import pastorHeadshot from "../assets/images/jessica-vaughan-lower-headshot.jpg";
+
+const {
+  date = "date",
+  time = "time",
+  type = "Service",
+  title = "Title",
+  description = "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+  programLink = "#",
+  sermonHeadshot = pastorHeadshot,
+  sermonName = "Rev. Jessica Vaughan Lower",
+} = Astro.props;
+---
+
+<section class="content-wrapper service-wrapper with-sidebar">
+  <div class="flow">
+    <div>
+      <div class="cluster">
+        <time class="small-title"
+          >{date}<span class="bullet-spacer">•</span>{time}</time
+        >
+        <div class="small-title category contemporary">{type}</div>
+      </div>
+      <h3 class="text-step-4">{title}</h3>
+    </div>
+    <p>{description}</p>
+    <Button href={programLink} width="fit">Download Program</Button>
+  </div>
+  <div class="sidebar flex">
+    <div class="frame square">
+      <img src={sermonHeadshot} alt="" />
+    </div>
+    <div>
+      <div class="small-title">Sermon by</div>
+      <div class="text-step--1">{sermonName}</div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .service-wrapper {
+    margin-block: var(--space-2xl);
+  }
+
+  .bullet-spacer {
+    color: var(--color-primary-300);
+    margin-inline: 0.5rem;
+  }
+
+  .with-sidebar {
+    --sidebar-gap: var(--section-spacer);
+  }
+
+  .with-sidebar > .flow:first-child {
+    --flow-space: 2rem;
+  }
+
+  .sidebar .frame.square {
+    border-radius: 9999px;
+    width: 5rem;
+    height: 5rem;
+  }
+
+  .sidebar.flex {
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .small-title.category {
+    font-size: 13px;
+    display: inline-block;
+    color: var(--color-primary-800);
+    line-height: 1;
+    padding: 4px 6px;
+    background-color: var(--color-primary-100);
+    border-radius: var(--rounded-corners-small);
+  }
+
+  .small-title.category.contemporary {
+    background-color: var(--color-secondary-50);
+    color: var(--color-secondary-600);
+  }
+</style>

@@ -1,13 +1,19 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import Button from "../../components/Button.astro";
-import Feature from "../../components/Feature.astro";
-import InnerHero from "../../components/InnerHero.astro";
 import VideoTabs from "../../components/Svelte/VideoTabs.svelte";
 import ServicesList from "../../components/ServicesList.astro";
-import { getSanityData } from "../../lib/sanity";
+import { getSanityData, urlFor } from "../../lib/sanity";
 import getYouTubeID from "get-youtube-id";
 import Youtube from "svelte-youtube-embed";
+import { PortableText } from "astro-portabletext";
+
+import {
+  formatDate,
+  timeFormatter,
+  capitalizeFirstLetter,
+  joinNames,
+} from "../../utils/format";
 
 import pastorHeadshot from "../../assets/images/jessica-vaughan-lower-headshot.jpg";
 
@@ -15,8 +21,22 @@ const pageTitle = "Worship Live";
 const eyebrow = "San Marino Community Church";
 const pageDescription = "";
 
+const latestService =
+  await getSanityData(`*[_type == 'service'] | order(date desc)[0] {
+  ...,
+  serviceType[] {
+    ...,
+    preacher->{
+      name,
+      "image": image.asset->
+    }
+  }
+}`);
+const paneOne = latestService.serviceType[0];
+const paneTwo = latestService.serviceType[1] || undefined;
+
 const recentServices = await getSanityData(
-  `*[_type == 'service'][0...3] | order(date desc)`
+  `*[_type == 'service'] | order(date desc)[1...4]`
 );
 ---
 
@@ -40,7 +60,7 @@ const recentServices = await getSanityData(
           </p>
           <div class="underline">Watch Live</div>
         </div>
-        <!-- Tab butotn right -->
+        <!-- Tab button right -->
         <div slot="tab-2" class="video-tab flow">
           <div>
             <div class="small-title">10 am Sundays</div>
@@ -56,94 +76,100 @@ const recentServices = await getSanityData(
         <article slot="panel-1" class="panel-1">
           <section class="video-wrapper">
             <div>
-              <Youtube
-                client:load
-                id={getYouTubeID(
-                  "https://www.youtube.com/live/uvlZYadH6-k?feature=share"
-                )}
-              />
+              <Youtube client:load id={getYouTubeID(paneOne.video.url)} />
             </div>
-            <!-- <iframe
-              width="560"
-              height="315"
-              src="https://www.youtube.com/embed/XyQNPvZUEP0"
-              title="YouTube video player"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen></iframe> -->
           </section>
           <section class="content-wrapper service-wrapper with-sidebar">
             <div class="flow">
               <div>
                 <div class="cluster">
                   <time class="small-title"
-                    >April 9, 2023<span class="bullet-spacer">•</span>9:00 am</time
+                    >{formatDate(latestService.date)}<span class="bullet-spacer"
+                      >•</span
+                    >{timeFormatter(paneOne.serviceTime)}</time
                   >
-                  <div class="small-title category">Traditional</div>
+                  <div class="small-title category">{paneOne.name}</div>
                 </div>
-                <h3 class="text-step-4">Easter Sunday</h3>
+                <h3 class="text-step-4">
+                  {latestService.name || "Sunday Worship"}
+                </h3>
               </div>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla
-                temporibus nemo ipsa ut libero eligendi, quasi ex magni vitae
-                placeat!
-              </p>
-              <Button href="#" width="fit">Download Program</Button>
+              <PortableText value={paneOne.serviceDescription} />
+              {
+                paneOne.programLink && (
+                  <Button href={paneOne.programLink} width="fit">
+                    Download Program
+                  </Button>
+                )
+              }
             </div>
             <div class="sidebar flex">
               <div class="frame square">
-                <img src={pastorHeadshot} alt="" />
+                <img src={urlFor(paneOne.preacher.image).url()} alt="" />
               </div>
               <div>
                 <div class="small-title">Sermon by</div>
-                <div class="text-step--1">Rev. Jessica Vaughan Lower</div>
+                <a href="#" class="text-step--1"
+                  >{joinNames(paneOne.preacher)}</a
+                >
               </div>
             </div>
           </section>
         </article>
         <!-- Tab panel 2 -->
         <article slot="panel-2" class="panel-2">
-          <section class="video-wrapper">
-            <div>
-              <Youtube
-                client:idle
-                id={getYouTubeID(
-                  "https://www.youtube.com/live/qdC-Zn9Zlbk?feature=share"
-                )}
-              />
-            </div>
-          </section>
-
-          <section class="content-wrapper service-wrapper with-sidebar">
-            <div class="flow">
+          {
+            paneTwo ? (
               <div>
-                <div class="cluster">
-                  <time class="small-title"
-                    >April 9, 2023<span class="bullet-spacer">•</span>10:00 am</time
-                  >
-                  <div class="small-title category contemporary">
-                    Contemporary
+                <section class="video-wrapper">
+                  <div>
+                    <Youtube client:idle id={getYouTubeID(paneTwo.video.url)} />
                   </div>
-                </div>
-                <h3 class="text-step-4">Easter Sunday</h3>
+                </section>
+
+                <section class="content-wrapper service-wrapper with-sidebar">
+                  <div class="flow">
+                    <div>
+                      <div class="cluster">
+                        <time class="small-title">
+                          {formatDate(latestService.date)}
+                          <span class="bullet-spacer">•</span>
+                          {timeFormatter(paneTwo.serviceTime)}
+                        </time>
+                        <div class="small-title category contemporary">
+                          {paneTwo.name}
+                        </div>
+                      </div>
+                      <h3 class="text-step-4">
+                        {latestService.name || "Sunday Worship"}
+                      </h3>
+                    </div>
+                    <PortableText value={paneTwo.serviceDescription} />
+                    {paneTwo.programLink && (
+                      <Button href={paneTwo.programLink} width="fit">
+                        Download Program
+                      </Button>
+                    )}
+                  </div>
+                  <div class="sidebar flex">
+                    <div class="frame square">
+                      <img src={urlFor(paneTwo.preacher.image).url()} alt="" />
+                    </div>
+                    <div>
+                      <div class="small-title">Sermon by</div>
+                      <a href="#" class="text-step--1">
+                        {joinNames(paneTwo.preacher)}
+                      </a>
+                    </div>
+                  </div>
+                </section>
               </div>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla
-                temporibus nemo ipsa ut libero eligendi, quasi ex magni vitae
-                placeat!
-              </p>
-              <Button href="#" width="fit">Download Program</Button>
-            </div>
-            <div class="sidebar flex">
-              <div class="frame square">
-                <img src={pastorHeadshot} alt="" />
+            ) : (
+              <div class="content-wrapper blank center-items">
+                <em>No second service upcoming.</em>
               </div>
-              <div>
-                <div class="small-title">Sermon by</div>
-                <div class="text-step--1">Rev. Jessica Vaughan Lower</div>
-              </div>
-            </div>
-          </section>
+            )
+          }
         </article>
       </VideoTabs>
     </article>
@@ -252,5 +278,9 @@ const recentServices = await getSanityData(
     margin-bottom: 5rem;
     padding-top: 5rem;
     border-top: 1px solid var(--color-neutral-200);
+  }
+
+  .blank {
+    margin-block: var(--section-spacer);
   }
 </style>

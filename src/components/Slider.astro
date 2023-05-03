@@ -1,0 +1,139 @@
+---
+const placeholderSlides = [
+  {
+    title: "Slide 1",
+    description: "Lorem ipsum",
+    href: "#",
+    img: "https://images.unsplash.com/photo-1682686581580-d99b0230064e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&q=80",
+    imgAlt: "",
+  },
+  {
+    title: "Slide 2",
+    description: "Lorem ipsum",
+    href: "#",
+    img: "https://images.unsplash.com/photo-1682880279219-5e1434044a64?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&q=80",
+    imgAlt: "",
+  },
+  {
+    title: "Slide 3",
+    description: "Lorem ipsum",
+    href: "#",
+    img: "https://images.unsplash.com/photo-1677189945595-6116498f31fe?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&q=80",
+    imgAlt: "",
+  },
+];
+
+const { heading, description, slides = placeholderSlides } = Astro.props;
+---
+
+<section class="splide" aria-labelledby="slider-heading">
+  <header class="content-wrapper center-items flow">
+    <h2 id="slider-heading" class="text-step-4">{heading}</h2>
+    <p class="paragraph flow">{description}</p>
+  </header>
+  <div class="margin-top relative">
+    <div class="splide__arrows"></div>
+    <div class="splide__track">
+      <ul class="splide__list">
+        {
+          slides.map((slide) => (
+            <li class="splide__slide">
+              <a href={slide.href} class="">
+                <div class="slide-text flow">
+                  <h3 class="text-step-3 color-white">{slide.title}</h3>
+                  <p>{slide.description}</p>
+                </div>
+                <div class="overlay" />
+                <div class="frame video">
+                  <img src={slide.img} alt={slide.imgAlt} />
+                </div>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .margin-top {
+    margin-top: 3rem;
+  }
+
+  .relative {
+    position: relative;
+  }
+
+  .paragraph.flow {
+    max-width: var(--paragraph-measure);
+  }
+
+  .splide__slide a {
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+    text-decoration: none;
+  }
+
+  .slide-text {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 3rem;
+    color: var(--color-primary-100);
+    z-index: 2;
+  }
+
+  .slide-text.flow {
+    --flow-space: 6px;
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, var(--color-primary-900), transparent);
+    border-radius: var(--rounded-corners);
+    z-index: 1;
+  }
+
+  .frame {
+    border-radius: var(--rounded-corners);
+  }
+
+  .splide__slide a:hover h3 {
+    text-decoration: underline;
+  }
+
+  .splide__slide a img {
+    transition: all 0.3s ease;
+  }
+
+  .splide__slide a:hover img {
+    transform: scale(1.1);
+  }
+</style>
+
+<script>
+  import Splide from "@splidejs/splide";
+  import "@splidejs/splide/css";
+
+  const splide = new Splide(".splide", {
+    type: "loop",
+    padding: "30%",
+    gap: "2em",
+    breakpoints: {
+      1024: {
+        padding: "20%",
+      },
+      768: {
+        padding: "15%",
+        gap: "1em",
+      },
+    },
+  });
+  splide.mount();
+</script>

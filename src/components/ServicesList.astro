@@ -1,6 +1,9 @@
 ---
 import DateLabel from "./Events/DateLabel.astro";
 import { capitalizeFirstLetter } from "../utils/format";
+import getYouTubeID from "get-youtube-id";
+
+import bgImage from "../assets/images/church-ext-2.jpg";
 
 const niceDate = (dateString) => {
   const date = new Date(dateString);
@@ -40,18 +43,23 @@ const { services } = Astro.props;
     services.map((service) => (
       <li>
         <a href={`/worship/services/${service.date}`} class="service-wrapper">
-          <time class="date-label">
-            <div class="event-day font-header">
-              {niceDate(service.date).day}
-            </div>
-            <div class="small-title">{niceDate(service.date).month}</div>
-          </time>
+          <div class="date-label-wrapper">
+            <time class="date-label">
+              <div class="event-day font-header">
+                {niceDate(service.date).day}
+              </div>
+              <div class="small-title">{niceDate(service.date).month}</div>
+            </time>
+            <img src={bgImage} alt="" />
+          </div>
           <div class="flow">
             <div>
               <div class="small-title category">
                 {joinTypes(service.serviceType)}
               </div>
-              <h3 class="text-step-2">{service.name}</h3>
+              <h3 class="text-step-2">
+                {service.name ? service.name : "Sunday Worship"}
+              </h3>
             </div>
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad vel
@@ -72,7 +80,16 @@ const { services } = Astro.props;
               </svg>
             </div>
             <div class="overlay" />
-            <img src={videoImg} alt="" />
+            <img
+              src={
+                service.serviceType[0].video
+                  ? `https://img.youtube.com/vi/${getYouTubeID(
+                      service.serviceType[0].video.url
+                    )}/sddefault.jpg`
+                  : videoImg
+              }
+              alt=""
+            />
           </div>
         </a>
       </li>
@@ -101,15 +118,32 @@ const { services } = Astro.props;
     box-shadow: var(--shadow-large);
   }
 
-  .date-label {
+  .date-label-wrapper {
+    position: relative;
+    border-radius: var(--rounded-corners);
+    align-self: stretch;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     background-color: var(--color-primary-100);
+    overflow: hidden;
+  }
+
+  .date-label {
+    position: relative;
     padding: 1rem;
+    z-index: 2;
+  }
+
+  .date-label-wrapper img {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
     border-radius: var(--rounded-corners);
-    align-self: stretch;
+    filter: saturate(0);
+    opacity: 1;
+    mix-blend-mode: overlay;
   }
 
   .event-day {
@@ -158,18 +192,24 @@ const { services } = Astro.props;
 
   .frame .icon svg {
     transition: 0.2s all ease;
+    opacity: 0;
   }
 
   .frame .overlay {
     position: absolute;
     inset: 0;
     opacity: 0.3;
-    background: var(--color-primary-800);
+    background: hsl(0deg 0% 0% / 10%);
     transition: 0.2s all ease-in;
   }
 
   a.service-wrapper:hover .frame .icon svg {
     transform: scale(1.25);
+    opacity: 1;
+  }
+
+  a.service-wrapper:hover .frame .overlay {
+    background: hsl(0deg 0% 0% / 80%);
   }
 
   a.service-wrapper:hover h3 {

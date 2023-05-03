@@ -1,5 +1,6 @@
 ---
 import Button from "./Button.astro";
+import bgImage from "../assets/images/church-ext-4.jpg";
 ---
 
 <article>
@@ -12,14 +13,34 @@ import Button from "./Button.astro";
       </p>
       <Button href="/" theme="primary-light">Call to Action</Button>
     </div>
+    <img src={bgImage} alt="" />
   </section>
   <section class="cta-bottom">
     <div class="content-wrapper center-items flow">
-      <h3 class="text-step-1">Sign up for email updates</h3>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua.
-      </p>
+      <div class="flow">
+        <h3 class="text-step-2">Sign up for email updates</h3>
+        <p class="paragraphs">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </p>
+      </div>
+      <form class="cluster">
+        <label for="name">
+          <span class="sr-only">Name</span>
+          <input id="name" name="name" type="text" placeholder="Your Name" />
+        </label>
+        <label for="email">
+          <span class="sr-only">Email</span>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="Your Email"
+            required
+          />
+        </label>
+        <Button type="submit">Submit</Button>
+      </form>
     </div>
   </section>
 </article>
@@ -30,14 +51,29 @@ import Button from "./Button.astro";
   }
 
   .cta-top {
+    position: relative;
     color: var(--color-primary-200);
     padding-block-start: 5rem;
     padding-block-end: 7rem;
     background-color: var(--color-primary-900);
+    overflow: hidden;
   }
 
   .cta-top .content-wrapper {
-    max-width: 70ch;
+    position: relative;
+    max-width: var(--paragraph-measure);
+    z-index: 2;
+  }
+
+  .cta-top img {
+    position: absolute;
+    bottom: -50%;
+    transform: translateY(50%);
+    object-fit: cover;
+    filter: saturate(0);
+    mix-blend-mode: multiply;
+    opacity: 0.7;
+    z-index: 1;
   }
 
   .cta-bottom .content-wrapper {
@@ -47,5 +83,31 @@ import Button from "./Button.astro";
     padding: 3rem;
     border-radius: var(--rounded-corners);
     box-shadow: var(--shadow-base);
+    z-index: 3;
+  }
+
+  .cta-bottom > .flow {
+    --flow-space: var(--space-l);
+  }
+
+  .paragraphs {
+    max-width: var(--paragraph-measure);
+  }
+
+  input {
+    padding: 0.35rem 1rem;
+    font-family: var(--font-secondary);
+    font-weight: var(--font-weight-semi);
+    color: var(--color-body-text);
+    border: 1px solid var(--color-primary-200);
+    border-radius: var(--rounded-corners);
+  }
+
+  input:focus-visible {
+    outline: var(--color-primary-800) auto 1px;
+  }
+
+  input::placeholder {
+    color: var(--color-neutral-400);
   }
 </style>

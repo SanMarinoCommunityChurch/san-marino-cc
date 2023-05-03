@@ -1,5 +1,27 @@
 ---
-const { navigation } = Astro.props;
+const { section, sectionURL, page, pageURL, url } = Astro.props;
 ---
 
-<div class="text-step--1">breadcrumb</div>
+<ul class="text-step--1 cluster">
+  <li><a href="/">Home</a></li>
+  <span>•</span>
+  <li>{section}</li>
+  <span>•</span>
+  <li><a href={pageURL}>{page}</a></li>
+  <span>•</span>
+  <li>{url}</li>
+</ul>
+
+<style>
+  span {
+    color: var(--color-primary-300);
+  }
+
+  a {
+    color: var(--color-primary-700);
+  }
+
+  .cluster {
+    --cluster-space: 0.5rem;
+  }
+</style>

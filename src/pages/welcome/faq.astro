@@ -36,6 +36,15 @@ const pageDescription =
 ---
 
 <Layout title={pageTitle}>
+  <Fragment slot="pageHead">
+    <script is:inline>
+      const hero = document.querySelector(".hero");
+      hero.querySelectorAll("h1, p, .local-nav").forEach((heroItem) => {
+        heroItem.style.opacity = 0;
+        heroItem.style.transform = "translateY(2rem)";
+      });
+    </script>
+  </Fragment>
   <main slot="main">
     <InnerHero
       localNav={localNav}

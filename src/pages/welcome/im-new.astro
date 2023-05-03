@@ -164,3 +164,24 @@ const opportunities = [
     margin-block: var(--space-xl);
   }
 </style>
+
+<script>
+  import { inView, animate, stagger } from "motion";
+
+  const imageCards = document.querySelectorAll(".img-card");
+  for (const item of imageCards) {
+    item.style.opacity = 0;
+    item.style.transform = "translateY(2rem)";
+  }
+
+  inView("#opportunities", ({ target }) => {
+    animate(
+      target.querySelectorAll(".img-card"),
+      {
+        opacity: 1,
+        transform: "translateY(0rem)",
+      },
+      { duration: 0.6, delay: stagger(0.3) }
+    );
+  });
+</script>

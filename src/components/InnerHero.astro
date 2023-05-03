@@ -99,7 +99,7 @@ const { localNav, pageTitle, pageDescription } = Astro.props;
   }
 </style>
 
-<script is:inline>
+<script>
   const localNav = document.querySelector(".local-nav");
   const navLinks = localNav.querySelectorAll("a");
   const currentURL = window.location.pathname;
@@ -107,5 +107,20 @@ const { localNav, pageTitle, pageDescription } = Astro.props;
     if (link.pathname + "/" === currentURL || link.pathname === currentURL) {
       link.style.color = "var(--color-primary-300)";
     }
+  });
+</script>
+
+<script>
+  import { inView, animate, stagger } from "motion";
+
+  inView(".hero", ({ target }) => {
+    animate(
+      target.querySelectorAll("h1, p, .local-nav"),
+      {
+        opacity: 1,
+        transform: "translateY(0rem)",
+      },
+      { duration: 0.5, delay: stagger(0.3) }
+    );
   });
 </script>
