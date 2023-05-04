@@ -1,10 +1,15 @@
 ---
-const { date, monthStyle, startTime } = Astro.props;
+const positions = {
+  "top-right": "top-right",
+  "top-left": "top-left",
+};
+
+const { date, monthStyle, startTime, position = "top-right" } = Astro.props;
 
 const niceDate = (dateString) => {
   const date = new Date(dateString);
   const region = "en-US";
-  const timeZone = "America/Los_Angeles";
+  const timeZone = "UTC";
   return {
     day: date.toLocaleDateString(region, {
       day: "numeric",
@@ -16,9 +21,11 @@ const niceDate = (dateString) => {
     }),
   };
 };
+
+const classList = ["date-label", positions[position]];
 ---
 
-<time class="date-label">
+<time class:list={classList}>
   <div class="event-day font-header">{niceDate(date).day}</div>
   <div class="small-title">{niceDate(date).month}</div>
   {startTime && <div>{startTime}</div>}
@@ -31,13 +38,21 @@ const niceDate = (dateString) => {
     justify-content: center;
     align-items: center;
     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
     background: var(--color-primary-800);
     color: var(--color-primary-100);
     border-radius: var(--rounded-corners);
     padding: 0.5rem 0.75rem;
     z-index: 10;
+  }
+
+  .top-right {
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+
+  .top-left {
+    top: 0.5rem;
+    left: 0.5rem;
   }
 
   .event-day {

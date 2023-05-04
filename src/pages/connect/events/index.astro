@@ -1,0 +1,75 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import Button from "../../../components/Button.astro";
+import Feature from "../../../components/Feature.astro";
+import InnerHero from "../../../components/InnerHero.astro";
+import { getSanityData, urlFor } from "../../../lib/sanity";
+import EventsList from "../../../components/Events/EventsList.astro";
+
+const localNav = {
+  section: "Connect",
+  children: [
+    {
+      name: "Events & Programs",
+      href: "/connect/events",
+    },
+    {
+      name: "Ministries",
+      href: "/",
+    },
+    {
+      name: "Missions",
+      href: "/",
+    },
+    {
+      name: "Pastoral Residency",
+      href: "/",
+    },
+  ],
+};
+
+const events = await getSanityData(
+  `*[_type == 'event'] | order(date asc) {
+  ...,
+  associatedMinistry->,
+  "image": image.asset->
+}`
+);
+
+const pageTitle = "Events & Programs";
+const pageDescription =
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+---
+
+<Layout title={pageTitle}>
+  <main slot="main">
+    <InnerHero
+      localNav={localNav}
+      pageTitle={pageTitle}
+      pageDescription={pageDescription}
+    />
+    <article class="content-wrapper flow">
+      <div class="with-sidebar">
+        <EventsList events={events} />
+        <div>sidebar</div>
+      </div>
+    </article>
+  </main>
+</Layout>
+
+<style>
+  article {
+    margin-block-start: var(--section-spacer-half);
+    margin-block-end: var(--section-spacer);
+  }
+
+  .with-sidebar {
+    --sidebar-gap: 3rem;
+    --sidebar-min-width: 15rem;
+    --main-min-width: 60%;
+  }
+
+  .with-sidebar > :last-child {
+    border: 1px solid red;
+  }
+</style>

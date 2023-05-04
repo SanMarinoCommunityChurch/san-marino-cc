@@ -80,6 +80,7 @@
   --shadow-base: 0px 4px 16px rgb(0 0 0 / 0.05);
   --shadow-large: 0px 4px 32px rgb(0 0 0 / 0.12);
   --section-spacer: 10rem;
+  --section-spacer-half: 6rem;
   --paragraph-measure: 67ch;
 }
 
@@ -639,6 +640,7 @@ select {
 .with-sidebar {
   --sidebar-gap: 3rem;
   --sidebar-min-width: 25rem;
+  --main-min-width: 50%;
   display: flex;
   flex-wrap: wrap;
   gap: var(--sidebar-gap);
@@ -652,7 +654,7 @@ select {
 .with-sidebar > :first-child {
   flex-basis: 0;
   flex-grow: 999;
-  min-inline-size: 50%;
+  min-inline-size: var(--main-min-width);
 }
 
 .responsive-grid {

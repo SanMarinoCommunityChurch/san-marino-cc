@@ -1,0 +1,269 @@
+---
+import DateLabel from "./DateLabel.astro";
+import {
+  formatDate,
+  formatTimeFromDate,
+  capitalizeFirstLetter
+} from "../../utils/format";
+import { groupAsMonths } from "../../utils/events"
+import { urlFor } from "../../lib/sanity";
+
+import placeholderImg from "../../assets/images/church-ext-2.jpg";
+
+const MINISTRYTYPES = [
+  {title: 'Adult Ministry', value: 'adult'},
+  {title: 'Youth Ministry', value: 'youth'},
+  {title: "Children's Ministry", value: 'children'},
+  {title: 'Music Ministry', value: 'music'},
+]
+
+// Refactor this
+const assignCategory = (event) => {
+  let key = '';
+  let category = '';
+  if (event.associatedMinistry) {
+    key = event.associatedMinistry.type;
+  } else {
+    key = event.eventType
+  }
+  switch (key) {
+    case "program": 
+      category = "Program";
+      break;
+    case "oneTime": 
+      category = "Special Event";
+      break;
+    case MINISTRYTYPES[0].value: 
+      category = MINISTRYTYPES[0].title;
+      break;
+    case MINISTRYTYPES[1].value: 
+      category = MINISTRYTYPES[1].title;
+      break;
+    case MINISTRYTYPES[2].value: 
+      category = MINISTRYTYPES[2].title;
+      break;
+    case MINISTRYTYPES[3].value: 
+      category = MINISTRYTYPES[3].title;
+      break;
+    default:
+      category = "Event"
+      break;
+  }
+  return category;
+}
+
+const { events } = Astro.props;
+
+const eventsByMonth = groupAsMonths(events);
+---
+<div>
+{eventsByMonth.map(month =>
+  <section id={month.month}>
+  <h2 class="text-step-4">{month.month}</h2>
+    <ul class="flow">
+      {month.entries.map(event =>
+        <li>
+          <a href={`/connect/events/${event.date}`} class="event-wrapper">
+            <div class="frame">
+              <DateLabel date={event.date} position="top-left" />
+              <img
+                src={event.image ? urlFor(event.image).url() : placeholderImg}
+                alt=""
+              />
+            </div>
+            <div class="flow text">
+              <div class="small-title category">
+                {assignCategory(event)}
+              </div>
+              <header class="flow">
+                <h3 class="text-step-2 heading">{event.name}</h3>
+                <time class="time">
+                  {formatDate(event.date)}
+                  <span class="bullet-spacer">•</span>
+                  {formatTimeFromDate(event.date)}
+                </time>
+              </header>
+              <p class="text-step--1">{event.preview}</p>
+              <div class="location-footer text-step--1 cluster font-header">
+              <span class="location-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" height="16" width="16" fill="var(--color-primary-800)"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M192 144a48 48 0 1 0 0 96 48 48 0 1 0 0-96z"/><path class="fa-secondary" d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 112a80 80 0 1 1 0 160 80 80 0 1 1 0-160z"/></svg></span>
+              <span>{event.location}</span>
+            </div>
+            </div>
+          </a>
+        </li>
+      )}
+    </ul>
+  </section>
+)}
+</div>
+<!-- <ul class="flow">
+  {
+    events.map((event) => (
+      <li>
+        <a href={`/connect/events/${event.date}`} class="event-wrapper">
+          <div class="frame">
+            <DateLabel date={event.date} position="top-left" />
+            <img
+              src={event.image ? urlFor(event.image).url() : placeholderImg}
+              alt=""
+            />
+          </div>
+          <div class="flow text">
+            <div class="small-title category">
+              {assignCategory(event)}
+            </div>
+            <header class="flow">
+              <h3 class="text-step-2 heading">{event.name}</h3>
+              <time class="time">
+                {formatDate(event.date)}
+                <span class="bullet-spacer">•</span>
+                {formatTimeFromDate(event.date)}
+              </time>
+            </header>
+            <p class="text-step--1">{event.preview}</p>
+            <div class="location-footer text-step--1 cluster font-header">
+            <span class="location-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" height="16" width="16" fill="var(--color-primary-800)"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M192 144a48 48 0 1 0 0 96 48 48 0 1 0 0-96z"/><path class="fa-secondary" d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 112a80 80 0 1 1 0 160 80 80 0 1 1 0-160z"/></svg></span>
+            <span>{event.location}</span>
+          </div>
+          </div>
+        </a>
+      </li>
+    ))
+  }
+</ul> -->
+
+<style>
+  section {
+    margin-block-start: 4rem;
+  }
+
+  section:first-of-type {
+    margin-block-start: 0;
+  }
+
+  h2 {
+    margin-block-end: 1rem;
+  }
+
+  ul.flow {
+    --flow-space: var(--space-l);
+  }
+
+  a.event-wrapper {
+    text-decoration: none;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    align-items: center;
+    gap: 2rem;
+    padding: 0.5rem;
+    border-radius: var(--rounded-corners);
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+  }
+
+  a.event-wrapper:hover {
+    box-shadow: var(--shadow-large);
+  }
+
+  header.flow {
+    --flow-space: 2px;
+  }
+
+  .time {
+    font-family: var(--font-secondary);
+    font-weight: var(--font-weight-semi);
+  }
+
+  /* .event-day {
+    font-size: var(--step-5);
+    color: var(--color-primary-800);
+    line-height: 1;
+  } */
+
+  /* .date-label .small-title {
+    margin-top: 3px;
+    color: var(--color-primary-800);
+  } */
+
+  .small-title.category {
+    font-size: 13px;
+    display: inline-block;
+    color: var(--color-primary-800);
+    line-height: 1;
+    padding: 4px 6px;
+    margin-bottom: 8px;
+    background-color: var(--color-primary-100);
+    border-radius: var(--rounded-corners-small);
+    width: fit-content;
+  }
+
+  .frame {
+    border-radius: var(--rounded-corners);
+    max-width: 30rem;
+    position: relative;
+    --width: 4;
+    --height: 3;
+  }
+
+  .heading {
+    margin-top: 6px;
+  }
+
+  a.event-wrapper:hover .heading {
+    text-decoration: underline;
+  }
+
+  .bullet-spacer {
+    color: var(--color-primary-300);
+    margin-inline: 0.5rem;
+  }
+
+  .text {
+    padding-inline-end: 1rem;
+  }
+
+  .text p {
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    overflow: hidden;
+  }
+
+  .location-footer.cluster {
+    gap: 4px;
+  }
+
+  .location-footer .location-icon {
+    display: flex;
+  }
+
+  @media (max-width: 1024px) {
+    a.event-wrapper {
+      grid-template-columns: 1fr;
+      column-gap: 0rem;
+      row-gap: 1rem;
+    }
+
+    .text {
+      padding-inline-end: 0rem;
+    }
+
+    .text p {
+      -webkit-line-clamp: none;
+      -webkit-box-orient: vertical;
+      display: block;
+      overflow: unset;
+    }
+
+    .frame {
+      grid-column: span 2;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .frame {
+      max-width: none;
+      justify-self: stretch;
+    }
+  }
+</style>

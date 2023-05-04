@@ -19,6 +19,14 @@ const formatDateShort = (dateString) => {
   });
 };
 
+const formatTimeFromDate = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleTimeString("en-US", {
+    timeZone: "America/Los_Angeles",
+    timeStyle: "short",
+  });
+};
+
 const getWeekday = (dateString) => {
   const date = new Date(dateString);
   return date.toLocaleDateString("en-US", {
@@ -27,11 +35,20 @@ const getWeekday = (dateString) => {
   });
 };
 
+const getMonth = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", {
+    month: "long",
+    timeZone: "UTC",
+  });
+};
+
 const timeFormatter = (timeString) => {
   // Prepend any date, just want timestamp
   const time = new Date("1988-12-23T" + timeString + "Z");
   return time.toLocaleTimeString("en-US", {
-    timeZone: "UTC",
+    // for correct time zone
+    timeZone: "America/Los_Angeles",
     timeStyle: "short",
   });
 };
@@ -53,9 +70,11 @@ const joinNames = (object) => {
 
 export {
   formatDate,
+  formatTimeFromDate,
   timeFormatter,
   capitalizeFirstLetter,
   joinNames,
   formatDateShort,
   getWeekday,
+  getMonth,
 };
