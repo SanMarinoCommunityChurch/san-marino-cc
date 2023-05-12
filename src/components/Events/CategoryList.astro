@@ -1,0 +1,42 @@
+---
+const { categories } = Astro.props;
+---
+
+<ul class="cluster">
+  {
+    categories.map((category) => (
+      <li>
+        <a
+          class="small-title category"
+          href={`/connect/events/${category.value}`}
+        >
+          {category.title}
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .cluster {
+    --cluster-space: 6px;
+  }
+
+  .small-title.category {
+    font-size: 13px;
+    display: inline-block;
+    color: var(--color-primary-800);
+    line-height: 1;
+    padding: 4px 6px;
+    margin-bottom: 8px;
+    background-color: var(--color-primary-100);
+    border-radius: var(--rounded-corners-small);
+    width: fit-content;
+    text-decoration: none;
+  }
+
+  .small-title.category:hover {
+    background-color: var(--color-primary-800);
+    color: var(--color-white);
+  }
+</style>

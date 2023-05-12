@@ -2,6 +2,7 @@
 import Layout from "../../../layouts/Layout.astro";
 import Button from "../../../components/Button.astro";
 import Feature from "../../../components/Feature.astro";
+import CategoryList from "../../../components/Events/CategoryList.astro";
 import InnerHero from "../../../components/InnerHero.astro";
 import { getSanityData, urlFor } from "../../../lib/sanity";
 import EventsList from "../../../components/Events/EventsList.astro";
@@ -36,6 +37,14 @@ const events = await getSanityData(
 }`
 );
 
+const categories = [
+  { title: "Adult Ministry", value: "adult" },
+  { title: "Youth Ministry", value: "youth" },
+  { title: "Children's Ministry", value: "children" },
+  { title: "Music Ministry", value: "music" },
+  { title: "Program", value: "program" },
+];
+
 const pageTitle = "Events & Programs";
 const pageDescription =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
@@ -51,7 +60,10 @@ const pageDescription =
     <article class="content-wrapper flow">
       <div class="with-sidebar">
         <EventsList events={events} />
-        <div>sidebar</div>
+        <div class="flow">
+          <h3 class="text-step-2">Categories</h3>
+          <CategoryList categories={categories} />
+        </div>
       </div>
     </article>
   </main>
@@ -67,9 +79,5 @@ const pageDescription =
     --sidebar-gap: 3rem;
     --sidebar-min-width: 15rem;
     --main-min-width: 60%;
-  }
-
-  .with-sidebar > :last-child {
-    border: 1px solid red;
   }
 </style>
