@@ -3,6 +3,7 @@ import { sanityClient, urlFor } from "../../lib/sanity";
 import Card from "../Card.astro";
 import Button from "../Button.astro";
 import DateLabel from "../Events/DateLabel.astro"
+import { url } from "inspector";
 
 const getEvents = async () => {
   const query = `*[_type == "event"] | order(date desc) {
@@ -33,9 +34,9 @@ const events = await getEvents();
           title={event.name} 
           img={
             event.image ?
-            urlFor(event.image)
+            urlFor(event.image).url()
             :
-            urlFor(event.ministry.image)
+            urlFor(event.ministry.image).url()
           }
         >
           <div slot="label" class="event-date">

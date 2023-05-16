@@ -1,0 +1,54 @@
+const fullNavigation = `*[_type == 'navigation' && _id == 'a0714f38-2dff-4ce5-b350-be13904afa67'] {
+  _id,
+  name,
+  section[]{
+    "sectionName": name,
+    "sectionSlug": slug.current,
+    "sectionImage": image.asset->,
+    "sectionPages": pages[]->{
+      "pageName": name,
+      "pageSlug": slug.current
+    },
+  }
+}
+`;
+
+const staffMembers = `*[_type == 'person' && type.mainType == 'staff'] | order(order asc, lower(name.lastName) asc) {
+  name,
+  role,
+  bio,
+  "image": image.asset->,
+  "type": type.staffSubtype,
+}`;
+
+const clergyMembers = `*[_type == 'person' && type.mainType == 'staff' && type.staffSubtype == 'clergy'] | order(order asc, lower(name.lastName) asc) {
+  name,
+  role,
+  bio,
+  "image": image.asset->,
+  "type": type.staffSubtype,
+}`;
+
+const programStaffMembers = `*[_type == 'person' && type.mainType == 'staff' && type.staffSubtype == 'program'] | order(order asc, lower(name.lastName) asc) {
+  name,
+  role,
+  bio,
+  "image": image.asset->,
+  "type": type.staffSubtype,
+}`;
+
+const adminStaffMembers = `*[_type == 'person' && type.mainType == 'staff' && type.staffSubtype == 'admin'] | order(order asc, lower(name.lastName) asc) {
+  name,
+  role,
+  bio,
+  "image": image.asset->,
+  "type": type.staffSubtype,
+}`;
+
+export {
+  fullNavigation,
+  staffMembers,
+  clergyMembers,
+  programStaffMembers,
+  adminStaffMembers,
+};

@@ -83,16 +83,16 @@ const recentServices = await getSanityData(
             <div class="flow">
               <div>
                 <div class="cluster">
-                  <time class="small-title"
-                    >{formatDate(latestService.date)}<span class="bullet-spacer"
-                      >•</span
-                    >{timeFormatter(paneOne.serviceTime)}</time
-                  >
                   <div class="small-title category">{paneOne.name}</div>
                 </div>
                 <h3 class="text-step-4">
                   {latestService.name || "Sunday Worship"}
                 </h3>
+                <time class="small-title"
+                  >{formatDate(latestService.date)}<span class="bullet-spacer"
+                    >•</span
+                  >{timeFormatter(paneOne.serviceTime)}</time
+                >
               </div>
               <PortableText value={paneOne.serviceDescription} />
               {
@@ -131,11 +131,6 @@ const recentServices = await getSanityData(
                   <div class="flow">
                     <div>
                       <div class="cluster">
-                        <time class="small-title">
-                          {formatDate(latestService.date)}
-                          <span class="bullet-spacer">•</span>
-                          {timeFormatter(paneTwo.serviceTime)}
-                        </time>
                         <div class="small-title category contemporary">
                           {paneTwo.name}
                         </div>
@@ -143,6 +138,11 @@ const recentServices = await getSanityData(
                       <h3 class="text-step-4">
                         {latestService.name || "Sunday Worship"}
                       </h3>
+                      <time class="small-title">
+                        {formatDate(latestService.date)}
+                        <span class="bullet-spacer">•</span>
+                        {timeFormatter(paneTwo.serviceTime)}
+                      </time>
                     </div>
                     <PortableText value={paneTwo.serviceDescription} />
                     {paneTwo.programLink && (
@@ -232,6 +232,10 @@ const recentServices = await getSanityData(
 
   .service-wrapper {
     margin-block: var(--space-2xl);
+  }
+
+  .service-wrapper h3 {
+    margin-block: 0.5rem;
   }
 
   .bullet-spacer {

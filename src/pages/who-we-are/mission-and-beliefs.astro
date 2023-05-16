@@ -1,0 +1,51 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Card from "../../components/Card.astro";
+import Button from "../../components/Button.astro";
+import Feature from "../../components/Feature.astro";
+import InnerHero from "../../components/InnerHero.astro";
+import { getSanityData, urlFor } from "../../lib/sanity";
+import { PortableText } from "astro-portabletext";
+
+const pageTitle = "Mission & Beliefs";
+const pageDescription =
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+
+const localNav = {
+  section: "Who We Are",
+  children: [
+    {
+      name: "Mission & Beliefs",
+      href: "/who-we-are/mission-and-beliefs",
+    },
+    {
+      name: "Our History",
+      href: "/who-we-are/our-history",
+    },
+    {
+      name: "Church Leadership",
+      href: "/who-we-are/church-leadership",
+    },
+  ],
+};
+---
+
+<Layout title={pageTitle}>
+  <main slot="main">
+    <InnerHero
+      localNav={localNav}
+      pageTitle={pageTitle}
+      pageDescription={pageDescription}
+    />
+    <article class="content-wrapper flow"></article>
+  </main>
+</Layout>
+<style>
+  article.content-wrapper {
+    margin-block: var(--section-spacer-half);
+  }
+
+  .content-wrapper.flow {
+    --flow-space: var(--space-3xl);
+  }
+</style>

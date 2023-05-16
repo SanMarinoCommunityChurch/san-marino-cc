@@ -1,0 +1,42 @@
+---
+import { PortableText } from "astro-portabletext";
+
+const { title, image } = Astro.props;
+---
+
+<section class="with-sidebar intro">
+  <div>
+    <h2 class="text-step-4">{title}</h2>
+    <div class="paragraphs flow">
+      <slot />
+    </div>
+  </div>
+  <div class="frame">
+    <img src={image} alt="" />
+  </div>
+</section>
+
+<style>
+  .intro.with-sidebar {
+    --sidebar-gap: 6rem;
+    --sidebar-min-width: 30rem;
+    align-items: center;
+  }
+
+  .intro .frame {
+    --width: 1;
+    --height: 1;
+  }
+
+  .intro .frame img {
+    border-radius: var(--rounded-corners);
+  }
+
+  h2 {
+    margin-bottom: var(--space-l);
+  }
+
+  .paragraphs.flow {
+    max-width: var(--paragraph-measure);
+  }
+</style>

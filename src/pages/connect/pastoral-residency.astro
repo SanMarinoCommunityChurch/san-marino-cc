@@ -1,0 +1,66 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Card from "../../components/Card.astro";
+import Button from "../../components/Button.astro";
+import Feature from "../../components/Feature.astro";
+import InnerHero from "../../components/InnerHero.astro";
+import { getSanityData, urlFor } from "../../lib/sanity";
+import { PortableText } from "astro-portabletext";
+
+const pageTitle = "Pastoral Residency";
+const pageDescription =
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+
+const localNav = {
+  section: "Connect",
+  children: [
+    {
+      name: "Events & Programs",
+      href: "/connect/events",
+    },
+    {
+      name: "Ministries",
+      href: "/connect/ministries",
+    },
+    {
+      name: "Missions",
+      href: "/connect/missions",
+    },
+    {
+      name: "Pastoral Residency",
+      href: "/connect/pastoral-residency",
+    },
+  ],
+};
+---
+
+<Layout title={pageTitle}>
+  <main slot="main">
+    <InnerHero
+      localNav={localNav}
+      pageTitle={pageTitle}
+      pageDescription={pageDescription}
+    />
+    <article class="content-wrapper flow"></article>
+  </main>
+</Layout>
+<style>
+  article.content-wrapper {
+    margin-block: var(--section-spacer-half);
+  }
+
+  .content-wrapper.flow {
+    --flow-space: var(--space-3xl);
+  }
+
+  .mission-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5rem;
+    padding-block-start: var(--space-2xl);
+  }
+
+  .mission.flow {
+    --flow-space: 1.5rem;
+  }
+</style>

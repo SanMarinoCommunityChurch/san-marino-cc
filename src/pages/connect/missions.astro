@@ -1,0 +1,90 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import IntroSection from "../../components/IntroSection.astro";
+import InnerHero from "../../components/InnerHero.astro";
+import { getSanityData, urlFor } from "../../lib/sanity";
+import { PortableText } from "astro-portabletext";
+
+import placeholderImg from "../../assets/images/church-ext-2.jpg";
+
+const pageTitle = "Missions";
+const pageDescription =
+  "“Go therefore and make disciples of all nations, baptizing them in the name of the Father and the Son and the Holy Spirit.” — Matthew 28:19";
+const introHeadline = "Engaging our resources to demonstrate Christ's love.";
+const introText = `<p>Mission is the core identity of every Christian and every church; it’s the purpose of the church and not a program of the church. Currently, the reach of SMCC’s God-given creativity, imagination, time, talent, and resources extends from the San Gabriel Valley, across the nation and beyond, to global strategic partners on four continents.</p><p>The goal of the Mission Team is to fully engage all of the church’s resources to demonstrate Christ’s love for the world.</p>`;
+
+const localNav = {
+  section: "Connect",
+  children: [
+    {
+      name: "Events & Programs",
+      href: "/connect/events",
+    },
+    {
+      name: "Ministries",
+      href: "/connect/ministries",
+    },
+    {
+      name: "Missions",
+      href: "/connect/missions",
+    },
+    {
+      name: "Pastoral Residency",
+      href: "/connect/pastoral-residency",
+    },
+  ],
+};
+
+const missions = await getSanityData(
+  `*[_type == 'mission'] | order(name asc) {
+  ...,
+  "image": image.asset->
+}`
+);
+---
+
+<Layout title={pageTitle}>
+  <main slot="main">
+    <InnerHero
+      localNav={localNav}
+      pageTitle={pageTitle}
+      pageDescription={pageDescription}
+    />
+    <article class="content-wrapper flow">
+      <IntroSection title={introHeadline} image={placeholderImg}>
+        <Fragment set:html={introText} />
+      </IntroSection>
+      <div class="mission-list">
+        {
+          missions.map((mission) => (
+            <article class="mission flow">
+              <img src={urlFor(mission.image).width(200).url()} width={200} />
+              <h3 class="text-step-2">{mission.name}</h3>
+              <PortableText value={mission.description} class="text-step--1" />
+            </article>
+          ))
+        }
+      </div>
+    </article>
+  </main>
+</Layout>
+<style>
+  article.content-wrapper {
+    margin-block: var(--section-spacer-half);
+    padding-block-start: var(--space-2xl);
+  }
+
+  .content-wrapper.flow {
+    --flow-space: var(--space-3xl);
+  }
+
+  .mission-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5rem;
+  }
+
+  .mission.flow {
+    --flow-space: 1.5rem;
+  }
+</style>

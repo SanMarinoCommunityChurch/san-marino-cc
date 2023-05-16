@@ -1,0 +1,144 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import Card from "../../../components/Card.astro";
+import InnerHero from "../../../components/InnerHero.astro";
+import Feature from "../../../components/Feature.astro"
+import { getSanityData, urlFor } from "../../../lib/sanity";
+
+import placeholderImg from "../../../assets/images/church-ext-2.jpg"
+
+const localNav = {
+  section: "Connect",
+  children: [
+    {
+      name: "Events & Programs",
+      href: "/connect/events",
+    },
+    {
+      name: "Ministries",
+      href: "/connect/ministries",
+    },
+    {
+      name: "Missions",
+      href: "/connect/missions",
+    },
+    {
+      name: "Pastoral Residency",
+      href: "/connect/pastoral-residency",
+    },
+  ],
+};
+
+const ministries = await getSanityData(
+  `*[_type == 'ministry'] {
+  ...,
+  "image": image.asset->
+}`
+);
+
+const categories = [
+  { title: "Adult Ministry", value: "adult" },
+  { title: "Youth Ministry", value: "youth" },
+  { title: "Children's Ministry", value: "children" },
+  { title: "Music Ministry", value: "music" },
+];
+
+const pageTitle = "Ministries";
+const pageDescription =
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+---
+
+<Layout title={pageTitle}>
+  <main slot="main">
+    <InnerHero
+      localNav={localNav}
+      pageTitle={pageTitle}
+      pageDescription={pageDescription}
+    />
+    <article class="content-wrapper flow">
+        <Feature>
+            <h2 slot="header" class="text-step-2">Adult Ministries</h2>
+            <p slot="body">We offer a wide range of weekly activities for our community to connect in fellowship, in addition to larger special events. All are welcome to participate. We hope you'll join us!</p>
+        </Feature>
+        <div class="ministry-list">
+            {
+            ministries.map((ministry) => (
+                <Card 
+                    title={ministry.name}
+                    href={`/connect/ministries/${ministry.slug.current}`}
+                    img={
+                        ministry.image ?
+                        urlFor(ministry.image).url()
+                        :
+                        placeholderImg
+                    }
+                >
+                <div slot="header" class="small-title ministry-category">
+                    {ministry.type}
+                </div>
+                <p slot="body" class="text-step--1">
+                    {ministry.preview}
+                </p>
+                {ministry.meetingLocation &&
+                    <div slot="footer" class="location-footer text-step--1 cluster font-header">
+                        <span class="location-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" height="16" width="16" fill="var(--color-primary-800)"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M192 144a48 48 0 1 0 0 96 48 48 0 1 0 0-96z"/><path class="fa-secondary" d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 112a80 80 0 1 1 0 160 80 80 0 1 1 0-160z"/></svg></span>
+                        <span>{ministry.meetingLocation}</span>
+                    </div>
+                }
+                </Card>
+            ))
+            }
+        </div>
+    </article>
+  </main>
+</Layout>
+
+<style>
+  article {
+    margin-block-start: var(--section-spacer-half);
+    margin-block-end: var(--section-spacer);
+    padding-block-start: var(--space-2xl);
+  }
+
+  .with-sidebar {
+    --sidebar-gap: 3rem;
+    --sidebar-min-width: 15rem;
+    --main-min-width: 60%;
+  }
+
+  .ministry-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    padding-block-start: var(--space-3xl);
+  }
+
+  .ministry-list p {
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    overflow: hidden;
+  }
+
+  .center-items {
+    margin-top: var(--space-2xl);
+  }
+
+  .location-footer.cluster {
+    gap: 4px;
+  }
+
+  .location-footer .location-icon {
+    display: flex;
+  }
+
+  .small-title.ministry-category {
+    display: inline-block;
+    color: var(--color-primary-900);
+    line-height: 1;
+    padding: 4px 6px;
+    margin-bottom: 8px;
+    background-color: var(--color-primary-100);
+    border-radius: var(--rounded-corners-small);
+  }
+</style>

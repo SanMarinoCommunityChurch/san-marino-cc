@@ -1,0 +1,178 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Card from "../../components/Card.astro";
+import Button from "../../components/Button.astro";
+import Feature from "../../components/Feature.astro";
+import InnerHero from "../../components/InnerHero.astro";
+import { getSanityData, urlFor } from "../../lib/sanity";
+import {
+  staffMembers,
+  clergyMembers,
+  programStaffMembers,
+  adminStaffMembers,
+} from "../../lib/sanityQueries";
+import { joinNames, capitalizeFirstLetter } from "../../utils/format";
+import { groupAsType } from "../../utils/people";
+import { PortableText } from "astro-portabletext";
+
+const pageTitle = "Church Leadership";
+const pageDescription =
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+
+const localNav = {
+  section: "Who We Are",
+  children: [
+    {
+      name: "Mission & Beliefs",
+      href: "/who-we-are/mission-and-beliefs",
+    },
+    {
+      name: "Our History",
+      href: "/who-we-are/our-history",
+    },
+    {
+      name: "Church Leadership",
+      href: "/who-we-are/church-leadership",
+    },
+  ],
+};
+
+const staff = await getSanityData(staffMembers);
+const clergy = await getSanityData(clergyMembers);
+const program = await getSanityData(programStaffMembers);
+const admin = await getSanityData(adminStaffMembers);
+const staffByType = groupAsType(staff);
+---
+
+<Layout title={pageTitle}>
+  <main slot="main">
+    <InnerHero
+      localNav={localNav}
+      pageTitle={pageTitle}
+      pageDescription={pageDescription}
+    />
+    <article class="content-wrapper flow">
+      {
+        staffByType.map((type) => (
+          <section class="columns" id={type.type}>
+            <div>
+              <h2 class="text-step-3">
+                {capitalizeFirstLetter(type.type) + " Staff"}
+              </h2>
+            </div>
+            <ul class="grid">
+              {type.entries.map((person) => (
+                <li>
+                  <a href="" class="person">
+                    <div class="frame square">
+                      <img src={urlFor(person.image).url()} alt="" />
+                    </div>
+                    <div class="flow">
+                      <h3 class="text-step-1">
+                        {[
+                          person.name.title,
+                          person.name.firstName,
+                          person.name.lastName,
+                        ].join(" ")}
+                      </h3>
+                      <p class="text-step--1">
+                        <em>{person.role}</em>
+                      </p>
+                    </div>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
+    </article>
+  </main>
+</Layout>
+<style>
+  article.content-wrapper {
+    margin-block: var(--section-spacer-half);
+  }
+
+  .content-wrapper.flow {
+    --flow-space: var(--space-3xl);
+  }
+
+  /* .with-sidebar {
+    --sidebar-gap: 2rem;
+    --sidebar-min-width: 10rem;
+    --main-min-width: 40%;
+  }
+
+  .with-sidebar > :first-child {
+    flex-basis: var(--sidebar-min-width);
+    flex-grow: 1;
+  }
+
+  .with-sidebar > :last-child {
+    flex-basis: 0;
+    flex-grow: 999;
+    min-inline-size: var(--main-min-width);
+  } */
+
+  .columns {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 2rem;
+    padding-block-start: var(--space-2xl);
+  }
+
+  .columns > :first-child {
+    grid-column: 1 / 3;
+  }
+
+  .columns > :last-child {
+    grid-column: 3 / 10;
+  }
+
+  .columns h2 {
+    margin-top: var(--space-m);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+  }
+
+  .person {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    text-align: center;
+    height: 100%;
+    text-decoration: none;
+    background-color: transparent;
+    padding: var(--space-m);
+    border-radius: var(--rounded-corners);
+    transition: background-color 0.3s ease;
+  }
+
+  .person:hover {
+    background-color: var(--color-primary-100);
+  }
+
+  .person .frame img {
+    transition: transform 0.3s ease;
+  }
+
+  .person:hover .frame img {
+    transform: scale(1.1);
+  }
+
+  .person > .flow {
+    --flow-space: 0.33rem;
+  }
+
+  .frame.square {
+    border-radius: 9999px;
+    max-width: 8rem;
+    margin-bottom: 1rem;
+  }
+</style>
