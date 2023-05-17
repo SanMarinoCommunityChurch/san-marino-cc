@@ -1,10 +1,20 @@
 ---
-const { localNav, pageTitle, pageDescription } = Astro.props;
+// Image must be in public directory since it used as CSS background
+const { localNav, pageTitle, pageDescription, bgImage } = Astro.props;
+
+const bgImageStyle = `linear-gradient(to top, hsla(217, 86%, 20%, 0.9) 15%, hsla(217, 86%, 20%, 0)) center/cover no-repeat, url(${bgImage}) center/cover no-repeat;`;
 ---
 
-<section class="hero">
+<section
+  class="hero"
+  style={`--background:${
+    bgImage ? bgImageStyle : "var(--color-primary-100)"
+  }; --color:${bgImage ? "var(--color-white)" : ""}`}
+>
   <div class="content-wrapper flow">
-    <h1 class="text-step-6">{pageTitle}</h1>
+    <h1 class:list={["text-step-6", bgImage && "color-white"]}>
+      {pageTitle}
+    </h1>
     <p>{pageDescription}</p>
     <div class="cluster local-nav">
       <div class="small-title">{localNav.section}</div>
@@ -37,13 +47,32 @@ const { localNav, pageTitle, pageDescription } = Astro.props;
     position: relative;
     padding-top: 10rem;
     padding-bottom: var(--space-2xl);
-    background: var(--color-primary-100);
+    color: var(--color);
+    /* background: var(--color-primary-100); */
+    background: var(--background);
   }
 
-  .hero.bg-img {
-    background: url("/church-ext-bg.jpg") center/cover no-repeat;
+  /* .hero.bg-img {
+    background: linear-gradient(
+          to top,
+          hsla(217, 86%, 20%, 0.9) 15%,
+          hsla(217, 86%, 20%, 0)
+        )
+        center/cover no-repeat,
+      url("") center/cover no-repeat;
     color: var(--color-white);
-  }
+  } */
+
+  /* [data-image].hero {
+    background: linear-gradient(
+          to top,
+          hsla(217, 86%, 20%, 0.9) 15%,
+          hsla(217, 86%, 20%, 0)
+        )
+        center/cover no-repeat,
+      url("") center/cover no-repeat;
+    color: var(--color-white);
+  } */
 
   .hero .content-wrapper {
     z-index: 2;

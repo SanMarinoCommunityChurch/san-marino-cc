@@ -1,28 +1,29 @@
 ---
-import { sanityClient, urlFor } from "../../lib/sanity";
+import { getSanityData, urlFor } from "../../lib/sanity";
 import Card from "../Card.astro";
 import Button from "../Button.astro";
 import DateLabel from "../Events/DateLabel.astro"
-import { url } from "inspector";
+import { eventsPreview } from "../../lib/sanityQueries"
+import { formatDateSlug } from "../../utils/format"
 
-const getEvents = async () => {
-  const query = `*[_type == "event"] | order(date desc) {
-    name,
-    date,
-    preview,
-    eventType,
-    location,
-    "image": image.asset->,
-    "ministry": associatedMinistry->{
-      name,
-      "image": image.asset->
-  },
-  }`;
-  const data = await sanityClient.fetch(query);
-  return data;
-};
+// const getEvents = async () => {
+//   const query = `*[_type == "event"] | order(date desc) {
+//     name,
+//     date,
+//     preview,
+//     eventType,
+//     location,
+//     "image": image.asset->,
+//     "ministry": associatedMinistry->{
+//       name,
+//       "image": image.asset->
+//   },
+//   }`;
+//   const data = await sanityClient.fetch(query);
+//   return data;
+// };
 
-const events = await getEvents();
+const events = await getSanityData(eventsPreview);
 ---
 
 <section>
@@ -36,8 +37,9 @@ const events = await getEvents();
             event.image ?
             urlFor(event.image).url()
             :
-            urlFor(event.ministry.image).url()
+            urlFor(event.associatedMinistry.image).url()
           }
+          href={`/connect/events/${formatDateSlug(event.date)}-${event.slug}`}
         >
           <div slot="label" class="event-date">
             <DateLabel date={event.date} />

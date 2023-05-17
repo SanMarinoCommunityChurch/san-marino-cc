@@ -1,0 +1,112 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import ThirdLayout from "../../../layouts/ThirdLayout.astro";
+import MoreLikeThis from "../../../components/MoreLikeThis.astro";
+import ImageCard from "../../../components/ImageCard.astro";
+import Button from "../../../components/Button.astro";
+import InnerHero from "../../../components/InnerHero.astro";
+import Breadcrumb from "../../../components/Breadcrumb.astro";
+import ServiceInfo from "../../../components/ServiceInfo.astro";
+import {
+  ministriesPreview,
+  ministriesDetail,
+} from "../../../lib/sanityQueries";
+import { randomizeAndSlice } from "../../../utils/data";
+
+import { PortableText } from "astro-portabletext";
+import {
+  formatDateSlug,
+  timeFormatter,
+  capitalizeFirstLetter,
+  joinNames,
+} from "../../../utils/format";
+import { getSanityData, urlFor } from "../../../lib/sanity";
+
+import pastorHeadshot from "../../../assets/images/jessica-vaughan-lower-headshot.jpg";
+import { A } from "../../../../studio/dist/static/sanity-47071979";
+
+export async function getStaticPaths() {
+  const pages = await getSanityData(ministriesDetail);
+
+  return pages.map((page) => {
+    return {
+      params: { slug: page.slug },
+      props: { page },
+    };
+  });
+}
+
+const { slug } = Astro.params;
+const { page } = Astro.props;
+
+const otherMinistries = await getSanityData(ministriesPreview);
+const randomizedMinistries = randomizeAndSlice(
+  otherMinistries,
+  "type",
+  page,
+  3
+);
+---
+
+<ThirdLayout
+  title={page.name}
+  header={page.name}
+  preview={page.preview}
+  breadcrumbs="breadcrumbs"
+  featuredImage={urlFor(page.image).url()}
+>
+  <div slot="main-panel">
+    <PortableText value={page.description} />
+    {
+      // Check if there are any associated events before rendering
+      page.associatedEvents[0] && (
+        <section>
+          <h2>Associated Events</h2>
+          <ul>
+            {page.associatedEvents.map((event) => (
+              <li>{event.name}</li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+  </div>
+  <div slot="sidebar">sidebar</div>
+  <!-- <section slot="cta" class="content-wrapper cta">
+    <Feature />
+  </section> -->
+  <div slot="highlight" class="more flow">
+    <h2 class="text-step-3">Explore Related Ministries</h2>
+    <ul class="responsive-grid">
+      {
+        randomizedMinistries.map((item) => (
+          <li>
+            <ImageCard
+              title={item.name}
+              description={item.preview}
+              imgSrc={urlFor(item.image).url()}
+              imgAlt=""
+              href={`/connect/ministries/${item.slug}`}
+            />
+          </li>
+        ))
+      }
+    </ul>
+    <!-- <MoreLikeThis relatedItems={randomizedMinistries} /> -->
+  </div>
+</ThirdLayout>
+
+<style>
+  .cta {
+    margin-block: var(--section-spacer-half);
+  }
+
+  .more {
+    --flow-space: 2.5rem;
+  }
+
+  .responsive-grid {
+    --gap: 2rem;
+    --item-min-width: 20rem;
+  }
+</style>

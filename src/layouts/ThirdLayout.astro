@@ -1,0 +1,73 @@
+---
+import Layout from "./Layout.astro";
+
+const { title, header, breadcrumbs, preview, featuredImage } = Astro.props;
+---
+
+<Layout title={title}>
+  <main slot="main">
+    <article>
+      <div>{breadcrumbs}</div>
+      <div class="content-wrapper with-sidebar">
+        <div class="main-panel flow">
+          <section class="header flow">
+            <h1 class="text-step-7">{header}</h1>
+            <p class="text-step-1">{preview}</p>
+          </section>
+          {
+            featuredImage && (
+              <section class="frame">
+                <img src={featuredImage} alt="" />
+              </section>
+            )
+          }
+          <section>
+            <slot name="main-panel" />
+          </section>
+        </div>
+        <div class="sidebar">
+          <slot name="sidebar" />
+        </div>
+      </div>
+      <slot name="cta" />
+      <section class="highlight-section">
+        <div class="content-wrapper">
+          <slot name="highlight" />
+        </div>
+      </section>
+    </article>
+  </main>
+</Layout>
+
+<style>
+  .content-wrapper.with-sidebar {
+    padding-block-start: var(--space-2xl);
+    padding-block-end: var(--space-3xl);
+  }
+
+  .main-panel.flow {
+    --flow-space: 3rem;
+  }
+
+  .header.flow {
+    --flow-space: 2rem;
+  }
+
+  .highlight-section {
+    padding-block: var(--space-3xl);
+    background-color: var(--color-primary-100);
+  }
+
+  /* .content-wrapper.content {
+    background-color: var(--color-white);
+    padding-block: var(--space-m-2xl);
+    box-shadow: var(--shadow-large);
+    border-radius: var(--rounded-corners);
+  } */
+
+  .frame {
+    --width: 7;
+    --height: 5;
+    border-radius: var(--rounded-corners);
+  }
+</style>

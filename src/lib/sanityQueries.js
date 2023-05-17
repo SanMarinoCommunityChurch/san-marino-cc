@@ -1,3 +1,70 @@
+const eventsPreview = `*[_type == 'event'] | order(date asc) {
+  name,
+  date,
+  associatedMinistry->{
+    type,
+    "image": image.asset->
+  },
+  "image": image.asset->,
+  "slug": slug.current,
+  location,
+  preview,
+  eventType
+}`;
+
+const eventsDetail = `*[_type == 'event'] {
+  ...,
+  "image": image.asset->,
+  "slug": slug.current,
+  associatedMinistry->{
+    ...,
+    "image": image.asset->,
+    "person": ministryContact->{
+      ...,
+      "image": image.asset->
+    }
+  }
+}`;
+
+const ministriesPreview = `*[_type == 'ministry'] {
+  name,
+  type,
+  preview,
+  meetingLocation,
+  "image": image.asset->,
+  "slug": slug.current
+}`;
+
+const ministriesDetail = `*[_type == 'ministry'] {
+  ...,
+  name,
+  type,
+  preview,
+  meetingTime,
+  meetingLocation,
+  description,
+  "image": image.asset->,
+  "slug": slug.current,
+  "person": ministryContact-> {
+    ...,
+    "image": image.asset->
+  },
+  "associatedEvents": *[_type == 'event' && references(^._id)] {
+    ...,
+    name,
+    date,
+    "image": image.asset->,
+    "slug": slug.current,
+    associatedMinistry->{
+      type,
+      "image": image.asset->
+    },
+    eventType,
+    preview,
+    location
+  }
+}`;
+
 const fullNavigation = `*[_type == 'navigation' && _id == 'a0714f38-2dff-4ce5-b350-be13904afa67'] {
   _id,
   name,
@@ -46,6 +113,10 @@ const adminStaffMembers = `*[_type == 'person' && type.mainType == 'staff' && ty
 }`;
 
 export {
+  eventsPreview,
+  eventsDetail,
+  ministriesPreview,
+  ministriesDetail,
   fullNavigation,
   staffMembers,
   clergyMembers,

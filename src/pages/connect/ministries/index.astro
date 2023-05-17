@@ -4,6 +4,7 @@ import Card from "../../../components/Card.astro";
 import InnerHero from "../../../components/InnerHero.astro";
 import Feature from "../../../components/Feature.astro"
 import { getSanityData, urlFor } from "../../../lib/sanity";
+import { ministriesPreview } from "../../../lib/sanityQueries"
 
 import placeholderImg from "../../../assets/images/church-ext-2.jpg"
 
@@ -29,12 +30,7 @@ const localNav = {
   ],
 };
 
-const ministries = await getSanityData(
-  `*[_type == 'ministry'] {
-  ...,
-  "image": image.asset->
-}`
-);
+const ministries = await getSanityData(ministriesPreview);
 
 const categories = [
   { title: "Adult Ministry", value: "adult" },
@@ -46,6 +42,7 @@ const categories = [
 const pageTitle = "Ministries";
 const pageDescription =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+const bgImage = "/church-garden.jpg"
 ---
 
 <Layout title={pageTitle}>
@@ -54,6 +51,7 @@ const pageDescription =
       localNav={localNav}
       pageTitle={pageTitle}
       pageDescription={pageDescription}
+      bgImage={bgImage}
     />
     <article class="content-wrapper flow">
         <Feature>
@@ -65,7 +63,7 @@ const pageDescription =
             ministries.map((ministry) => (
                 <Card 
                     title={ministry.name}
-                    href={`/connect/ministries/${ministry.slug.current}`}
+                    href={`/connect/ministries/${ministry.slug}`}
                     img={
                         ministry.image ?
                         urlFor(ministry.image).url()

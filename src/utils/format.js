@@ -19,6 +19,14 @@ const formatDateShort = (dateString) => {
   });
 };
 
+const formatDateSlug = (dateString) => {
+  const date = new Date(dateString);
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+  return `${month}-${day}-${year}`;
+};
+
 const formatTimeFromDate = (dateString) => {
   const date = new Date(dateString);
   return date.toLocaleTimeString("en-US", {
@@ -71,6 +79,7 @@ const joinNames = (object) => {
 export {
   formatDate,
   formatTimeFromDate,
+  formatDateSlug,
   timeFormatter,
   capitalizeFirstLetter,
   joinNames,

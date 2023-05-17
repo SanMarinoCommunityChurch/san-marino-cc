@@ -15,6 +15,7 @@ const contentTitle = "We’re so glad you’re here.";
 const pageTitle = "I’m New";
 const pageDescription =
   "We don’t know what encouraged you to look for a church, let alone what brought you to this website for SMCC, but we don’t believe that you’re here by accident.";
+const bgImage = "/church-full.jpg";
 
 const localNav = {
   section: "Welcome",
@@ -42,15 +43,18 @@ const opportunities = [
   {
     name: "Worship with Us",
     description: "Join us for our traditional or contemporary Sunday service.",
+    href: "/worship/live",
   },
   {
     name: "Visiting FAQ",
     description:
       "Get helpful information on visiting San Marino Community Church.",
+    href: "/welcome/faq",
   },
   {
     name: "Join a Ministry",
     description: "Learn how to get involved in one of our many ministries.",
+    href: "/connect/ministries",
   },
 ];
 ---
@@ -61,6 +65,7 @@ const opportunities = [
       localNav={localNav}
       pageTitle={pageTitle}
       pageDescription={pageDescription}
+      bgImage={bgImage}
     />
     <article class="content-wrapper">
       <!-- <div class="small-title">{eyebrow}</div> -->
@@ -103,7 +108,11 @@ const opportunities = [
         <div class="responsive-grid">
           {
             opportunities.map((item) => (
-              <ImageCard title={item.name} description={item.description} />
+              <ImageCard
+                title={item.name}
+                description={item.description}
+                href={item.href}
+              />
             ))
           }
         </div>

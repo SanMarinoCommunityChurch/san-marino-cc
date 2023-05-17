@@ -3,7 +3,9 @@ import DateLabel from "./DateLabel.astro";
 import {
   formatDate,
   formatTimeFromDate,
-  capitalizeFirstLetter
+  capitalizeFirstLetter,
+formatDateShort,
+formatDateSlug
 } from "../../utils/format";
 import { groupAsMonths } from "../../utils/events"
 import { urlFor } from "../../lib/sanity";
@@ -56,6 +58,7 @@ const assignCategory = (event) => {
 const { events } = Astro.props;
 
 const eventsByMonth = groupAsMonths(events);
+``
 ---
 <div>
 {eventsByMonth.map(month =>
@@ -64,7 +67,7 @@ const eventsByMonth = groupAsMonths(events);
     <ul class="flow">
       {month.entries.map(event =>
         <li>
-          <a href={`/connect/events/${event.date}`} class="event-wrapper">
+          <a href={`/connect/events/${formatDateSlug(event.date)}-${event.slug}`} class="event-wrapper">
             <div class="frame">
               <DateLabel date={event.date} position="top-left" />
               <img
@@ -204,8 +207,8 @@ const eventsByMonth = groupAsMonths(events);
     border-radius: var(--rounded-corners);
     max-width: 30rem;
     position: relative;
-    --width: 4;
-    --height: 3;
+    --width: 1; /* was 4/3 */
+    --height: 1;
   }
 
   .heading {

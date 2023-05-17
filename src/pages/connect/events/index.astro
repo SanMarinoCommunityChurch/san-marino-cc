@@ -6,6 +6,7 @@ import CategoryList from "../../../components/Events/CategoryList.astro";
 import InnerHero from "../../../components/InnerHero.astro";
 import { getSanityData, urlFor } from "../../../lib/sanity";
 import EventsList from "../../../components/Events/EventsList.astro";
+import { eventsPreview } from "../../../lib/sanityQueries";
 
 const localNav = {
   section: "Connect",
@@ -29,13 +30,7 @@ const localNav = {
   ],
 };
 
-const events = await getSanityData(
-  `*[_type == 'event'] | order(date asc) {
-  ...,
-  associatedMinistry->,
-  "image": image.asset->
-}`
-);
+const events = await getSanityData(eventsPreview);
 
 const categories = [
   { title: "Adult Ministry", value: "adult" },
