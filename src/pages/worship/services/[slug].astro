@@ -113,11 +113,7 @@ const { page } = Astro.props;
                   {capitalizeFirstLetter(service.name) + " Service"}
                 </h2>
               </div>
-              <ContactAvatar
-                  image={service.preacher.image && service.preacher.image}
-                  name={joinNames(service.preacher.name)}
-                  heading="Sermon by"
-                />
+              <div>ContactAvatar failed on Netlify build</div>
               <PortableText value={service.serviceDescription} />
               <Button href={service.programLink} width="fit">
                 Download Program
