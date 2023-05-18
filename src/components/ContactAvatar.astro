@@ -1,15 +1,20 @@
 ---
 import { urlFor } from "../lib/sanity";
 import { joinNames } from "../utils/format";
+import placeholderImg from "../assets/images/church-ext-4.jpg";
 
 const { image, imageAlt, heading = "Contact", name, href } = Astro.props;
 ---
 
 <div class="contact flex">
   {
-    image && (
+    image ? (
       <div class="frame square">
         <img src={urlFor(image).width(200).url()} alt="" width={200} />
+      </div>
+    ) : (
+      <div class="frame square">
+        <img src={placeholderImg} alt="" width={200} />
       </div>
     )
   }
