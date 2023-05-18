@@ -4,7 +4,7 @@ import Card from "../Card.astro";
 import Button from "../Button.astro";
 import DateLabel from "../Events/DateLabel.astro"
 import { eventsPreview } from "../../lib/sanityQueries"
-import { formatDateSlug } from "../../utils/format"
+import { DateTime } from "luxon"
 
 // const getEvents = async () => {
 //   const query = `*[_type == "event"] | order(date desc) {
@@ -24,6 +24,11 @@ import { formatDateSlug } from "../../utils/format"
 // };
 
 const events = await getSanityData(eventsPreview);
+
+const categoryName = (event) => {
+  const category = event.eventType == 'ministry' ? event.associatedMinistry.category.name : event.category;
+  return category;
+}
 ---
 
 <section>
@@ -39,13 +44,13 @@ const events = await getSanityData(eventsPreview);
             :
             urlFor(event.associatedMinistry.image).url()
           }
-          href={`/connect/events/${formatDateSlug(event.date)}-${event.slug}`}
+          href={`/connect/events/${DateTime.fromISO(event.date).toFormat('L-d-yyyy')}-${event.slug}`}
         >
           <div slot="label" class="event-date">
             <DateLabel date={event.date} />
           </div>
           <div slot="header" class="small-title event-category">
-            {event.eventType}
+            {categoryName(event)}
           </div>
           <p slot="body" class="text-step--1">
             {event.preview}
@@ -88,7 +93,7 @@ const events = await getSanityData(eventsPreview);
     color: var(--color-primary-900);
     line-height: 1;
     padding: 4px 6px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     background-color: var(--color-primary-100);
     border-radius: var(--rounded-corners-small);
   }

@@ -1,11 +1,8 @@
 ---
 import DateLabel from "./DateLabel.astro";
+import { DateTime } from "luxon"
 import {
-  formatDate,
-  formatTimeFromDate,
   capitalizeFirstLetter,
-formatDateShort,
-formatDateSlug
 } from "../../utils/format";
 import { groupAsMonths } from "../../utils/events"
 import { urlFor } from "../../lib/sanity";
@@ -58,7 +55,14 @@ const assignCategory = (event) => {
 const { events } = Astro.props;
 
 const eventsByMonth = groupAsMonths(events);
-``
+
+const categoryName = (event) => {
+  const category = event.eventType == 'ministry' ? event.associatedMinistry.category.name : event.category;
+  return category;
+}
+
+// const categoryName = page.eventType == 'ministry' ? page.associatedMinistry.type.name : page.category;
+// const categorySlug = page.eventType == 'ministry' ? page.associatedMinistry.type.slug : page.categorySlug;
 ---
 <div>
 {eventsByMonth.map(month =>
@@ -67,7 +71,7 @@ const eventsByMonth = groupAsMonths(events);
     <ul class="flow">
       {month.entries.map(event =>
         <li>
-          <a href={`/connect/events/${formatDateSlug(event.date)}-${event.slug}`} class="event-wrapper">
+          <a href={`/connect/events/${DateTime.fromISO(event.date).toFormat('L-d-yyyy')}-${event.slug}`} class="event-wrapper">
             <div class="frame">
               <DateLabel date={event.date} position="top-left" />
               <img
@@ -77,14 +81,14 @@ const eventsByMonth = groupAsMonths(events);
             </div>
             <div class="flow text">
               <div class="small-title category">
-                {assignCategory(event)}
+                {categoryName(event)}
               </div>
               <header class="flow">
                 <h3 class="text-step-2 heading">{event.name}</h3>
                 <time class="time" datetime={event.date}>
-                  {formatDate(event.date)}
+                  {DateTime.fromISO(event.date).toLocaleString(DateTime.DATE_HUGE)}
                   <span class="bullet-spacer">•</span>
-                  {formatTimeFromDate(event.date)}
+                  {DateTime.fromISO(event.date).toLocaleString(DateTime.TIME_SIMPLE)}
                 </time>
               </header>
               <p class="text-step--1">{event.preview}</p>
@@ -207,8 +211,8 @@ const eventsByMonth = groupAsMonths(events);
     border-radius: var(--rounded-corners);
     max-width: 30rem;
     position: relative;
-    --width: 1; /* was 4/3 */
-    --height: 1;
+    --width: 1 !important; /* was 4/3 */
+    --height: 1 !important;
   }
 
   .heading {

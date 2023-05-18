@@ -1,34 +1,29 @@
 ---
+import { DateTime } from "luxon";
+
 const positions = {
   "top-right": "top-right",
   "top-left": "top-left",
 };
 
-const { date, monthStyle, startTime, position = "top-right" } = Astro.props;
+const { date, startTime, position = "top-right" } = Astro.props;
 
-const niceDate = (dateString) => {
-  const date = new Date(dateString);
-  const region = "en-US";
-  const timeZone = "UTC";
-  return {
-    day: date.toLocaleDateString(region, {
-      day: "numeric",
-      timeZone: timeZone,
-    }),
-    month: date.toLocaleDateString(region, {
-      month: "short",
-      timeZone: timeZone,
-    }),
-  };
-};
+const month = DateTime.fromISO(date).toFormat("LLL");
+const day = DateTime.fromISO(date).toFormat("d");
 
 const classList = ["date-label", positions[position]];
 ---
 
-<time class:list={classList}>
-  <div class="event-day font-header">{niceDate(date).day}</div>
-  <div class="small-title">{niceDate(date).month}</div>
-  {startTime && <div>{startTime}</div>}
+<time class:list={classList} datetime={date}>
+  <div class="event-day font-header">{day}</div>
+  <div class="small-title">{month}</div>
+  {
+    startTime && (
+      <div>
+        {DateTime.fromISO(startTime).toLocaleString(DateTime.TIME_SIMPLE)}
+      </div>
+    )
+  }
 </time>
 
 <style>
@@ -59,5 +54,6 @@ const classList = ["date-label", positions[position]];
     font-size: var(--step-3);
     color: var(--color-white);
     line-height: 1;
+    margin-bottom: 2px;
   }
 </style>

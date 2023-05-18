@@ -8,6 +8,7 @@ import Button from "../../../components/Button.astro";
 import InnerHero from "../../../components/InnerHero.astro";
 import Breadcrumb from "../../../components/Breadcrumb.astro";
 import ServiceInfo from "../../../components/ServiceInfo.astro";
+import { DateTime } from "luxon";
 import {
   ministriesPreview,
   ministriesDetail,
@@ -15,15 +16,10 @@ import {
 import { randomizeAndSlice } from "../../../utils/data";
 
 import { PortableText } from "astro-portabletext";
-import {
-  formatDateSlug,
-  timeFormatter,
-  capitalizeFirstLetter,
-  joinNames,
-} from "../../../utils/format";
+import { joinNames } from "../../../utils/format";
 import { getSanityData, urlFor } from "../../../lib/sanity";
-
-import pastorHeadshot from "../../../assets/images/jessica-vaughan-lower-headshot.jpg";
+import MiniPreviewCard from "../../../components/MiniPreviewCard.astro";
+import placeholderImg from "../../../assets/images/church-ext-4.jpg";
 
 export async function getStaticPaths() {
   const pages = await getSanityData(ministriesDetail);
@@ -58,7 +54,7 @@ const otherMinistries = await getSanityData(ministriesPreview);
 // FIX: filterable is category.name. Also check events
 const randomizedMinistries = randomizeAndSlice(
   otherMinistries,
-  "category",
+  "ministryType",
   page,
   3
 );
@@ -71,6 +67,12 @@ const randomizedMinistries = randomizeAndSlice(
   breadcrumbs={breadcrumbs}
   featuredImage={urlFor(page.image).url()}
 >
+  <div slot="eyebrow" class="eyebrow cluster">
+    <a
+      class="small-title heading-category"
+      href={`/connect/ministries#${page.typeSlug}`}>{page.category}</a
+    >
+  </div>
   <div slot="main-panel">
     <PortableText value={page.description} />
   </div>
@@ -81,19 +83,38 @@ const randomizedMinistries = randomizeAndSlice(
           <ContactAvatar
             image={page.person.image}
             name={joinNames(page.person.name)}
+            href={page.person.contact.email && page.person.contact.email}
           />
         </div>
       )
     }
-    <div></div>
     {
       // Check if there are any associated events before rendering
       page.associatedEvents[0] && (
-        <section>
-          <h2>Associated Events</h2>
+        <section class="associated-events flow">
+          <h2 class="text-step-2">Associated Events</h2>
           <ul>
             {page.associatedEvents.map((event) => (
-              <li>{event.name}</li>
+              <li class="cluster">
+                <MiniPreviewCard
+                  href={`/connect/events/${DateTime.fromISO(
+                    event.date
+                  ).toFormat("L-d-yyyy")}-${event.slug}`}
+                  image={
+                    event.image
+                      ? urlFor(event.image).width(300).url()
+                      : placeholderImg
+                  }
+                  imageAlt=""
+                >
+                  <div class="text-step-1 font-header">{event.name}</div>
+                  <time class="small-title" datetime={event.date}>
+                    {DateTime.fromISO(event.date).toLocaleString(
+                      DateTime.DATE_FULL
+                    )}
+                  </time>
+                </MiniPreviewCard>
+              </li>
             ))}
           </ul>
         </section>
@@ -133,6 +154,32 @@ const randomizedMinistries = randomizeAndSlice(
     --flow-space: 2.5rem;
   }
 
+  .eyebrow.cluster {
+    margin-bottom: 0.75rem;
+  }
+
+  .eyebrow > :last-child {
+    font-variant-numeric: lining-nums;
+    color: var(--color-primary-800);
+  }
+
+  .small-title.heading-category {
+    font-size: 14px;
+    display: inline-block;
+    text-decoration: none;
+    color: var(--color-primary-800);
+    width: fit-content;
+    line-height: 1;
+    padding: 6px 9px;
+    background-color: var(--color-primary-100);
+    border-radius: var(--rounded-corners-small);
+    transition: all 0.2s ease;
+  }
+
+  .small-title.heading-category:hover {
+    background-color: var(--color-primary-200);
+  }
+
   .responsive-grid {
     --gap: 2rem;
     --item-min-width: 20rem;
@@ -140,5 +187,26 @@ const randomizedMinistries = randomizeAndSlice(
 
   .sidebar-content {
     padding-top: 1rem;
+  }
+
+  .associated-events {
+    margin-top: 3rem;
+  }
+
+  .associated-events > :first-child {
+    margin-bottom: 0.5rem;
+  }
+
+  .associated-events .text-step-1 {
+    color: var(--color-primary-800);
+    margin-bottom: -4px;
+  }
+
+  .associated-events li:hover .text-step-1 {
+    text-decoration: underline;
+  }
+
+  .associated-events time {
+    font-variant-numeric: lining-nums;
   }
 </style>

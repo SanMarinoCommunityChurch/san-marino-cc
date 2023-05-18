@@ -4,13 +4,14 @@ import Button from "../../../components/Button.astro";
 import InnerHero from "../../../components/InnerHero.astro";
 import Breadcrumb from "../../../components/Breadcrumb.astro";
 import ServiceInfo from "../../../components/ServiceInfo.astro";
+import ContactAvatar from "../../../components/ContactAvatar.astro"
 import getYouTubeID from "get-youtube-id";
 import Youtube from "svelte-youtube-embed";
 
 import { PortableText } from "astro-portabletext";
+import { DateTime } from "luxon"
 import {
-  formatDate,
-  timeFormatter,
+  format12HourTime,
   capitalizeFirstLetter,
   joinNames
 } from "../../../utils/format";
@@ -46,13 +47,6 @@ const { page } = Astro.props;
   <main slot="main">
     <article class="content-wrapper">
       <section class="hero">
-        <Breadcrumb
-          section="Worship"
-          sectionURL="/worship"
-          page="Worship Services"
-          pageURL="/worship/services"
-          url={formatDate(slug)}
-        />
         <div class="hero-text flow">
           <h1 class="text-step-5">{
             page.name ?
@@ -80,7 +74,7 @@ const { page } = Astro.props;
                 d="M448 192H0V464c0 26.5 21.5 48 48 48H400c26.5 0 48-21.5 48-48V192zM80 256H368c8.8 0 16 7.2 16 16v64c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V272c0-8.8 7.2-16 16-16z"
               ></path></svg
             >
-            <time class="text-step-1">{formatDate(page.date)}</time>
+            <time class="text-step-1">{DateTime.fromISO(page.date).toLocaleString(DateTime.DATE_HUGE)}</time>
           </div>
           <div class="cluster page-links">
             {
@@ -112,24 +106,18 @@ const { page } = Astro.props;
                     fill="var(--color-primary-700)"
                   ><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M256 96c-13.3 0-24 10.7-24 24V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24z"/><path class="fa-secondary" d="M256 0a256 256 0 1 1 0 512A256 256 0 1 1 256 0zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"/></svg>
                 <time class="small-title">
-                  {timeFormatter(service.serviceTime)}
+                  {format12HourTime(service.serviceTime)}
                 </time>
                 </div>
                 <h2 class="text-step-3">
                   {capitalizeFirstLetter(service.name) + " Service"}
                 </h2>
               </div>
-              <div class="sermon flex">
-                {service.preacher &&
-                  <div class="frame square">
-                    <img src={urlFor(service.preacher.image).url()} alt="" />
-                  </div>
-                  <div>
-                    <div class="small-title">Sermon by</div>
-                    <a href="#" class="text-step--1">{joinNames(service.preacher.name)}</a>
-                  </div>
-                }
-              </div>
+              <ContactAvatar
+                  image={service.preacher.image}
+                  name={joinNames(service.preacher.name)}
+                  heading="Sermon by"
+                />
               <PortableText value={service.serviceDescription} />
               <Button href={service.programLink} width="fit">
                 Download Program

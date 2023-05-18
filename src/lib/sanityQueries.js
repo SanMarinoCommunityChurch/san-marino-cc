@@ -1,8 +1,12 @@
 const eventsPreview = `*[_type == 'event'] | order(date asc) {
   name,
   date,
+  "category": category->name,
   associatedMinistry->{
-    type,
+    "category": type->category->{
+      name,
+      "slug": slug.current
+    },
     "image": image.asset->
   },
   "image": image.asset->,
@@ -14,10 +18,17 @@ const eventsPreview = `*[_type == 'event'] | order(date asc) {
 
 const eventsDetail = `*[_type == 'event'] {
   ...,
+  eventType,
+  "category": category->name,
+  "categorySlug": category->slug.current,
   "image": image.asset->,
   "slug": slug.current,
   associatedMinistry->{
     ...,
+    "type": type->{
+      name,
+      "slug": slug.current,
+    },
     "slug": slug.current,
     "image": image.asset->,
     "person": ministryContact->{
@@ -64,7 +75,9 @@ const ministryTypeWithMinistriesPreview = `*[_type == 'ministryType'] {
 const ministriesDetail = `*[_type == 'ministry'] {
   ...,
   name,
-  type,
+  "ministryType": type->name,
+  "typeSlug": type->slug.current,
+  "category": type->category->name,
   preview,
   meetingTime,
   meetingLocation,

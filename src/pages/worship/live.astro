@@ -3,14 +3,15 @@ import Layout from "../../layouts/Layout.astro";
 import Button from "../../components/Button.astro";
 import VideoTabs from "../../components/Svelte/VideoTabs.svelte";
 import ServicesList from "../../components/ServicesList.astro";
+import ContactAvatar from "../../components/ContactAvatar.astro";
 import { getSanityData, urlFor } from "../../lib/sanity";
 import getYouTubeID from "get-youtube-id";
 import Youtube from "svelte-youtube-embed";
 import { PortableText } from "astro-portabletext";
+import { DateTime } from "luxon";
 
 import {
-  formatDate,
-  timeFormatter,
+  format12HourTime,
   capitalizeFirstLetter,
   joinNames,
 } from "../../utils/format";
@@ -89,9 +90,13 @@ const recentServices = await getSanityData(
                   {latestService.name || "Sunday Worship"}
                 </h3>
                 <time class="small-title"
-                  >{formatDate(latestService.date)}<span class="bullet-spacer"
-                    >•</span
-                  >{timeFormatter(paneOne.serviceTime)}</time
+                  >{
+                    DateTime.fromISO(latestService.date).toLocaleString(
+                      DateTime.DATE_FULL
+                    )
+                  }<span class="bullet-spacer">•</span>{
+                    format12HourTime(paneOne.serviceTime)
+                  }</time
                 >
               </div>
               <PortableText value={paneOne.serviceDescription} />
@@ -103,17 +108,11 @@ const recentServices = await getSanityData(
                 )
               }
             </div>
-            <div class="sidebar flex">
-              <div class="frame square">
-                <img src={urlFor(paneOne.preacher.image).url()} alt="" />
-              </div>
-              <div>
-                <div class="small-title">Sermon by</div>
-                <a href="#" class="text-step--1"
-                  >{joinNames(paneOne.preacher.name)}</a
-                >
-              </div>
-            </div>
+            <ContactAvatar
+              image={paneOne.preacher.image}
+              name={joinNames(paneOne.preacher.name)}
+              heading="Sermon by"
+            />
           </section>
         </article>
         <!-- Tab panel 2 -->
@@ -139,9 +138,11 @@ const recentServices = await getSanityData(
                         {latestService.name || "Sunday Worship"}
                       </h3>
                       <time class="small-title">
-                        {formatDate(latestService.date)}
+                        {DateTime.fromISO(latestService.date).toLocaleString(
+                          DateTime.DATE_FULL
+                        )}
                         <span class="bullet-spacer">•</span>
-                        {timeFormatter(paneTwo.serviceTime)}
+                        {format12HourTime(paneTwo.serviceTime)}
                       </time>
                     </div>
                     <PortableText value={paneTwo.serviceDescription} />
@@ -151,17 +152,11 @@ const recentServices = await getSanityData(
                       </Button>
                     )}
                   </div>
-                  <div class="sidebar flex">
-                    <div class="frame square">
-                      <img src={urlFor(paneTwo.preacher.image).url()} alt="" />
-                    </div>
-                    <div>
-                      <div class="small-title">Sermon by</div>
-                      <a href="#" class="text-step--1">
-                        {joinNames(paneTwo.preacher.name)}
-                      </a>
-                    </div>
-                  </div>
+                  <ContactAvatar
+                    image={paneTwo.preacher.image}
+                    name={joinNames(paneTwo.preacher.name)}
+                    heading="Sermon by"
+                  />
                 </section>
               </div>
             ) : (

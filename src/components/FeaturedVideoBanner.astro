@@ -2,8 +2,14 @@
 import Button from "./Button.astro";
 
 import { getSanityData } from "../lib/sanity";
-import { formatDateShort, getWeekday, timeFormatter } from "../utils/format";
+import {
+  formatDateShort,
+  getWeekday,
+  timeFormatter,
+  format12HourTime,
+} from "../utils/format";
 import getYouTubeId from "get-youtube-id";
+import { DateTime } from "luxon";
 
 const homeYouTubeID = "https://www.youtube.com/live/Gh2c1aAQkJc?feature=share";
 import churchBg from "../assets/images/church-ext-2.jpg";
@@ -23,7 +29,7 @@ const latestService =
 const compileServiceTypes = (array) => {
   const types = [];
   array.forEach((type) =>
-    types.push(`${timeFormatter(type.serviceTime)} ${type.name}`)
+    types.push(`${format12HourTime(type.serviceTime)} ${type.name}`)
   );
   return types;
 };
@@ -61,10 +67,16 @@ const compileServiceTypes = (array) => {
       <div class="video-header flow">
         <div>
           <h2 class="small-title color-primary-200">
-            {`This ${getWeekday(latestService.date)}`}
+            {`This ${DateTime.fromISO(latestService.date).toFormat("cccc")}`}
+            <!-- {`This ${getWeekday(latestService.date)}`} -->
           </h2>
           <h3 class="text-step-3 color-white">
-            {formatDateShort(latestService.date)}
+            {
+              DateTime.fromISO(latestService.date).toLocaleString(
+                DateTime.DATE_FULL
+              )
+            }
+            <!-- {formatDateShort(latestService.date)} -->
           </h3>
         </div>
         <p>{compileServiceTypes(latestService.serviceType).join(" & ")}</p>

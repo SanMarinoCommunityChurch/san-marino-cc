@@ -2,7 +2,7 @@
 import { urlFor } from "../lib/sanity";
 import { joinNames } from "../utils/format";
 
-const { image, imageAlt, name, href } = Astro.props;
+const { image, imageAlt, heading = "Contact", name, href } = Astro.props;
 ---
 
 <div class="contact flex">
@@ -14,10 +14,16 @@ const { image, imageAlt, name, href } = Astro.props;
     )
   }
   <div>
-    <div class="small-title">Contact</div>
-    <a href={href} class="text-step--1">
-      {name}
-    </a>
+    <div class="small-title">{heading}</div>
+    {
+      href ? (
+        <a href={href} class="text-step--1">
+          {name}
+        </a>
+      ) : (
+        <div class="text-step--1">{name}</div>
+      )
+    }
   </div>
 </div>
 
@@ -35,5 +41,6 @@ const { image, imageAlt, name, href } = Astro.props;
 
   .small-title {
     color: var(--color-primary-800);
+    margin-bottom: 3px;
   }
 </style>
