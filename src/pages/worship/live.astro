@@ -109,7 +109,7 @@ const recentServices = await getSanityData(
               }
             </div>
             <ContactAvatar
-              image={paneOne.preacher.image}
+              image={paneOne.preacher.image && paneOne.preacher.image}
               name={joinNames(paneOne.preacher.name)}
               heading="Sermon by"
             />
@@ -153,7 +153,7 @@ const recentServices = await getSanityData(
                     )}
                   </div>
                   <ContactAvatar
-                    image={paneTwo.preacher.image}
+                    image={paneTwo.preacher.image && paneTwo.preacher.image}
                     name={joinNames(paneTwo.preacher.name)}
                     heading="Sermon by"
                   />
