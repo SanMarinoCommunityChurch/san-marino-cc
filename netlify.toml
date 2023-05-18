@@ -1,0 +1,19 @@
+[[redirects]]
+  from = "/welcome"
+  to = "/welcome/im-new"
+  status = 200
+
+[[redirect]]
+  from = "/worship"
+  to = "/worship/live"
+  status = 200
+
+[[redirect]]
+  from = "/connect"
+  to = "/connect/events"
+  status = 200
+
+[[redirect]]
+  from = "/who-we-are"
+  to = "/who-we-are/mission-and-beliefs"
+  status = 200
