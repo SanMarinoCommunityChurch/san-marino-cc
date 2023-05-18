@@ -110,7 +110,7 @@ const recentServices = await getSanityData(
               <div>
                 <div class="small-title">Sermon by</div>
                 <a href="#" class="text-step--1"
-                  >{joinNames(paneOne.preacher)}</a
+                  >{joinNames(paneOne.preacher.name)}</a
                 >
               </div>
             </div>
@@ -158,7 +158,7 @@ const recentServices = await getSanityData(
                     <div>
                       <div class="small-title">Sermon by</div>
                       <a href="#" class="text-step--1">
-                        {joinNames(paneTwo.preacher)}
+                        {joinNames(paneTwo.preacher.name)}
                       </a>
                     </div>
                   </div>

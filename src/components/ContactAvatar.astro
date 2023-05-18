@@ -1,0 +1,39 @@
+---
+import { urlFor } from "../lib/sanity";
+import { joinNames } from "../utils/format";
+
+const { image, imageAlt, name, href } = Astro.props;
+---
+
+<div class="contact flex">
+  {
+    image && (
+      <div class="frame square">
+        <img src={urlFor(image).width(200).url()} alt="" width={200} />
+      </div>
+    )
+  }
+  <div>
+    <div class="small-title">Contact</div>
+    <a href={href} class="text-step--1">
+      {name}
+    </a>
+  </div>
+</div>
+
+<style>
+  .contact .frame.square {
+    border-radius: 9999px;
+    width: 5rem;
+    height: 5rem;
+  }
+
+  .contact.flex {
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .small-title {
+    color: var(--color-primary-800);
+  }
+</style>

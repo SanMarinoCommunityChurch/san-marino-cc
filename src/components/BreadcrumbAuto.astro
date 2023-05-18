@@ -1,0 +1,58 @@
+---
+import { capitalizeFirstLetter } from "../utils/format";
+
+const { navigation, className } = Astro.props;
+
+// const origin = url.origin;
+// const deconstructedPathnames = url.pathname.split("/");
+// console.log(deconstructedPathnames);
+// const breadcrumbPieces = deconstructedPathnames.map(path => {
+//     const name = capitalizeFirstLetter(path);
+//     const url = ;
+
+//     return {
+//         name: name,
+//         url: name
+//     }
+// })
+---
+
+<ul class:list={["text-step--1 cluster small-title", className]}>
+  <li><a href="/" class="breadcrumb-link">Home</a></li>
+  {
+    navigation &&
+      navigation.map((item) => (
+        <Fragment>
+          <span class="divider">&gt;</span>
+          <li>
+            {!item.current ? (
+              <a href={item.href} class="breadcrumb-link">
+                {item.name}
+              </a>
+            ) : (
+              <Fragment>{item.name}</Fragment>
+            )}
+          </li>
+        </Fragment>
+      ))
+  }
+</ul>
+
+<style>
+  .divider {
+    color: var(--color-primary-300);
+  }
+
+  .breadcrumb-link {
+    color: var(--color-primary-700);
+    text-decoration: none;
+  }
+
+  .breadcrumb-link:hover {
+    text-decoration: underline;
+  }
+
+  .cluster {
+    --cluster-space: 0.5rem;
+  }
+</style>

@@ -66,12 +66,27 @@ const capitalizeFirstLetter = (string) => {
 };
 
 const joinNames = (object) => {
+  const orderedNames = [];
+
+  for (const [key, value] of Object.entries(object)) {
+    switch (key) {
+      case "firstName":
+        orderedNames.splice(0, 0, value);
+        continue;
+      case "lastName":
+        orderedNames.splice(1, 0, value);
+        continue;
+      case "title":
+        orderedNames.splice(0, 0, value);
+        break;
+    }
+  }
   // mapped to object keys from Sanity content
-  const orderedNames = [
-    object.name.title,
-    object.name.firstName,
-    object.name.lastName,
-  ];
+  // const orderedNames = [
+  //   object.name.title,
+  //   object.name.firstName,
+  //   object.name.lastName,
+  // ];
   const fullName = orderedNames.join(" ");
   return fullName;
 };

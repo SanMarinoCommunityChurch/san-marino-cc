@@ -1,8 +1,10 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import ThirdLayout from "../../../layouts/ThirdLayout.astro";
-import Card from "../../../components/Card.astro"
-import DateLabel from "../../../components/Events/DateLabel.astro"
+import Card from "../../../components/Card.astro";
+import DateLabel from "../../../components/Events/DateLabel.astro";
+import ContactAvatar from "../../../components/ContactAvatar.astro";
+import MiniPreviewCard from "../../../components/MiniPreviewCard.astro"
 import MoreLikeThis from "../../../components/MoreLikeThis.astro";
 import Feature from "../../../components/Feature.astro";
 import Button from "../../../components/Button.astro";
@@ -10,13 +12,13 @@ import InnerHero from "../../../components/InnerHero.astro";
 import Breadcrumb from "../../../components/Breadcrumb.astro";
 import ServiceInfo from "../../../components/ServiceInfo.astro";
 import { eventsPreview, eventsDetail } from "../../../lib/sanityQueries";
-import { randomizeAndSlice } from "../../../utils/data"
+import { randomizeAndSlice } from "../../../utils/data";
 
 import { PortableText } from "astro-portabletext";
 import {
   formatDateSlug,
   formatDate,
-  timeFormatter,
+  formatDateShort,
   formatTimeFromDate,
   capitalizeFirstLetter,
   joinNames,
@@ -38,6 +40,21 @@ export async function getStaticPaths() {
 
 const { slug } = Astro.params;
 const { page } = Astro.props;
+const origin = Astro.url.origin;
+const breadcrumbs = [
+  {
+    name: 'Connect',
+    href: '/connect'
+  },
+  {
+    name: 'Events',
+    href: '/connect/events'
+  },
+  {
+    name: page.name,
+    current: true
+  },
+];
 
 const otherEvents = await getSanityData(eventsPreview);
 const randomizedEvents = randomizeAndSlice(otherEvents, 'type', page, 3);
@@ -47,38 +64,43 @@ const randomizedEvents = randomizeAndSlice(otherEvents, 'type', page, 3);
   title={page.name}
   header={page.name}
   preview={page.preview}
-  breadcrumbs="breadcrumbs"
+  breadcrumbs={breadcrumbs}
   featuredImage={page.image && urlFor(page.image).url()}
 >
+  <div slot="eyebrow" class="eyebrow cluster">
+    <div class="small-title heading-category">Category</div>
+    <time class="small-title">{formatDateShort(page.date)}</time>
+  </div>
   <div slot="main-panel">
     <PortableText value={page.description} />
   </div>
   <div slot="sidebar">
     <div class="sidebar-content">
+      <div class="event-box-wrapper">
         <div class="event-box">
-            <div class="">
+            <div>
                 <h3 class="text-step-2">Event Details</h3>
                 <ul class="event-details flow">
                     <li>
                         <div class="small-title cluster">
-                            <span>x</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="14" height="14"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M160 32c0-17.7-14.3-32-32-32S96 14.3 96 32V64H48C21.5 64 0 85.5 0 112v80H448V112c0-26.5-21.5-48-48-48H352V32c0-17.7-14.3-32-32-32s-32 14.3-32 32V64H160V32z"/><path class="fa-secondary" d="M0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192z"/></svg>
                             <span>Date</span>
                         </div>
                         <time class="text-step--1">{formatDate(page.date)}</time>
                     </li>
                     <li>
                         <div class="small-title cluster">
-                            <span>x</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="14" height="14"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M256 96c-13.3 0-24 10.7-24 24V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24z"/><path class="fa-secondary" d="M256 0a256 256 0 1 1 0 512A256 256 0 1 1 256 0zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"/></svg>
                             <span>Time</span>
                         </div>
                         <time class="text-step--1">{formatTimeFromDate(page.date)}</time>
                         {page.hasEndDate &&
-                            <span>– <time>{formatTimeFromDate(page.endDate)}</time></span>
+                            <span class="text-step--1">– <time class="text-step--1">{formatTimeFromDate(page.endDate)}</time></span>
                         }
                     </li>
                     <li>
                         <div class="small-title cluster">
-                            <span>x</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="14" height="14"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M192 144a48 48 0 1 0 0 96 48 48 0 1 0 0-96z"/><path class="fa-secondary" d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 112a80 80 0 1 1 0 160 80 80 0 1 1 0-160z"/></svg>
                             <span>Location</span>
                         </div>
                         <div class="text-step--1">{page.location}</div>
@@ -88,7 +110,16 @@ const randomizedEvents = randomizeAndSlice(otherEvents, 'type', page, 3);
             <img src={bgImage} alt="" class="img" />
         </div>
         <div class="event-box-lower">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim, alias?
+            {page.associatedMinistry ?
+            <div class="flow">
+              <div class="small-title">Associated Ministry</div>
+              <MiniPreviewCard href={`/connect/ministries/${page.associatedMinistry.slug}`} image={urlFor(page.associatedMinistry.image).width(300).url()} imageAlt="">
+                <div class="text-step-1 font-header">{page.associatedMinistry.name}</div>
+              </MiniPreviewCard>
+            </div> :
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim, alias?</p>
+            }
+        </div>
         </div>
     </div>
   </div>
@@ -127,6 +158,9 @@ const randomizedEvents = randomizeAndSlice(otherEvents, 'type', page, 3);
             </li>
         )}
     </ul>
+    <div class="center-items">
+      <Button href="/connect/events">See All Events</Button>
+    </div>
     <!-- <MoreLikeThis relatedItems={randomizedEvents} /> -->
   </div>
 </ThirdLayout>
@@ -157,6 +191,15 @@ const randomizedEvents = randomizeAndSlice(otherEvents, 'type', page, 3);
     padding-top: 1rem;
   }
 
+  .eyebrow.cluster {
+    margin-bottom: 0.75rem;
+  }
+
+  .eyebrow > :last-child {
+    font-variant-numeric: lining-nums;
+    color: var(--color-primary-800);
+  }
+
   .small-title.event-category {
     display: inline-block;
     color: var(--color-primary-900);
@@ -165,6 +208,12 @@ const randomizedEvents = randomizeAndSlice(otherEvents, 'type', page, 3);
     margin-bottom: 8px;
     background-color: var(--color-primary-100);
     border-radius: var(--rounded-corners-small);
+  }
+
+  .event-box-wrapper {
+    --shadow: 0px 4px 40px hsl(217deg 87% 40% / 20%);
+    box-shadow: var(--shadow);
+    border-radius: var(--rounded-corners);
   }
 
   .event-box {
@@ -184,6 +233,14 @@ const randomizedEvents = randomizeAndSlice(otherEvents, 'type', page, 3);
     padding: 2rem;
     border-bottom-left-radius: var(--rounded-corners);
     border-bottom-right-radius: var(--rounded-corners);
+  }
+
+  .event-box-lower .flow {
+    --flow-space: 0.5rem;
+  }
+
+  .event-box-lower .font-header {
+    line-height: 1.2;
   }
 
   .event-box > div {
@@ -211,6 +268,23 @@ const randomizedEvents = randomizeAndSlice(otherEvents, 'type', page, 3);
   }
 
   .event-details .small-title.cluster {
-    --cluster-space: 6px;
+    --cluster-space: 9px;
+  }
+
+  .event-details svg {
+    fill: var(--color-primary-800);
+  }
+
+  .small-title.heading-category {
+    font-size: 14px;
+    display: inline-block;
+    text-decoration: none;
+    color: var(--color-primary-800);
+    width: fit-content;
+    line-height: 1;
+    padding: 6px 9px;
+    background-color: var(--color-primary-100);
+    border-radius: var(--rounded-corners-small);
+    transition: all 0.2s ease;
   }
 </style>

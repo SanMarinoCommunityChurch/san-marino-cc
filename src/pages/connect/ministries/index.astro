@@ -4,7 +4,7 @@ import Card from "../../../components/Card.astro";
 import InnerHero from "../../../components/InnerHero.astro";
 import Feature from "../../../components/Feature.astro"
 import { getSanityData, urlFor } from "../../../lib/sanity";
-import { ministriesPreview } from "../../../lib/sanityQueries"
+import { ministriesPreview, ministryTypeWithMinistriesPreview } from "../../../lib/sanityQueries"
 
 import placeholderImg from "../../../assets/images/church-ext-2.jpg"
 
@@ -31,6 +31,7 @@ const localNav = {
 };
 
 const ministries = await getSanityData(ministriesPreview);
+const ministryTypes = await getSanityData(ministryTypeWithMinistriesPreview);
 
 const categories = [
   { title: "Adult Ministry", value: "adult" },
@@ -58,6 +59,16 @@ const bgImage = "/church-garden.jpg"
             <h2 slot="header" class="text-step-2">Adult Ministries</h2>
             <p slot="body">We offer a wide range of weekly activities for our community to connect in fellowship, in addition to larger special events. All are welcome to participate. We hope you'll join us!</p>
         </Feature>
+        <div>
+          {ministryTypes.map(item =>
+            <div>{item.name}</div>
+            <ul style="border-top: 1px solid red;">
+              {item.ministries.map(ministry =>
+                  <li>{ministry.name}</li>
+                )}  
+            </ul>
+          )}
+        </div>
         <div class="ministry-list">
             {
             ministries.map((ministry) => (
@@ -72,7 +83,7 @@ const bgImage = "/church-garden.jpg"
                     }
                 >
                 <div slot="header" class="small-title ministry-category">
-                    {ministry.type}
+                    {ministry.category.name}
                 </div>
                 <p slot="body" class="text-step--1">
                     {ministry.preview}
@@ -132,10 +143,10 @@ const bgImage = "/church-garden.jpg"
 
   .small-title.ministry-category {
     display: inline-block;
-    color: var(--color-primary-900);
+    color: var(--color-primary-800);
     line-height: 1;
     padding: 4px 6px;
-    margin-bottom: 8px;
+    margin-bottom: 9px;
     background-color: var(--color-primary-100);
     border-radius: var(--rounded-corners-small);
   }

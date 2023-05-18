@@ -4,11 +4,11 @@ const { section, sectionURL, page, pageURL, url } = Astro.props;
 
 <ul class="text-step--1 cluster">
   <li><a href="/">Home</a></li>
-  <span>•</span>
+  <span>&gt;</span>
   <li>{section}</li>
-  <span>•</span>
+  <span>&gt;</span>
   <li><a href={pageURL}>{page}</a></li>
-  <span>•</span>
+  <span>&gt;</span>
   <li>{url}</li>
 </ul>
 

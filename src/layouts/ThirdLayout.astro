@@ -1,5 +1,6 @@
 ---
 import Layout from "./Layout.astro";
+import BreadcrumbAuto from "../components/BreadcrumbAuto.astro";
 
 const { title, header, breadcrumbs, preview, featuredImage } = Astro.props;
 ---
@@ -7,12 +8,15 @@ const { title, header, breadcrumbs, preview, featuredImage } = Astro.props;
 <Layout title={title}>
   <main slot="main">
     <article>
-      <div>{breadcrumbs}</div>
+      <BreadcrumbAuto navigation={breadcrumbs} className="breadcrumb-wrapper" />
       <div class="content-wrapper with-sidebar">
         <div class="main-panel flow">
           <section class="header flow">
-            <h1 class="text-step-7">{header}</h1>
-            <p class="text-step-1">{preview}</p>
+            <div>
+              <slot name="eyebrow">Eyebrow</slot>
+              <h1 class="text-step-6">{header}</h1>
+            </div>
+            <p class="text-step-1"><em>{preview}</em></p>
           </section>
           {
             featuredImage && (
@@ -41,8 +45,8 @@ const { title, header, breadcrumbs, preview, featuredImage } = Astro.props;
 
 <style>
   .content-wrapper.with-sidebar {
-    padding-block-start: var(--space-2xl);
-    padding-block-end: var(--space-3xl);
+    --sidebar-gap: 5rem;
+    padding-block: var(--space-3xl);
   }
 
   .main-panel.flow {
@@ -56,6 +60,14 @@ const { title, header, breadcrumbs, preview, featuredImage } = Astro.props;
   .highlight-section {
     padding-block: var(--space-3xl);
     background-color: var(--color-primary-100);
+  }
+
+  .breadcrumb-wrapper {
+    position: relative;
+    z-index: 10;
+    padding-inline-start: var(--space-l);
+    top: 1rem;
+    width: fit-content;
   }
 
   /* .content-wrapper.content {

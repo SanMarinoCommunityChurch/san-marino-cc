@@ -3,6 +3,7 @@ import Layout from "../../../layouts/Layout.astro";
 import ThirdLayout from "../../../layouts/ThirdLayout.astro";
 import MoreLikeThis from "../../../components/MoreLikeThis.astro";
 import ImageCard from "../../../components/ImageCard.astro";
+import ContactAvatar from "../../../components/ContactAvatar.astro";
 import Button from "../../../components/Button.astro";
 import InnerHero from "../../../components/InnerHero.astro";
 import Breadcrumb from "../../../components/Breadcrumb.astro";
@@ -23,7 +24,6 @@ import {
 import { getSanityData, urlFor } from "../../../lib/sanity";
 
 import pastorHeadshot from "../../../assets/images/jessica-vaughan-lower-headshot.jpg";
-import { A } from "../../../../studio/dist/static/sanity-47071979";
 
 export async function getStaticPaths() {
   const pages = await getSanityData(ministriesDetail);
@@ -39,10 +39,26 @@ export async function getStaticPaths() {
 const { slug } = Astro.params;
 const { page } = Astro.props;
 
+const breadcrumbs = [
+  {
+    name: "Connect",
+    href: "/connect",
+  },
+  {
+    name: "Ministries",
+    href: "/connect/ministries",
+  },
+  {
+    name: page.name,
+    current: true,
+  },
+];
+
 const otherMinistries = await getSanityData(ministriesPreview);
+// FIX: filterable is category.name. Also check events
 const randomizedMinistries = randomizeAndSlice(
   otherMinistries,
-  "type",
+  "category",
   page,
   3
 );
@@ -52,11 +68,24 @@ const randomizedMinistries = randomizeAndSlice(
   title={page.name}
   header={page.name}
   preview={page.preview}
-  breadcrumbs="breadcrumbs"
+  breadcrumbs={breadcrumbs}
   featuredImage={urlFor(page.image).url()}
 >
   <div slot="main-panel">
     <PortableText value={page.description} />
+  </div>
+  <div slot="sidebar" class="sidebar-content">
+    {
+      page.person && (
+        <div>
+          <ContactAvatar
+            image={page.person.image}
+            name={joinNames(page.person.name)}
+          />
+        </div>
+      )
+    }
+    <div></div>
     {
       // Check if there are any associated events before rendering
       page.associatedEvents[0] && (
@@ -71,7 +100,6 @@ const randomizedMinistries = randomizeAndSlice(
       )
     }
   </div>
-  <div slot="sidebar">sidebar</div>
   <!-- <section slot="cta" class="content-wrapper cta">
     <Feature />
   </section> -->
@@ -108,5 +136,9 @@ const randomizedMinistries = randomizeAndSlice(
   .responsive-grid {
     --gap: 2rem;
     --item-min-width: 20rem;
+  }
+
+  .sidebar-content {
+    padding-top: 1rem;
   }
 </style>
