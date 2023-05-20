@@ -1,12 +1,18 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import Card from "../../../components/Card.astro";
+import Button from "../../../components/Button.astro";
+import ImageCard from "../../../components/ImageCard.astro";
 import InnerHero from "../../../components/InnerHero.astro";
-import Feature from "../../../components/Feature.astro"
+import Feature from "../../../components/Feature.astro";
+import MinistrySlider from "../../../components/MinistrySlider.astro";
 import { getSanityData, urlFor } from "../../../lib/sanity";
-import { ministriesPreview, ministryTypeWithMinistriesPreview } from "../../../lib/sanityQueries"
+import {
+  ministriesPreview,
+  ministryTypeWithMinistriesPreview,
+} from "../../../lib/sanityQueries";
 
-import placeholderImg from "../../../assets/images/church-ext-2.jpg"
+import placeholderImg from "../../../assets/images/church-ext-2.jpg";
 
 const localNav = {
   section: "Connect",
@@ -31,19 +37,31 @@ const localNav = {
 };
 
 const ministries = await getSanityData(ministriesPreview);
-const ministryTypes = await getSanityData(ministryTypeWithMinistriesPreview);
+const ministryTypesToSort = await getSanityData(
+  ministryTypeWithMinistriesPreview
+);
 
-const categories = [
-  { title: "Adult Ministry", value: "adult" },
-  { title: "Youth Ministry", value: "youth" },
-  { title: "Children's Ministry", value: "children" },
-  { title: "Music Ministry", value: "music" },
-];
+const ministryTypes = ministryTypesToSort.sort((a, b) => {
+  if (a.name < b.name) {
+    return -1;
+  }
+  if (a.name > b.name) {
+    return 1;
+  }
+  return 0;
+});
+
+// const categories = [
+//   { title: "Adult Ministry", value: "adult" },
+//   { title: "Youth Ministry", value: "youth" },
+//   { title: "Children's Ministry", value: "children" },
+//   { title: "Music Ministry", value: "music" },
+// ];
 
 const pageTitle = "Ministries";
 const pageDescription =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
-const bgImage = "/church-garden.jpg"
+const bgImage = "/church-garden.jpg";
 ---
 
 <Layout title={pageTitle}>
@@ -55,21 +73,41 @@ const bgImage = "/church-garden.jpg"
       bgImage={bgImage}
     />
     <article class="content-wrapper flow">
-        <Feature>
-            <h2 slot="header" class="text-step-2">Adult Ministries</h2>
-            <p slot="body">We offer a wide range of weekly activities for our community to connect in fellowship, in addition to larger special events. All are welcome to participate. We hope you'll join us!</p>
-        </Feature>
-        <div>
-          {ministryTypes.map(item =>
-            <div>{item.name}</div>
-            <ul style="border-top: 1px solid red;">
-              {item.ministries.map(ministry =>
-                  <li>{ministry.name}</li>
-                )}  
-            </ul>
-          )}
-        </div>
-        <div class="ministry-list">
+      <MinistrySlider slides={ministryTypes} items="ministries" />
+      <div class="center-items">
+        <Button href="#thumbnail-slider">Back to Top</Button>
+      </div>
+      <!-- <Feature>
+        <h2 slot="header" class="text-step-2">Adult Ministries</h2>
+        <p slot="body">
+          We offer a wide range of weekly activities for our community to
+          connect in fellowship, in addition to larger special events. All are
+          welcome to participate. We hope you'll join us!
+        </p>
+      </Feature> -->
+      <!-- <div>
+        {
+          ministryTypes.map((item) => (
+            <>
+              <div>{item.name}</div>
+              <ul class="ministry-list">
+                {item.ministries.map((ministry) => (
+                  <li>
+                    <ImageCard
+                      imgSrc={urlFor(ministry.image).width(600).url()}
+                      imgAlt=""
+                      title={ministry.name}
+                      description={ministry.preview}
+                      href={`/connect/ministries/${ministry.slug}`}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </>
+          ))
+        }
+      </div> -->
+      <!-- <div class="ministry-list">
             {
             ministries.map((ministry) => (
                 <Card 
@@ -97,7 +135,7 @@ const bgImage = "/church-garden.jpg"
                 </Card>
             ))
             }
-        </div>
+        </div> -->
     </article>
   </main>
 </Layout>
@@ -129,10 +167,6 @@ const bgImage = "/church-garden.jpg"
     overflow: hidden;
   }
 
-  .center-items {
-    margin-top: var(--space-2xl);
-  }
-
   .location-footer.cluster {
     gap: 4px;
   }
@@ -149,5 +183,9 @@ const bgImage = "/church-garden.jpg"
     margin-bottom: 9px;
     background-color: var(--color-primary-100);
     border-radius: var(--rounded-corners-small);
+  }
+
+  .center-items {
+    margin-top: var(--space-s);
   }
 </style>

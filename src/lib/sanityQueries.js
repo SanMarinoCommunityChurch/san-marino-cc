@@ -13,12 +13,28 @@ const eventsPreview = `*[_type == 'event'] | order(date asc) {
   "slug": slug.current,
   location,
   preview,
-  eventType
+  eventType->{
+    name,
+    "slug": slug.current
+  }
+}`;
+
+const eventTypes = `*[_type == 'eventType'] {
+  name,
+  "slug": slug.current,
+  "events": *[_type == 'event' && references(^._id)] {
+    ...,
+    "image": image.asset->,
+    "slug": slug.current
+  }
 }`;
 
 const eventsDetail = `*[_type == 'event'] {
   ...,
-  eventType,
+  eventType->{
+    name,
+    "slug": slug.current
+  },
   "category": category->name,
   "categorySlug": category->slug.current,
   "image": image.asset->,
@@ -153,6 +169,7 @@ const adminStaffMembers = `*[_type == 'person' && type.mainType == 'staff' && ty
 
 export {
   eventsPreview,
+  eventTypes,
   eventsDetail,
   ministriesPreview,
   ministryTypeWithMinistriesPreview,

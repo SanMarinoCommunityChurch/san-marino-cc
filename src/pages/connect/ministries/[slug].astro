@@ -51,7 +51,7 @@ const breadcrumbs = [
 ];
 
 const otherMinistries = await getSanityData(ministriesPreview);
-// FIX: filterable is category.name. Also check events
+
 const randomizedMinistries = randomizeAndSlice(
   otherMinistries,
   "ministryType",
@@ -141,6 +141,9 @@ const randomizedMinistries = randomizeAndSlice(
         ))
       }
     </ul>
+    <div class="center-items">
+      <Button href="/connect/ministries">See All Ministries</Button>
+    </div>
     <!-- <MoreLikeThis relatedItems={randomizedMinistries} /> -->
   </div>
 </ThirdLayout>

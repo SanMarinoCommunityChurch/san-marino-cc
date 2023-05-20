@@ -39,7 +39,7 @@ const bgImageStyle = `linear-gradient(to top, hsla(217, 86%, 20%, 0.9) 15%, hsla
       </ul>
     </div>
   </div>
-  <div class="overlay"></div>
+  <div class="overlay" style={`--display:${bgImage ? "none" : "block"}`}></div>
 </section>
 
 <style>
@@ -106,6 +106,7 @@ const bgImageStyle = `linear-gradient(to top, hsla(217, 86%, 20%, 0.9) 15%, hsla
   }
 
   .hero .overlay {
+    display: var(--display);
     position: absolute;
     -webkit-mask-image: linear-gradient(to bottom, black, transparent 60%);
     mask-image: linear-gradient(to bottom, black, transparent 60%);

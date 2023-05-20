@@ -531,6 +531,7 @@ select {
   font-weight: var(--font-weight-header);
 }
 
+/*
 .small-title {
   font-family: var(--font-secondary);
   font-weight: var(--font-weight-semi);
@@ -546,10 +547,7 @@ select {
 :where(a, button):not(.btn, .logo):hover {
   text-decoration: none;
 }
-
-.paragraphs.flow {
-  --flow-space: 1.5rem;
-}
+*/
 
 /* Svelte component button resets */
 .menu-toggle,
@@ -607,6 +605,7 @@ select {
 }
 
 /* Composition utilities */
+/*
 .flow {
   --flow-space: 1rem;
   display: flex;
@@ -636,7 +635,9 @@ select {
   justify-content: var(--justify);
   align-items: var(--align);
 }
+*/
 
+/*
 .with-sidebar {
   --sidebar-gap: 3rem;
   --sidebar-min-width: 25rem;
@@ -656,7 +657,9 @@ select {
   flex-grow: 999;
   min-inline-size: var(--main-min-width);
 }
+*/
 
+/*
 .responsive-grid {
   --gap: 1rem;
   --item-min-width: 30rem;
@@ -709,3 +712,4 @@ select {
   align-items: center;
   text-align: center;
 }
+*/

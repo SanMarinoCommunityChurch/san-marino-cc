@@ -6,7 +6,7 @@ import CategoryList from "../../../components/Events/CategoryList.astro";
 import InnerHero from "../../../components/InnerHero.astro";
 import { getSanityData, urlFor } from "../../../lib/sanity";
 import EventsList from "../../../components/Events/EventsList.astro";
-import { eventsPreview } from "../../../lib/sanityQueries";
+import { eventsPreview, eventTypes } from "../../../lib/sanityQueries";
 
 const localNav = {
   section: "Connect",
@@ -31,14 +31,16 @@ const localNav = {
 };
 
 const events = await getSanityData(eventsPreview);
+// refactor to get from eventsPreview data -- function get unique
+const categories = await getSanityData(eventTypes);
 
-const categories = [
-  { title: "Adult Ministry", value: "adult" },
-  { title: "Youth Ministry", value: "youth" },
-  { title: "Children's Ministry", value: "children" },
-  { title: "Music Ministry", value: "music" },
-  { title: "Program", value: "program" },
-];
+// const categories = [
+//   { title: "Adult Ministry", value: "adult" },
+//   { title: "Youth Ministry", value: "youth" },
+//   { title: "Children's Ministry", value: "children" },
+//   { title: "Music Ministry", value: "music" },
+//   { title: "Program", value: "program" },
+// ];
 
 const pageTitle = "Events & Programs";
 const pageDescription =

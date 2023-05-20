@@ -72,7 +72,7 @@ const categorySlug = page.eventType == 'ministry' ? page.associatedMinistry.type
   featuredImage={page.image && urlFor(page.image).url()}
 >
   <div slot="eyebrow" class="eyebrow cluster">
-    <a class="small-title heading-category" href={`/connect/events/${categorySlug}`}>{categoryName}</a>
+    <a class="small-title heading-category" href={`/connect/events/${page.eventType.slug}`}>{`${page.eventType.name} event`}</a>
     <time class="small-title" datetime={page.date}>{DateTime.fromISO(page.date).toLocaleString(DateTime.DATE_FULL)}</time>
   </div>
   <div slot="main-panel">

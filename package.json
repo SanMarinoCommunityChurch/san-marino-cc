@@ -12,6 +12,7 @@
   "dependencies": {
     "@astrojs/svelte": "^2.1.0",
     "@splidejs/splide": "^4.1.4",
+    "@splidejs/splide-extension-url-hash": "^0.3.0",
     "astro": "^2.3.0",
     "motion": "^10.15.5",
     "svelte": "^3.58.0"

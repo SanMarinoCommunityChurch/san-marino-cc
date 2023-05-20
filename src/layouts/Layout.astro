@@ -187,4 +187,127 @@ const { title } = Astro.props;
     padding-inline: var(--gutter);
     margin-inline: auto;
   }
+
+  .with-sidebar {
+    --sidebar-gap: 3rem;
+    --sidebar-min-width: 25rem;
+    --main-min-width: 50%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sidebar-gap);
+  }
+
+  .with-sidebar > :last-child {
+    flex-basis: var(--sidebar-min-width);
+    flex-grow: 1;
+  }
+
+  .with-sidebar > :first-child {
+    flex-basis: 0;
+    flex-grow: 999;
+    min-inline-size: var(--main-min-width);
+  }
+
+  .flow {
+    --flow-space: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .flow > * {
+    margin-block: 0;
+  }
+
+  .flow > * + * {
+    margin-block-start: var(--flow-space);
+  }
+
+  .flex {
+    display: flex;
+  }
+
+  .cluster {
+    --cluster-space: 1rem;
+    --justify: flex-start;
+    --align: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cluster-space);
+    justify-content: var(--justify);
+    align-items: var(--align);
+  }
+
+  .responsive-grid {
+    --gap: 1rem;
+    --item-min-width: 30rem;
+    display: grid;
+    grid-gap: var(--gap);
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(min(var(--item-min-width), 100%), 1fr)
+    );
+  }
+
+  .frame {
+    --width: 4;
+    --height: 3;
+    aspect-ratio: var(--width) / var(--height);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .frame.video {
+    --width: 16;
+    --height: 9;
+  }
+
+  .frame.square {
+    --width: 1;
+    --height: 1;
+  }
+
+  .frame.avatar {
+    --width: 1;
+    --height: 1;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 9999px;
+  }
+
+  .frame > img,
+  .frame > video {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+
+  .center-items {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .small-title {
+    font-family: var(--font-secondary);
+    font-weight: var(--font-weight-semi);
+    font-size: var(--step--1);
+    letter-spacing: 1.5pt;
+    text-transform: uppercase;
+  }
+
+  .paragraphs.flow {
+    --flow-space: 1.5rem;
+  }
+
+  :where(a, button):not(.btn, .logo, .link) {
+    text-decoration: underline;
+  }
+
+  :where(a, button):not(.btn, .logo):hover {
+    text-decoration: none;
+  }
 </style>

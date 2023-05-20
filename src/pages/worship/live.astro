@@ -89,7 +89,7 @@ const recentServices = await getSanityData(
                 <h3 class="text-step-4">
                   {latestService.name || "Sunday Worship"}
                 </h3>
-                <time class="small-title"
+                <time class="small-title time"
                   >{
                     DateTime.fromISO(latestService.date).toLocaleString(
                       DateTime.DATE_FULL
@@ -137,7 +137,7 @@ const recentServices = await getSanityData(
                       <h3 class="text-step-4">
                         {latestService.name || "Sunday Worship"}
                       </h3>
-                      <time class="small-title">
+                      <time class="small-title time">
                         {DateTime.fromISO(latestService.date).toLocaleString(
                           DateTime.DATE_FULL
                         )}
@@ -233,9 +233,13 @@ const recentServices = await getSanityData(
     margin-block: 0.5rem;
   }
 
+  .time {
+    font-variant-numeric: lining-nums;
+  }
+
   .bullet-spacer {
     color: var(--color-primary-300);
-    margin-inline: 0.5rem;
+    margin-inline: 0.25rem;
   }
 
   .with-sidebar {

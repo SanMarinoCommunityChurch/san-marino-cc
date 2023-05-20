@@ -1,0 +1,274 @@
+---
+import Button from "./Button.astro";
+import { PortableText } from "astro-portabletext";
+import ImageCard from "./ImageCard.astro";
+import { urlFor } from "../lib/sanity";
+
+import placeholderImg from "../assets/images/church-ext-5.jpg";
+
+const { slides, items } = Astro.props;
+---
+
+<section class="splide" id="thumbnail-slider">
+  <div class="splide__track">
+    <ul class="splide__list thumbnails">
+      {
+        slides.map((slide) => (
+          <li class="splide__slide" data-splide-hash={slide.slug.current}>
+            <div class="thumbnail-slide font-header">{slide.name}</div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+<section class="splide" id="main-slider" aria-labelledby="slider-heading">
+  <div class="margin-top relative">
+    <div class="splide__arrows"></div>
+    <div class="splide__track">
+      <ul class="splide__list">
+        {
+          slides.map((slide) => (
+            <li class="splide__slide" data-splide-hash={slide.slug.current}>
+              <div class="relative">
+                <article class="ministry-preview with-sidebar">
+                  <div class="flow">
+                    <div class="header flow">
+                      <h2 class="text-step-3">{slide.name}</h2>
+                      <PortableText
+                        value={slide.description}
+                        class="text-step--1"
+                      />
+                    </div>
+                    <div class="more-link cluster">
+                      <Button
+                        href={`#${slide.slug.current}-list`}
+                        style="none"
+                        theme="primary"
+                        size="none"
+                      >
+                        <slot name="CTA">View Ministries</slot>
+                      </Button>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 448 512"
+                        aria-hidden="true"
+                        width="14"
+                        height="14"
+                      >
+                        <path d="M440.6 273.4c4.7-4.5 7.4-10.8 7.4-17.4s-2.7-12.8-7.4-17.4l-176-168c-9.6-9.2-24.8-8.8-33.9 .8s-8.8 24.8 .8 33.9L364.1 232 24 232c-13.3 0-24 10.7-24 24s10.7 24 24 24l340.1 0L231.4 406.6c-9.6 9.2-9.9 24.3-.8 33.9s24.3 9.9 33.9 .8l176-168z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="frame">
+                    <img
+                      src={urlFor(slide.image).width(900).url()}
+                      alt=""
+                      width={900}
+                    />
+                  </div>
+                </article>
+              </div>
+              <div class="content-pane" id={`${slide.slug.current}-list`}>
+                <div class="font-header">View {slide.name}</div>
+                <ul class="ministry-list">
+                  {slide[items].map((item) => (
+                    <li>
+                      <ImageCard
+                        imgSrc={urlFor(item.image).width(600).url()}
+                        imgAlt=""
+                        title={item.name}
+                        description={item.preview}
+                        href={`/connect/ministries/${item.slug}`}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .relative {
+    position: relative;
+  }
+
+  .with-sidebar {
+    --sidebar-min-width: 30rem;
+    align-items: center;
+  }
+
+  .ministry-preview {
+    display: relative;
+    background: var(--color-primary-100);
+    padding: var(--space-2xl);
+    border-radius: var(--rounded-corners);
+  }
+
+  .ministry-preview > .flow {
+    --flow-space: var(--space-l);
+  }
+
+  .ministry-preview .header.flow {
+    --flow-space: var(--space-s);
+  }
+
+  .ministry-preview .frame {
+    border-radius: var(--rounded-corners);
+  }
+
+  .more-link {
+    color: var(--color-primary-800);
+    width: fit-content;
+  }
+
+  .more-link svg {
+    transition: transform 0.2s ease;
+  }
+
+  .more-link:hover {
+    opacity: 0.7;
+  }
+
+  .more-link:hover svg {
+    transform: translateX(3px);
+  }
+
+  .ministry-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    padding-block-start: var(--space-s);
+  }
+
+  .ministry-list p {
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    overflow: hidden;
+  }
+
+  .content-pane {
+    padding-block-start: var(--space-l);
+  }
+
+  .content-pane .font-header {
+    font-size: var(--step-2);
+    color: var(--color-primary-800);
+  }
+
+  .splide__arrows {
+    position: relative;
+    top: -2rem;
+  }
+
+  /* .thumbnails {
+    display: flex;
+    gap: 2rem;
+  } */
+
+  #thumbnail-slider .splide__track {
+    padding-inline: 4rem !important;
+  }
+
+  #thumbnail-slider .splide__track--nav > .splide__list > .splide__slide {
+    border: none;
+    border-radius: var(--rounded-corners);
+  }
+
+  #thumbnail-slider
+    .splide__track--nav
+    > .splide__list
+    > .splide__slide:focus-visible {
+    border: none;
+    outline: 3px solid var(--color-primary-200);
+  }
+
+  #thumbnail-slider
+    .splide__track--nav
+    > .splide__list
+    > .splide__slide.is-active {
+    background: var(--color-primary-800);
+    border-radius: var(--rounded-corners);
+    border: none;
+  }
+
+  #thumbnail-slider
+    .splide__track--nav
+    > .splide__list
+    > .splide__slide.is-active:focus-visible {
+    outline: 3px solid var(--color-primary-200);
+  }
+
+  #thumbnail-slider
+    .splide__track--nav
+    > .splide__list
+    > .splide__slide.is-active
+    .font-header {
+    color: var(--color-white);
+    /* outline: 3px solid var(--color-primary-200); */
+  }
+
+  .thumbnail-slide {
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--rounded-corners);
+  }
+
+  .thumbnail-slide.font-header {
+    line-height: 1.15;
+    color: var(--color-primary-800);
+  }
+
+  .splide__arrows > * {
+    background: none !important;
+    transition: all 0.2s ease;
+  }
+
+  .splide__arrows .splide__arrow:hover {
+    background: var(--color-primary-100) !important;
+  }
+
+  .splide__arrows .splide__arrow svg {
+    fill: var(--color-primary-700) !important;
+  }
+</style>
+
+<script>
+  import Splide from "@splidejs/splide";
+  import { URLHash } from "@splidejs/splide-extension-url-hash";
+  import "@splidejs/splide/css";
+
+  const splide = new Splide("#main-slider", {
+    type: "loop",
+    drag: false,
+    gap: "2em",
+    pagination: false,
+    breakpoints: {
+      1024: {
+        padding: "20%",
+      },
+      768: {
+        padding: "15%",
+        gap: "1em",
+      },
+    },
+  });
+  const thumbnails = new Splide("#thumbnail-slider", {
+    rewind: true,
+    isNavigation: true,
+    gap: 10,
+    focus: "center",
+    pagination: false,
+    autoWidth: true,
+    // cover: true,
+    arrows: false,
+  });
+  splide.sync(thumbnails);
+  splide.mount({ URLHash });
+  thumbnails.mount({ URLHash });
+</script>

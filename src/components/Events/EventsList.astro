@@ -10,47 +10,47 @@ import { urlFor } from "../../lib/sanity";
 const placeholder = "/church-ext-bg.jpg"
 // import placeholderImg from "../../../assets/images/church-ext-2.jpg";
 
-const MINISTRYTYPES = [
-  {title: 'Adult Ministry', value: 'adult'},
-  {title: 'Youth Ministry', value: 'youth'},
-  {title: "Children's Ministry", value: 'children'},
-  {title: 'Music Ministry', value: 'music'},
-]
+// const MINISTRYTYPES = [
+//   {title: 'Adult Ministry', value: 'adult'},
+//   {title: 'Youth Ministry', value: 'youth'},
+//   {title: "Children's Ministry", value: 'children'},
+//   {title: 'Music Ministry', value: 'music'},
+// ]
 
 // Refactor this
-const assignCategory = (event) => {
-  let key = '';
-  let category = '';
-  if (event.associatedMinistry) {
-    key = event.associatedMinistry.type;
-  } else {
-    key = event.eventType
-  }
-  switch (key) {
-    case "program": 
-      category = "Program";
-      break;
-    case "oneTime": 
-      category = "Special Event";
-      break;
-    case MINISTRYTYPES[0].value: 
-      category = MINISTRYTYPES[0].title;
-      break;
-    case MINISTRYTYPES[1].value: 
-      category = MINISTRYTYPES[1].title;
-      break;
-    case MINISTRYTYPES[2].value: 
-      category = MINISTRYTYPES[2].title;
-      break;
-    case MINISTRYTYPES[3].value: 
-      category = MINISTRYTYPES[3].title;
-      break;
-    default:
-      category = "Event"
-      break;
-  }
-  return category;
-}
+// const assignCategory = (event) => {
+//   let key = '';
+//   let category = '';
+//   if (event.associatedMinistry) {
+//     key = event.associatedMinistry.type;
+//   } else {
+//     key = event.eventType
+//   }
+//   switch (key) {
+//     case "program": 
+//       category = "Program";
+//       break;
+//     case "oneTime": 
+//       category = "Special Event";
+//       break;
+//     case MINISTRYTYPES[0].value: 
+//       category = MINISTRYTYPES[0].title;
+//       break;
+//     case MINISTRYTYPES[1].value: 
+//       category = MINISTRYTYPES[1].title;
+//       break;
+//     case MINISTRYTYPES[2].value: 
+//       category = MINISTRYTYPES[2].title;
+//       break;
+//     case MINISTRYTYPES[3].value: 
+//       category = MINISTRYTYPES[3].title;
+//       break;
+//     default:
+//       category = "Event"
+//       break;
+//   }
+//   return category;
+// }
 
 const { events } = Astro.props;
 
@@ -81,7 +81,7 @@ const categoryName = (event) => {
             </div>
             <div class="flow text">
               <div class="small-title category">
-                {categoryName(event)}
+                {`${event.eventType.name} event`}
               </div>
               <header class="flow">
                 <h3 class="text-step-2 heading">{event.name}</h3>
@@ -149,7 +149,7 @@ const categoryName = (event) => {
     margin-block-start: 0;
   }
 
-  h2 {
+  h2.text-step-4 {
     margin-block-end: 1rem;
     position: sticky;
     top: 1rem;
@@ -180,6 +180,7 @@ const categoryName = (event) => {
   }
 
   .time {
+    font-variant-numeric: lining-nums;
     font-family: var(--font-secondary);
     font-weight: var(--font-weight-semi);
   }
@@ -225,7 +226,7 @@ const categoryName = (event) => {
 
   .bullet-spacer {
     color: var(--color-primary-300);
-    margin-inline: 0.5rem;
+    margin-inline: 0.25rem;
   }
 
   .text {

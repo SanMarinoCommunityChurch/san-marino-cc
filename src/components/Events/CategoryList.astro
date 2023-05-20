@@ -8,9 +8,9 @@ const { categories } = Astro.props;
       <li>
         <a
           class="small-title category"
-          href={`/connect/events/${category.value}`}
+          href={`/connect/events/${category.slug}`}
         >
-          {category.title}
+          {category.name}
         </a>
       </li>
     ))
@@ -19,24 +19,23 @@ const { categories } = Astro.props;
 
 <style>
   .cluster {
-    --cluster-space: 6px;
+    --cluster-space: 1rem;
   }
 
   .small-title.category {
-    font-size: 13px;
+    font-size: 14px;
     display: inline-block;
+    text-decoration: none;
     color: var(--color-primary-800);
+    width: fit-content;
     line-height: 1;
-    padding: 4px 6px;
-    margin-bottom: 8px;
+    padding: 6px 9px;
     background-color: var(--color-primary-100);
     border-radius: var(--rounded-corners-small);
-    width: fit-content;
-    text-decoration: none;
+    transition: all 0.2s ease;
   }
 
   .small-title.category:hover {
-    background-color: var(--color-primary-800);
-    color: var(--color-white);
+    background-color: var(--color-primary-200);
   }
 </style>
