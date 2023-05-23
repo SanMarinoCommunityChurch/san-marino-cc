@@ -43,7 +43,7 @@ const sanityNav = await getSanityData(navQuery);
       <div class="content-wrapper flow">
         <div>
           <p class="small-title">San Marino Community Church</p>
-          <h1 class="text-step-6 color-white">Join us for Easter!</h1>
+          <h1 class="text-step-7 color-white">Join us for Easter!</h1>
         </div>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -56,7 +56,10 @@ const sanityNav = await getSanityData(navQuery);
       </div>
       <div class="hero-bg">
         <div class="overlay"></div>
-        <img src={heroBg} alt="" />
+        <video playsinline autoplay muted loop id="home-video">
+          <source src="/video-bg-test.mp4" type="video/mp4" />
+        </video>
+        <!-- <img src={heroBg} alt="" /> -->
       </div>
     </article>
     <FeaturedVideoBanner />
@@ -246,13 +249,28 @@ const sanityNav = await getSanityData(navQuery);
       bottom: 0;
       left: 0;
       right: 0;
+      width: 100%;
+      height: 100%;
     }
 
     .hero .hero-bg .overlay {
       position: absolute;
       z-index: 1;
       inset: 0;
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    .hero .hero-bg video {
+      position: relative;
+      min-width: 100%;
+      min-height: 100%;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      width: auto;
+      height: auto;
+      z-index: -100;
+      background-size: cover;
     }
 
     .hero .hero-bg img {

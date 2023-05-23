@@ -11,33 +11,37 @@ const bgImageStyle = `linear-gradient(to top, hsla(217, 86%, 20%, 0.9) 15%, hsla
     bgImage ? bgImageStyle : "var(--color-primary-100)"
   }; --color:${bgImage ? "var(--color-white)" : ""}`}
 >
+  <slot name="breadcrumbs" />
   <div class="content-wrapper flow">
+    <slot name="eyebrow" />
     <h1 class:list={["text-step-6", bgImage && "color-white"]}>
       {pageTitle}
     </h1>
     <p>{pageDescription}</p>
-    <div class="cluster local-nav">
-      <div class="small-title">{localNav.section}</div>
-      <div class="divider">|</div>
-      <ul class="cluster">
-        {
-          localNav.children.map((item) => (
-            <li class="text-step--1">
-              <a
-                href={item.href}
-                style={
-                  Astro.url.pathname === item.href &&
-                  "color: var(--color-primary-300)"
-                }
-                class="link"
-              >
-                {item.name}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
+    {
+      localNav && (
+        <div class="cluster local-nav">
+          <div class="small-title">{localNav.section}</div>
+          <div class="divider">|</div>
+          <ul class="cluster">
+            {localNav.children.map((item) => (
+              <li class="text-step--1">
+                <a
+                  href={item.href}
+                  style={
+                    Astro.url.pathname === item.href &&
+                    "color: var(--color-primary-300)"
+                  }
+                  class="link"
+                >
+                  {item.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
   </div>
   <div class="overlay" style={`--display:${bgImage ? "none" : "block"}`}></div>
 </section>

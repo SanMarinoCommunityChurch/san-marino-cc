@@ -17,8 +17,8 @@ const { mainNavigation, fullNavigation } = Astro.props;
             <li>
               <Button
                 href={`/${navItem.href}`}
-                style={!navItem.button ? "nav" : "outline"}
-                theme={!navItem.button ? "neutral" : "primary"}
+                style={!navItem.button ? "nav" : "solid"}
+                theme={!navItem.button ? "neutral" : "primary-2"}
               >
                 {navItem.name}
               </Button>

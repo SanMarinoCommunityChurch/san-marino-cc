@@ -2,10 +2,11 @@
 import Layout from "../../../layouts/Layout.astro";
 import ThirdLayout from "../../../layouts/ThirdLayout.astro";
 import MoreLikeThis from "../../../components/MoreLikeThis.astro";
+import BreacrumbAuto from "../../../components/BreadcrumbAuto.astro";
+import InnerHero from "../../../components/InnerHero.astro";
 import ImageCard from "../../../components/ImageCard.astro";
 import ContactAvatar from "../../../components/ContactAvatar.astro";
 import Button from "../../../components/Button.astro";
-import InnerHero from "../../../components/InnerHero.astro";
 import Breadcrumb from "../../../components/Breadcrumb.astro";
 import ServiceInfo from "../../../components/ServiceInfo.astro";
 import { DateTime } from "luxon";
@@ -60,93 +61,121 @@ const randomizedMinistries = randomizeAndSlice(
 );
 ---
 
-<ThirdLayout
+<!-- <ThirdLayout
   title={page.name}
   header={page.name}
   preview={page.preview}
   breadcrumbs={breadcrumbs}
   featuredImage={urlFor(page.image).url()}
->
-  <div slot="eyebrow" class="eyebrow cluster">
-    <a
-      class="small-title heading-category"
-      href={`/connect/ministries#${page.typeSlug}`}>{page.category}</a
-    >
-  </div>
-  <div slot="main-panel">
-    <PortableText value={page.description} />
-  </div>
-  <div slot="sidebar" class="sidebar-content">
-    {
-      page.person && (
-        <div>
-          <ContactAvatar
-            image={page.person.image}
-            name={joinNames(page.person.name)}
-            href={page.person.contact.email && page.person.contact.email}
-          />
+> -->
+<Layout title="">
+  <main slot="main">
+    <InnerHero pageTitle={page.name} pageDescription={page.preview}>
+      <Fragment slot="breadcrumbs">
+        <BreacrumbAuto
+          navigation={breadcrumbs}
+          className="breadcrumb-wrapper"
+        />
+      </Fragment>
+      <div slot="eyebrow" class="eyebrow cluster" style="margin-bottom: -1rem;">
+        <a
+          class="small-title heading-category"
+          href={`/connect/ministries#${page.typeSlug}`}>{page.category}</a
+        >
+      </div>
+    </InnerHero>
+    <div class="content-wrapper with-sidebar">
+      <article>
+        <div slot="main-panel" class="main-panel flow">
+          <div class="frame">
+            <img
+              src={urlFor(page.image).width(900).format("webp").url()}
+              width={900}
+              alt=""
+              class="featured-image"
+            />
+          </div>
+          <PortableText value={page.description} />
         </div>
-      )
-    }
-    {
-      // Check if there are any associated events before rendering
-      page.associatedEvents[0] && (
-        <section class="associated-events flow">
-          <h2 class="text-step-2">Associated Events</h2>
-          <ul>
-            {page.associatedEvents.map((event) => (
-              <li class="cluster">
-                <MiniPreviewCard
-                  href={`/connect/events/${DateTime.fromISO(
-                    event.date
-                  ).toFormat("L-d-yyyy")}-${event.slug}`}
-                  image={
-                    event.image
-                      ? urlFor(event.image).width(300).url()
-                      : placeholderImg
-                  }
-                  imageAlt=""
-                >
-                  <div class="text-step-1 font-header">{event.name}</div>
-                  <time class="small-title" datetime={event.date}>
-                    {DateTime.fromISO(event.date).toLocaleString(
-                      DateTime.DATE_FULL
-                    )}
-                  </time>
-                </MiniPreviewCard>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )
-    }
-  </div>
-  <!-- <section slot="cta" class="content-wrapper cta">
+      </article>
+      <div slot="sidebar" class="sidebar-content">
+        {
+          page.person && (
+            <div>
+              <ContactAvatar
+                image={page.person.image}
+                name={joinNames(page.person.name)}
+                href={page.person.contact.email && page.person.contact.email}
+              />
+            </div>
+          )
+        }
+        {
+          // Check if there are any associated events before rendering
+          page.associatedEvents[0] && (
+            <section class="associated-events flow">
+              <h2 class="text-step-2">Associated Events</h2>
+              <ul>
+                {page.associatedEvents.map((event) => (
+                  <li class="cluster">
+                    <MiniPreviewCard
+                      href={`/connect/events/${DateTime.fromISO(
+                        event.date
+                      ).toFormat("L-d-yyyy")}-${event.slug}`}
+                      image={
+                        event.image
+                          ? urlFor(event.image).width(300).url()
+                          : placeholderImg
+                      }
+                      imageAlt=""
+                    >
+                      <div class="text-step-1 font-header">{event.name}</div>
+                      <time class="small-title" datetime={event.date}>
+                        {DateTime.fromISO(event.date).toLocaleString(
+                          DateTime.DATE_FULL
+                        )}
+                      </time>
+                    </MiniPreviewCard>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
+      </div>
+    </div>
+    <!-- <section slot="cta" class="content-wrapper cta">
     <Feature />
   </section> -->
-  <div slot="highlight" class="more flow">
-    <h2 class="text-step-3">Explore Related Ministries</h2>
-    <ul class="responsive-grid">
-      {
-        randomizedMinistries.map((item) => (
-          <li>
-            <ImageCard
-              title={item.name}
-              description={item.preview}
-              imgSrc={urlFor(item.image).url()}
-              imgAlt=""
-              href={`/connect/ministries/${item.slug}`}
-            />
-          </li>
-        ))
-      }
-    </ul>
-    <div class="center-items">
-      <Button href="/connect/ministries">See All Ministries</Button>
-    </div>
-    <!-- <MoreLikeThis relatedItems={randomizedMinistries} /> -->
-  </div>
-</ThirdLayout>
+    <section class="highlight-section">
+      <div class="content-wrapper">
+        <div class="more flow">
+          <h2 class="text-step-3">Explore Related Ministries</h2>
+          <ul class="responsive-grid">
+            {
+              randomizedMinistries.map((item) => (
+                <li>
+                  <ImageCard
+                    title={item.name}
+                    description={item.preview}
+                    imgSrc={urlFor(item.image).url()}
+                    imgAlt=""
+                    href={`/connect/ministries/${item.slug}`}
+                  />
+                </li>
+              ))
+            }
+          </ul>
+          <div class="center-items">
+            <Button href="/connect/ministries">See All Ministries</Button>
+          </div>
+          <!-- <MoreLikeThis relatedItems={randomizedMinistries} /> -->
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>
+<!-- </ThirdLayout> -->
 
 <style>
   .cta {
@@ -155,6 +184,38 @@ const randomizedMinistries = randomizeAndSlice(
 
   .more {
     --flow-space: 2.5rem;
+  }
+
+  .content-wrapper.with-sidebar {
+    --sidebar-gap: 5rem;
+    padding-block: var(--space-3xl);
+  }
+
+  .main-panel.flow {
+    --flow-space: 3rem;
+  }
+
+  .header.flow {
+    --flow-space: 2rem;
+  }
+
+  .highlight-section {
+    padding-block: var(--space-3xl);
+    background-color: var(--color-primary-100);
+  }
+
+  .breadcrumb-wrapper {
+    position: absolute;
+    z-index: 10;
+    padding-inline-start: var(--space-l);
+    top: 1rem;
+    width: fit-content;
+  }
+
+  .frame {
+    --width: 7;
+    --height: 5;
+    border-radius: var(--rounded-corners);
   }
 
   .eyebrow.cluster {
@@ -166,6 +227,10 @@ const randomizedMinistries = randomizeAndSlice(
     color: var(--color-primary-800);
   }
 
+  .featured-image {
+    border-radius: var(--rounded-corners);
+  }
+
   .small-title.heading-category {
     font-size: 14px;
     display: inline-block;
@@ -174,13 +239,13 @@ const randomizedMinistries = randomizeAndSlice(
     width: fit-content;
     line-height: 1;
     padding: 6px 9px;
-    background-color: var(--color-primary-100);
+    background-color: var(--color-primary-200);
     border-radius: var(--rounded-corners-small);
     transition: all 0.2s ease;
   }
 
   .small-title.heading-category:hover {
-    background-color: var(--color-primary-200);
+    background-color: var(--color-primary-100);
   }
 
   .responsive-grid {

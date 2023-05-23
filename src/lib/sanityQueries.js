@@ -13,6 +13,7 @@ const eventsPreview = `*[_type == 'event'] | order(date asc) {
   "slug": slug.current,
   location,
   preview,
+  "type": eventType->name,
   eventType->{
     name,
     "slug": slug.current
@@ -35,6 +36,7 @@ const eventsDetail = `*[_type == 'event'] {
     name,
     "slug": slug.current
   },
+  "type": eventType->name,
   "category": category->name,
   "categorySlug": category->slug.current,
   "image": image.asset->,

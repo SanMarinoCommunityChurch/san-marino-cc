@@ -54,14 +54,7 @@ const breadcrumbs = [
 ];
 
 const otherEvents = await getSanityData(eventsPreview);
-const randomizedEvents = randomizeAndSlice(otherEvents, 'eventType', page, 3);
-const randomEventCategoryName = (event) => {
-  const category = event.eventType == 'ministry' ? event.associatedMinistry.category.name : event.category;
-  return category;
-}
-
-const categoryName = page.eventType == 'ministry' ? page.associatedMinistry.type.name : page.category;
-const categorySlug = page.eventType == 'ministry' ? page.associatedMinistry.type.slug : page.categorySlug;
+const randomizedEvents = randomizeAndSlice(otherEvents, "type", page, 3);
 ---
 
 <ThirdLayout
@@ -69,7 +62,7 @@ const categorySlug = page.eventType == 'ministry' ? page.associatedMinistry.type
   header={page.name}
   preview={page.preview}
   breadcrumbs={breadcrumbs}
-  featuredImage={page.image && urlFor(page.image).url()}
+  featuredImage={page.image && urlFor(page.image).width(900).format('webp').url()}
 >
   <div slot="eyebrow" class="eyebrow cluster">
     <a class="small-title heading-category" href={`/connect/events/${page.eventType.slug}`}>{`${page.eventType.name} event`}</a>
@@ -150,7 +143,7 @@ const categorySlug = page.eventType == 'ministry' ? page.associatedMinistry.type
                         <DateLabel date={item.date} />
                     </div>
                     <div slot="header" class="small-title event-category">
-                        {randomEventCategoryName(item)}
+                        {`${item.eventType.name} event`}
                     </div>
                     <p slot="body" class="text-step--1">
                         {item.preview}
