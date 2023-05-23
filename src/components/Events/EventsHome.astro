@@ -50,9 +50,9 @@ const categoryName = (event) => {
             <DateLabel date={event.date} />
           </div>
           <div slot="header" class="small-title event-category">
-            {categoryName(event)}
+            {`${event.type} event`}
           </div>
-          <p slot="body" class="text-step--1">
+          <p slot="body" class="preview text-step--1">
             {event.preview}
           </p>
           <div slot="footer" class="location-footer text-step--1 cluster font-header">
@@ -96,5 +96,12 @@ const categoryName = (event) => {
     margin-bottom: 10px;
     background-color: var(--color-primary-100);
     border-radius: var(--rounded-corners-small);
+  }
+
+  .preview {
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    overflow: hidden;
   }
 </style>

@@ -105,7 +105,10 @@ const randomizedMinistries = randomizeAndSlice(
               <ContactAvatar
                 image={page.person.image}
                 name={joinNames(page.person.name)}
-                href={page.person.contact.email && page.person.contact.email}
+                href={
+                  page.person.contact.email &&
+                  `mailto:${page.person.contact.email}`
+                }
               />
             </div>
           )
