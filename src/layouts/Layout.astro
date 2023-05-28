@@ -241,11 +241,12 @@ const { title } = Astro.props;
   .responsive-grid {
     --gap: 1rem;
     --item-min-width: 30rem;
+    --item-max-width: 1fr;
     display: grid;
     grid-gap: var(--gap);
     grid-template-columns: repeat(
       auto-fit,
-      minmax(min(var(--item-min-width), 100%), 1fr)
+      minmax(min(var(--item-min-width), 100%), var(--item-max-width))
     );
   }
 
@@ -309,5 +310,9 @@ const { title } = Astro.props;
 
   :where(a, button):not(.btn, .logo):hover {
     text-decoration: none;
+  }
+
+  .events-pagination .splide__pagination__page.is-active {
+    background: var(--color-primary-300) !important;
   }
 </style>

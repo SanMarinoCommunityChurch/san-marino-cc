@@ -91,9 +91,9 @@ const recentServices = await getSanityData(
                 </h3>
                 <time class="small-title time"
                   >{
-                    DateTime.fromISO(latestService.date).toLocaleString(
-                      DateTime.DATE_FULL
-                    )
+                    DateTime.fromISO(latestService.date)
+                      .setZone("America/Los_Angeles")
+                      .toLocaleString(DateTime.DATE_FULL)
                   }<span class="bullet-spacer">•</span>{
                     format12HourTime(paneOne.serviceTime)
                   }</time
@@ -138,9 +138,9 @@ const recentServices = await getSanityData(
                         {latestService.name || "Sunday Worship"}
                       </h3>
                       <time class="small-title time">
-                        {DateTime.fromISO(latestService.date).toLocaleString(
-                          DateTime.DATE_FULL
-                        )}
+                        {DateTime.fromISO(latestService.date)
+                          .setZone("America/Los_Angeles")
+                          .toLocaleString(DateTime.DATE_FULL)}
                         <span class="bullet-spacer">•</span>
                         {format12HourTime(paneTwo.serviceTime)}
                       </time>
@@ -186,7 +186,7 @@ const recentServices = await getSanityData(
   }
 
   .hero .small-title {
-    color: var(--color-primary-500);
+    /* color: var(--color-primary-500); */
   }
 
   .hero.flow {

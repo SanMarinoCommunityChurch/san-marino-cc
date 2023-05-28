@@ -20,6 +20,7 @@ const services = await getServices();
 
 import heroBg from "../assets/images/choir.jpg";
 import churchBg from "../assets/images/church-ext-2.jpg";
+import introImage from "../assets/images/home-feature-1.png";
 import avatar from "../assets/images/jessica-vaughan-lower-headshot.jpg";
 import tower from "../assets/images/church-ext-4.jpg";
 import worship from "../assets/images/worship.jpg";
@@ -65,7 +66,7 @@ const sanityNav = await getSanityData(navQuery);
     <FeaturedVideoBanner />
     <WelcomeQuestions />
     <article id="welcome" class="welcome">
-      <div class="content-wrapper">
+      <div class="content-wrapper with-sidebar">
         <div class="flow">
           <div class="frame avatar">
             <img src={avatar} />
@@ -163,7 +164,7 @@ const sanityNav = await getSanityData(navQuery);
           </div>
         </div>
         <div>
-          <img src={tower} alt="" />
+          <img src={introImage} alt="" />
         </div>
       </div>
     </article>
@@ -181,7 +182,7 @@ const sanityNav = await getSanityData(navQuery);
       </Feature>
     </section>
     <section id="events">
-      <div class="content-wrapper">
+      <div class="">
         <EventsHome>
           <h2 slot="header" class="text-step-4">Upcoming Events</h2>
         </EventsHome>
@@ -285,6 +286,11 @@ const sanityNav = await getSanityData(navQuery);
       margin-block: var(--section-spacer);
     }
 
+    #events {
+      padding-block: var(--section-spacer-half);
+      background: no-repeat left/contain url("/faded-facade.png");
+    }
+
     #resources {
       margin-top: 4rem;
     }
@@ -293,9 +299,9 @@ const sanityNav = await getSanityData(navQuery);
       margin-top: 4rem;
     }
 
-    #welcome .content-wrapper {
-      display: flex;
-      gap: 4rem;
+    #welcome .content-wrapper.with-sidebar {
+      --sidebar-gap: 3rem;
+      --sidebar-min-width: 30rem;
     }
 
     #features.flow {

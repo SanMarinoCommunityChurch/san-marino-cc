@@ -26,7 +26,7 @@ const placeholderSlides = [
 const { heading, description, slides = placeholderSlides } = Astro.props;
 ---
 
-<section class="splide" aria-labelledby="slider-heading">
+<section class="splide resources-slider" aria-labelledby="slider-heading">
   <header class="content-wrapper center-items flow">
     <h2 id="slider-heading" class="text-step-4">{heading}</h2>
     <p class="paragraph flow">{description}</p>
@@ -121,7 +121,7 @@ const { heading, description, slides = placeholderSlides } = Astro.props;
   import Splide from "@splidejs/splide";
   import "@splidejs/splide/css";
 
-  const splide = new Splide(".splide", {
+  const splide = new Splide(".resources-slider", {
     type: "loop",
     padding: "30%",
     gap: "2em",

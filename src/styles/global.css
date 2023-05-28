@@ -2,6 +2,7 @@
 :root {
   --color-white: #fff;
   --color-primary-base: hsl(217, 87%, 15%);
+  --color-primary-50: hsl(217, 87%, 98%);
   --color-primary-100: hsl(217, 87%, 96%);
   --color-primary-200: hsl(217, 87%, 90%);
   --color-primary-300: hsl(217, 87%, 80%);
@@ -592,6 +593,10 @@ select {
   color: var(--color-white);
 }
 
+.color-primary-50 {
+  color: var(--color-primary-50);
+}
+
 .color-primary-500 {
   color: var(--color-primary-500);
 }
@@ -602,6 +607,14 @@ select {
 
 .color-neutral-700 {
   color: var(--color-neutral-700);
+}
+
+.color-neutral-800 {
+  color: var(--color-neutral-800);
+}
+
+.color-neutral-900 {
+  color: var(--color-neutral-900);
 }
 
 /* Composition utilities */

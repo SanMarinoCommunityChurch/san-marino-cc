@@ -67,14 +67,18 @@ const compileServiceTypes = (array) => {
       <div class="video-header flow">
         <div>
           <h2 class="small-title color-primary-200">
-            {`This ${DateTime.fromISO(latestService.date).toFormat("cccc")}`}
+            {
+              `This ${DateTime.fromISO(latestService.date)
+                .setZone("America/Los_Angeles")
+                .toFormat("cccc")}`
+            }
             <!-- {`This ${getWeekday(latestService.date)}`} -->
           </h2>
           <h3 class="text-step-3 color-white">
             {
-              DateTime.fromISO(latestService.date).toLocaleString(
-                DateTime.DATE_FULL
-              )
+              DateTime.fromISO(latestService.date)
+                .setZone("America/Los_Angeles")
+                .toLocaleString(DateTime.DATE_FULL)
             }
             <!-- {formatDateShort(latestService.date)} -->
           </h3>

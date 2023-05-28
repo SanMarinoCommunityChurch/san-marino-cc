@@ -71,7 +71,7 @@ const categoryName = (event) => {
     <ul class="flow">
       {month.entries.map(event =>
         <li>
-          <a href={`/connect/events/${DateTime.fromISO(event.date).toFormat('L-d-yyyy')}-${event.slug}`} class="event-wrapper">
+          <a href={`/connect/events/${DateTime.fromISO(event.date).setZone('America/Los_Angeles').toFormat('L-d-yyyy')}-${event.slug}`} class="event-wrapper">
             <div class="frame">
               <DateLabel date={event.date} position="top-left" />
               <img
@@ -86,9 +86,9 @@ const categoryName = (event) => {
               <header class="flow">
                 <h3 class="text-step-2 heading">{event.name}</h3>
                 <time class="time" datetime={event.date}>
-                  {DateTime.fromISO(event.date).toLocaleString(DateTime.DATE_HUGE)}
+                  {DateTime.fromISO(event.date).setZone('America/Los_Angeles').toLocaleString(DateTime.DATE_HUGE)}
                   <span class="bullet-spacer">•</span>
-                  {DateTime.fromISO(event.date).toLocaleString(DateTime.TIME_SIMPLE)}
+                  {DateTime.fromISO(event.date).setZone('America/Los_Angeles').toLocaleString(DateTime.TIME_SIMPLE)}
                 </time>
               </header>
               <p class="text-step--1">{event.preview}</p>

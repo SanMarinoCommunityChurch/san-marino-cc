@@ -20,7 +20,9 @@ const classList = ["date-label", positions[position]];
   {
     startTime && (
       <div>
-        {DateTime.fromISO(startTime).toLocaleString(DateTime.TIME_SIMPLE)}
+        {DateTime.fromISO(startTime)
+          .setZone("America/Los_Angeles")
+          .toLocaleString(DateTime.TIME_SIMPLE)}
       </div>
     )
   }

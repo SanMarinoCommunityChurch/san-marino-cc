@@ -74,7 +74,7 @@ const { page } = Astro.props;
                 d="M448 192H0V464c0 26.5 21.5 48 48 48H400c26.5 0 48-21.5 48-48V192zM80 256H368c8.8 0 16 7.2 16 16v64c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V272c0-8.8 7.2-16 16-16z"
               ></path></svg
             >
-            <time class="text-step-1">{DateTime.fromISO(page.date).toLocaleString(DateTime.DATE_HUGE)}</time>
+            <time class="text-step-1">{DateTime.fromISO(page.date).setZone('America/Los_Angeles').toLocaleString(DateTime.DATE_HUGE)}</time>
           </div>
           <div class="cluster page-links">
             {

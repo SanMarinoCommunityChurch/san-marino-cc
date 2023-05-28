@@ -31,49 +31,57 @@ const categoryName = (event) => {
 }
 ---
 
-<section>
-  <header><slot name="header" /></header>
+<div class="splide events-slider">
+  <header class="content-wrapper"><slot name="header" /></header>
   <div class="event-list">
-    {
-      events.map((event) => (
-        <Card 
-          title={event.name} 
-          img={
-            event.image ?
-            urlFor(event.image).url()
-            :
-            urlFor(event.associatedMinistry.image).url()
-          }
-          href={`/connect/events/${DateTime.fromISO(event.date).toFormat('L-d-yyyy')}-${event.slug}`}
-        >
-          <div slot="label" class="event-date">
-            <DateLabel date={event.date} />
-          </div>
-          <div slot="header" class="small-title event-category">
-            {`${event.type} event`}
-          </div>
-          <p slot="body" class="preview text-step--1">
-            {event.preview}
-          </p>
-          <div slot="footer" class="location-footer text-step--1 cluster font-header">
-            <span class="location-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" height="16" width="16" fill="var(--color-primary-800)"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M192 144a48 48 0 1 0 0 96 48 48 0 1 0 0-96z"/><path class="fa-secondary" d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 112a80 80 0 1 1 0 160 80 80 0 1 1 0-160z"/></svg></span>
-            <span>{event.location}</span>
-          </div>
-        </Card>
-      ))
-    }
+    <div class="splide__arrows"></div>
+      <div class="splide__track" style="padding-block: 4rem;">
+      <ul class="splide__list">
+        {
+          events.map((event) => (
+            <li class="splide__slide">
+            <Card 
+              title={event.name} 
+              img={
+                event.image ?
+                urlFor(event.image).url()
+                :
+                urlFor(event.associatedMinistry.image).url()
+              }
+              href={`/connect/events/${DateTime.fromISO(event.date).setZone('America/Los_Angeles').toFormat('L-d-yyyy')}-${event.slug}`}
+            >
+              <div slot="label" class="event-date">
+                <DateLabel date={event.date} />
+              </div>
+              <div slot="header" class="small-title event-category">
+                {`${event.type} event`}
+              </div>
+              <p slot="body" class="preview text-step--1">
+                {event.preview}
+              </p>
+              <div slot="footer" class="location-footer text-step--1 cluster font-header">
+                <span class="location-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" height="16" width="16" fill="var(--color-primary-800)"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M192 144a48 48 0 1 0 0 96 48 48 0 1 0 0-96z"/><path class="fa-secondary" d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 112a80 80 0 1 1 0 160 80 80 0 1 1 0-160z"/></svg></span>
+                <span>{event.location}</span>
+              </div>
+            </Card>
+            </li>
+          ))
+        }
+    </ul>
+    </div>
+    <ul class="splide__pagination events-pagination" style="bottom: 5rem;"></ul>
   </div>
   <div class="center-items">
     <Button href="/connect/events">See All Events</Button>
   </div>
-</section>
+</div>
 
 <style>
   .event-list {
-    display: grid;
+    /* display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    padding-block-start: var(--space-2xl);
+    gap: 2rem; */
+    /* padding-block-start: var(--space-2xl); */
   }
 
   .center-items {
@@ -90,6 +98,7 @@ const categoryName = (event) => {
 
   .small-title.event-category {
     display: inline-block;
+    font-size: 13px;
     color: var(--color-primary-900);
     line-height: 1;
     padding: 4px 6px;
@@ -105,3 +114,30 @@ const categoryName = (event) => {
     overflow: hidden;
   }
 </style>
+
+<script>
+  import Splide from "@splidejs/splide";
+  import "@splidejs/splide/css";
+
+  const homeEvents = new Splide(".events-slider", {
+    type: "slide",
+    gap: "3em",
+    padding: "15%",
+    fixedWidth: "24rem",
+    autoHeight: true,
+    breakpoints: {
+      1024: {
+        padding: "20%",
+      },
+      768: {
+        padding: "15%",
+        gap: "1em",
+      },
+    },
+    // classes: {
+    //   pagination: 'splide__pagination events-pagination',
+    //   page: 'splide__pagination__page',
+    // }
+  });
+  homeEvents.mount();
+</script>
