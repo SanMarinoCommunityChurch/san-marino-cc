@@ -1,6 +1,6 @@
 ---
 import Button from "./Button.astro";
-import { Image } from "@astrojs/image/components";
+import { Image, Picture } from "@astrojs/image/components";
 import { PortableText } from "astro-portabletext";
 import ImageCard from "./ImageCard.astro";
 import { urlFor } from "../lib/sanity";
@@ -62,10 +62,20 @@ const { slides, items } = Astro.props;
                     </div>
                   </div>
                   <div class="frame">
-                    <img
-                      src={urlFor(slide.image).width(900).url()}
-                      alt=""
+                    <Picture
+                      src={urlFor(slide.image)
+                        .width(1200)
+                        .height(900)
+                        .fit("crop")
+                        .crop("center")
+                        .format("webp")
+                        .url()}
+                      alt="description"
+                      widths={[600, 900, 1200]}
+                      sizes="100vw"
                       width={900}
+                      style={`background: ${slide.image.metadata.palette.vibrant.background}`}
+                      aspectRatio={slide.image.metadata.dimensions.aspectRatio}
                     />
                   </div>
                 </article>
