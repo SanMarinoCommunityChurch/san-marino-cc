@@ -1,4 +1,5 @@
 ---
+import { Image } from "@astrojs/image/components";
 import Button from "./Button.astro";
 import bgImage from "../assets/images/church-ext-4.jpg";
 ---
@@ -13,7 +14,7 @@ import bgImage from "../assets/images/church-ext-4.jpg";
       </p>
       <Button href="/" theme="primary-light">Call to Action</Button>
     </div>
-    <img src={bgImage} alt="" />
+    <Image src={bgImage} alt="" />
   </section>
   <section class="cta-bottom">
     <div class="content-wrapper center-items flow">
@@ -72,7 +73,7 @@ import bgImage from "../assets/images/church-ext-4.jpg";
     object-fit: cover;
     filter: saturate(0);
     mix-blend-mode: multiply;
-    opacity: 0.7;
+    opacity: 0.9;
     z-index: 1;
   }
 

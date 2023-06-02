@@ -1,5 +1,6 @@
 ---
 import Button from "./Button.astro";
+import { Image, Picture } from "@astrojs/image/components";
 import placeholderImg from "../assets/images/windows.jpg";
 
 const themes = {
@@ -32,7 +33,14 @@ const {
   data-layout={layouts[layout]}
 >
   <a href={href} class="frame img-link">
-    <img src={imgSrc} alt={imgAlt} class="feature-img" />
+    <Picture
+      src={imgSrc}
+      alt={imgAlt}
+      widths={[600, 900]}
+      sizes="100vw"
+      class="feature-img"
+      aspectRatio="7:5"
+    />
   </a>
   <div class="feature-text flow">
     <div class="feature-header flow">
@@ -171,6 +179,7 @@ const {
   .feature-img {
     border-radius: var(--rounded-corners);
     box-shadow: var(--shadow-none);
+    object-fit: cover;
     transition: box-shadow 0.3s ease;
   }
 

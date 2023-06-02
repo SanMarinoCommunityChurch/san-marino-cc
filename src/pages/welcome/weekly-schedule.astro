@@ -6,6 +6,7 @@ import InnerHero from "../../components/InnerHero.astro";
 
 import traditionalImg from "../../assets/images/worship.jpg";
 import contemporaryImg from "../../assets/images/contemporary.jpg";
+import bgImage from "../../assets/images/facade-front.jpg";
 
 const contentTitle = "We’re so glad you’re here.";
 const pageTitle = "Weekly Schedule";
@@ -41,8 +42,14 @@ const localNav = {
       localNav={localNav}
       pageTitle={pageTitle}
       pageDescription={pageDescription}
+      bgImage={bgImage}
     />
     <article class="content-wrapper flow">
+      <div class="center-items text-step-1 paragraphs mx-auto">
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque
+        reprehenderit sunt quo nam, incidunt possimus ducimus alias error. Nisi,
+        porro!
+      </div>
       <Feature href="/worship/live" imgSrc={traditionalImg}>
         <h2 slot="header" class="text-step-2">Traditional Worship</h2>
         <Fragment slot="CTA">Join Online</Fragment>

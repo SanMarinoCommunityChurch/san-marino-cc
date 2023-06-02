@@ -6,6 +6,8 @@ import InnerHero from "../../../components/InnerHero.astro";
 import ServicesList from "../../../components/ServicesList.astro";
 import { getSanityData } from "../../../lib/sanity";
 
+import bgImage from "../../../assets/images/easter-service-2.jpg";
+
 const localNav = {
   section: "Worship",
   children: [
@@ -35,6 +37,8 @@ const pageDescription =
       localNav={localNav}
       pageTitle={pageTitle}
       pageDescription={pageDescription}
+      bgImage={bgImage}
+      bgImageAlign="bottom"
     />
     <article class="content-wrapper flow">
       <ServicesList services={services} />

@@ -1,5 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import { Image, Picture } from "@astrojs/image/components";
 import Button from "../../components/Button.astro";
 import Feature from "../../components/Feature.astro";
 import InnerHero from "../../components/InnerHero.astro";
@@ -18,7 +19,7 @@ const contentTitle = "We’re so glad you’re here.";
 const pageTitle = "I’m New";
 const pageDescription =
   "We don’t know what encouraged you to look for a church, let alone what brought you to this website for SMCC, but we don’t believe that you’re here by accident.";
-const bgImage = "/church-full.jpg";
+import bgImage from "../../assets/images/easter-cross.jpg";
 
 const localNav = {
   section: "Welcome",
@@ -96,12 +97,14 @@ const opportunities = [
           </div>
         </div>
         <div class="frame">
-          <img src={placeholderImg} alt="" />
+          <Picture
+            src={placeholderImg}
+            widths={[600, 900]}
+            sizes="100vw"
+            alt=""
+          />
         </div>
       </section>
-      <div class="frame video feature-img">
-        <img src={aboutImg} alt="" />
-      </div>
       <section id="opportunities">
         <h2 class="text-step-4 center-items">Opportunities</h2>
         <div class="paragraphs flow mx-auto">
@@ -124,6 +127,14 @@ const opportunities = [
           }
         </div>
       </section>
+      <div class="frame video feature-img">
+        <Picture
+          src={aboutImg}
+          widths={[600, 900, 1400]}
+          sizes="100vw"
+          alt=""
+        />
+      </div>
     </article>
   </main>
 </Layout>

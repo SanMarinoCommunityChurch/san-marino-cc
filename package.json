@@ -10,11 +10,20 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/image": "^0.16.9",
+    "@astrojs/react": "^2.2.1",
     "@astrojs/svelte": "^2.1.0",
+    "@headlessui/react": "^1.7.14",
+    "@portabletext/react": "^3.0.2",
     "@splidejs/splide": "^4.1.4",
     "@splidejs/splide-extension-url-hash": "^0.3.0",
-    "astro": "^2.3.0",
+    "@types/react": "^18.2.7",
+    "@types/react-dom": "^18.2.4",
+    "astro": "^2.5.6",
     "motion": "^10.15.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-lite-youtube-embed": "^2.3.52",
     "svelte": "^3.58.0"
   },
   "devDependencies": {

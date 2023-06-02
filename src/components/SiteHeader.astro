@@ -1,5 +1,6 @@
 ---
 import Button from "./Button.astro";
+import {Image} from "@astrojs/image/components"
 import PopoverHeader from "./Svelte/PopoverHeader.svelte";
 
 const { mainNavigation, fullNavigation } = Astro.props;
@@ -34,7 +35,7 @@ const { mainNavigation, fullNavigation } = Astro.props;
       <Button href="/" theme="secondary">Give</Button>
     </Fragment>
     <div slot="panel">
-      <div class="nav-grid">
+      <div class="nav-grid content-wrapper">
         <div class="nav-subgrid">
           {
             fullNavigation.map(
@@ -47,12 +48,12 @@ const { mainNavigation, fullNavigation } = Astro.props;
                         class="img-link"
                       >
                         <div class="overlay" />
-                        <img
+                        <Image
                           src={navItem.img}
                           alt=""
                           width={300}
-                          height={200}
                           class="nav-img"
+                          loading="eager"
                         />
                       </a>
                     )}
@@ -71,12 +72,14 @@ const { mainNavigation, fullNavigation } = Astro.props;
             )
           }
         </div>
-        <div class="nav-utilities flow">
+      </div>
+      <div class="utilities-wrapper">
+        <div class="nav-utilities content-wrapper">
           {
             fullNavigation.map(
               (navItem) =>
                 navItem.name === "Utility" && (
-                  <ul class="flow">
+                  <ul class="">
                     {navItem.children.map((navChild) => (
                       <li class="utility-item">
                         <a href={`/${navItem.slug}/${navChild.slug}`}>
@@ -139,13 +142,13 @@ const { mainNavigation, fullNavigation } = Astro.props;
     background-color: transparent;
   }
 
-  .nav-grid {
+  /* .nav-grid {
     display: grid;
-    grid-template-columns: repeat(12, 1fr);
+    grid-template-columns: repeat(3fr, 1fr);
     gap: 1rem;
-  }
+  } */
 
-  .nav-grid > :first-child {
+  /* .nav-grid > :first-child {
     grid-column: 2/10;
     padding-right: 2rem;
   }
@@ -153,15 +156,15 @@ const { mainNavigation, fullNavigation } = Astro.props;
   .nav-grid > :last-child {
     grid-column: span 3;
     background-color: var(--color-primary-900);
-  }
+  } */
 
-  .nav-grid .small-title {
+  .nav-grid .small-title, .utilities-wrapper .small-title {
     color: var(--color-primary-800);
   }
 
-  .nav-grid > :last-child .small-title {
+  /* .nav-grid > :last-child .small-title {
     color: var(--color-primary-100);
-  }
+  } */
 
   .nav-grid .flow {
     --flow-space: 1rem;
@@ -217,10 +220,9 @@ const { mainNavigation, fullNavigation } = Astro.props;
     filter: saturate(0);
   }
 
-  .nav-subgrid,
-  .nav-utilities {
-    padding-block-start: 8rem;
-    padding-block-end: 4rem;
+  .nav-subgrid {
+    padding-block-start: 7rem;
+    padding-block-end: 2rem;
   }
 
   .nav-subgrid {
@@ -230,17 +232,31 @@ const { mainNavigation, fullNavigation } = Astro.props;
     padding-inline-start: 2rem;
   }
 
-  .nav-utilities {
-    padding-inline: 3rem;
+  .utilities-wrapper {
+    padding-block: 1rem;
+    background: var(--color-primary-100);
+    /* color: var(--color-primary-100); */
   }
+
+  /* .nav-utilities {
+    padding-inline: 3rem;
+  } */
 
   .nav-utilities ul.flow {
     --flow-space: 0.5rem;
   }
+
+  .nav-utilities ul {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    align-items: start;
+  }
   
   .nav-utilities ul a {
+    border-radius: var(--rounded-corners);
     transition: background-color 0.2s ease;
-    padding: 12px;
+    padding: 9px;
   }
 
   .nav-utilities ul a:hover {
@@ -249,7 +265,7 @@ const { mainNavigation, fullNavigation } = Astro.props;
 
   .utility-item a {
     display: inline-block;
-    padding
+    text-decoration: none;
   }
 
   .utility-item p {
@@ -257,19 +273,13 @@ const { mainNavigation, fullNavigation } = Astro.props;
     margin-top: 6px;
   }
 
-  @media (max-width: 1280px) {
-    .nav-grid > :first-child {
-      grid-column: 1/10;
-  }
-  }
+  /* @media (max-width: 1280px) {
+
+  } */
 
   @media (max-width: 768px) {
     .main-nav {
       display: none;
-    }
-
-    .nav-grid, .nav-subgrid {
-      grid-template-columns: 1fr;
     }
   }
 

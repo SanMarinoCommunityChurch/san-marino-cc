@@ -1,5 +1,6 @@
 ---
 import Button from "./Button.astro";
+import { Image } from "@astrojs/image/components";
 
 import { getSanityData } from "../lib/sanity";
 import {
@@ -45,7 +46,7 @@ const compileServiceTypes = (array) => {
             viewBox="0 0 512 512"
             width="40"
             height="40"
-            fill="var(--color-white)"
+            fill="var(--color-primary-800)"
             aria-hidden="true"
           >
             <path
@@ -53,7 +54,7 @@ const compileServiceTypes = (array) => {
             ></path></svg
           >
         </div>
-        <div class="overlay"></div>
+        <!-- <div class="overlay"></div> -->
         <img
           src={`https://img.youtube.com/vi/${getYouTubeId(
             latestService.serviceType[0].video.url
@@ -91,7 +92,7 @@ const compileServiceTypes = (array) => {
       </div>
     </div>
   </div>
-  <img src={churchBg} class="img-overlay" alt="" />
+  <Image src={churchBg} class="img-overlay" alt="" />
 </article>
 
 <style>
@@ -113,9 +114,10 @@ const compileServiceTypes = (array) => {
     top: 0;
     left: 0;
     bottom: 0;
+    width: fit-content;
     height: clamp(150%, 50rem, 220%);
     object-fit: contain;
-    opacity: 0.7;
+    opacity: 0.9;
     mix-blend-mode: multiply;
     filter: saturate(0);
     mask-image: linear-gradient(to right, black, transparent);

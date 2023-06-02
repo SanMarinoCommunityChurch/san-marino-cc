@@ -1,5 +1,6 @@
 ---
 import Button from "./Button.astro";
+import { Image } from "@astrojs/image/components";
 import { PortableText } from "astro-portabletext";
 import ImageCard from "./ImageCard.astro";
 import { urlFor } from "../lib/sanity";
@@ -75,11 +76,12 @@ const { slides, items } = Astro.props;
                   {slide[items].map((item) => (
                     <li>
                       <ImageCard
-                        imgSrc={urlFor(item.image).width(600).url()}
-                        imgAlt=""
+                        imgSrc={urlFor(item.image).width(800).url()}
+                        imgAlt={item.name}
                         title={item.name}
                         description={item.preview}
                         href={`/connect/ministries/${item.slug}`}
+                        external
                       />
                     </li>
                   ))}

@@ -1,5 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
+import { Image, Picture } from "@astrojs/image/components";
 import ThirdLayout from "../../../layouts/ThirdLayout.astro";
 import MoreLikeThis from "../../../components/MoreLikeThis.astro";
 import BreacrumbAuto from "../../../components/BreadcrumbAuto.astro";
@@ -88,9 +89,11 @@ const randomizedMinistries = randomizeAndSlice(
       <article>
         <div slot="main-panel" class="main-panel flow">
           <div class="frame">
-            <img
+            <Picture
               src={urlFor(page.image).width(900).format("webp").url()}
-              width={900}
+              widths={[600, 900, 1200]}
+              sizes="100vw"
+              aspectRatio={page.image.metadata.dimensions.aspectRatio}
               alt=""
               class="featured-image"
             />
@@ -164,6 +167,7 @@ const randomizedMinistries = randomizeAndSlice(
                     imgSrc={urlFor(item.image).url()}
                     imgAlt=""
                     href={`/connect/ministries/${item.slug}`}
+                    aspectRatio={item.image.metadata.dimensions.aspectRatio}
                   />
                 </li>
               ))

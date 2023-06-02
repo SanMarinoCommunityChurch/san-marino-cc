@@ -1,6 +1,6 @@
 ---
 import { PortableText } from "astro-portabletext";
-
+import { Image, Picture } from "@astrojs/image/components";
 const { title, image } = Astro.props;
 ---
 
@@ -12,7 +12,7 @@ const { title, image } = Astro.props;
     </div>
   </div>
   <div class="frame">
-    <img src={image} alt="" />
+    <Picture src={image} widths={[600, 900]} sizes="100vw" alt="" />
   </div>
 </section>
 
@@ -26,6 +26,11 @@ const { title, image } = Astro.props;
   .intro .frame {
     --width: 1;
     --height: 1;
+    border-radius: var(--rounded-corners);
+  }
+
+  .text-step-4 {
+    margin-bottom: var(--space-l);
   }
 
   .intro .frame img {

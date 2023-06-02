@@ -1,0 +1,310 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Button from "../../components/Button.astro";
+import VideoTabs from "../../components/Svelte/VideoTabs.svelte";
+import Tabs from "../../components/React/Tabs.jsx";
+import ServicesList from "../../components/ServicesList.astro";
+import ContactAvatar from "../../components/ContactAvatar.astro";
+import { getSanityData, urlFor } from "../../lib/sanity";
+import getYouTubeID from "get-youtube-id";
+import Youtube from "svelte-youtube-embed";
+import { PortableText } from "astro-portabletext";
+import { DateTime } from "luxon";
+
+import {
+  format12HourTime,
+  capitalizeFirstLetter,
+  joinNames,
+} from "../../utils/format";
+
+import pastorHeadshot from "../../assets/images/jessica-vaughan-lower-headshot.jpg";
+
+const pageTitle = "Worship Live";
+const eyebrow = "San Marino Community Church";
+const pageDescription = "";
+
+const latestService =
+  await getSanityData(`*[_type == 'service'] | order(date desc)[1] {
+  ...,
+  serviceType[] {
+    ...,
+    preacher->{
+      name,
+      "image": image.asset->
+    }
+  }
+}`);
+const paneOne = latestService.serviceType[0];
+const paneTwo = latestService.serviceType[1] || undefined;
+
+const recentServices = await getSanityData(
+  `*[_type == 'service'] | order(date desc)[1...4]`
+);
+---
+
+<Layout title={pageTitle}>
+  <main slot="main">
+    <section class="hero center-items flow">
+      <div class="small-title">{eyebrow}</div>
+      <h1 class="text-step-6">{pageTitle}</h1>
+      <div class="service-date">
+        <time datetime={latestService.date}
+          >{
+            DateTime.fromISO(latestService.date)
+              .setZone("America/Los_Angeles")
+              .toLocaleString(DateTime.DATE_HUGE)
+          }</time
+        >
+      </div>
+    </section>
+    <article class="flow">
+      <div class="live">
+        <Tabs client:load service={latestService}>
+          <div class="content-wrapper">something here</div>
+        </Tabs>
+      </div>
+      <VideoTabs client:load>
+        <!-- Tab button left -->
+        <div slot="tab-1" class="video-tab flow">
+          <div>
+            <div class="small-title">9 am Sundays</div>
+            <h2 class="text-step-2">Traditional Worship</h2>
+          </div>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum nulla
+            quod recusandae quae corporis inventore.
+          </p>
+          <div class="underline">Watch Live</div>
+        </div>
+        <!-- Tab button right -->
+        <div slot="tab-2" class="video-tab flow">
+          <div>
+            <div class="small-title">10 am Sundays</div>
+            <h2 class="text-step-2">Contemporary Worship</h2>
+          </div>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum nulla
+            quod recusandae quae corporis inventore.
+          </p>
+          <div class="underline">Watch Live</div>
+        </div>
+        <!-- Tab panel 1 -->
+        <article slot="panel-1" class="panel-1">
+          <section class="video-wrapper">
+            <div>
+              <Youtube client:load id={getYouTubeID(paneOne.video.url)} />
+            </div>
+          </section>
+          <section class="content-wrapper service-wrapper with-sidebar">
+            <div class="flow">
+              <div>
+                <div class="cluster">
+                  <div class="small-title category">{paneOne.name}</div>
+                </div>
+                <h3 class="text-step-4">
+                  {latestService.name || "Sunday Worship"}
+                </h3>
+                <time class="small-title time"
+                  >{
+                    DateTime.fromISO(latestService.date)
+                      .setZone("America/Los_Angeles")
+                      .toLocaleString(DateTime.DATE_FULL)
+                  }<span class="bullet-spacer">•</span>{
+                    format12HourTime(paneOne.serviceTime)
+                  }</time
+                >
+              </div>
+              <PortableText value={paneOne.serviceDescription} />
+              {
+                paneOne.programLink && (
+                  <Button href={paneOne.programLink} width="fit">
+                    Download Program
+                  </Button>
+                )
+              }
+            </div>
+            <ContactAvatar
+              image={paneOne.preacher.image && paneOne.preacher.image}
+              name={joinNames(paneOne.preacher.name)}
+              heading="Sermon by"
+            />
+          </section>
+        </article>
+        <!-- Tab panel 2 -->
+        <article slot="panel-2" class="panel-2">
+          {
+            paneTwo ? (
+              <div>
+                <section class="video-wrapper">
+                  <div>
+                    <Youtube client:idle id={getYouTubeID(paneTwo.video.url)} />
+                  </div>
+                </section>
+
+                <section class="content-wrapper service-wrapper with-sidebar">
+                  <div class="flow">
+                    <div>
+                      <div class="cluster">
+                        <div class="small-title category contemporary">
+                          {paneTwo.name}
+                        </div>
+                      </div>
+                      <h3 class="text-step-4">
+                        {latestService.name || "Sunday Worship"}
+                      </h3>
+                      <time class="small-title time">
+                        {DateTime.fromISO(latestService.date)
+                          .setZone("America/Los_Angeles")
+                          .toLocaleString(DateTime.DATE_FULL)}
+                        <span class="bullet-spacer">•</span>
+                        {format12HourTime(paneTwo.serviceTime)}
+                      </time>
+                    </div>
+                    <PortableText value={paneTwo.serviceDescription} />
+                    {paneTwo.programLink && (
+                      <Button href={paneTwo.programLink} width="fit">
+                        Download Program
+                      </Button>
+                    )}
+                  </div>
+                  <ContactAvatar
+                    image={paneTwo.preacher.image && paneTwo.preacher.image}
+                    name={joinNames(paneTwo.preacher.name)}
+                    heading="Sermon by"
+                  />
+                </section>
+              </div>
+            ) : (
+              <div class="content-wrapper blank center-items">
+                <em>No second service upcoming.</em>
+              </div>
+            )
+          }
+        </article>
+      </VideoTabs>
+    </article>
+    <section id="recent-services" class="content-wrapper flow">
+      <h2 class="text-step-3">Recent Services</h2>
+      <ServicesList services={recentServices} />
+      <div class="center-items">
+        <Button href="/worship/services">See All Services</Button>
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .hero {
+    position: relative;
+    padding-top: 5rem;
+    padding-bottom: var(--space-xl);
+  }
+
+  .hero .small-title {
+    /* color: var(--color-primary-500); */
+  }
+
+  .hero.flow {
+    --flow-space: 0.5rem;
+  }
+
+  /* .video-tab {
+    padding: 2rem;
+    border-radius: var(--rounded-corners);
+  } */
+
+  .underline {
+    text-decoration: underline;
+    display: inline-block;
+    width: fit-content;
+  }
+
+  .underline:hover {
+    text-decoration: none;
+  }
+
+  /* .video-wrapper {
+    background-color: var(--color-neutral-100);
+    margin-block: var(--space-xl);
+    display: flex;
+    justify-content: center;
+  }
+
+  .panel-2 .video-wrapper {
+    background-color: var(--color-secondary-100);
+  }
+
+  .video-wrapper > :first-child {
+    aspect-ratio: 16/9;
+    width: clamp(20rem, 50vw, 80%);
+    height: auto;
+  } */
+
+  /* .service-wrapper {
+    margin-block: var(--space-2xl);
+  }
+
+  .service-wrapper h3 {
+    margin-block: 0.5rem;
+  }
+
+  .time {
+    font-variant-numeric: lining-nums;
+  }
+
+  .bullet-spacer {
+    color: var(--color-primary-300);
+    margin-inline: 0.25rem;
+  }
+
+  .with-sidebar {
+    --sidebar-gap: var(--section-spacer);
+  }
+
+  .with-sidebar > .flow:first-child {
+    --flow-space: 2rem;
+  }
+
+  .sidebar .frame.square {
+    border-radius: 9999px;
+    width: 5rem;
+    height: 5rem;
+  }
+
+  .sidebar.flex {
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .small-title.category {
+    font-size: 13px;
+    display: inline-block;
+    color: var(--color-primary-800);
+    line-height: 1;
+    padding: 4px 6px;
+    background-color: var(--color-primary-100);
+    border-radius: var(--rounded-corners-small);
+  }
+
+  .small-title.category.contemporary {
+    background-color: var(--color-secondary-50);
+    color: var(--color-secondary-600);
+  }
+
+  .service-date {
+    margin-top: var(--space-m);
+    font-size: var(--step-1);
+    font-style: italic;
+  } */
+
+  #recent-services {
+    margin-top: 1rem;
+    margin-bottom: 5rem;
+    padding-top: 5rem;
+    border-top: 1px solid var(--color-neutral-200);
+  }
+
+  .blank {
+    margin-block: var(--section-spacer);
+  }
+</style>

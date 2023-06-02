@@ -1,19 +1,30 @@
 /*  @link https://utopia.fyi/type/calculator?c=320,15,1.2,1280,17,1.2,8,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
 :root {
+  /* swap for tailwind blue */
   --color-white: #fff;
   --color-primary-base: hsl(217, 87%, 15%);
   --color-primary-50: hsl(217, 87%, 98%);
-  --color-primary-100: hsl(217, 87%, 96%);
-  --color-primary-200: hsl(217, 87%, 90%);
-  --color-primary-300: hsl(217, 87%, 80%);
-  --color-primary-400: hsl(217, 87%, 70%);
+  --color-primary-100: #eff6ff /*hsl(217, 87%, 96%)*/;
+  --color-primary-200: #dbeafe /*hsl(217, 87%, 90%)*/;
+  --color-primary-300: #bfdbfe /*hsl(217, 87%, 80%)*/;
+  --color-primary-400: #93c5fd /* hsl(217, 87%, 70%) */;
   --color-primary-500: hsl(217, 87%, 60%);
   --color-primary-600: hsl(217, 87%, 50%);
-  --color-primary-700: hsl(217, 87%, 40%);
-  --color-primary-800: hsl(217, 87%, 30%);
-  --color-primary-900: hsl(217, 87%, 20%);
+  --color-primary-700: #1e40af /* hsl(217, 87%, 40%) */;
+  --color-primary-800: #1e3a8a /*#01117e hsl(217, 87%, 30%)*/;
+  --color-primary-900: #172554 /*#010e65 hsl(217, 87%, 20%)*/;
   --color-primary-950: hsl(217, 87%, 5%);
-  --color-neutral-100: hsl(209, 34%, 96%);
+  --color-neutral-50: hsl(216, 33%, 97%);
+  --color-neutral-100: hsl(214, 15%, 91%);
+  --color-neutral-200: hsl(210, 16%, 82%);
+  --color-neutral-300: hsl(211, 13%, 65%);
+  --color-neutral-400: hsl(211, 10%, 53%);
+  --color-neutral-500: hsl(211, 12%, 43%);
+  --color-neutral-600: hsl(209, 14%, 37%);
+  --color-neutral-700: hsl(209, 18%, 30%);
+  --color-neutral-800: hsl(209, 20%, 25%);
+  --color-neutral-900: hsl(210, 24%, 16%);
+  /*--color-neutral-100: hsl(209, 34%, 96%);
   --color-neutral-200: hsl(209, 34%, 90%);
   --color-neutral-300: hsl(209, 34%, 80%);
   --color-neutral-400: hsl(209, 34%, 70%);
@@ -22,7 +33,7 @@
   --color-neutral-700: hsl(209, 34%, 40%);
   --color-neutral-800: hsl(209, 34%, 30%);
   --color-neutral-900: hsl(209, 34%, 20%);
-  --color-neutral-950: hsl(209, 34%, 10%);
+  --color-neutral-950: hsl(209, 34%, 10%);*/
   --color-secondary-50: hsl(188, 33%, 94%);
   --color-secondary-100: hsl(190, 34%, 86%);
   --color-secondary-200: hsl(189, 34%, 76%);
@@ -43,7 +54,7 @@
   --color-tertiary-600: hsl(348, 45%, 73%);
   --color-tertiary-900: hsl(347, 17%, 32%);
   --color-header-text: var(--color-primary-800);
-  --color-body-text: var(--color-neutral-700);
+  --color-body-text: var(--color-neutral-600);
   --step--2: clamp(0.65rem, calc(0.62rem + 0.14vw), 0.74rem);
   --step--1: clamp(0.78rem, calc(0.75rem + 0.17vw), 0.89rem);
   --step-0: clamp(0.94rem, calc(0.9rem + 0.21vw), 1.06rem);

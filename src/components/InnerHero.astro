@@ -1,15 +1,24 @@
 ---
+import { Picture } from "@astrojs/image/components";
+
 // Image must be in public directory since it used as CSS background
-const { localNav, pageTitle, pageDescription, bgImage } = Astro.props;
+const {
+  localNav,
+  pageTitle,
+  pageDescription,
+  bgImage,
+  bgImageAlt,
+  bgImageAlign,
+} = Astro.props;
 
 const bgImageStyle = `linear-gradient(to top, hsla(217, 86%, 20%, 0.9) 15%, hsla(217, 86%, 20%, 0)) center/cover no-repeat, url(${bgImage}) center/cover no-repeat;`;
 ---
 
 <section
   class="hero"
-  style={`--background:${
-    bgImage ? bgImageStyle : "var(--color-primary-100)"
-  }; --color:${bgImage ? "var(--color-white)" : ""}`}
+  style={`--background:${bgImage ? "" : "var(--color-primary-100)"}; --color:${
+    bgImage ? "var(--color-white)" : ""
+  }`}
 >
   <slot name="breadcrumbs" />
   <div class="content-wrapper flow">
@@ -44,6 +53,21 @@ const bgImageStyle = `linear-gradient(to top, hsla(217, 86%, 20%, 0.9) 15%, hsla
     }
   </div>
   <div class="overlay" style={`--display:${bgImage ? "none" : "block"}`}></div>
+  {
+    bgImage && (
+      <div class="bg-image-wrapper">
+        <div class="bg-overlay" />
+        <Picture
+          src={bgImage}
+          widths={[600, 1200, 1920]}
+          sizes="100vw"
+          alt={bgImageAlt}
+          loading="eager"
+          class:list={["bg-image", bgImageAlign == "bottom" && "align-bottom"]}
+        />
+      </div>
+    )
+  }
 </section>
 
 <style>
@@ -54,6 +78,33 @@ const bgImageStyle = `linear-gradient(to top, hsla(217, 86%, 20%, 0.9) 15%, hsla
     color: var(--color);
     /* background: var(--color-primary-100); */
     background: var(--background);
+  }
+
+  .bg-image {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .bg-image.align-bottom {
+    top: 0;
+    bottom: 0;
+  }
+
+  .bg-image-wrapper {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    overflow-y: hidden;
+  }
+
+  .bg-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.5);
   }
 
   /* .hero.bg-img {

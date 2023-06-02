@@ -1,4 +1,5 @@
 ---
+import { Image } from "@astrojs/image/components";
 import DateLabel from "./Events/DateLabel.astro";
 import { capitalizeFirstLetter } from "../utils/format";
 import getYouTubeID from "get-youtube-id";
@@ -50,7 +51,7 @@ const { services } = Astro.props;
               </div>
               <div class="small-title">{niceDate(service.date).month}</div>
             </time>
-            <img src={bgImage} alt="" />
+            <Image src={bgImage} alt="" />
           </div>
           <div class="flow">
             <div>
@@ -58,7 +59,7 @@ const { services } = Astro.props;
                 {joinTypes(service.serviceType)}
               </div>
               <h3 class="text-step-2">
-                {service.name ? service.name : "Sunday Worship"}
+                {service.name ? service.name : "Sunday Service"}
               </h3>
             </div>
             <p>

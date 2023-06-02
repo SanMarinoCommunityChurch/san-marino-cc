@@ -1,11 +1,13 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import IntroSection from "../../components/IntroSection.astro";
+import { Image, Picture } from "@astrojs/image/components";
 import InnerHero from "../../components/InnerHero.astro";
 import { getSanityData, urlFor } from "../../lib/sanity";
 import { PortableText } from "astro-portabletext";
 
 import placeholderImg from "../../assets/images/church-ext-2.jpg";
+import bgImage from "../../assets/images/easter-flowers.jpg";
 
 const pageTitle = "Missions";
 const pageDescription =
@@ -49,6 +51,7 @@ const missions = await getSanityData(
       localNav={localNav}
       pageTitle={pageTitle}
       pageDescription={pageDescription}
+      bgImage={bgImage}
     />
     <article class="content-wrapper flow">
       <IntroSection title={introHeadline} image={placeholderImg}>

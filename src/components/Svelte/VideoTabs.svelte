@@ -1,4 +1,5 @@
 <script>
+  import {getSanityData} from '../../lib/sanity'
     import { onMount } from "svelte"
     import { slide, fade } from 'svelte/transition';
     import {
@@ -40,9 +41,11 @@
     //   setDefault(window.location);
     // })
 
+    //onMount(() => setDefault(window.location))} on:change={(e) => updateURLHash(e)
+
 </script>
 
-<TabGroup defaultIndex={onMount(() => setDefault(window.location))} on:change={(e) => updateURLHash(e)}>
+<TabGroup defaultIndex={0}>
   <div class="content-wrapper">
     <TabList class="video-tabs-list">
         <div class="flex">

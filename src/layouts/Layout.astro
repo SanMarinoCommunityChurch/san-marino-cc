@@ -304,6 +304,10 @@ const { title } = Astro.props;
     --flow-space: 1.5rem;
   }
 
+  .paragraphs {
+    max-width: 67ch;
+  }
+
   :where(a, button):not(.btn, .logo, .link) {
     text-decoration: underline;
   }
@@ -314,5 +318,213 @@ const { title } = Astro.props;
 
   .events-pagination .splide__pagination__page.is-active {
     background: var(--color-primary-300) !important;
+  }
+
+  /* Worship Live YT Embed */
+  .yt-lite {
+    background-color: #000;
+    position: relative;
+    display: block;
+    contain: content;
+    background-position: center center;
+    background-size: cover;
+    cursor: pointer;
+    width: clamp(20rem, 50vw, 80%);
+    height: auto;
+  }
+
+  /* gradient */
+  .yt-lite::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAADGCAYAAAAT+OqFAAAAdklEQVQoz42QQQ7AIAgEF/T/D+kbq/RWAlnQyyazA4aoAB4FsBSA/bFjuF1EOL7VbrIrBuusmrt4ZZORfb6ehbWdnRHEIiITaEUKa5EJqUakRSaEYBJSCY2dEstQY7AuxahwXFrvZmWl2rh4JZ07z9dLtesfNj5q0FU3A5ObbwAAAABJRU5ErkJggg==);
+    background-position: top;
+    background-repeat: repeat-x;
+    height: 60px;
+    padding-bottom: 50px;
+    width: 100%;
+    transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  /* responsive iframe with a 16:9 aspect ratio
+    thanks https://css-tricks.com/responsive-iframes/
+*/
+  .yt-lite::after {
+    content: "";
+    display: block;
+    padding-bottom: calc(100% / (16 / 9));
+  }
+  .yt-lite > iframe {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  /* play button */
+  .yt-lite > .lty-playbtn {
+    width: 70px;
+    height: 46px;
+    background-color: #212121;
+    z-index: 1;
+    opacity: 0.8;
+    border-radius: 14%; /* TODO: Consider replacing this with YT's actual svg. Eh. */
+    transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
+    border: none;
+  }
+  .yt-lite:hover > .lty-playbtn {
+    background-color: #f00;
+    opacity: 1;
+  }
+  /* play button triangle */
+  .yt-lite > .lty-playbtn:before {
+    content: "";
+    border-style: solid;
+    border-width: 11px 0 11px 19px;
+    border-color: transparent transparent transparent #fff;
+  }
+
+  .yt-lite > .lty-playbtn,
+  .yt-lite > .lty-playbtn:before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+  }
+
+  /* Post-click styles */
+  .yt-lite.lyt-activated {
+    cursor: unset;
+  }
+  .yt-lite.lyt-activated::before,
+  .yt-lite.lyt-activated > .lty-playbtn {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .live .video-wrapper {
+    background-color: var(--color-neutral-100);
+    margin-block: var(--space-xl);
+    display: flex;
+    justify-content: center;
+  }
+
+  .live .service-tabs.center-items {
+    gap: 1rem;
+  }
+
+  .live .service-tab {
+    background: transparent;
+    color: var(--color-primary-800);
+    text-decoration: none;
+    border: none;
+    padding: 0.5em 0.85em 0.6em;
+    border-radius: var(--rounded-corners);
+    line-height: 1.25;
+    font-family: var(--font-secondary);
+    font-weight: var(--font-weight-header);
+    font-variant-numeric: lining-nums;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: all 0.2s ease;
+  }
+
+  .live .service-tab:hover {
+    background: var(--color-primary-100);
+  }
+
+  .live .service-tab[data-headlessui-state~="selected"] {
+    background: var(--color-primary-800);
+    color: var(--color-white);
+  }
+
+  /* .panel-2 .video-wrapper {
+    background-color: var(--color-secondary-100);
+  } */
+
+  /* .live .video-wrapper > :first-child {
+    aspect-ratio: 16/9;
+    width: clamp(20rem, 50vw, 80%);
+    height: auto;
+  } */
+
+  .live .service-wrapper {
+    margin-block: var(--space-2xl);
+  }
+
+  .live .service-wrapper h3 {
+    margin-block: 0.5rem;
+  }
+
+  .live .time {
+    font-variant-numeric: lining-nums;
+  }
+
+  .live .bullet-spacer {
+    color: var(--color-primary-300);
+    margin-inline: 0.25rem;
+  }
+
+  .live .with-sidebar {
+    --sidebar-gap: var(--section-spacer);
+  }
+
+  .live .with-sidebar > .flow:first-child {
+    --flow-space: 2rem;
+  }
+
+  .live .sidebar .frame.square {
+    border-radius: 9999px;
+    width: 5rem;
+    height: 5rem;
+  }
+
+  .live .sidebar.flex {
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .live .small-title.category {
+    font-size: 13px;
+    display: inline-block;
+    color: var(--color-primary-800);
+    line-height: 1;
+    padding: 4px 6px;
+    background-color: var(--color-primary-100);
+    border-radius: var(--rounded-corners-small);
+  }
+
+  .live .small-title.category.contemporary {
+    background-color: var(--color-secondary-50);
+    color: var(--color-secondary-600);
+  }
+
+  .live .service-date {
+    margin-top: var(--space-m);
+    font-size: var(--step-1);
+    font-style: italic;
+  }
+
+  .live .contact-avatar .frame.square {
+    border-radius: 9999px;
+    width: 5rem;
+    height: 5rem;
+  }
+
+  .live .contact-avatar.flex {
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .live .contact-avatar .small-title {
+    color: var(--color-primary-800);
+    margin-bottom: 3px;
+  }
+
+  .live .service-info .text-step-4 {
+    margin-top: 8px;
   }
 </style>
