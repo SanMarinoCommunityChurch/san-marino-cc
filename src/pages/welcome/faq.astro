@@ -5,6 +5,7 @@ import Feature from "../../components/Feature.astro";
 import InnerHero from "../../components/InnerHero.astro";
 import ImageCard from "../../components/ImageCard.astro";
 import Accordion from "../../components/Svelte/Accordion.svelte";
+import { getCurrentPage } from "../../lib/pages";
 
 import placeholderImg from "../../assets/images/worship-2.jpg";
 import bgImage from "../../assets/images/plaza-lights.jpg";
@@ -31,6 +32,8 @@ const localNav = {
   ],
 };
 
+const currentPage = getCurrentPage("4dab6669-f0b2-45f3-808a-739750fc16b4");
+
 const pageTitle = "FAQ";
 const pageDescription =
   "First time visitor? Here is some helpful information to help you feel more comfortable walking into this new place!";
@@ -49,8 +52,8 @@ const pageDescription =
   <main slot="main">
     <InnerHero
       localNav={localNav}
-      pageTitle={pageTitle}
-      pageDescription={pageDescription}
+      pageTitle={currentPage.pageName}
+      pageDescription={currentPage.pageDescription}
       bgImage={bgImage}
     />
     <article class="content-wrapper flow">

@@ -1,7 +1,10 @@
 ---
 import Button from "./Button.astro";
+import { DateTime } from "luxon";
 
-const { fullNavigation } = Astro.props;
+const year = new Date();
+
+const { fullNavigation, utilityNavigation } = Astro.props;
 ---
 
 <footer>
@@ -23,11 +26,29 @@ const { fullNavigation } = Astro.props;
           </div>
         ))
       }
+      <div class="flow">
+        <ul class="flow">
+          {
+            utilityNavigation[0].children.map((navChild) => (
+              <li>
+                <a href={`/${navChild.slug}`}>{navChild.name}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
     </div>
   </div>
   <div class="sub-footer">
     <div class="cluster content-wrapper">
-      <div>© 2023 San Marino Community Church</div>
+      <div>
+        © {
+          year.toLocaleDateString("en-US", {
+            timeZone: "America/Los_Angeles",
+            year: "numeric",
+          })
+        } San Marino Community Church
+      </div>
       <ul>Social links</ul>
     </div>
   </div>

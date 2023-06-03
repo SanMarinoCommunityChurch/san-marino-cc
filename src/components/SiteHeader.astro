@@ -1,9 +1,10 @@
 ---
 import Button from "./Button.astro";
 import {Image} from "@astrojs/image/components"
+import {urlFor} from "../lib/sanity"
 import PopoverHeader from "./Svelte/PopoverHeader.svelte";
 
-const { mainNavigation, fullNavigation } = Astro.props;
+const { mainNavigation, fullNavigation, utilityNavigation } = Astro.props;
 ---
 
 <header class="header">
@@ -48,10 +49,10 @@ const { mainNavigation, fullNavigation } = Astro.props;
                         class="img-link"
                       >
                         <div class="overlay" />
-                        <Image
-                          src={navItem.img}
+                        <img
+                          src={urlFor(navItem.img).width(400).url()}
                           alt=""
-                          width={300}
+                          width={400}
                           class="nav-img"
                           loading="eager"
                         />
@@ -76,20 +77,18 @@ const { mainNavigation, fullNavigation } = Astro.props;
       <div class="utilities-wrapper">
         <div class="nav-utilities content-wrapper">
           {
-            fullNavigation.map(
+            utilityNavigation.map(
               (navItem) =>
-                navItem.name === "Utility" && (
                   <ul class="">
                     {navItem.children.map((navChild) => (
                       <li class="utility-item">
-                        <a href={`/${navItem.slug}/${navChild.slug}`}>
+                        <a href={`/${navChild.slug}`}>
                           <div class="small-title">{navChild.name}</div>
                           <p>{navChild.description}</p>
                         </a>
                       </li>
                     ))}
                   </ul>
-                )
             )
           }
         </div>

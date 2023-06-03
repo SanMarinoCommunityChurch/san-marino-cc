@@ -1,3 +1,19 @@
+const pages = `*[_type == 'page'] {
+  _id,
+  "slug": slug.current,
+  "pageName": name,
+  "pageDescription": description,
+  "background": {
+    "image": image.asset->,
+    "crop": image.crop,
+    "hotspot": image.hotspot
+  },
+  "seo": {
+    "title": seoTitle,
+    "description": seoDescription
+  }
+}`;
+
 const eventsPreview = `*[_type == 'event'] | order(date asc) {
   name,
   date,
@@ -122,7 +138,7 @@ const ministriesDetail = `*[_type == 'ministry'] {
   }
 }`;
 
-const fullNavigation = `*[_type == 'navigation' && _id == 'a0714f38-2dff-4ce5-b350-be13904afa67'] {
+const fullNavigationFromSanity = `*[_type == 'navigation' && _id == 'a0714f38-2dff-4ce5-b350-be13904afa67'] {
   _id,
   name,
   section[]{
@@ -131,11 +147,26 @@ const fullNavigation = `*[_type == 'navigation' && _id == 'a0714f38-2dff-4ce5-b3
     "sectionImage": image.asset->,
     "sectionPages": pages[]->{
       "pageName": name,
-      "pageSlug": slug.current
+      "pageSlug": slug.current,
     },
   }
 }
 `;
+
+const navigation = `*[_type == 'navigation'] {
+  _id,
+  name,
+  section[]{
+    "sectionName": name,
+    "sectionSlug": slug.current,
+    "sectionImage": image.asset->,
+    "sectionPages": pages[]->{
+      "pageName": name,
+      "pageSlug": slug.current,
+      "pageDescription": description
+    },
+  }
+}`;
 
 const staffMembers = `*[_type == 'person' && type.mainType == 'staff'] | order(order asc, lower(name.lastName) asc) {
   name,
@@ -170,13 +201,15 @@ const adminStaffMembers = `*[_type == 'person' && type.mainType == 'staff' && ty
 }`;
 
 export {
+  pages,
   eventsPreview,
   eventTypes,
   eventsDetail,
   ministriesPreview,
   ministryTypeWithMinistriesPreview,
   ministriesDetail,
-  fullNavigation,
+  fullNavigationFromSanity,
+  navigation,
   staffMembers,
   clergyMembers,
   programStaffMembers,

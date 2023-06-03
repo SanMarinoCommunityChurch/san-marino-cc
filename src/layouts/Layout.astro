@@ -1,5 +1,7 @@
 ---
 import { getSanityData } from "../lib/sanity";
+import { fullNavigationFromSanity } from "../lib/sanityQueries";
+import { getNavigationSet, filterMainNav } from "../lib/navigation";
 
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
@@ -12,149 +14,163 @@ import connectImg from "../assets/images/contemporary.jpg";
 import aboutImg from "../assets/images/church-garden.jpg";
 import resourcesImg from "../assets/images/church-ext-5.jpg";
 
-const mainNavigation = [
-  {
-    name: "I’m New",
-    href: "welcome/im-new",
-  },
-  {
-    name: "Worship Live",
-    href: "worship/live",
-    button: true,
-  },
-  {
-    name: "FAQ",
-    href: "welcome/faq",
-  },
-];
+// const [fullNav] = await getSanityData(fullNavigationFromSanity);
 
-const fullNavigation = [
-  {
-    name: "Welcome",
-    slug: "welcome",
-    img: welcomeImg,
-    children: [
-      {
-        name: "I’m New",
-        slug: "im-new",
-      },
-      {
-        name: "Weekly Schedule",
-        slug: "weekly-schedule",
-      },
-      {
-        name: "FAQ",
-        slug: "faq",
-      },
-      {
-        name: "How to Join",
-        slug: "how-to-join",
-      },
-    ],
-  },
-  {
-    name: "Worship",
-    slug: "worship",
-    img: worshipImg,
-    children: [
-      {
-        name: "Worship Live",
-        slug: "live",
-      },
-      {
-        name: "Worship Services",
-        slug: "services",
-      },
-    ],
-  },
-  {
-    name: "Connect",
-    slug: "connect",
-    img: connectImg,
-    children: [
-      {
-        name: "Events & Programs",
-        slug: "events",
-      },
-      {
-        name: "Ministries",
-        slug: "ministries",
-      },
-      {
-        name: "Missions",
-        slug: "missions",
-      },
-      {
-        name: "Pastoral Residency",
-        slug: "pastoral-residency",
-      },
-    ],
-  },
-  {
-    name: "Who We Are",
-    slug: "who-we-are",
-    img: aboutImg,
-    children: [
-      {
-        name: "Mission & Beliefs",
-        slug: "mission-and-beliefs",
-      },
-      {
-        name: "Our History",
-        slug: "our-history",
-      },
-      {
-        name: "Church Leadership",
-        slug: "church-leadership",
-      },
-    ],
-  },
-  {
-    name: "Resources",
-    slug: "resources",
-    img: resourcesImg,
-    children: [
-      {
-        name: "Blog",
-        slug: "blog",
-      },
-      {
-        name: "Education",
-        slug: "blog",
-      },
-    ],
-  },
-  {
-    name: "Utility",
-    slug: "",
-    children: [
-      {
-        name: "Give",
-        slug: "give",
-        button: true,
-        description:
-          "Make a donation to the Foundaiton of San Marino Community Church.",
-      },
-      {
-        name: "Contact",
-        slug: "contact",
-        description: "Contact us for location, hours, and other questions.",
-      },
-      {
-        name: "Calendar",
-        slug: "calendar",
-        description: "See the current events and programs at SMCC.",
-      },
-      {
-        name: "Nursery School",
-        slug: "nursery-school",
-        external: true,
-        description:
-          "Our Nursery School provides a place of joy and nurturing for our young children.",
-      },
-    ],
-  },
-];
+// pass in the entry id's from Sanity - in case someone changes the name
+const fullNavigation = getNavigationSet("a0714f38-2dff-4ce5-b350-be13904afa67");
+// get the main navigation item from Sanity
+const mainNavigation = getNavigationSet("0cde77d9-0c19-4642-84df-0523c76cec63");
+console.log(...mainNavigation);
+const utilityNavigation = getNavigationSet(
+  "ba5e977f-7457-4dda-b26e-c616e37a0fd2"
+);
+
+// filter the main navigation set agains the full navigation set in order to construct accurate slugs
+const mainNavigationFiltered = filterMainNav(fullNavigation, mainNavigation);
+
+// const mainNavigation = [
+//   {
+//     name: "I’m New",
+//     href: "welcome/im-new",
+//   },
+//   {
+//     name: "Worship Live",
+//     href: "worship/live",
+//     button: true,
+//   },
+//   {
+//     name: "FAQ",
+//     href: "welcome/faq",
+//   },
+// ];
+
+// const fullNavigation = [
+//   {
+//     name: "Welcome",
+//     slug: "welcome",
+//     img: welcomeImg,
+//     children: [
+//       {
+//         name: "I’m New",
+//         slug: "im-new",
+//       },
+//       {
+//         name: "Weekly Schedule",
+//         slug: "weekly-schedule",
+//       },
+//       {
+//         name: "FAQ",
+//         slug: "faq",
+//       },
+//       {
+//         name: "How to Join",
+//         slug: "how-to-join",
+//       },
+//     ],
+//   },
+//   {
+//     name: "Worship",
+//     slug: "worship",
+//     img: worshipImg,
+//     children: [
+//       {
+//         name: "Worship Live",
+//         slug: "live",
+//       },
+//       {
+//         name: "Worship Services",
+//         slug: "services",
+//       },
+//     ],
+//   },
+//   {
+//     name: "Connect",
+//     slug: "connect",
+//     img: connectImg,
+//     children: [
+//       {
+//         name: "Events & Programs",
+//         slug: "events",
+//       },
+//       {
+//         name: "Ministries",
+//         slug: "ministries",
+//       },
+//       {
+//         name: "Missions",
+//         slug: "missions",
+//       },
+//       {
+//         name: "Pastoral Residency",
+//         slug: "pastoral-residency",
+//       },
+//     ],
+//   },
+//   {
+//     name: "Who We Are",
+//     slug: "who-we-are",
+//     img: aboutImg,
+//     children: [
+//       {
+//         name: "Mission & Beliefs",
+//         slug: "mission-and-beliefs",
+//       },
+//       {
+//         name: "Our History",
+//         slug: "our-history",
+//       },
+//       {
+//         name: "Church Leadership",
+//         slug: "leadership",
+//       },
+//     ],
+//   },
+//   {
+//     name: "Resources",
+//     slug: "resources",
+//     img: resourcesImg,
+//     children: [
+//       {
+//         name: "Blog",
+//         slug: "blog",
+//       },
+//       {
+//         name: "Education",
+//         slug: "blog",
+//       },
+//     ],
+//   },
+//   {
+//     name: "Utility",
+//     slug: "",
+//     children: [
+//       {
+//         name: "Give",
+//         slug: "give",
+//         button: true,
+//         description:
+//           "Make a donation to the Foundaiton of San Marino Community Church.",
+//       },
+//       {
+//         name: "Contact",
+//         slug: "contact",
+//         description: "Contact us for location, hours, and other questions.",
+//       },
+//       {
+//         name: "Calendar",
+//         slug: "calendar",
+//         description: "See the current events and programs at SMCC.",
+//       },
+//       {
+//         name: "Nursery School",
+//         slug: "nursery-school",
+//         external: true,
+//         description:
+//           "Our Nursery School provides a place of joy and nurturing for our young children.",
+//       },
+//     ],
+//   },
+// ];
 
 const { title } = Astro.props;
 ---
@@ -165,18 +181,21 @@ const { title } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <link rel="stylesheet" href="https://use.typekit.net/wsf6agj.css" />
     <slot name="pageHead" />
   </head>
   <body>
     <SiteHeader
-      mainNavigation={mainNavigation}
+      mainNavigation={mainNavigationFiltered}
       fullNavigation={fullNavigation}
+      utilityNavigation={utilityNavigation}
     />
     <slot name="main" />
-    <SiteFooter fullNavigation={fullNavigation} />
+    <SiteFooter
+      fullNavigation={fullNavigation}
+      utilityNavigation={utilityNavigation}
+    />
   </body>
 </html>
 
