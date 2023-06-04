@@ -14,28 +14,7 @@ import {
 import { joinNames, capitalizeFirstLetter } from "../../utils/format";
 import { groupAsType } from "../../utils/people";
 import { PortableText } from "astro-portabletext";
-
-const pageTitle = "Church Leadership";
-const pageDescription =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
-
-const localNav = {
-  section: "Who We Are",
-  children: [
-    {
-      name: "Mission & Beliefs",
-      href: "/who-we-are/mission-and-beliefs",
-    },
-    {
-      name: "Our History",
-      href: "/who-we-are/our-history",
-    },
-    {
-      name: "Church Leadership",
-      href: "/who-we-are/leadership",
-    },
-  ],
-};
+import SectionPage from "../../layouts/SectionPage.astro";
 
 const staff = await getSanityData(staffMembers);
 const clergy = await getSanityData(clergyMembers);
@@ -44,60 +23,46 @@ const admin = await getSanityData(adminStaffMembers);
 const staffByType = groupAsType(staff);
 ---
 
-<Layout title={pageTitle}>
-  <main slot="main">
-    <InnerHero
-      localNav={localNav}
-      pageTitle={pageTitle}
-      pageDescription={pageDescription}
-    />
-    <article class="content-wrapper flow">
-      {
-        staffByType.map((type) => (
-          <section class="columns" id={type.type}>
-            <div>
-              <h2 class="text-step-3">
-                {capitalizeFirstLetter(type.type) + " Staff"}
-              </h2>
-            </div>
-            <ul class="grid">
-              {type.entries.map((person) => (
-                <li>
-                  <a href="" class="person">
-                    <div class="frame square">
-                      <img src={urlFor(person.image).url()} alt="" />
-                    </div>
-                    <div class="flow">
-                      <h3 class="text-step-1">
-                        {[
-                          person.name.title,
-                          person.name.firstName,
-                          person.name.lastName,
-                        ].join(" ")}
-                      </h3>
-                      <p class="text-step--1">
-                        <em>{person.role}</em>
-                      </p>
-                    </div>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </section>
-        ))
-      }
-    </article>
-  </main>
-</Layout>
+<SectionPage
+  currentPage={"fb0d80b4-b5ac-43bc-96eb-9c2146228d3a"}
+  localNavSection={"Who We Are"}
+>
+  {
+    staffByType.map((type) => (
+      <section class="columns" id={type.type}>
+        <div>
+          <h2 class="text-step-3">
+            {capitalizeFirstLetter(type.type) + " Staff"}
+          </h2>
+        </div>
+        <ul class="grid">
+          {type.entries.map((person) => (
+            <li>
+              <a href="" class="person">
+                <div class="frame square">
+                  <img src={urlFor(person.image).url()} alt="" />
+                </div>
+                <div class="flow">
+                  <h3 class="text-step-1">
+                    {[
+                      person.name.title,
+                      person.name.firstName,
+                      person.name.lastName,
+                    ].join(" ")}
+                  </h3>
+                  <p class="text-step--1">
+                    <em>{person.role}</em>
+                  </p>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+</SectionPage>
 <style>
-  article.content-wrapper {
-    margin-block: var(--section-spacer-half);
-  }
-
-  .content-wrapper.flow {
-    --flow-space: var(--space-3xl);
-  }
-
   /* .with-sidebar {
     --sidebar-gap: 2rem;
     --sidebar-min-width: 10rem;

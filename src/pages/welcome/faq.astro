@@ -9,28 +9,7 @@ import { getCurrentPage } from "../../lib/pages";
 
 import placeholderImg from "../../assets/images/worship-2.jpg";
 import bgImage from "../../assets/images/plaza-lights.jpg";
-
-const localNav = {
-  section: "Welcome",
-  children: [
-    {
-      name: "I’m New",
-      href: "/welcome/im-new",
-    },
-    {
-      name: "Weekly Schedule",
-      href: "/welcome/weekly-schedule",
-    },
-    {
-      name: "FAQ",
-      href: "/welcome/faq",
-    },
-    {
-      name: "How to Join",
-      href: "/welcome/how-to-join",
-    },
-  ],
-};
+import SectionPage from "../../layouts/SectionPage.astro";
 
 const currentPage = getCurrentPage("4dab6669-f0b2-45f3-808a-739750fc16b4");
 
@@ -39,51 +18,38 @@ const pageDescription =
   "First time visitor? Here is some helpful information to help you feel more comfortable walking into this new place!";
 ---
 
-<Layout title={pageTitle}>
+<SectionPage
+  currentPage={"4dab6669-f0b2-45f3-808a-739750fc16b4"}
+  localNavSection={"Welcome"}
+>
   <Fragment slot="pageHead">
     <script is:inline>
-      const hero = document.querySelector(".hero");
-      hero.querySelectorAll("h1, p, .local-nav").forEach((heroItem) => {
-        heroItem.style.opacity = 0;
-        heroItem.style.transform = "translateY(2rem)";
-      });
+      // const hero = document.querySelector(".hero");
+      // hero.querySelectorAll("h1, p, .local-nav").forEach((heroItem) => {
+      //   heroItem.style.opacity = 0;
+      //   heroItem.style.transform = "translateY(2rem)";
+      // });
     </script>
   </Fragment>
-  <main slot="main">
-    <InnerHero
-      localNav={localNav}
-      pageTitle={currentPage.pageName}
-      pageDescription={currentPage.pageDescription}
-      bgImage={bgImage}
-    />
-    <article class="content-wrapper flow">
-      <div class="with-sidebar">
-        <div class="faq flow">
-          <Accordion client:load>
-            <Fragment slot="question">What are your service options?</Fragment>
-            <Fragment slot="answer">
-              <p>
-                We offer <a href="/"
-                  >three different Sunday worship experiences</a
-                >. The first two are live-streamed online and archived to assist
-                you in worshipping whenever is most convenient for you.
-              </p>
-            </Fragment>
-          </Accordion>
-          <Accordion client:load />
-        </div>
-        <div></div>
-      </div>
-    </article>
-  </main>
-</Layout>
+  <div class="with-sidebar">
+    <div class="faq flow">
+      <Accordion client:load>
+        <Fragment slot="question">What are your service options?</Fragment>
+        <Fragment slot="answer">
+          <p>
+            We offer <a href="/">three different Sunday worship experiences</a>.
+            The first two are live-streamed online and archived to assist you in
+            worshipping whenever is most convenient for you.
+          </p>
+        </Fragment>
+      </Accordion>
+      <Accordion client:load />
+    </div>
+    <div></div>
+  </div>
+</SectionPage>
 
 <style>
-  article {
-    margin-block-start: var(--section-spacer-half);
-    margin-block-end: var(--section-spacer);
-  }
-
   .faq.flow {
     gap: 2rem;
   }

@@ -10,6 +10,7 @@ import getYouTubeID from "get-youtube-id";
 import Youtube from "svelte-youtube-embed";
 import { PortableText } from "astro-portabletext";
 import { DateTime } from "luxon";
+import { getCurrentPage } from "../../lib/pages";
 
 import {
   format12HourTime,
@@ -38,13 +39,15 @@ const latestService =
 const recentServices = await getSanityData(
   `*[_type == 'service'] | order(date desc)[1...4]`
 );
+
+const currentPage = getCurrentPage("b92afa26-7f3c-4e63-8aa1-90a1b7a9fad2");
 ---
 
-<Layout title={pageTitle}>
+<Layout title={currentPage.seo.title}>
   <main slot="main">
     <section class="hero center-items flow">
       <div class="small-title">{eyebrow}</div>
-      <h1 class="text-step-6">{pageTitle}</h1>
+      <h1 class="text-step-6">{currentPage.pageName}</h1>
       <div class="service-date">
         <time datetime={latestService.date}
           >{

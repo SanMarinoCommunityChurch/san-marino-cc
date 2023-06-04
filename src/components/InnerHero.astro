@@ -1,24 +1,19 @@
 ---
-import { Picture } from "@astrojs/image/components";
+function buildUrl(sectionUrl, pageUrl) {
+  return `/${sectionUrl}/${pageUrl}`;
+}
 
-// Image must be in public directory since it used as CSS background
-const {
-  localNav,
-  pageTitle,
-  pageDescription,
-  bgImage,
-  bgImageAlt,
-  bgImageAlign,
-} = Astro.props;
+// Image must be in public directory since it used as CSS background -- changed to Sanity image
+const { localNav, pageTitle, pageDescription, bgImage } = Astro.props;
 
-const bgImageStyle = `linear-gradient(to top, hsla(217, 86%, 20%, 0.9) 15%, hsla(217, 86%, 20%, 0)) center/cover no-repeat, url(${bgImage}) center/cover no-repeat;`;
+const bgImageStyle = `linear-gradient(to top, rgb(0 0 0 / 0.75) 15%, rgb(0 0 0 / 0)) center/cover no-repeat, url(${bgImage}) center/cover no-repeat`;
 ---
 
 <section
   class="hero"
-  style={`--background:${bgImage ? "" : "var(--color-primary-100)"}; --color:${
-    bgImage ? "var(--color-white)" : ""
-  }`}
+  style={`--background:${
+    bgImage ? bgImageStyle : "var(--color-primary-100)"
+  }; --color:${bgImage ? "var(--color-white)" : ""}`}
 >
   <slot name="breadcrumbs" />
   <div class="content-wrapper flow">
@@ -30,15 +25,15 @@ const bgImageStyle = `linear-gradient(to top, hsla(217, 86%, 20%, 0.9) 15%, hsla
     {
       localNav && (
         <div class="cluster local-nav">
-          <div class="small-title">{localNav.section}</div>
+          <div class="small-title">{localNav.name}</div>
           <div class="divider">|</div>
           <ul class="cluster">
             {localNav.children.map((item) => (
               <li class="text-step--1">
                 <a
-                  href={item.href}
+                  href={buildUrl(localNav.slug, item.slug)}
                   style={
-                    Astro.url.pathname === item.href &&
+                    Astro.url.pathname === buildUrl(localNav.slug, item.slug) &&
                     "color: var(--color-primary-300)"
                   }
                   class="link"
@@ -53,7 +48,7 @@ const bgImageStyle = `linear-gradient(to top, hsla(217, 86%, 20%, 0.9) 15%, hsla
     }
   </div>
   <div class="overlay" style={`--display:${bgImage ? "none" : "block"}`}></div>
-  {
+  <!-- {
     bgImage && (
       <div class="bg-image-wrapper">
         <div class="bg-overlay" />
@@ -67,7 +62,7 @@ const bgImageStyle = `linear-gradient(to top, hsla(217, 86%, 20%, 0.9) 15%, hsla
         />
       </div>
     )
-  }
+  } -->
 </section>
 
 <style>

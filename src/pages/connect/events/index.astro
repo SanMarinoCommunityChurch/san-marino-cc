@@ -1,77 +1,29 @@
 ---
-import Layout from "../../../layouts/Layout.astro";
-import Button from "../../../components/Button.astro";
-import Feature from "../../../components/Feature.astro";
 import CategoryList from "../../../components/Events/CategoryList.astro";
-import InnerHero from "../../../components/InnerHero.astro";
 import { getSanityData, urlFor } from "../../../lib/sanity";
 import EventsList from "../../../components/Events/EventsList.astro";
 import { eventsPreview, eventTypes } from "../../../lib/sanityQueries";
-
-const localNav = {
-  section: "Connect",
-  children: [
-    {
-      name: "Events & Programs",
-      href: "/connect/events",
-    },
-    {
-      name: "Ministries",
-      href: "/connect/ministries",
-    },
-    {
-      name: "Missions",
-      href: "/connect/missions",
-    },
-    {
-      name: "Pastoral Residency",
-      href: "/connect/pastoral-residency",
-    },
-  ],
-};
+import SectionPage from "../../../layouts/SectionPage.astro";
 
 const events = await getSanityData(eventsPreview);
 // refactor to get from eventsPreview data -- function get unique
 const categories = await getSanityData(eventTypes);
-
-// const categories = [
-//   { title: "Adult Ministry", value: "adult" },
-//   { title: "Youth Ministry", value: "youth" },
-//   { title: "Children's Ministry", value: "children" },
-//   { title: "Music Ministry", value: "music" },
-//   { title: "Program", value: "program" },
-// ];
-
-const pageTitle = "Events & Programs";
-const pageDescription =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 ---
 
-<Layout title={pageTitle}>
-  <main slot="main">
-    <InnerHero
-      localNav={localNav}
-      pageTitle={pageTitle}
-      pageDescription={pageDescription}
-    />
-    <article class="content-wrapper flow">
-      <div class="with-sidebar">
-        <EventsList events={events} />
-        <div class="flow">
-          <h3 class="text-step-2">Event Categories</h3>
-          <CategoryList categories={categories} />
-        </div>
-      </div>
-    </article>
-  </main>
-</Layout>
+<SectionPage
+  currentPage={"5f4b0b1f-524b-4486-91f5-9ef997d08fd1"}
+  localNavSection={"Connect"}
+>
+  <div class="with-sidebar">
+    <EventsList events={events} />
+    <div class="flow">
+      <h3 class="text-step-2">Event Categories</h3>
+      <CategoryList categories={categories} />
+    </div>
+  </div>
+</SectionPage>
 
 <style>
-  article {
-    margin-block-start: var(--section-spacer-half);
-    margin-block-end: var(--section-spacer);
-  }
-
   .with-sidebar {
     --sidebar-gap: 3rem;
     --sidebar-min-width: 15rem;

@@ -1,0 +1,48 @@
+---
+import Layout from "./Layout.astro";
+import InnerHero from "../components/InnerHero.astro";
+
+import { urlFor } from "../lib/sanity";
+import { filterLocalNav } from "../lib/navigation";
+import { getCurrentPage } from "../lib/pages";
+
+const { currentPage, localNavSection, contentPadding } = Astro.props;
+const page = getCurrentPage(currentPage);
+const { seo, pageName, pageDescription, background } = page;
+
+const bgImage = background.image
+  ? urlFor(background.image).width(1600).height(450).auto("format").url()
+  : undefined;
+---
+
+<Layout title={seo.title}>
+  <Fragment slot="pageHead">
+    <link rel="preload" href={bgImage} as="image" crossorigin />
+    <slot name="pageHead" />
+  </Fragment>
+  <main slot="main">
+    <InnerHero
+      localNav={filterLocalNav(localNavSection)}
+      pageTitle={pageName}
+      pageDescription={pageDescription}
+      bgImage={bgImage}
+    />
+    <article
+      class="content-wrapper flow"
+      style={contentPadding && "padding-block-start: var(--space-2xl)"}
+    >
+      <slot />
+    </article>
+  </main>
+</Layout>
+
+<style>
+  article.content-wrapper {
+    margin-block-start: var(--section-spacer-half);
+    margin-block-end: var(--section-spacer);
+  }
+
+  .content-wrapper.flow {
+    --flow-space: var(--space-3xl);
+  }
+</style>

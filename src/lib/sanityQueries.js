@@ -4,7 +4,8 @@ const pages = `*[_type == 'page'] {
   "pageName": name,
   "pageDescription": description,
   "background": {
-    "image": image.asset->,
+    "image": image,
+    "asset": image.asset->,
     "crop": image.crop,
     "hotspot": image.hotspot
   },

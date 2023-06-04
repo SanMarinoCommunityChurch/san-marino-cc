@@ -1,7 +1,11 @@
 ---
 import { getSanityData } from "../lib/sanity";
 import { fullNavigationFromSanity } from "../lib/sanityQueries";
-import { getNavigationSet, filterMainNav } from "../lib/navigation";
+import {
+  fullNavigation,
+  utilityNavigation,
+  mainNavigationFiltered,
+} from "../lib/navigation";
 
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
@@ -15,18 +19,6 @@ import aboutImg from "../assets/images/church-garden.jpg";
 import resourcesImg from "../assets/images/church-ext-5.jpg";
 
 // const [fullNav] = await getSanityData(fullNavigationFromSanity);
-
-// pass in the entry id's from Sanity - in case someone changes the name
-const fullNavigation = getNavigationSet("a0714f38-2dff-4ce5-b350-be13904afa67");
-// get the main navigation item from Sanity
-const mainNavigation = getNavigationSet("0cde77d9-0c19-4642-84df-0523c76cec63");
-console.log(...mainNavigation);
-const utilityNavigation = getNavigationSet(
-  "ba5e977f-7457-4dda-b26e-c616e37a0fd2"
-);
-
-// filter the main navigation set agains the full navigation set in order to construct accurate slugs
-const mainNavigationFiltered = filterMainNav(fullNavigation, mainNavigation);
 
 // const mainNavigation = [
 //   {

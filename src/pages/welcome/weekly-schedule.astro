@@ -7,71 +7,35 @@ import InnerHero from "../../components/InnerHero.astro";
 import traditionalImg from "../../assets/images/worship.jpg";
 import contemporaryImg from "../../assets/images/contemporary.jpg";
 import bgImage from "../../assets/images/facade-front.jpg";
-
-const contentTitle = "We’re so glad you’re here.";
-const pageTitle = "Weekly Schedule";
-const pageDescription =
-  "Join us every Sunday for traditional worship at 9:00 am or contemporary worship at 10:00 am.";
-
-const localNav = {
-  section: "Welcome",
-  children: [
-    {
-      name: "I’m New",
-      href: "/welcome/im-new",
-    },
-    {
-      name: "Weekly Schedule",
-      href: "/welcome/weekly-schedule",
-    },
-    {
-      name: "FAQ",
-      href: "/welcome/faq",
-    },
-    {
-      name: "How to Join",
-      href: "/welcome/how-to-join",
-    },
-  ],
-};
+import SectionPage from "../../layouts/SectionPage.astro";
 ---
 
-<Layout title={pageTitle}>
-  <main slot="main">
-    <InnerHero
-      localNav={localNav}
-      pageTitle={pageTitle}
-      pageDescription={pageDescription}
-      bgImage={bgImage}
-    />
-    <article class="content-wrapper flow">
-      <div class="center-items text-step-1 paragraphs mx-auto">
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque
-        reprehenderit sunt quo nam, incidunt possimus ducimus alias error. Nisi,
-        porro!
-      </div>
-      <Feature href="/worship/live" imgSrc={traditionalImg}>
-        <h2 slot="header" class="text-step-2">Traditional Worship</h2>
-        <Fragment slot="CTA">Join Online</Fragment>
-      </Feature>
-      <Feature
-        href="/worship/live"
-        theme="dark"
-        layout="image-right"
-        imgSrc={contemporaryImg}
-      >
-        <h2
-          slot="header"
-          class="text-step-2"
-          style="color: var(--color-white);"
-        >
-          Contemporary Worship
-        </h2>
-        <Fragment slot="CTA">Join Online</Fragment>
-      </Feature>
-    </article>
-  </main>
-</Layout>
+<SectionPage
+  currentPage={"1fde3a48-27a1-4361-a045-8bbde2561893"}
+  localNavSection={"Welcome"}
+  contentPadding
+>
+  <div class="center-items text-step-1 paragraphs mx-auto">
+    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque
+    reprehenderit sunt quo nam, incidunt possimus ducimus alias error. Nisi,
+    porro!
+  </div>
+  <Feature href="/worship/live" imgSrc={traditionalImg}>
+    <h2 slot="header" class="text-step-2">Traditional Worship</h2>
+    <Fragment slot="CTA">Join Online</Fragment>
+  </Feature>
+  <Feature
+    href="/worship/live"
+    theme="dark"
+    layout="image-right"
+    imgSrc={contemporaryImg}
+  >
+    <h2 slot="header" class="text-step-2" style="color: var(--color-white);">
+      Contemporary Worship
+    </h2>
+    <Fragment slot="CTA">Join Online</Fragment>
+  </Feature>
+</SectionPage>
 <style>
   article {
     margin-block: var(--section-spacer);

@@ -6,58 +6,28 @@ import InnerHero from "../../components/InnerHero.astro";
 import ImageCard from "../../components/ImageCard.astro";
 
 import placeholderImg from "../../assets/images/worship-2.jpg";
-
-const localNav = {
-  section: "Welcome",
-  children: [
-    {
-      name: "I’m New",
-      href: "/welcome/im-new",
-    },
-    {
-      name: "Weekly Schedule",
-      href: "/welcome/weekly-schedule",
-    },
-    {
-      name: "FAQ",
-      href: "/welcome/faq",
-    },
-    {
-      name: "How to Join",
-      href: "/welcome/how-to-join",
-    },
-  ],
-};
-
-const pageTitle = "How to Join";
-const pageDescription =
-  "Interested in joining the church? Would you like to learn more about San Marino Community Church and its ministries? Then the new member class is for you!";
+import SectionPage from "../../layouts/SectionPage.astro";
 ---
 
-<Layout title={pageTitle}>
-  <main slot="main">
-    <InnerHero
-      localNav={localNav}
-      pageTitle={pageTitle}
-      pageDescription={pageDescription}
-    />
-    <article class="content-wrapper">
-      <div class="paragraphs flow">
-        <p>
-          Our class provides an opportunity to get acquainted, ask questions,
-          and learn more about our church, our Presbyterian heritage, and our
-          mission. We receive new members by profession of faith upon baptism,
-          reaffirmation of faith, or letter of transfer from another church.
-        </p>
-        <p>
-          We offer membership classes twice a year - once in the fall and once
-          in the spring. If you are interested in becoming a member, please call
-          the Church Office at 626/282-4181.
-        </p>
-      </div>
-    </article>
-  </main>
-</Layout>
+<SectionPage
+  currentPage={"df9a8f44-11dc-4e34-87a8-46176c01d3a2"}
+  localNavSection={"Welcome"}
+  contentPadding
+>
+  <div class="paragraphs flow">
+    <p>
+      Our class provides an opportunity to get acquainted, ask questions, and
+      learn more about our church, our Presbyterian heritage, and our mission.
+      We receive new members by profession of faith upon baptism, reaffirmation
+      of faith, or letter of transfer from another church.
+    </p>
+    <p>
+      We offer membership classes twice a year - once in the fall and once in
+      the spring. If you are interested in becoming a member, please call the
+      Church Office at 626/282-4181.
+    </p>
+  </div>
+</SectionPage>
 
 <style>
   article {

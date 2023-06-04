@@ -13,28 +13,7 @@ import {
 } from "../../../lib/sanityQueries";
 
 import placeholderImg from "../../../assets/images/church-ext-2.jpg";
-
-const localNav = {
-  section: "Connect",
-  children: [
-    {
-      name: "Events & Programs",
-      href: "/connect/events",
-    },
-    {
-      name: "Ministries",
-      href: "/connect/ministries",
-    },
-    {
-      name: "Missions",
-      href: "/connect/missions",
-    },
-    {
-      name: "Pastoral Residency",
-      href: "/connect/pastoral-residency",
-    },
-  ],
-};
+import SectionPage from "../../../layouts/SectionPage.astro";
 
 const ministries = await getSanityData(ministriesPreview);
 const ministryTypesToSort = await getSanityData(
@@ -57,97 +36,20 @@ const ministryTypes = ministryTypesToSort.sort((a, b) => {
 //   { title: "Children's Ministry", value: "children" },
 //   { title: "Music Ministry", value: "music" },
 // ];
-
-const pageTitle = "Ministries";
-const pageDescription =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
-// const bgImage = "/church-garden.jpg";
-import bgImage from "../../../assets/images/arcade.jpg";
 ---
 
-<Layout title={pageTitle}>
-  <main slot="main">
-    <InnerHero
-      localNav={localNav}
-      pageTitle={pageTitle}
-      pageDescription={pageDescription}
-      bgImage={bgImage}
-    />
-    <article class="content-wrapper flow">
-      <MinistrySlider slides={ministryTypes} items="ministries" />
-      <div class="center-items">
-        <Button href="#thumbnail-slider">Back to Top</Button>
-      </div>
-      <!-- <Feature>
-        <h2 slot="header" class="text-step-2">Adult Ministries</h2>
-        <p slot="body">
-          We offer a wide range of weekly activities for our community to
-          connect in fellowship, in addition to larger special events. All are
-          welcome to participate. We hope you'll join us!
-        </p>
-      </Feature> -->
-      <!-- <div>
-        {
-          ministryTypes.map((item) => (
-            <>
-              <div>{item.name}</div>
-              <ul class="ministry-list">
-                {item.ministries.map((ministry) => (
-                  <li>
-                    <ImageCard
-                      imgSrc={urlFor(ministry.image).width(600).url()}
-                      imgAlt=""
-                      title={ministry.name}
-                      description={ministry.preview}
-                      href={`/connect/ministries/${ministry.slug}`}
-                    />
-                  </li>
-                ))}
-              </ul>
-            </>
-          ))
-        }
-      </div> -->
-      <!-- <div class="ministry-list">
-            {
-            ministries.map((ministry) => (
-                <Card 
-                    title={ministry.name}
-                    href={`/connect/ministries/${ministry.slug}`}
-                    img={
-                        ministry.image ?
-                        urlFor(ministry.image).url()
-                        :
-                        placeholderImg
-                    }
-                >
-                <div slot="header" class="small-title ministry-category">
-                    {ministry.category.name}
-                </div>
-                <p slot="body" class="text-step--1">
-                    {ministry.preview}
-                </p>
-                {ministry.meetingLocation &&
-                    <div slot="footer" class="location-footer text-step--1 cluster font-header">
-                        <span class="location-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" height="16" width="16" fill="var(--color-primary-800)"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M192 144a48 48 0 1 0 0 96 48 48 0 1 0 0-96z"/><path class="fa-secondary" d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 112a80 80 0 1 1 0 160 80 80 0 1 1 0-160z"/></svg></span>
-                        <span>{ministry.meetingLocation}</span>
-                    </div>
-                }
-                </Card>
-            ))
-            }
-        </div> -->
-    </article>
-  </main>
-</Layout>
+<SectionPage
+  currentPage={"c970d4a9-70e6-4a7a-b5e3-6e7568126f96"}
+  localNavSection={"Connect"}
+  contentPadding
+>
+  <MinistrySlider slides={ministryTypes} items="ministries" />
+  <div class="center-items">
+    <Button href="#thumbnail-slider">Back to Top</Button>
+  </div>
+</SectionPage>
 
 <style>
-  article {
-    margin-block-start: var(--section-spacer-half);
-    margin-block-end: var(--section-spacer);
-    padding-block-start: var(--space-2xl);
-  }
-
   .with-sidebar {
     --sidebar-gap: 3rem;
     --sidebar-min-width: 15rem;
