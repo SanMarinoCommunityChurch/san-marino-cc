@@ -2,38 +2,50 @@
 import Layout from "../../../layouts/Layout.astro";
 import Button from "../../../components/Button.astro";
 import InnerHero from "../../../components/InnerHero.astro";
-import Breadcrumb from "../../../components/Breadcrumb.astro";
-import ServiceInfo from "../../../components/ServiceInfo.astro";
-import ContactAvatar from "../../../components/ContactAvatar.astro"
-import getYouTubeID from "get-youtube-id";
-import Youtube from "svelte-youtube-embed";
+import BreadcrumbAuto from "../../../components/BreadcrumbAuto.astro";
+import Tabs from "../../../components/React/Tabs";
+import { Image } from "@astrojs/image/components";
+import { joinTypes } from "../../../utils/format";
 
 import { PortableText } from "astro-portabletext";
-import { DateTime } from "luxon"
-import {
-  format12HourTime,
-  capitalizeFirstLetter,
-  joinNames
-} from "../../../utils/format";
+import { DateTime } from "luxon";
 import { getSanityData, urlFor } from "../../../lib/sanity";
 
-import pastorHeadshot from "../../../assets/images/jessica-vaughan-lower-headshot.jpg";
+import bgImage from "../../../assets/images/church-ext-2.jpg";
 
 export async function getStaticPaths() {
-  const pages = await getSanityData(`*[_type == 'service'] | order(date desc) {
+  const pages = await getSanityData(`*[_type == 'service']|order(date) {
   ...,
+  "slug": slug.current,
   serviceType[] {
     ...,
     preacher->{
       name,
-      "image": image.asset->
+      "image": image.asset->,
+      contact
     }
-  }
+  },
+  "previousService": *[_type == 'service' && ^.date > date]|order(date desc)[0]{
+    "slug": slug.current,
+    name,
+    date,
+    serviceType[] {
+      name
+    }
+  },
+  "nextService": *[_type == 'service' && ^.date < date]|order(date asc)[0]{
+    "slug": slug.current,
+    name,
+    date,
+    serviceType[] {
+      name
+    }
+  },
 }`);
 
   return pages.map((page) => {
     return {
-      params: { slug: page.date },
+      params: { slug: page.slug },
       props: { page },
     };
   });
@@ -41,174 +53,172 @@ export async function getStaticPaths() {
 
 const { slug } = Astro.params;
 const { page } = Astro.props;
+
+const serviceDate = DateTime.fromISO(page.date)
+  .setZone("America/Los_Angeles")
+  .toLocaleString(DateTime.DATE_HUGE);
+
+const serviceDateSmall = DateTime.fromISO(page.date)
+  .setZone("America/Los_Angeles")
+  .toLocaleString(DateTime.DATE_FULL);
+
+const breadcrumbs = [
+  {
+    name: "Worship",
+    href: "/worship",
+  },
+  {
+    name: "Services",
+    href: "/worship/services",
+  },
+  {
+    name: serviceDateSmall,
+    current: true,
+  },
+];
+
+const serviceTypes = page.serviceType.map((item) => item.name);
+const description = `Watch video from our ${serviceDate} service.`;
 ---
 
-<Layout>
+<Layout title={"Service for " + serviceDate}>
   <main slot="main">
-    <article class="content-wrapper">
-      <section class="hero">
-        <div class="hero-text flow">
-          <h1 class="text-step-5">{
-            page.name ?
-            page.name :
-            "Sunday Worship"
-            }</h1>
-          <div class="cluster">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 448 512"
-              width="22"
-              height="22"
-              fill="var(--color-primary-800)"
-              ><defs
-                ><style>
-                  .fa-secondary {
-                    opacity: 0.4;
-                  }
-                </style></defs
-              ><path
-                class="fa-primary"
-                d="M96 32c0-17.7 14.3-32 32-32s32 14.3 32 32V64H288V32c0-17.7 14.3-32 32-32s32 14.3 32 32V64h48c26.5 0 48 21.5 48 48v80H0V112C0 85.5 21.5 64 48 64H96V32z"
-              ></path><path
-                class="fa-secondary"
-                d="M448 192H0V464c0 26.5 21.5 48 48 48H400c26.5 0 48-21.5 48-48V192zM80 256H368c8.8 0 16 7.2 16 16v64c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V272c0-8.8 7.2-16 16-16z"
-              ></path></svg
-            >
-            <time class="text-step-1">{DateTime.fromISO(page.date).setZone('America/Los_Angeles').toLocaleString(DateTime.DATE_HUGE)}</time>
-          </div>
-          <div class="cluster page-links">
-            {
-              page.serviceType.map(service =>
-                <a href={`#${service.name}`} class="category small-title">{service.name}</a>
-              )
-            }
-          </div>
+    <InnerHero
+      pageTitle={page.name ? page.name : "Sunday Service"}
+      pageDescription={description}
+    >
+      <Fragment slot="breadcrumbs">
+        <BreadcrumbAuto
+          navigation={breadcrumbs}
+          className="breadcrumb-wrapper"
+        />
+      </Fragment>
+      <div
+        slot="eyebrow"
+        class="eyebrow small-title heading-category"
+        style="margin-bottom: -1.5rem;"
+      >
+        {serviceDate}
+      </div>
+    </InnerHero>
+    <article class="content">
+      <div class="live">
+        <Tabs client:load service={page} />
+      </div>
+      <div class="content-wrapper more">
+        <h2 class="sr-only">More Services</h2>
+        <div class="grid">
+          {
+            page.previousService ? (
+              <div class="flex" data-more="previous">
+                <p class="small-title">Previous Service</p>
+                <a
+                  href={`/worship/services/${page.previousService.slug}`}
+                  class="service-wrapper"
+                >
+                  <div class="date-label-wrapper">
+                    <time
+                      class="date-label"
+                      datetime={page.previousService.date}
+                    >
+                      <div class="event-day font-header">
+                        {DateTime.fromISO(page.previousService.date)
+                          .setZone("America/Los_Angeles")
+                          .toFormat("d")}
+                      </div>
+                      <div class="small-title">
+                        {DateTime.fromISO(page.previousService.date)
+                          .setZone("America/Los_Angeles")
+                          .toFormat("LLL")}
+                      </div>
+                    </time>
+                    <Image src={bgImage} alt="" />
+                  </div>
+                  <div class="flow">
+                    <div class="text">
+                      <div class="small-title category">
+                        {joinTypes(page.previousService.serviceType)}
+                      </div>
+                      <h3 class="text-step-2">
+                        {page.previousService.name
+                          ? page.previousService.name
+                          : "Sunday Service"}
+                      </h3>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            ) : (
+              <div />
+            )
+          }
+          {
+            page.nextService ? (
+              <div class="flex" data-more="next">
+                <p class="small-title">Next Service</p>
+                <a
+                  href={`/worship/services/${page.nextService.slug}`}
+                  class="service-wrapper"
+                >
+                  <div class="flow">
+                    <div class="text">
+                      <div class="small-title category">
+                        {joinTypes(page.nextService.serviceType)}
+                      </div>
+                      <h3 class="text-step-2">
+                        {page.nextService.name
+                          ? page.nextService.name
+                          : "Sunday Service"}
+                      </h3>
+                    </div>
+                  </div>
+                  <div class="date-label-wrapper">
+                    <time class="date-label" datetime={page.nextService.date}>
+                      <div class="event-day font-header">
+                        {DateTime.fromISO(page.nextService.date)
+                          .setZone("America/Los_Angeles")
+                          .toFormat("d")}
+                      </div>
+                      <div class="small-title">
+                        {DateTime.fromISO(page.nextService.date)
+                          .setZone("America/Los_Angeles")
+                          .toFormat("LLL")}
+                      </div>
+                    </time>
+                    <Image src={bgImage} alt="" />
+                  </div>
+                </a>
+              </div>
+            ) : (
+              <div />
+            )
+          }
         </div>
-      </section>
-      {
-        page.serviceType.map((service) => (
-          <section id={service.name} class="section flex">
-            {service.video && (
-              <div class="video-wrapper">
-                <div>
-                  <Youtube client:idle id={getYouTubeID(service.video.url)} />
-                </div>
-              </div>
-            )}
-            <div class="content flow">
-              <div>
-                <div class="cluster time">
-                  <svg 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    viewBox="0 0 512 512"
-                    width="16"
-                    height="16"
-                    fill="var(--color-primary-700)"
-                  ><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M256 96c-13.3 0-24 10.7-24 24V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24z"/><path class="fa-secondary" d="M256 0a256 256 0 1 1 0 512A256 256 0 1 1 256 0zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"/></svg>
-                <time class="small-title">
-                  {format12HourTime(service.serviceTime)}
-                </time>
-                </div>
-                <h2 class="text-step-3">
-                  {capitalizeFirstLetter(service.name) + " Service"}
-                </h2>
-              </div>
-              <div>ContactAvatar failed on Netlify build</div>
-              <PortableText value={service.serviceDescription} />
-              <Button href={service.programLink} width="fit">
-                Download Program
-              </Button>
-            </div>
-          </section>
-        ))
-      }
+      </div>
     </article>
   </main>
 </Layout>
 
 <style>
-  main {
-    background-color: var(--color-neutral-100);
+  .breadcrumb-wrapper {
+    position: absolute;
+    z-index: 10;
+    padding-inline-start: var(--space-l);
+    top: 1rem;
+    width: fit-content;
   }
 
-  article {
-    padding-bottom: var(--section-spacer);
+  .content {
+    margin-block: var(--section-spacer-half);
   }
 
-  .content-wrapper {
-    background-color: var(--color-white);
-    padding-inline: var(--space-m-2xl);
-  }
-
-  .section.flex {
-    flex-direction: column;
-    gap: var(--space-l);
-    margin-top: 3rem;
-    padding-top: 3rem;
-    border-top: 1px solid var(--color-primary-200);
-  }
-
-  .video-wrapper {
-    width: min(100%, 50rem);
-    border: 1px solid var(--color-primary-200);
-    border-radius: var(--rounded-corners);
-    overflow: hidden;
-    aspect-ratio: 16/9;
-  }
-
-  .hero {
-    padding-top: 2rem;
-  }
-
-  .hero-text {
-    margin-block-start: 5rem;
-    margin-block-end: 3rem;
-  }
-
-  .hero-text time {
-    font-style: italic;
-  }
-
-  .hero-text svg {
-    position: relative;
-    top: -3px;
+  .eyebrow {
+    font-variant-numeric: lining-nums;
+    color: var(--color-primary-800);
   }
 
   .content.flow {
     --flow-space: var(--space-m);
-  }
-
-  .sermon.flex {
-    gap: 1rem;
-    align-items: center;
-  }
-
-  .time {
-    margin-bottom: 6px;
-  }
-
-  .time.cluster {
-    --cluster-space: 0.75rem;
-  }
-
-  .time .small-title {
-    font-size: var(--step-0);
-    color: var(--color-primary-700)
-  }
-
-  .time svg {
-    position: relative;
-    top: 1px;
-  }
-
-  .with-sidebar {
-
-  }
-
-  .frame.square {
-    border-radius: 9999px;
-    width: 4rem;
-    height: 4rem;
   }
 
   .small-title.category {
@@ -231,5 +241,102 @@ const { page } = Astro.props;
 
   .page-links {
     padding-top: 1rem;
+  }
+
+  .more a.service-wrapper {
+    text-decoration: none;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    align-items: center;
+    gap: 2rem;
+    padding: 0.5rem;
+    width: 100%;
+    border-radius: var(--rounded-corners);
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+  }
+
+  .more a.service-wrapper:hover {
+    box-shadow: var(--shadow-large);
+  }
+
+  .more .date-label-wrapper {
+    position: relative;
+    border-radius: var(--rounded-corners);
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: var(--color-primary-100);
+    overflow: hidden;
+  }
+
+  .more .date-label {
+    position: relative;
+    padding: 1rem;
+    z-index: 2;
+  }
+
+  .more .date-label-wrapper img {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    border-radius: var(--rounded-corners);
+    filter: saturate(0);
+    opacity: 1;
+    mix-blend-mode: overlay;
+  }
+
+  .more .event-day {
+    font-size: var(--step-5);
+    color: var(--color-primary-800);
+    line-height: 1;
+  }
+
+  .more .date-label .small-title {
+    margin-top: 3px;
+    color: var(--color-primary-800);
+  }
+
+  .more .small-title.category {
+    font-size: 13px;
+    display: inline-block;
+    color: var(--color-primary-800);
+    line-height: 1;
+    padding: 4px 6px;
+    margin-bottom: 8px;
+    background-color: var(--color-primary-100);
+    border-radius: var(--rounded-corners-small);
+  }
+
+  .more .text-step-2 {
+    margin-top: -1px;
+  }
+
+  .more .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .more .flex {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .more .flex[data-more="next"] {
+    align-items: flex-end;
+  }
+
+  .more .flex[data-more="next"] a.service-wrapper {
+    grid-template-columns: 3fr 1fr;
+  }
+
+  .more .flex[data-more="next"] a.service-wrapper .text {
+    text-align: right;
   }
 </style>

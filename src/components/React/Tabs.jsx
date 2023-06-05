@@ -87,21 +87,23 @@ export default function Tabs({ service }) {
                   )}
                 </div>
                 <div>
-                  <Avatar
-                    heading="Sermon by"
-                    name={joinNames(preacher.name)}
-                    image={
-                      preacher.image &&
-                      urlFor(preacher.image)
-                        .width(200)
-                        .height(200)
-                        .fit("crop")
-                        .crop("center")
-                        .url()
-                    }
-                    imageAlt={joinNames(preacher.name)}
-                    href={preacher.contact && preacher.contact.email}
-                  />
+                  {preacher && (
+                    <Avatar
+                      heading="Sermon by"
+                      name={joinNames(preacher.name)}
+                      image={
+                        preacher.image &&
+                        urlFor(preacher.image)
+                          .width(200)
+                          .height(200)
+                          .fit("crop")
+                          .crop("center")
+                          .url()
+                      }
+                      imageAlt={joinNames(preacher.name)}
+                      href={preacher.contact && preacher.contact.email}
+                    />
+                  )}
                 </div>
               </article>
             </Tab.Panel>

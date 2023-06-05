@@ -3,8 +3,10 @@ import { Image } from "@astrojs/image/components";
 import DateLabel from "./Events/DateLabel.astro";
 import { capitalizeFirstLetter } from "../utils/format";
 import getYouTubeID from "get-youtube-id";
+import { joinTypes } from "../utils/format";
 
 import bgImage from "../assets/images/church-ext-2.jpg";
+import { DateTime } from "luxon";
 
 const niceDate = (dateString) => {
   const date = new Date(dateString);
@@ -25,14 +27,6 @@ const niceDate = (dateString) => {
   };
 };
 
-function joinTypes(array) {
-  let serviceTypes = [];
-  array.forEach((item) => {
-    serviceTypes.push(capitalizeFirstLetter(item.name));
-  });
-  return serviceTypes.join(" & ");
-}
-
 import placeholderImg from "../assets/images/worship.jpg";
 const videoImg = "https://img.youtube.com/vi/Gh2c1aAQkJc/sddefault.jpg";
 
@@ -43,13 +37,19 @@ const { services } = Astro.props;
   {
     services.map((service) => (
       <li>
-        <a href={`/worship/services/${service.date}`} class="service-wrapper">
+        <a href={`/worship/services/${service.slug}`} class="service-wrapper">
           <div class="date-label-wrapper">
-            <time class="date-label">
+            <time class="date-label" datetime={service.date}>
               <div class="event-day font-header">
-                {niceDate(service.date).day}
+                {DateTime.fromISO(service.date)
+                  .setZone("America/Los_Angeles")
+                  .toFormat("d")}
               </div>
-              <div class="small-title">{niceDate(service.date).month}</div>
+              <div class="small-title">
+                {DateTime.fromISO(service.date)
+                  .setZone("America/Los_Angeles")
+                  .toFormat("LLL")}
+              </div>
             </time>
             <Image src={bgImage} alt="" />
           </div>
@@ -126,6 +126,7 @@ const { services } = Astro.props;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    text-align: center;
     align-items: center;
     background-color: var(--color-primary-100);
     overflow: hidden;

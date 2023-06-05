@@ -74,6 +74,14 @@ const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
+function joinTypes(array) {
+  let serviceTypes = [];
+  array.forEach((item) => {
+    serviceTypes.push(capitalizeFirstLetter(item.name));
+  });
+  return serviceTypes.join(" & ");
+}
+
 const joinNames = (nameObject) => {
   const title = nameObject.title || null;
   const firstName = nameObject.firstName;
@@ -91,6 +99,7 @@ export {
   timeFormatter,
   format12HourTime,
   capitalizeFirstLetter,
+  joinTypes,
   joinNames,
   formatDateShort,
   getWeekday,

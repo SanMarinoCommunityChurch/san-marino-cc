@@ -5,6 +5,7 @@ import Card from "../../../components/Card.astro";
 import DateLabel from "../../../components/Events/DateLabel.astro";
 import ContactAvatar from "../../../components/ContactAvatar.astro";
 import MiniPreviewCard from "../../../components/MiniPreviewCard.astro"
+import { Image } from "@astrojs/image/components";
 import MoreLikeThis from "../../../components/MoreLikeThis.astro";
 import Feature from "../../../components/Feature.astro";
 import Button from "../../../components/Button.astro";
@@ -104,7 +105,7 @@ const randomizedEvents = randomizeAndSlice(otherEvents, "type", page, 3);
                     </li>
                 </ul>
             </div>
-            <img src={bgImage} alt="" class="img" />
+            <Image src={bgImage} alt="" width={600} class="img" />
         </div>
         <div class="event-box-lower">
             {page.associatedMinistry ?
