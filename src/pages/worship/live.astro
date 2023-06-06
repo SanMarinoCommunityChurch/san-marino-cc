@@ -37,7 +37,10 @@ const latestService =
 }`);
 
 const recentServices = await getSanityData(
-  `*[_type == 'service'] | order(date desc)[1...4]`
+  `*[_type == 'service'] | order(date desc)[1...4] {
+    ...,
+    "slug": slug.current
+  }`
 );
 
 const currentPage = getCurrentPage("b92afa26-7f3c-4e63-8aa1-90a1b7a9fad2");
