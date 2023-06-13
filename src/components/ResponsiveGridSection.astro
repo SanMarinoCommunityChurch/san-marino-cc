@@ -1,0 +1,47 @@
+---
+import ImageCard from "./ImageCard.astro";
+
+const { title, id, text, items } = Astro.props;
+---
+
+<section id={id}>
+  <h2 class="text-step-4 center-items heading">{title}</h2>
+  <div class="text mx-auto">
+    <p class="center-items">{text}</p>
+  </div>
+  <div class="grid">
+    {
+      items.map((item) => (
+        <ImageCard
+          title={item.name}
+          description={item.description}
+          href={item.href}
+          imgSrc={item.image}
+        />
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .heading {
+    margin-bottom: var(--space-l);
+  }
+
+  .text {
+    max-width: 72ch;
+  }
+
+  .grid {
+    --item-min-width: 24rem;
+    margin-block: var(--space-xl);
+    --gap: 1rem;
+    --item-max-width: 1fr;
+    display: grid;
+    grid-gap: var(--gap);
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(min(var(--item-min-width), 100%), var(--item-max-width))
+    );
+  }
+</style>

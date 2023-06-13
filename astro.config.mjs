@@ -7,6 +7,7 @@ import image from "@astrojs/image";
 // https://astro.build/config
 export default defineConfig({
   site: "https://zesty-sawine-052dba.netlify.app/",
+  scopedStyleStrategy: "class",
   integrations: [
     svelte(),
     react(),

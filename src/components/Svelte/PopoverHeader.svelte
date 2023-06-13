@@ -2,16 +2,25 @@
     import { slide, fade } from 'svelte/transition';
     import { Popover, PopoverButton, PopoverPanel } from "@rgossiaux/svelte-headlessui";
 
-    function handleClick(open) {
-        const body = document.querySelector("body");
-        if (!open) {
-            body.style.overflow = 'hidden'
-        } else {
-            body.style.overflow = 'unset'
-        }
-        console.log(open && `clicked ${open}`)
-        // body.style.overflow !== 'hidden' ? body.style.overflow === 'hidden' : body.style.overflow === 'unset'
-    }
+    // function handleClick(open) {
+    //     const body = document.querySelector("body");
+    //     if (!open) {
+    //         body.style.overflow = 'hidden'
+    //     } else {
+    //         body.style.overflow = 'unset'
+    //     }
+    //     console.log(open && `clicked ${open}`)
+    //     // body.style.overflow !== 'hidden' ? body.style.overflow === 'hidden' : body.style.overflow === 'unset'
+    // }
+
+   
+
+    // const body = document.querySelector("body");
+    // if (!open) {
+    //     body.style.overflow = 'hidden'
+    // } else {
+    //     body.style.overflow = 'unset'
+    // }
 </script>
 
 <Popover as="nav" let:open>
@@ -20,7 +29,7 @@
         <div><slot name="mainNav"></slot></div>
         <div class="header-buttons cluster">
             <slot name="headerCTAButton"></slot>
-            <PopoverButton class="menu-toggle" on:click={() => handleClick(open)}>
+            <PopoverButton class="menu-toggle">
                 <div class="menu-toggle-container" class:open style="--menu-toggle-bg:{open ? "var(--color-neutral-100)" : ""}">
                     {#if open}
                         <span class="sr-only">Close Panel</span>
