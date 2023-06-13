@@ -68,7 +68,7 @@ const bgImageStyle = `linear-gradient(to top, rgb(0 0 0 / 0.75) 15%, rgb(0 0 0 /
 <style>
   .hero {
     position: relative;
-    padding-top: 10rem;
+    padding-top: 12rem;
     padding-bottom: var(--space-2xl);
     color: var(--color);
     /* background: var(--color-primary-100); */
@@ -176,6 +176,30 @@ const bgImageStyle = `linear-gradient(to top, rgb(0 0 0 / 0.75) 15%, rgb(0 0 0 /
   .link:hover {
     color: var(--color-primary-100);
     background-color: #ffffff20;
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      padding-top: 5rem;
+      padding-bottom: 0;
+    }
+
+    .local-nav {
+      padding: 1rem;
+      width: 100%;
+      position: relative;
+      bottom: -3rem;
+    }
+
+    .local-nav,
+    .local-nav ul.cluster {
+      flex-direction: column;
+      --align: flex-start;
+    }
+
+    .local-nav .divider {
+      display: none;
+    }
   }
 </style>
 

@@ -210,4 +210,46 @@ const {
   .img-link:hover img {
     transform: scale(1.06);
   }
+
+  @media (max-width: 1024px) {
+    .feature {
+      padding-block: 0;
+      gap: 0;
+    }
+
+    .frame {
+      grid-column: span 7;
+    }
+
+    .frame,
+    .feature-img {
+      border-top-left-radius: var(--rounded-corners);
+      border-top-right-radius: var(--rounded-corners);
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    .feature-text {
+      grid-column: span 7;
+      padding: 2rem;
+    }
+
+    .feature-bg {
+      grid-column: span 7;
+    }
+
+    [data-layout="image-right"] .frame {
+      order: 1;
+    }
+
+    [data-layout="image-right"] .feature-text {
+      order: 2;
+      padding: 2rem;
+      grid-column: span 7;
+    }
+
+    [data-layout="image-right"] .feature-bg {
+      grid-column: span 7;
+    }
+  }
 </style>

@@ -61,7 +61,7 @@ const sanityNav = await getSanityData(navQuery);
       <div class="hero-bg">
         <div class="overlay"></div>
         <video playsinline autoplay muted loop id="home-video">
-          <source src="/video-bg-test.mp4" type="video/mp4" />
+          <source src="/drone-test.mp4" type="video/mp4" />
         </video>
         <!-- <img src={heroBg} alt="" /> -->
       </div>
@@ -339,6 +339,12 @@ const sanityNav = await getSanityData(navQuery);
 
     .meet-grid a:hover {
       background-color: var(--color-primary-100);
+    }
+
+    @media (max-width: 768px) {
+      .meet-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </Layout>

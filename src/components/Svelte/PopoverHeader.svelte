@@ -1,6 +1,17 @@
 <script>
     import { slide, fade } from 'svelte/transition';
     import { Popover, PopoverButton, PopoverPanel } from "@rgossiaux/svelte-headlessui";
+
+    function handleClick(open) {
+        const body = document.querySelector("body");
+        if (!open) {
+            body.style.overflow = 'hidden'
+        } else {
+            body.style.overflow = 'unset'
+        }
+        console.log(open && `clicked ${open}`)
+        // body.style.overflow !== 'hidden' ? body.style.overflow === 'hidden' : body.style.overflow === 'unset'
+    }
 </script>
 
 <Popover as="nav" let:open>
@@ -9,7 +20,7 @@
         <div><slot name="mainNav"></slot></div>
         <div class="header-buttons cluster">
             <slot name="headerCTAButton"></slot>
-            <PopoverButton class="menu-toggle">
+            <PopoverButton class="menu-toggle" on:click={() => handleClick(open)}>
                 <div class="menu-toggle-container" class:open style="--menu-toggle-bg:{open ? "var(--color-neutral-100)" : ""}">
                     {#if open}
                         <span class="sr-only">Close Panel</span>
@@ -114,13 +125,22 @@
         --justify: center;
     }
 
+    @media (max-width: 1024px) {
+        .header-buttons {
+            grid-row: 1/1;
+            grid-column: 2/2;
+        }
+    }
+
     @media (max-width: 768px) {
         .site-nav {
             grid-template-columns: 1fr 1fr;
+            padding-inline: var(--space-s);
         }
 
-        .header-buttons {
-            display: none;
+        .nav-panel {
+            height: 100vh;
+            overflow: scroll;
         }
     }
 </style>

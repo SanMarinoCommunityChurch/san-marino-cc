@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { Image, Picture } from "@astrojs/image/components";
+import FullWidthFeature from "../../components/FullWidthFeature.astro";
 import Button from "../../components/Button.astro";
 import Feature from "../../components/Feature.astro";
 import InnerHero from "../../components/InnerHero.astro";
@@ -95,9 +96,17 @@ const opportunities = [
       }
     </div>
   </section>
-  <div class="frame video feature-img">
+  <!-- <div class="frame video feature-img">
     <Picture src={aboutImg} widths={[600, 900, 1400]} sizes="100vw" alt="" />
-  </div>
+  </div> -->
+  <aside slot="pre-footer">
+    <FullWidthFeature imageSrc={aboutImg}>
+      <div class="text-step-5 font-header leading-tight">
+        We hope that you will come spend some time with us.
+      </div>
+      <Button width="fit" href="/worship/live">Join Us</Button>
+    </FullWidthFeature>
+  </aside>
 </SectionPage>
 
 <style>

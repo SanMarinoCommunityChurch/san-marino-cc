@@ -178,4 +178,16 @@ const compileServiceTypes = (array) => {
   .video-header h2 {
     margin-bottom: var(--space-3xs);
   }
+
+  @media (max-width: 768px) {
+    .video-banner .flex {
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: var(--space-xl);
+    }
+
+    .video-text {
+      text-align: center;
+    }
+  }
 </style>

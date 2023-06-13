@@ -543,6 +543,10 @@ select {
   font-weight: var(--font-weight-header);
 }
 
+.leading-tight {
+  line-height: 1.15;
+}
+
 /*
 .small-title {
   font-family: var(--font-secondary);

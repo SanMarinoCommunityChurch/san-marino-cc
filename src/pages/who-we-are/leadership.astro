@@ -141,4 +141,25 @@ const staffByType = groupAsType(staff);
     max-width: 8rem;
     margin-bottom: 1rem;
   }
+
+  @media (max-width: 768px) {
+    .columns > :first-child {
+      grid-column: span 9;
+    }
+
+    .columns > :last-child {
+      grid-column: span 9;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+
+    .person {
+      align-items: flex-start;
+      text-align: left;
+    }
+  }
 </style>
