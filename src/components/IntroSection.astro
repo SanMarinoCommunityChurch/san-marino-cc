@@ -34,7 +34,9 @@ const { title, image } = Astro.props;
   }
 
   .intro .frame img {
-    border-radius: var(--rounded-corners);
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
   }
 
   .paragraphs.flow {

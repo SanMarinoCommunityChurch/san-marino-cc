@@ -1,0 +1,112 @@
+---
+import { Image } from "@astrojs/image/components";
+const { title = "Explore more", items } = Astro.props;
+---
+
+<aside class="sticky">
+  <h3 class="heading">{title}</h3>
+  <ul class="flow items">
+    {
+      items.map((item) => (
+        <li class="item">
+          <a href={item.href}>
+            <div class="text flow">
+              <div>{item.name}</div>
+              <div>{item.description}</div>
+            </div>
+            <div class="overlay" />
+            <Image class="img" src={item.image} alt="x" width={900} />
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</aside>
+
+<style>
+  .sticky {
+    position: sticky;
+    top: 8rem;
+    align-self: flex-start;
+  }
+
+  .heading {
+    font-size: var(--step-2);
+    margin-bottom: 2rem;
+  }
+
+  a {
+    display: inline-block;
+    position: relative;
+    text-decoration: none;
+    color: white;
+    padding: 1.5rem;
+    border-radius: var(--rounded-corners);
+    overflow: hidden;
+  }
+
+  .text {
+    position: relative;
+    z-index: 1;
+  }
+
+  .text.flow {
+    --flow-space: 0.5rem;
+  }
+
+  .text > :first-child {
+    font-family: var(--font-secondary);
+    font-size: var(--step-1);
+    font-weight: var(--font-weight-header);
+  }
+
+  .text > :last-child {
+    font-size: var(--step--1);
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--color-primary-900);
+    opacity: 0.8;
+    mask-image: linear-gradient(to right, black 45%, rgba(0, 0, 0, 0.4));
+    -webkit-mask-image: linear-gradient(
+      to right,
+      black 45%,
+      rgba(0, 0, 0, 0.4)
+    );
+    transition: all 0.2s ease;
+  }
+
+  .img {
+    position: absolute;
+    /* top: 50%;
+    left: 50%; */
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* transform: translate(-50%, -50%); */
+    transition: all 0.4s ease;
+    z-index: -1;
+    filter: saturate(0);
+  }
+
+  .items > :nth-child(2) .overlay {
+    background: #115e59 /* #007580 */;
+  }
+
+  .items > :nth-child(3) .overlay {
+    background: #c06507 /* #ec871d */;
+  }
+
+  .item a:hover .overlay {
+    opacity: 0.95;
+  }
+
+  .item a:hover .img {
+    transform: scale(1.03);
+  }
+</style>

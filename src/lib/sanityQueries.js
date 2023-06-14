@@ -3,6 +3,7 @@ const pages = `*[_type == 'page'] {
   "slug": slug.current,
   "pageName": name,
   "pageDescription": description,
+  content,
   "background": {
     "image": image,
     "asset": image.asset->,
@@ -201,6 +202,10 @@ const adminStaffMembers = `*[_type == 'person' && type.mainType == 'staff' && ty
   "type": type.staffSubtype,
 }`;
 
+const faq = `*[_type == 'faq'][0] {
+  "items": set
+}`;
+
 export {
   pages,
   eventsPreview,
@@ -215,4 +220,5 @@ export {
   clergyMembers,
   programStaffMembers,
   adminStaffMembers,
+  faq,
 };

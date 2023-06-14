@@ -37,7 +37,8 @@
         font-weight: var(--font-weight-semi);
         background-color: var(--color-primary-100);
         color: var(--color-primary-800);
-        padding: 1rem 1.75rem;
+        line-height: 1.3;
+        padding: 1.25rem 1.75rem;
         border-radius: var(--rounded-corners);
         font-size: var(--step-1);
         width: 100%;

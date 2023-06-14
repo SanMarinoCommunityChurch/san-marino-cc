@@ -1,6 +1,7 @@
 ---
 import Layout from "./Layout.astro";
 import InnerHero from "../components/InnerHero.astro";
+import { PortableText } from "astro-portabletext";
 
 import { urlFor } from "../lib/sanity";
 import { filterLocalNav } from "../lib/navigation";
@@ -8,7 +9,7 @@ import { getCurrentPage } from "../lib/pages";
 
 const { currentPage, localNavSection, contentPadding } = Astro.props;
 const page = getCurrentPage(currentPage);
-const { seo, pageName, pageDescription, background } = page;
+const { seo, pageName, pageDescription, background, content } = page;
 
 const bgImage = background.image
   ? urlFor(background.image).width(1600).height(450).auto("format").url()
@@ -32,6 +33,7 @@ const bgImage = background.image
       style={contentPadding && "padding-block-start: var(--space-2xl)"}
     >
       <slot />
+      {content && <PortableText value={content} />}
     </article>
     <slot name="pre-footer" />
   </main>

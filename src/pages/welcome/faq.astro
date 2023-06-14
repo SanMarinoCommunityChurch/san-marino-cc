@@ -1,21 +1,44 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import Button from "../../components/Button.astro";
-import Feature from "../../components/Feature.astro";
-import InnerHero from "../../components/InnerHero.astro";
-import ImageCard from "../../components/ImageCard.astro";
+import SidebarLinks from "../../components/SidebarLinks.astro";
 import Accordion from "../../components/Svelte/Accordion.svelte";
 import { getCurrentPage } from "../../lib/pages";
+import { getSanityData } from "../../lib/sanity";
+import { faq } from "../../lib/sanityQueries";
+import { PortableText } from "astro-portabletext";
 
 import placeholderImg from "../../assets/images/worship-2.jpg";
 import bgImage from "../../assets/images/plaza-lights.jpg";
 import SectionPage from "../../layouts/SectionPage.astro";
 
+import image1 from "../../assets/images/choir.jpg";
+import image2 from "../../assets/images/people-2.jpg";
+import image3 from "../../assets/images/contemporary.jpg";
+
 const currentPage = getCurrentPage("4dab6669-f0b2-45f3-808a-739750fc16b4");
 
-const pageTitle = "FAQ";
-const pageDescription =
-  "First time visitor? Here is some helpful information to help you feel more comfortable walking into this new place!";
+const items = [
+  {
+    name: "Worship with Us",
+    description: "Join us for our traditional or contemporary Sunday service.",
+    href: "/worship/live",
+    image: image1,
+  },
+  {
+    name: "Visiting FAQ",
+    description:
+      "Get helpful information on visiting San Marino Community Church.",
+    href: "/welcome/faq",
+    image: image2,
+  },
+  {
+    name: "Join a Ministry",
+    description: "Learn how to get involved in one of our many ministries.",
+    href: "/connect/ministries",
+    image: image3,
+  },
+];
+
+const faqs = await getSanityData(faq);
 ---
 
 <SectionPage
@@ -33,6 +56,16 @@ const pageDescription =
   </Fragment>
   <div class="with-sidebar">
     <div class="faq flow">
+      {
+        faqs.items.map((item) => (
+          <Accordion client:load>
+            <Fragment slot="question">{item.question}</Fragment>
+            <div class="text flow" slot="answer">
+              <PortableText value={item.answer} />
+            </div>
+          </Accordion>
+        ))
+      }
       <Accordion client:load>
         <Fragment slot="question">What are your service options?</Fragment>
         <Fragment slot="answer">
@@ -45,12 +78,25 @@ const pageDescription =
       </Accordion>
       <Accordion client:load />
     </div>
-    <div></div>
+    <SidebarLinks items={items} />
   </div>
 </SectionPage>
 
 <style>
   .faq.flow {
     gap: 2rem;
+  }
+
+  .text ul {
+    list-style: disc;
+    padding-left: 2rem;
+  }
+
+  .text ul > * + * {
+    margin-top: 1rem;
+  }
+
+  .text a {
+    color: var(--color-primary-800);
   }
 </style>

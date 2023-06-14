@@ -9,7 +9,7 @@ const { title, id, text, items } = Astro.props;
   <div class="text mx-auto">
     <p class="center-items">{text}</p>
   </div>
-  <div class="grid">
+  <div class="responsive-grid">
     {
       items.map((item) => (
         <ImageCard
@@ -32,16 +32,8 @@ const { title, id, text, items } = Astro.props;
     max-width: 72ch;
   }
 
-  .grid {
+  .responsive-grid {
     --item-min-width: 24rem;
     margin-block: var(--space-xl);
-    --gap: 1rem;
-    --item-max-width: 1fr;
-    display: grid;
-    grid-gap: var(--gap);
-    grid-template-columns: repeat(
-      auto-fit,
-      minmax(min(var(--item-min-width), 100%), var(--item-max-width))
-    );
   }
 </style>

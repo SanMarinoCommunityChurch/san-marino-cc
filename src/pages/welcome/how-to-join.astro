@@ -1,12 +1,9 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import Button from "../../components/Button.astro";
-import Feature from "../../components/Feature.astro";
-import InnerHero from "../../components/InnerHero.astro";
-import ImageCard from "../../components/ImageCard.astro";
+import FullWidthFeature from "../../components/FullWidthFeature.astro";
 
 import placeholderImg from "../../assets/images/worship-2.jpg";
 import SectionPage from "../../layouts/SectionPage.astro";
+import Button from "../../components/Button.astro";
 ---
 
 <SectionPage
@@ -27,6 +24,14 @@ import SectionPage from "../../layouts/SectionPage.astro";
       Church Office at 626/282-4181.
     </p>
   </div>
+  <aside slot="pre-footer">
+    <FullWidthFeature imageSrc={placeholderImg}>
+      <div class="text-step-5 font-header leading-tight">
+        We hope that you will come spend some time with us.
+      </div>
+      <Button width="fit" href="/worship/live">Join Us</Button>
+    </FullWidthFeature>
+  </aside>
 </SectionPage>
 
 <style>

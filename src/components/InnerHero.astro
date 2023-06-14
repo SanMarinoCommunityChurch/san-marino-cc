@@ -24,26 +24,49 @@ const bgImageStyle = `linear-gradient(to top, rgb(0 0 0 / 0.75) 15%, rgb(0 0 0 /
     <p>{pageDescription}</p>
     {
       localNav && (
-        <div class="cluster local-nav">
-          <div class="small-title">{localNav.name}</div>
-          <div class="divider">|</div>
-          <ul class="cluster">
-            {localNav.children.map((item) => (
-              <li class="text-step--1">
-                <a
-                  href={buildUrl(localNav.slug, item.slug)}
-                  style={
-                    Astro.url.pathname === buildUrl(localNav.slug, item.slug) &&
-                    "color: var(--color-primary-300)"
-                  }
-                  class="link"
-                >
-                  {item.name}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <Fragment>
+          <div class="cluster local-nav">
+            <div class="small-title">{localNav.name}</div>
+            <div class="divider">|</div>
+            <ul class="cluster">
+              {localNav.children.map((item) => (
+                <li class="text-step--1">
+                  <a
+                    href={buildUrl(localNav.slug, item.slug)}
+                    style={
+                      Astro.url.pathname ===
+                        buildUrl(localNav.slug, item.slug) &&
+                      "color: var(--color-primary-300)"
+                    }
+                    class="link"
+                  >
+                    {item.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <details class="local-nav-mobile">
+            <summary>{localNav.name}</summary>
+            <ul class="cluster">
+              {localNav.children.map((item) => (
+                <li class="text-step--1">
+                  <a
+                    href={buildUrl(localNav.slug, item.slug)}
+                    style={
+                      Astro.url.pathname ===
+                        buildUrl(localNav.slug, item.slug) &&
+                      "color: var(--color-primary-300)"
+                    }
+                    class="link"
+                  >
+                    {item.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </details>
+        </Fragment>
       )
     }
   </div>
@@ -155,6 +178,15 @@ const bgImageStyle = `linear-gradient(to top, rgb(0 0 0 / 0.75) 15%, rgb(0 0 0 /
     top: 2px;
   }
 
+  .local-nav-mobile {
+    display: none;
+  }
+
+  .local-nav-mobile .cluster {
+    --cluster-space: 0.5rem;
+    margin-top: 1rem;
+  }
+
   .hero .overlay {
     display: var(--display);
     position: absolute;
@@ -181,10 +213,17 @@ const bgImageStyle = `linear-gradient(to top, rgb(0 0 0 / 0.75) 15%, rgb(0 0 0 /
   @media (max-width: 768px) {
     .hero {
       padding-top: 5rem;
-      padding-bottom: 0;
     }
 
     .local-nav {
+      display: none;
+    }
+
+    .local-nav-mobile {
+      display: block;
+    }
+
+    /* .local-nav {
       padding: 1rem;
       width: 100%;
       position: relative;
@@ -199,7 +238,7 @@ const bgImageStyle = `linear-gradient(to top, rgb(0 0 0 / 0.75) 15%, rgb(0 0 0 /
 
     .local-nav .divider {
       display: none;
-    }
+    } */
   }
 </style>
 
@@ -215,16 +254,16 @@ const bgImageStyle = `linear-gradient(to top, rgb(0 0 0 / 0.75) 15%, rgb(0 0 0 /
 </script>
 
 <script>
-  import { inView, animate, stagger } from "motion";
+  // import { inView, animate, stagger } from "motion";
 
-  inView(".hero", ({ target }) => {
-    animate(
-      target.querySelectorAll("h1, p, .local-nav"),
-      {
-        opacity: 1,
-        transform: "translateY(0rem)",
-      },
-      { duration: 0.5, delay: stagger(0.3) }
-    );
-  });
+  // inView(".hero", ({ target }) => {
+  //   animate(
+  //     target.querySelectorAll("h1, p, .local-nav"),
+  //     {
+  //       opacity: 1,
+  //       transform: "translateY(0rem)",
+  //     },
+  //     { duration: 0.5, delay: stagger(0.3) }
+  //   );
+  // });
 </script>
