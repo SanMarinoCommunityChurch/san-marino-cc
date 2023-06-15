@@ -20,5 +20,5 @@
 
 [[redirects]]
   from = "/resources/blog"
-  to = "/resources"
+  to = "/resources/"
   status = 200
