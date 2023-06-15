@@ -3,6 +3,9 @@ const { categories } = Astro.props;
 ---
 
 <ul class="cluster">
+  <li>
+    <a class="small-title category" href={`/connect/events`}> All</a>
+  </li>
   {
     categories.map((category) => (
       <li>
@@ -39,3 +42,14 @@ const { categories } = Astro.props;
     background-color: var(--color-primary-200);
   }
 </style>
+
+<script>
+  const categoryList = document.querySelectorAll(".category");
+  const currentURL = window.location.pathname;
+  categoryList.forEach((link) => {
+    if (link.pathname + "/" === currentURL || link.pathname === currentURL) {
+      link.style.background = "var(--color-primary-800)";
+      link.style.color = "var(--color-primary-50)";
+    }
+  });
+</script>

@@ -1,30 +1,24 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import { Image, Picture } from "@astrojs/image/components";
-import ThirdLayout from "../../../layouts/ThirdLayout.astro";
-import MoreLikeThis from "../../../components/MoreLikeThis.astro";
 import BreacrumbAuto from "../../../components/BreadcrumbAuto.astro";
 import InnerHero from "../../../components/InnerHero.astro";
 import ImageCard from "../../../components/ImageCard.astro";
 import ContactAvatar from "../../../components/ContactAvatar.astro";
 import Button from "../../../components/Button.astro";
-import Breadcrumb from "../../../components/Breadcrumb.astro";
-import ServiceInfo from "../../../components/ServiceInfo.astro";
+import { urlFor } from "../../../lib/sanity";
 import { DateTime } from "luxon";
-import {
-  ministriesPreview,
-  ministriesDetail,
-} from "../../../lib/sanityQueries";
 import { randomizeAndSlice } from "../../../utils/data";
 
 import { PortableText } from "astro-portabletext";
 import { joinNames } from "../../../utils/format";
-import { getSanityData, urlFor } from "../../../lib/sanity";
+
 import MiniPreviewCard from "../../../components/MiniPreviewCard.astro";
 import placeholderImg from "../../../assets/images/church-ext-4.jpg";
+import { allMinistries, previewMinistries } from "../../../lib/ministries";
 
 export async function getStaticPaths() {
-  const pages = await getSanityData(ministriesDetail);
+  const pages = allMinistries;
 
   return pages.map((page) => {
     return {
@@ -52,7 +46,7 @@ const breadcrumbs = [
   },
 ];
 
-const otherMinistries = await getSanityData(ministriesPreview);
+const otherMinistries = previewMinistries;
 
 const randomizedMinistries = randomizeAndSlice(
   otherMinistries,
@@ -81,8 +75,20 @@ const randomizedMinistries = randomizeAndSlice(
       <div slot="eyebrow" class="eyebrow cluster" style="margin-bottom: -1rem;">
         <a
           class="small-title heading-category"
-          href={`/connect/ministries#${page.typeSlug}`}>{page.category}</a
+          href={`/connect/ministries#${page.typeSlug}`}
         >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="12"
+            width="12"
+            fill="var(--color-primary-800)"
+            viewBox="0 0 448 512"
+            ><path
+              d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
+            ></path></svg
+          >
+          <span>{page.ministryType}</span>
+        </a>
       </div>
     </InnerHero>
     <div class="content-wrapper with-sidebar">
@@ -240,7 +246,9 @@ const randomizedMinistries = randomizeAndSlice(
 
   .small-title.heading-category {
     font-size: 14px;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     text-decoration: none;
     color: var(--color-primary-800);
     width: fit-content;

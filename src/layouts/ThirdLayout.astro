@@ -5,7 +5,7 @@ import BreadcrumbAuto from "../components/BreadcrumbAuto.astro";
 const { title, header, breadcrumbs, preview, featuredImage } = Astro.props;
 ---
 
-<Layout title={title}>
+<Layout title={title} description={preview}>
   <main slot="main">
     <article>
       <BreadcrumbAuto navigation={breadcrumbs} className="breadcrumb-wrapper" />

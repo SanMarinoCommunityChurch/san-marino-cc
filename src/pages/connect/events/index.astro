@@ -4,10 +4,11 @@ import { getSanityData, urlFor } from "../../../lib/sanity";
 import EventsList from "../../../components/Events/EventsList.astro";
 import { eventsPreview, eventTypes } from "../../../lib/sanityQueries";
 import SectionPage from "../../../layouts/SectionPage.astro";
+import { previewEvents, eventCategories } from "../../../lib/events";
 
-const events = await getSanityData(eventsPreview);
+const events = previewEvents;
 // refactor to get from eventsPreview data -- function get unique
-const categories = await getSanityData(eventTypes);
+const categories = eventCategories;
 ---
 
 <SectionPage

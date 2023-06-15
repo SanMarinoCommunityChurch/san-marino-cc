@@ -7,26 +7,18 @@ import ContactAvatar from "../../../components/ContactAvatar.astro";
 import MiniPreviewCard from "../../../components/MiniPreviewCard.astro"
 import { Image } from "@astrojs/image/components";
 import MoreLikeThis from "../../../components/MoreLikeThis.astro";
-import Feature from "../../../components/Feature.astro";
 import Button from "../../../components/Button.astro";
-import InnerHero from "../../../components/InnerHero.astro";
-import Breadcrumb from "../../../components/Breadcrumb.astro";
-import ServiceInfo from "../../../components/ServiceInfo.astro";
-import { eventsPreview, eventsDetail } from "../../../lib/sanityQueries";
 import { randomizeAndSlice } from "../../../utils/data";
 
 import { PortableText } from "astro-portabletext";
 import { DateTime } from "luxon"
-import {
-  capitalizeFirstLetter,
-  joinNames,
-} from "../../../utils/format";
 import { getSanityData, urlFor } from "../../../lib/sanity";
+import { allEvents, previewEvents } from "../../../lib/events"
 
 import bgImage from "../../../assets/images/church-ext-2.jpg";
 
 export async function getStaticPaths() {
-  const pages = await getSanityData(eventsDetail);
+  const pages = allEvents;
 
   return pages.map((page) => {
     return {
@@ -54,7 +46,7 @@ const breadcrumbs = [
   },
 ];
 
-const otherEvents = await getSanityData(eventsPreview);
+const otherEvents = previewEvents;
 const randomizedEvents = randomizeAndSlice(otherEvents, "type", page, 3);
 ---
 
@@ -66,7 +58,19 @@ const randomizedEvents = randomizeAndSlice(otherEvents, "type", page, 3);
   featuredImage={page.image && urlFor(page.image).width(900).format('webp').url()}
 >
   <div slot="eyebrow" class="eyebrow cluster">
-    <a class="small-title heading-category" href={`/connect/events/${page.eventType.slug}`}>{`${page.eventType.name} event`}</a>
+    <a class="small-title heading-category" href={`/connect/events/${page.eventType.slug}`}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="12"
+        width="12"
+        fill="var(--color-primary-800)"
+        viewBox="0 0 448 512"
+        ><path
+          d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
+        ></path></svg
+      >
+      <span>{`${page.eventType.name} Events`}</span>
+    </a>
     <time class="small-title" datetime={page.date}>{DateTime.fromISO(page.date).setZone('America/Los_Angeles').toLocaleString(DateTime.DATE_FULL)}</time>
   </div>
   <div slot="main-panel">
@@ -121,9 +125,6 @@ const randomizedEvents = randomizeAndSlice(otherEvents, "type", page, 3);
         </div>
     </div>
   </div>
-  <!-- <section slot="cta" class="content-wrapper cta">
-    <Feature />
-  </section> -->
   <div slot="highlight" class="more flow">
     <h2 class="text-step-3">More Events</h2>
     <ul class="responsive-grid">
@@ -202,7 +203,9 @@ const randomizedEvents = randomizeAndSlice(otherEvents, "type", page, 3);
 
   .small-title.heading-category {
     font-size: 14px;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     text-decoration: none;
     color: var(--color-primary-800);
     width: fit-content;

@@ -1,0 +1,31 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { allPosts } from "../../lib/posts";
+import { PortableText } from "astro-portabletext";
+import { DateTime } from "luxon";
+
+export async function getStaticPaths() {
+  const pages = allPosts;
+
+  return pages.map((page) => {
+    return {
+      params: { slug: page.slug },
+      props: { page },
+    };
+  });
+}
+
+const { slug } = Astro.params;
+const { page } = Astro.props;
+---
+
+<Layout>
+  <main slot="main">
+    <article style="margin-top: 7rem;">
+      <header><h1>{page.title}</h1></header>
+      <section class="content">
+        <PortableText value={page.content} />
+      </section>
+    </article>
+  </main>
+</Layout>

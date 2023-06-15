@@ -43,6 +43,16 @@ const eventTypes = `*[_type == 'eventType'] {
   "slug": slug.current,
   "events": *[_type == 'event' && references(^._id)] {
     ...,
+    name,
+    date,
+    "category": category->name,
+    location,
+    preview,
+    "type": eventType->name,
+    eventType->{
+      name,
+      "slug": slug.current
+    },
     "image": image.asset->,
     "slug": slug.current
   }
@@ -140,6 +150,32 @@ const ministriesDetail = `*[_type == 'ministry'] {
   }
 }`;
 
+const posts = `*[_type == 'post']|order(publishDate desc) {
+  "title": name, 
+  "slug": slug.current,
+  "author": author-> {
+    name,
+    "image": image.asset->,
+    role
+  },
+  publishDate,
+  preview,
+  content,
+  "image": image.asset->,
+  cta {
+    ...,
+    "image": image.asset->
+  },
+  "category": category->{
+    name,
+    "slug": slug.current
+  },
+  "seo": {
+    "title": seoTitle,
+    "description": seoDescription,
+  }
+}`;
+
 const fullNavigationFromSanity = `*[_type == 'navigation' && _id == 'a0714f38-2dff-4ce5-b350-be13904afa67'] {
   _id,
   name,
@@ -214,6 +250,7 @@ export {
   ministriesPreview,
   ministryTypeWithMinistriesPreview,
   ministriesDetail,
+  posts,
   fullNavigationFromSanity,
   navigation,
   staffMembers,

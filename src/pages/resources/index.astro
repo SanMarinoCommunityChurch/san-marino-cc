@@ -1,12 +1,51 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getCurrentPage } from "../../lib/pages";
+import PostList from "../../components/PostList.astro";
+import { allPosts } from "../../lib/posts";
 
 const currentPage = getCurrentPage("b8529063-8a0d-4580-badd-34fcd8e58777");
+const { seo, pageName, pageDescription, background, content } = currentPage;
 ---
 
-<Layout title={currentPage.seo.title}>
+<Layout title={seo.title} description={currentPage.seo.description}>
   <main slot="main">
-    {currentPage.pageName}
+    <section class="hero center-items flow">
+      <div class="small-title">San Marino Community Church</div>
+      <h1 class="text-step-6 heading">Resources</h1>
+    </section>
+    <article class="content-wrapper flow">
+      <PostList posts={allPosts} />
+    </article>
   </main>
 </Layout>
+
+<style>
+  .hero {
+    position: relative;
+    padding-top: 6rem;
+    color: var(--color-primary-200);
+    padding-bottom: var(--space-3xl);
+    background: linear-gradient(
+      to bottom right,
+      var(--color-primary-800),
+      var(--color-primary-900)
+    );
+  }
+  .hero .heading {
+    color: var(--color-primary-200);
+  }
+
+  .hero.flow {
+    --flow-space: 0.5rem;
+  }
+
+  article.content-wrapper {
+    margin-block-start: var(--section-spacer-half);
+    margin-block-end: var(--section-spacer);
+  }
+
+  .content-wrapper.flow {
+    --flow-space: var(--space-3xl);
+  }
+</style>

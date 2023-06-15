@@ -1,0 +1,68 @@
+---
+import { urlFor } from "../lib/sanity";
+import Card from "./Card.astro";
+import DateLabel from "./Events/DateLabel.astro";
+import { DateTime } from "luxon";
+import { joinNames } from "../utils/format";
+import ContactAvatar from "./ContactAvatar.astro";
+
+const { posts } = Astro.props;
+---
+
+<ul class="grid">
+  {
+    posts.map((post) => (
+      <li>
+        <Card
+          title={post.title}
+          img={urlFor(post.image).width(600).auto("format").url()}
+          href={`/resources/${post.slug}`}
+        >
+          <div slot="label" class="event-date">
+            <DateLabel date={post.publishDate} />
+          </div>
+          <div slot="header" class="small-title event-category">
+            {post.category.name}
+          </div>
+          <p slot="body" class="preview text-step--1">
+            {post.preview}
+          </p>
+          <div slot="footer" class="location-footer text-step--1 cluster">
+            <ContactAvatar
+              image={post.author.image}
+              heading="Posted by"
+              name={joinNames(post.author.name)}
+              size="small"
+            />
+          </div>
+        </Card>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .small-title.event-category {
+    display: inline-block;
+    font-size: 13px;
+    color: var(--color-primary-900);
+    line-height: 1;
+    padding: 4px 6px;
+    margin-bottom: 10px;
+    background-color: var(--color-primary-100);
+    border-radius: var(--rounded-corners-small);
+  }
+
+  .preview {
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    overflow: hidden;
+  }
+</style>

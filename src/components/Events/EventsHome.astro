@@ -1,29 +1,13 @@
 ---
-import { getSanityData, urlFor } from "../../lib/sanity";
+import { urlFor } from "../../lib/sanity";
 import Card from "../Card.astro";
 import Button from "../Button.astro";
 import DateLabel from "../Events/DateLabel.astro"
-import { eventsPreview } from "../../lib/sanityQueries"
 import { DateTime } from "luxon"
 
-// const getEvents = async () => {
-//   const query = `*[_type == "event"] | order(date desc) {
-//     name,
-//     date,
-//     preview,
-//     eventType,
-//     location,
-//     "image": image.asset->,
-//     "ministry": associatedMinistry->{
-//       name,
-//       "image": image.asset->
-//   },
-//   }`;
-//   const data = await sanityClient.fetch(query);
-//   return data;
-// };
+import { previewEvents } from "../../lib/events"
 
-const events = await getSanityData(eventsPreview);
+const events = previewEvents;
 
 const categoryName = (event) => {
   const category = event.eventType == 'ministry' ? event.associatedMinistry.category.name : event.category;

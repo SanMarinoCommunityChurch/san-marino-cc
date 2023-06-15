@@ -3,17 +3,30 @@ import { urlFor } from "../lib/sanity";
 import { joinNames } from "../utils/format";
 import placeholderImg from "../assets/images/church-ext-4.jpg";
 
-const { image, imageAlt, heading = "Contact", name, href } = Astro.props;
+const {
+  image,
+  imageAlt,
+  heading = "Contact",
+  name,
+  href,
+  size = "large",
+} = Astro.props;
 ---
 
 <div class="contact flex">
   {
     image ? (
-      <div class="frame square">
+      <div
+        class="frame square"
+        style={`--frame-size: ${size == "small" ? "3rem" : "5rem"}`}
+      >
         <img src={urlFor(image).width(200).url()} alt="" width={200} />
       </div>
     ) : (
-      <div class="frame square">
+      <div
+        class="frame square"
+        style={`--frame-size: ${size == "small" ? "3rem" : "5rem"}}`}
+      >
         <img src={placeholderImg} alt="" width={200} />
       </div>
     )
@@ -35,8 +48,8 @@ const { image, imageAlt, heading = "Contact", name, href } = Astro.props;
 <style>
   .contact .frame.square {
     border-radius: 9999px;
-    width: 5rem;
-    height: 5rem;
+    width: var(--frame-size);
+    height: var(--frame-size);
   }
 
   .contact.flex {

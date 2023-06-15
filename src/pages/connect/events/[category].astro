@@ -1,37 +1,19 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
+import ThirdLayout from "../../../layouts/ThirdLayout.astro";
 import InnerHero from "../../../components/InnerHero.astro";
 import MiniPreviewCard from "../../../components/MiniPreviewCard.astro";
 import CategoryList from "../../../components/Events/CategoryList.astro";
+import EventsList from "../../../components/Events/EventsList.astro";
+import SectionPage from "../../../layouts/SectionPage.astro";
 
 import { DateTime } from "luxon";
+import { eventCategories } from "../../../lib/events";
 import { eventsPreview, eventTypes } from "../../../lib/sanityQueries";
 import { getSanityData, urlFor } from "../../../lib/sanity";
 
-const localNav = {
-  section: "Connect",
-  children: [
-    {
-      name: "Events & Programs",
-      href: "/connect/events",
-    },
-    {
-      name: "Ministries",
-      href: "/connect/ministries",
-    },
-    {
-      name: "Missions",
-      href: "/connect/missions",
-    },
-    {
-      name: "Pastoral Residency",
-      href: "/connect/pastoral-residency",
-    },
-  ],
-};
-
 export async function getStaticPaths() {
-  const pages = await getSanityData(eventTypes);
+  const pages = eventCategories;
 
   return pages.map((page) => {
     return {
@@ -44,53 +26,74 @@ export async function getStaticPaths() {
 const { category } = Astro.params;
 const { page } = Astro.props;
 
-const categories = await getSanityData(eventTypes);
+const breadcrumbs = [
+  {
+    name: "Connect",
+    href: "/connect",
+  },
+  {
+    name: "Events",
+    href: "/connect/events",
+  },
+  {
+    name: `${page.name} Events`,
+    current: true,
+  },
+];
+const allCategories = eventCategories;
+// const categories = await getSanityData(eventTypes);
 ---
 
-<Layout title="">
-  <main slot="main">
-    <InnerHero
-      localNav={localNav}
-      pageTitle={`${page.name} Events`}
-      pageDescription=""
-    />
-    <article class="content-wrapper flow">
-      <div class="with-sidebar">
-        <div class="grid">
-          {
-            page.events.map((event) => (
-              <MiniPreviewCard
-                image={event.image && urlFor(event.image).url()}
-                imageAlt=""
-                href={`/connect/events/${DateTime.fromISO(event.date).toFormat(
-                  "L-d-yyyy"
-                )}-${event.slug}`}
-              >
-                <h3>{event.name}</h3>
-                <time>
-                  {DateTime.fromISO(event.date).toLocaleString(
-                    DateTime.DATE_FULL
-                  )}
-                </time>
-              </MiniPreviewCard>
-            ))
-          }
-        </div>
-        <!-- <EventsList events={events} /> -->
-        <div class="flow">
-          <h3 class="text-step-2">Event Categories</h3>
-          <CategoryList categories={categories} />
-        </div>
-      </div>
-    </article>
-  </main>
-</Layout>
+<ThirdLayout
+  title={`${page.name} Events`}
+  header={`${page.name} Events`}
+  breadcrumbs={breadcrumbs}
+>
+  <div slot="eyebrow" class="eyebrow cluster">
+    <a class="small-title heading-category" href={`/connect/events`}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="12"
+        width="12"
+        fill="var(--color-primary-800)"
+        viewBox="0 0 448 512"
+        ><path
+          d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
+        ></path></svg
+      >
+      <span>All Events</span>
+    </a>
+  </div>
+  <section slot="main-panel">
+    <EventsList events={page.events} />
+  </section>
+  <aside slot="sidebar" class="flow">
+    <h3 class="text-step-2">Event Categories</h3>
+    <CategoryList categories={allCategories} />
+  </aside>
+</ThirdLayout>
 
 <style>
-  .with-sidebar {
-    margin-top: var(--section-spacer);
-    --sidebar-gap: 3rem;
-    --sidebar-min-width: 15rem;
-    --main-min-width: 60%;
+  .eyebrow.cluster {
+    margin-bottom: 0.75rem;
+  }
+
+  .small-title.heading-category {
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: var(--color-primary-800);
+    width: fit-content;
+    line-height: 1;
+    padding: 6px 9px;
+    background-color: var(--color-primary-100);
+    border-radius: var(--rounded-corners-small);
+    transition: all 0.2s ease;
+  }
+
+  .small-title.heading-category:hover {
+    background-color: var(--color-primary-200);
   }
 </style>

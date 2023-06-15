@@ -3,17 +3,22 @@
   to = "/welcome/im-new"
   status = 200
 
-[[redirect]]
+[[redirects]]
   from = "/worship"
   to = "/worship/live"
   status = 200
 
-[[redirect]]
+[[redirects]]
   from = "/connect"
   to = "/connect/events"
   status = 200
 
-[[redirect]]
+[[redirects]]
   from = "/who-we-are"
   to = "/who-we-are/mission-and-beliefs"
+  status = 200
+
+[[redirects]]
+  from = "/resources/blog"
+  to = "/resources"
   status = 200
