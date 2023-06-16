@@ -1,0 +1,37 @@
+.rich-text {
+  position: relative;
+}
+
+.rich-text > * {
+  margin-block: 0;
+}
+
+.rich-text > * {
+  margin-inline: auto;
+  max-width: min(50rem, 90%);
+}
+
+.rich-text > * + * {
+  margin-top: var(--space-l);
+}
+
+.rich-text > img.full-width {
+  max-width: none;
+}
+
+.rich-text h2 {
+  font-size: var(--step-4);
+}
+
+.rich-text h3 {
+  font-size: var(--step-3);
+}
+
+.rich-text ul {
+  list-style: disc;
+  padding-left: 1rem;
+}
+
+.rich-text a {
+  color: var(--color-primary-800);
+}

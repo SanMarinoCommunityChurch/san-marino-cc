@@ -1,26 +1,33 @@
 ---
 import { PortableText } from "astro-portabletext";
 import { Image, Picture } from "@astrojs/image/components";
-const { title, image } = Astro.props;
+const { title, image, layout = "default", frame } = Astro.props;
 ---
 
-<section class="with-sidebar intro">
+<section
+  class="with-sidebar intro"
+  data-layout={layout == "flipped" ? "flipped" : "default"}
+>
   <div>
-    <h2 class="text-step-4 heading">{title}</h2>
+    {title && <h2 class="text-step-4 heading">{title}</h2>}
     <div class="paragraphs flow">
       <slot />
     </div>
   </div>
-  <div class="frame">
-    <Picture src={image} widths={[600, 900]} sizes="100vw" alt="" />
+  <div class={frame && "frame"}>
+    <Picture src={image} widths={[900, 1200]} sizes="100vw" alt="" />
   </div>
 </section>
 
 <style>
   .intro.with-sidebar {
-    --sidebar-gap: 6rem;
-    --sidebar-min-width: 30rem;
+    --sidebar-gap: 5rem;
+    --sidebar-min-width: 32rem;
     align-items: center;
+  }
+
+  [data-layout="flipped"] > :first-child {
+    order: 2;
   }
 
   .intro .frame {
@@ -41,5 +48,17 @@ const { title, image } = Astro.props;
 
   .paragraphs.flow {
     max-width: var(--paragraph-measure);
+  }
+
+  @media (max-width: 1024px) {
+    .intro.with-sidebar > :first-child {
+      order: 2;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .intro.with-sidebar {
+      --sidebar-gap: 2rem;
+    }
   }
 </style>

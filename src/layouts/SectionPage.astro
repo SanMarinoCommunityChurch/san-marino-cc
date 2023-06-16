@@ -2,6 +2,8 @@
 import Layout from "./Layout.astro";
 import InnerHero from "../components/InnerHero.astro";
 import { PortableText } from "astro-portabletext";
+import InlineImage from "../components/InlineImage.astro";
+import "../styles/rich-text.css";
 
 import { urlFor } from "../lib/sanity";
 import { filterLocalNav } from "../lib/navigation";
@@ -28,12 +30,18 @@ const bgImage = background.image
       pageDescription={pageDescription}
       bgImage={bgImage}
     />
-    <article
-      class="content-wrapper flow"
-      style={contentPadding && "padding-block-start: var(--space-2xl)"}
-    >
+    <article class:list={["content-wrapper flow", contentPadding && "padding"]}>
       <slot />
-      {content && <PortableText value={content} />}
+      {
+        content && (
+          <div class="content rich-text">
+            <PortableText
+              value={content}
+              components={{ type: { image: InlineImage } }}
+            />
+          </div>
+        )
+      }
     </article>
     <slot name="pre-footer" />
   </main>
@@ -45,7 +53,22 @@ const bgImage = background.image
     margin-block-end: var(--section-spacer);
   }
 
+  .padding {
+    padding-block-start: var(--space-2xl);
+  }
+
   .content-wrapper.flow {
     --flow-space: var(--space-3xl);
+  }
+
+  @media (max-width: 768px) {
+    article.content-wrapper {
+      margin-block-start: 3rem;
+      margin-block-end: 3rem;
+    }
+
+    .padding {
+      padding-block-start: 1rem;
+    }
   }
 </style>

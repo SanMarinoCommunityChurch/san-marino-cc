@@ -1,7 +1,9 @@
 ---
 import FullWidthFeature from "../../components/FullWidthFeature.astro";
+import IntroSection from "../../components/IntroSection.astro";
+import howToJoin from "../../assets/images/greeting-2.jpg";
 
-import placeholderImg from "../../assets/images/worship-2.jpg";
+import placeholderImg from "../../assets/images/SanMarinoCC_Carnival_036.jpg";
 import SectionPage from "../../layouts/SectionPage.astro";
 import Button from "../../components/Button.astro";
 ---
@@ -11,7 +13,11 @@ import Button from "../../components/Button.astro";
   localNavSection={"Welcome"}
   contentPadding
 >
-  <div class="paragraphs flow">
+  <IntroSection
+    title="Interested in joining the church? Then the new member class is for you!"
+    image={howToJoin}
+    frame
+  >
     <p>
       Our class provides an opportunity to get acquainted, ask questions, and
       learn more about our church, our Presbyterian heritage, and our mission.
@@ -23,7 +29,7 @@ import Button from "../../components/Button.astro";
       the spring. If you are interested in becoming a member, please call the
       Church Office at 626/282-4181.
     </p>
-  </div>
+  </IntroSection>
   <aside slot="pre-footer">
     <FullWidthFeature imageSrc={placeholderImg}>
       <div class="text-step-5 font-header leading-tight">
@@ -33,6 +39,19 @@ import Button from "../../components/Button.astro";
     </FullWidthFeature>
   </aside>
 </SectionPage>
+<!-- <div class="paragraphs flow">
+    <p>
+      Our class provides an opportunity to get acquainted, ask questions, and
+      learn more about our church, our Presbyterian heritage, and our mission.
+      We receive new members by profession of faith upon baptism, reaffirmation
+      of faith, or letter of transfer from another church.
+    </p>
+    <p>
+      We offer membership classes twice a year - once in the fall and once in
+      the spring. If you are interested in becoming a member, please call the
+      Church Office at 626/282-4181.
+    </p>
+  </div> -->
 
 <style>
   article {

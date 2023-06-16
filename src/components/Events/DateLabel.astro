@@ -8,8 +8,10 @@ const positions = {
 
 const { date, startTime, position = "top-right" } = Astro.props;
 
-const month = DateTime.fromISO(date).toFormat("LLL");
-const day = DateTime.fromISO(date).toFormat("d");
+const month = DateTime.fromISO(date)
+  .setZone("America/Los_Angeles")
+  .toFormat("LLL");
+const day = DateTime.fromISO(date).setZone("America/Los_Angeles").toFormat("d");
 
 const classList = ["date-label", positions[position]];
 ---

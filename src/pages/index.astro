@@ -21,11 +21,13 @@ const getServices = async () => {
 const services = await getServices();
 
 import heroBg from "../assets/images/choir.jpg";
+import welcomeCollage from "../assets/images/welcome-collage.png";
 import churchBg from "../assets/images/church-ext-2.jpg";
 import introImage from "../assets/images/home-feature-1.png";
 import avatar from "../assets/images/jessica-vaughan-lower-headshot.jpg";
 import tower from "../assets/images/church-ext-4.jpg";
 import worship from "../assets/images/worship.jpg";
+import greeting from "../assets/images/greeting.jpg";
 import getInvolvedImg from "../assets/images/congregation.jpg";
 
 const navQuery = `*[_type == 'navigation' && name == 'Main Navigation'].section[] {
@@ -173,7 +175,7 @@ const sanityNav = await getSanityData(navQuery);
         </div>
         <div>
           <Picture
-            src={introImage}
+            src={welcomeCollage}
             alt=""
             widths={[600, 900, 1200]}
             sizes="100vw"
@@ -188,7 +190,7 @@ const sanityNav = await getSanityData(navQuery);
       <Feature
         theme="dark"
         layout="image-right"
-        imgSrc={worship}
+        imgSrc={greeting}
         href="/who-we-are/mission-and-beliefs"
       >
         <h2 slot="header" class="text-step-2 color-white">Who We Are</h2>
@@ -314,7 +316,8 @@ const sanityNav = await getSanityData(navQuery);
 
     #welcome .content-wrapper.with-sidebar {
       --sidebar-gap: 3rem;
-      --sidebar-min-width: 30rem;
+      --sidebar-min-width: 34rem;
+      align-items: center;
     }
 
     #features.flow {

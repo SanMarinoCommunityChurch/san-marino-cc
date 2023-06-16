@@ -3,7 +3,13 @@ const pages = `*[_type == 'page'] {
   "slug": slug.current,
   "pageName": name,
   "pageDescription": description,
-  content,
+  content[]{
+    ...,
+    _type == "image" => {
+      ...,
+      asset->
+    }
+  },
   "background": {
     "image": image,
     "asset": image.asset->,

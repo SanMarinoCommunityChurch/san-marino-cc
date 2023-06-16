@@ -1,0 +1,96 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import ThirdLayout from "../../../layouts/ThirdLayout.astro";
+import { allStaff, makeNameSlug } from "../../../lib/people";
+import { PortableText } from "astro-portabletext";
+import { joinNames, capitalizeFirstLetter } from "../../../utils/format";
+import "../../../styles/rich-text.css";
+
+export async function getStaticPaths() {
+  const pages = allStaff;
+
+  return pages.map((page) => {
+    return {
+      params: { slug: makeNameSlug(page.name) },
+      props: { page },
+    };
+  });
+}
+
+const { slug } = Astro.params;
+const { page } = Astro.props;
+
+const breadcrumbs = [
+  {
+    name: "Who We Are",
+    href: "/who-we-are",
+  },
+  {
+    name: "Leadership",
+    href: "/who-we-are/leadership",
+  },
+  {
+    name: joinNames(page.name),
+    current: true,
+  },
+];
+---
+
+<ThirdLayout
+  title={`${joinNames(page.name)}`}
+  header={`${joinNames(page.name)}`}
+  breadcrumbs={breadcrumbs}
+>
+  <div slot="eyebrow" class="eyebrow">
+    <a
+      class="small-title heading-category"
+      href={`/who-we-are/leadership/#${page.type}`}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="12"
+        width="12"
+        fill="var(--color-primary-800)"
+        viewBox="0 0 448 512"
+        ><path
+          d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
+        ></path></svg
+      >
+      <span>{`${capitalizeFirstLetter(page.type)} Staff`}</span>
+    </a>
+  </div>
+  <div slot="main-panel" class="rich-text">
+    <div class="role">{page.role}</div>
+    <PortableText value={page.bio} />
+  </div>
+</ThirdLayout>
+
+<style>
+  .eyebrow {
+    margin-bottom: 0.75rem;
+  }
+
+  .small-title.heading-category {
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: var(--color-primary-800);
+    width: fit-content;
+    line-height: 1;
+    padding: 6px 9px;
+    background-color: var(--color-primary-100);
+    border-radius: var(--rounded-corners-small);
+    transition: all 0.2s ease;
+  }
+
+  .small-title.heading-category:hover {
+    background-color: var(--color-primary-200);
+  }
+
+  .role {
+    font-size: var(--step-1);
+    font-style: italic;
+  }
+</style>

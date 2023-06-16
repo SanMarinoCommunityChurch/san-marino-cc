@@ -1,0 +1,17 @@
+---
+import { urlFor } from "../lib/sanity";
+// const { imageSrc, imageAlt = "", width = 900, height } = Astro.props;
+const props = Astro.props;
+const image = props.node.asset;
+---
+
+<img
+  src={urlFor(image).width(1200).auto("format").url()}
+  alt={image.altText || ""}
+/>
+
+<style>
+  img {
+    border-radius: var(--rounded-corners);
+  }
+</style>

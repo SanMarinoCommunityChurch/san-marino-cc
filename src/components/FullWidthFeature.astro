@@ -8,7 +8,6 @@ const { imageSrc, imageAlt = "" } = Astro.props;
     <div class="text">
       <slot />
     </div>
-
     <div class="overlay"></div>
   </div>
   <div style="position: relative;">
@@ -32,10 +31,10 @@ const { imageSrc, imageAlt = "" } = Astro.props;
 
   .text {
     height: 100%;
-    color: var(--color-primary-900);
+    color: var(--color-primary-800);
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 3rem;
     justify-content: center;
     position: relative;
     z-index: 2;
