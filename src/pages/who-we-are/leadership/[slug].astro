@@ -1,10 +1,11 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
-import ThirdLayout from "../../../layouts/ThirdLayout.astro";
+import PersonLayout from "../../../layouts/PersonLayout.astro";
 import { allStaff, makeNameSlug } from "../../../lib/people";
 import { PortableText } from "astro-portabletext";
+import { urlFor } from "../../../lib/sanity";
 import { joinNames, capitalizeFirstLetter } from "../../../utils/format";
-import "../../../styles/rich-text.css";
+// import "../../../styles/rich-text.css";
 
 export async function getStaticPaths() {
   const pages = allStaff;
@@ -34,11 +35,17 @@ const breadcrumbs = [
     current: true,
   },
 ];
+
+if (page.type === 'admin') {
+  page.type = 'Administrative'
+}
 ---
 
-<ThirdLayout
-  title={`${joinNames(page.name)}`}
-  header={`${joinNames(page.name)}`}
+<PersonLayout
+  title={`${joinNames(page.name)} | ${capitalizeFirstLetter(page.type)} Staff, San Marino Community Church`}
+  name={`${joinNames(page.name)}`}
+  featuredImage={urlFor(page.imageRecord).width(900).height(900 / 0.75).auto('format').url()}
+  imageMetadata={page.image}
   breadcrumbs={breadcrumbs}
 >
   <div slot="eyebrow" class="eyebrow">
@@ -63,7 +70,21 @@ const breadcrumbs = [
     <div class="role">{page.role}</div>
     <PortableText value={page.bio} />
   </div>
-</ThirdLayout>
+  <div slot="sidebar">
+    {
+      page.contact && (
+        <div class="contact">
+          <h2 class="small-title">Contact</h2>
+          {page.contact.email && <a class="cluster contact-link" href={`mailto:${page.contact.email}`}>
+          <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" fill="var(--color-primary-800)" viewBox="0 0 512 512"><defs><style>.fa-secondary{opacity:0.4;}</style></defs><path class="fa-primary" d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48z"/><path class="fa-secondary" d="M0 112V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V112c0 15.1-7.1 29.3-19.2 38.4L275.2 313.6c-11.4 8.5-27 8.5-38.4 0L19.2 150.4C7.1 141.3 0 127.1 0 112z"/></svg>
+            <span>{page.contact.email}</span>
+          </a>
+        }
+        </div>
+      )
+    }
+  </div>
+</PersonLayout>
 
 <style>
   .eyebrow {
@@ -93,4 +114,25 @@ const breadcrumbs = [
     font-size: var(--step-1);
     font-style: italic;
   }
+
+  .contact {
+    margin-top: 1rem;
+  }
+
+  .contact .small-title {
+    margin-bottom: 9px;
+  }
+
+  .contact-link {
+    color: var(--color-primary-800);
+  }
+
+  .rich-text {
+    margin-top: 8px;
+    max-width: 750px;
+  }
+
+.rich-text > * + * {
+  margin-top: var(--space-l);
+}
 </style>

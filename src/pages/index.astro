@@ -210,7 +210,7 @@ const sanityNav = await getSanityData(navQuery);
         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
       />
       <div class="center-items">
-        <Button href="/">See All Resources</Button>
+        <Button href="/resources">See All Resources</Button>
       </div>
       <!-- {
         sanityNav.map((item) => (
@@ -299,6 +299,10 @@ const sanityNav = await getSanityData(navQuery);
     #events,
     #resources {
       margin-block: var(--section-spacer);
+    }
+
+    #events {
+      margin-block-end: 0;
     }
 
     #events {

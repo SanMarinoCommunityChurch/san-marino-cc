@@ -1,56 +1,11 @@
 ---
 import DateLabel from "./DateLabel.astro";
 import { DateTime } from "luxon"
-import {
-  capitalizeFirstLetter,
-} from "../../utils/format";
 import { groupAsMonths } from "../../utils/events"
 import { urlFor } from "../../lib/sanity";
 
 const placeholder = "/church-ext-bg.jpg"
-// import placeholderImg from "../../../assets/images/church-ext-2.jpg";
 
-// const MINISTRYTYPES = [
-//   {title: 'Adult Ministry', value: 'adult'},
-//   {title: 'Youth Ministry', value: 'youth'},
-//   {title: "Children's Ministry", value: 'children'},
-//   {title: 'Music Ministry', value: 'music'},
-// ]
-
-// Refactor this
-// const assignCategory = (event) => {
-//   let key = '';
-//   let category = '';
-//   if (event.associatedMinistry) {
-//     key = event.associatedMinistry.type;
-//   } else {
-//     key = event.eventType
-//   }
-//   switch (key) {
-//     case "program": 
-//       category = "Program";
-//       break;
-//     case "oneTime": 
-//       category = "Special Event";
-//       break;
-//     case MINISTRYTYPES[0].value: 
-//       category = MINISTRYTYPES[0].title;
-//       break;
-//     case MINISTRYTYPES[1].value: 
-//       category = MINISTRYTYPES[1].title;
-//       break;
-//     case MINISTRYTYPES[2].value: 
-//       category = MINISTRYTYPES[2].title;
-//       break;
-//     case MINISTRYTYPES[3].value: 
-//       category = MINISTRYTYPES[3].title;
-//       break;
-//     default:
-//       category = "Event"
-//       break;
-//   }
-//   return category;
-// }
 
 const { events } = Astro.props;
 

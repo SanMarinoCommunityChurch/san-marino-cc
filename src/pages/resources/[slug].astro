@@ -1,8 +1,14 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import ResourceLayout from "../../layouts/ResourceLayout.astro";
 import { allPosts } from "../../lib/posts";
 import { PortableText } from "astro-portabletext";
+import PostCategory from "../../components/PostCategory.astro";
+import ContactAvatar from "../../components/ContactAvatar.astro";
+import { joinNames } from "../../utils/format";
 import { DateTime } from "luxon";
+import { urlFor } from "../../lib/sanity";
+import "../../styles/rich-text.css";
 
 export async function getStaticPaths() {
   const pages = allPosts;
@@ -17,15 +23,43 @@ export async function getStaticPaths() {
 
 const { slug } = Astro.params;
 const { page } = Astro.props;
+
+const breadcrumbs = [
+  {
+    name: "Resources",
+    href: "/resources",
+  },
+  {
+    name: page.category.name,
+    href: `/resources/${page.category.slug}`,
+  },
+  {
+    name: page.title,
+    current: true,
+  },
+];
 ---
 
-<Layout>
-  <main slot="main">
-    <article style="margin-top: 7rem;">
-      <header><h1>{page.title}</h1></header>
-      <section class="content">
-        <PortableText value={page.content} />
-      </section>
-    </article>
-  </main>
-</Layout>
+<ResourceLayout
+  title={page.name}
+  name={page.title}
+  preview={page.preview}
+  breadcrumbs={breadcrumbs}
+  author={page.author}
+  publishDate={page.publishDate}
+  featuredImage={page.image}
+>
+  <PostCategory
+    slot="eyebrow"
+    href={`/resources/${page.category.slug}`}
+    name={page.category.name}
+    position="relative"
+    size="small"
+  />
+  <div slot="sidebar" class="flow"></div>
+  <div slot="main-panel" class="rich-text">
+    <PortableText value={page.content} />
+  </div>
+</ResourceLayout>
+
+<style></style>

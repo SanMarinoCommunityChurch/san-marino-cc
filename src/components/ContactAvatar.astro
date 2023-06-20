@@ -13,21 +13,24 @@ const {
 } = Astro.props;
 ---
 
-<div class="contact flex">
+<div
+  class="contact flex"
+  style={`--gap-space: ${size == "small" ? "0.75rem" : ""}`}
+>
   {
     image ? (
       <div
         class="frame square"
         style={`--frame-size: ${size == "small" ? "3rem" : "5rem"}`}
       >
-        <img src={urlFor(image).width(200).url()} alt="" width={200} />
+        <img src={urlFor(image).width(200).url()} alt={name} width={200} />
       </div>
     ) : (
       <div
         class="frame square"
-        style={`--frame-size: ${size == "small" ? "3rem" : "5rem"}}`}
+        style={`--frame-size: ${size == "small" ? "3rem" : "5rem"}`}
       >
-        <img src={placeholderImg} alt="" width={200} />
+        <img src={placeholderImg} alt={name} width={200} />
       </div>
     )
   }
@@ -53,7 +56,7 @@ const {
   }
 
   .contact.flex {
-    gap: 1.5rem;
+    gap: var(--gap-space, 1.5rem);
     align-items: center;
   }
 

@@ -6,6 +6,7 @@ import BreadcrumbAuto from "../../../components/BreadcrumbAuto.astro";
 import Tabs from "../../../components/React/Tabs";
 import { Image } from "@astrojs/image/components";
 import { joinTypes } from "../../../utils/format";
+import { makeNameSlug } from "../../../lib/people";
 
 import { PortableText } from "astro-portabletext";
 import { DateTime } from "luxon";
@@ -22,7 +23,8 @@ export async function getStaticPaths() {
     preacher->{
       name,
       "image": image.asset->,
-      contact
+      contact,
+      "type": type.mainType
     }
   },
   "previousService": *[_type == 'service' && ^.date > date]|order(date desc)[0]{

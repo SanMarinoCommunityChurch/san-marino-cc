@@ -1,16 +1,11 @@
 ---
-import Layout from "../../../layouts/Layout.astro";
 import ThirdLayout from "../../../layouts/ThirdLayout.astro";
-import InnerHero from "../../../components/InnerHero.astro";
-import MiniPreviewCard from "../../../components/MiniPreviewCard.astro";
 import CategoryList from "../../../components/Events/CategoryList.astro";
 import EventsList from "../../../components/Events/EventsList.astro";
-import SectionPage from "../../../layouts/SectionPage.astro";
 
 import { DateTime } from "luxon";
 import { eventCategories } from "../../../lib/events";
 import { eventsPreview, eventTypes } from "../../../lib/sanityQueries";
-import { getSanityData, urlFor } from "../../../lib/sanity";
 
 export async function getStaticPaths() {
   const pages = eventCategories;

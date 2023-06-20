@@ -54,7 +54,7 @@
   --color-tertiary-600: hsl(348, 45%, 73%);
   --color-tertiary-900: hsl(347, 17%, 32%);
   --color-header-text: var(--color-primary-800);
-  --color-body-text: var(--color-neutral-600);
+  --color-body-text: var(--color-neutral-700);
   --step--2: clamp(0.65rem, calc(0.62rem + 0.14vw), 0.74rem);
   --step--1: clamp(0.78rem, calc(0.75rem + 0.17vw), 0.89rem);
   --step-0: clamp(0.94rem, calc(0.9rem + 0.21vw), 1.06rem);

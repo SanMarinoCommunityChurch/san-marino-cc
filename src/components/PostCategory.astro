@@ -1,0 +1,110 @@
+---
+const positions = {
+  absolute: "absolute",
+  relative: "relative",
+};
+
+const sizes = {
+  small: "small",
+  large: "large",
+};
+
+const themes = {
+  theme1: {
+    foreground: "#0E4B47",
+    background: "#A0BFBD",
+  },
+  theme2: {
+    foreground: "#9A5106",
+    background: "#ECD1B5",
+  },
+  theme3: {
+    foreground: "#172554",
+    background: "#C0CBF0",
+  },
+  default: {
+    foreground: "var(--color-primary-900)",
+    background: "var(--color-primary-100)",
+  },
+};
+
+const {
+  name,
+  position = "absolute",
+  size = "small",
+  href,
+  theme = "default",
+  ...props
+} = Astro.props;
+
+const classList = [
+  "small-title",
+  "post-category",
+  positions[position],
+  sizes[size],
+];
+---
+
+{
+  href ? (
+    <a
+      href={href}
+      class:list={classList}
+      {...props}
+      style={`--foreground: ${themes[theme].foreground}; --background: ${themes[theme].background}`}
+    >
+      {name}
+    </a>
+  ) : (
+    <div
+      class:list={classList}
+      {...props}
+      style={`--foreground: ${themes[theme].foreground}; --background: ${themes[theme].background}`}
+    >
+      {name}
+    </div>
+  )
+}
+
+<style>
+  a {
+    /* outline: 2px solid transparent; */
+    transition: all 0.2s ease;
+  }
+
+  a:hover {
+    /* outline: 2px solid var(--foreground); */
+    filter: brightness(0.8);
+  }
+
+  .small-title.post-category {
+    display: inline-block;
+    color: var(--foreground);
+    line-height: 1;
+    text-decoration: none;
+    background-color: var(--background);
+    border-radius: var(--rounded-corners-small);
+  }
+
+  .absolute {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 20;
+  }
+
+  .relative {
+    position: relative;
+    width: fit-content;
+  }
+
+  .small {
+    font-size: 14px;
+    padding: 6px 8px;
+  }
+
+  .large {
+    font-size: 16px;
+    padding: 12px 18px 13px;
+  }
+</style>

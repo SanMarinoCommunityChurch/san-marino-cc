@@ -3,6 +3,7 @@ import { PortableText } from "@portabletext/react";
 import LiteYouTubeEmbed from "react-lite-youtube-embed";
 import getYouTubeID from "get-youtube-id";
 import { urlFor } from "../../lib/sanity";
+import { makeNameSlug } from "../../lib/people";
 import {
   capitalizeFirstLetter,
   format12HourTime,
@@ -101,7 +102,10 @@ export default function Tabs({ service }) {
                           .url()
                       }
                       imageAlt={joinNames(preacher.name)}
-                      href={preacher.contact && preacher.contact.email}
+                      href={
+                        preacher.type === "staff" &&
+                        `/who-we-are/leadership/${makeNameSlug(preacher.name)}`
+                      }
                     />
                   )}
                 </div>

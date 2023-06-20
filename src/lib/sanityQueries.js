@@ -182,6 +182,27 @@ const posts = `*[_type == 'post']|order(publishDate desc) {
   }
 }`;
 
+const postTypes = `*[_type == 'postType'] | order(name asc) {
+  name,
+  "slug": slug.current,
+  "posts": *[_type == 'post' && references(^._id)]|order(publishDate desc) {
+    "title": name,
+    "slug": slug.current,
+    "author": author-> {
+      name,
+      "image": image.asset->,
+      role
+    },
+    publishDate,
+    preview,
+    "image": image.asset->,
+    "category": category->{
+    name,
+    "slug": slug.current
+  },
+  }
+}`;
+
 const fullNavigationFromSanity = `*[_type == 'navigation' && _id == 'a0714f38-2dff-4ce5-b350-be13904afa67'] {
   _id,
   name,
@@ -216,8 +237,17 @@ const staffMembers = `*[_type == 'person' && type.mainType == 'staff'] | order(o
   name,
   role,
   bio,
+  contact,
+  "imageRecord": image,
   "image": image.asset->,
   "type": type.staffSubtype,
+}`;
+
+const eldersAndDeacons = `*[_type == 'person' && type.mainType == 'eldersAndDeacons'] | order(order asc, lower(name.lastName) asc) {
+  name,
+  role,
+  "imageRecord": image,
+  "type": type.eldersAndDeaconsSubtype,
 }`;
 
 const clergyMembers = `*[_type == 'person' && type.mainType == 'staff' && type.staffSubtype == 'clergy'] | order(order asc, lower(name.lastName) asc) {
@@ -257,9 +287,11 @@ export {
   ministryTypeWithMinistriesPreview,
   ministriesDetail,
   posts,
+  postTypes,
   fullNavigationFromSanity,
   navigation,
   staffMembers,
+  eldersAndDeacons,
   clergyMembers,
   programStaffMembers,
   adminStaffMembers,

@@ -1,6 +1,18 @@
 ---
 import { PortableText } from "astro-portabletext";
 import { Image, Picture } from "@astrojs/image/components";
+
+const aspectRatios = {
+  square: "square",
+  "4x3": "4x3",
+  "7x5": "7x5",
+};
+
+// frame aspect ratio must be in the format x:y
+function splitAspect(stringRatio) {
+  return stringRatio.split(":");
+}
+
 const { title, image, layout = "default", frame } = Astro.props;
 ---
 
@@ -14,7 +26,11 @@ const { title, image, layout = "default", frame } = Astro.props;
       <slot />
     </div>
   </div>
-  <div class={frame && "frame"}>
+  <div
+    class={frame && "frame"}
+    style={frame &&
+      `--width: ${splitAspect(frame)[0]}; --height: ${splitAspect(frame)[1]}`}
+  >
     <Picture src={image} widths={[900, 1200]} sizes="100vw" alt="" />
   </div>
 </section>
@@ -31,8 +47,9 @@ const { title, image, layout = "default", frame } = Astro.props;
   }
 
   .intro .frame {
-    --width: 1;
-    --height: 1;
+    aspect-ratio: var(--width, 1) / var(--height, 1);
+    /* --width: 1;
+    --height: 1; */
     border-radius: var(--rounded-corners);
   }
 

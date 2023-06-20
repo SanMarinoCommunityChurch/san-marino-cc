@@ -1,6 +1,7 @@
 ---
 import { urlFor } from "../lib/sanity";
 import Card from "./Card.astro";
+import PostCategory from "./PostCategory.astro";
 import DateLabel from "./Events/DateLabel.astro";
 import { DateTime } from "luxon";
 import { joinNames } from "../utils/format";
@@ -18,12 +19,12 @@ const { posts } = Astro.props;
           img={urlFor(post.image).width(600).auto("format").url()}
           href={`/resources/${post.slug}`}
         >
-          <div slot="label" class="event-date">
-            <DateLabel date={post.publishDate} />
-          </div>
-          <div slot="header" class="small-title event-category">
-            {post.category.name}
-          </div>
+          <PostCategory slot="label" name={post.category.name} />
+          <time slot="header" class="post-date" datetime={post.publishDate}>
+            {`${DateTime.fromISO(post.publishDate)
+              .setZone("America/Los_Angeles")
+              .toLocaleString(DateTime.DATE_FULL)}`}
+          </time>
           <p slot="body" class="preview text-step--1">
             {post.preview}
           </p>
@@ -48,15 +49,13 @@ const { posts } = Astro.props;
     gap: 1rem;
   }
 
-  .small-title.event-category {
-    display: inline-block;
-    font-size: 13px;
-    color: var(--color-primary-900);
-    line-height: 1;
-    padding: 4px 6px;
-    margin-bottom: 10px;
-    background-color: var(--color-primary-100);
-    border-radius: var(--rounded-corners-small);
+  .post-date {
+    font-variant-numeric: lining-nums;
+    font-family: var(--font-secondary);
+    font-weight: var(--font-weight-semi);
+    font-size: var(--step--1);
+    letter-spacing: 1.5pt;
+    text-transform: uppercase;
   }
 
   .preview {

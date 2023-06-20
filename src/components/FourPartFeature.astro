@@ -51,12 +51,11 @@ const {
 } = Astro.props;
 ---
 
-<section id="welcome-questions" class="content-wrapper">
-  <h2 class="center-items">{title}</h2>
+<section class="content-wrapper">
   <div class="responsive-grid">
     {
       items.map((item) => (
-        <a href={item.href} class="">
+        <div class="item">
           <div class="relative">
             <Fragment set:html={item.svg} />
             <div class="cluster">
@@ -71,7 +70,7 @@ const {
             sizes="100vw"
             class="img"
           />
-        </a>
+        </div>
       ))
     }
   </div>
@@ -79,7 +78,7 @@ const {
 
 <style>
   .content-wrapper {
-    margin-block: 6rem;
+    margin-block: 3rem;
   }
 
   .center-items {
@@ -100,7 +99,7 @@ const {
     --item-min-width: 15rem;
   }
 
-  .responsive-grid > a {
+  .responsive-grid > .item {
     position: relative;
     height: 24rem;
     text-decoration: none;

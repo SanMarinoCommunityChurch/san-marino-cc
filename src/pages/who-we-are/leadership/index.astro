@@ -1,65 +1,133 @@
 ---
-import { getSanityData, urlFor } from "../../../lib/sanity";
+import { urlFor } from "../../../lib/sanity";
 import {
-  staffMembers,
-  clergyMembers,
-  programStaffMembers,
-  adminStaffMembers,
-} from "../../../lib/sanityQueries";
-import { joinNames, capitalizeFirstLetter } from "../../../utils/format";
-import { makeNameSlug } from "../../../lib/people";
+  joinNames,
+  capitalizeFirstLetter,
+  slugify,
+} from "../../../utils/format";
+import {
+  makeNameSlug,
+  allStaff,
+  allEldersAndDeacons,
+} from "../../../lib/people";
 import { groupAsType } from "../../../utils/people";
 import { PortableText } from "astro-portabletext";
 import SectionPage from "../../../layouts/SectionPage.astro";
 
-const staff = await getSanityData(staffMembers);
-const clergy = await getSanityData(clergyMembers);
-const program = await getSanityData(programStaffMembers);
-const admin = await getSanityData(adminStaffMembers);
+const staff = allStaff;
+const eldersAndDeacons = allEldersAndDeacons;
 const staffByType = groupAsType(staff);
+const eldersAndDeaconsByType = groupAsType(eldersAndDeacons);
+console.log(eldersAndDeaconsByType);
 ---
 
 <SectionPage
   currentPage={"fb0d80b4-b5ac-43bc-96eb-9c2146228d3a"}
   localNavSection={"Who We Are"}
 >
-  {
-    staffByType.map((type) => (
-      <section class="columns" id={type.type}>
-        <div>
-          <h2 class="text-step-3">
-            {capitalizeFirstLetter(type.type) + " Staff"}
-          </h2>
-        </div>
-        <ul class="grid">
-          {type.entries.map((person) => (
-            <li>
-              <a
-                href={`/who-we-are/leadership/${makeNameSlug(person.name)}`}
-                class="person"
-              >
-                <div class="frame square">
-                  <img src={urlFor(person.image).url()} alt="" />
+  <div class="cluster sticky">
+    <div class="small-title">Jump to:</div>
+    <a href="#staff" class="text-step-4 heading-link">Clergy & Staff</a>
+    <a href="#elders" class="text-step-4 heading-link">Elders & Deacons</a>
+  </div>
+  <div id="staff">
+    <h2 class="sr-only">Clergy & Staff</h2>
+    {
+      staffByType.map((type) => {
+        if (type.type === "admin") {
+          type.type = "Administrative";
+        }
+
+        return (
+          <section class="columns" id={type.type}>
+            <div>
+              <h3 class="text-step-3">
+                {`${capitalizeFirstLetter(type.type)} Staff`}
+              </h3>
+            </div>
+            <ul class="grid">
+              {type.entries.map((person) => (
+                <li>
+                  <a
+                    href={`/who-we-are/leadership/${makeNameSlug(person.name)}`}
+                    class="person"
+                  >
+                    <div class="frame square">
+                      <img
+                        src={urlFor(person.imageRecord)
+                          .width(400)
+                          .height(400)
+                          .auto("format")
+                          .url()}
+                        width={400}
+                        height={400}
+                        alt={joinNames(person.name)}
+                      />
+                    </div>
+                    <div class="flow">
+                      <h3 class="text-step-1">
+                        {[
+                          person.name.title,
+                          person.name.firstName,
+                          person.name.lastName,
+                        ].join(" ")}
+                      </h3>
+                      <p class="text-step--1">
+                        <em>{person.role}</em>
+                      </p>
+                    </div>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        );
+      })
+    }
+  </div>
+  <div id="elders">
+    <h2 class="sr-only">Elders & Deacons</h2>
+    {
+      eldersAndDeaconsByType.map((type) => (
+        <section class="columns" id={type.type}>
+          <div>
+            <h3 class="text-step-3">{`${capitalizeFirstLetter(
+              type.type
+            )}s`}</h3>
+          </div>
+          <ul class="grid">
+            {type.entries.map((person) => (
+              <li>
+                <div class="person">
+                  <div class="frame square">
+                    <img
+                      src={urlFor(person.imageRecord)
+                        .width(400)
+                        .height(400)
+                        .auto("format")
+                        .url()}
+                      width={400}
+                      height={400}
+                      alt={joinNames(person.name)}
+                    />
+                  </div>
+                  <div class="flow">
+                    <h3 class="text-step-1">
+                      {[
+                        person.name.title,
+                        person.name.firstName,
+                        person.name.lastName,
+                      ].join(" ")}
+                    </h3>
+                  </div>
                 </div>
-                <div class="flow">
-                  <h3 class="text-step-1">
-                    {[
-                      person.name.title,
-                      person.name.firstName,
-                      person.name.lastName,
-                    ].join(" ")}
-                  </h3>
-                  <p class="text-step--1">
-                    <em>{person.role}</em>
-                  </p>
-                </div>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </section>
-    ))
-  }
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+  </div>
 </SectionPage>
 <style>
   /* .with-sidebar {
@@ -78,6 +146,30 @@ const staffByType = groupAsType(staff);
     flex-grow: 999;
     min-inline-size: var(--main-min-width);
   } */
+
+  .sticky {
+    position: sticky;
+    background: white;
+    z-index: 20;
+    padding-block: 1.5rem;
+    top: 5rem;
+    /* border-bottom: 1px solid var(--color-primary-300); */
+  }
+
+  .heading-link {
+    color: var(--color-primary-800);
+    text-decoration: none;
+    font-family: var(--font-secondary);
+    font-weight: var(--font-weight-header);
+  }
+
+  .heading-link:hover {
+    text-decoration: underline;
+  }
+
+  .sticky.cluster {
+    --cluster-space: 3rem;
+  }
 
   .columns {
     display: grid;
@@ -141,6 +233,10 @@ const staffByType = groupAsType(staff);
     margin-bottom: 1rem;
   }
 
+  #elders {
+    border-top: 1px solid var(--color-neutral-100);
+  }
+
   @media (max-width: 768px) {
     .columns > :first-child {
       grid-column: span 9;
@@ -162,3 +258,27 @@ const staffByType = groupAsType(staff);
     }
   }
 </style>
+
+<script>
+  const header = document.querySelector(".sticky");
+  const sections = [...document.querySelectorAll(".watch > div")];
+  // const onIntersect = (entries) => {
+  //   entries.forEach(entry => {
+  //     const intersecting = entry.isIntersecting;
+  //     header.style.backgroundColor =
+  //   })
+  // }
+  // const observer = new IntersectionObserver(
+  //   (entries) => {
+  //     entries.forEach((entry) => {
+  //       const intersecting = entry.isIntersecting;
+  //       entry.target.style.backgroundColor = intersecting
+  //         ? "var(--color-primary-800)"
+  //         : "var(--color-neutral-500";
+  //     });
+  //   },
+  //   { rootMargin: "-50px" }
+  // );
+
+  // observer.observe(document.querySelector(".watch"));
+</script>
