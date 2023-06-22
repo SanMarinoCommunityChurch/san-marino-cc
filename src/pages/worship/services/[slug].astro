@@ -11,39 +11,12 @@ import { makeNameSlug } from "../../../lib/people";
 import { PortableText } from "astro-portabletext";
 import { DateTime } from "luxon";
 import { getSanityData, urlFor } from "../../../lib/sanity";
+import { allServices } from "../../../lib/services";
 
 import bgImage from "../../../assets/images/church-ext-2.jpg";
 
 export async function getStaticPaths() {
-  const pages = await getSanityData(`*[_type == 'service']|order(date) {
-  ...,
-  "slug": slug.current,
-  serviceType[] {
-    ...,
-    preacher->{
-      name,
-      "image": image.asset->,
-      contact,
-      "type": type.mainType
-    }
-  },
-  "previousService": *[_type == 'service' && ^.date > date]|order(date desc)[0]{
-    "slug": slug.current,
-    name,
-    date,
-    serviceType[] {
-      name
-    }
-  },
-  "nextService": *[_type == 'service' && ^.date < date]|order(date asc)[0]{
-    "slug": slug.current,
-    name,
-    date,
-    serviceType[] {
-      name
-    }
-  },
-}`);
+  const pages = allServices;
 
   return pages.map((page) => {
     return {

@@ -5,8 +5,6 @@ import { PortableText } from "astro-portabletext";
 import ImageCard from "./ImageCard.astro";
 import { urlFor } from "../lib/sanity";
 
-import placeholderImg from "../assets/images/church-ext-5.jpg";
-
 const { slides, items } = Astro.props;
 ---
 
@@ -34,76 +32,78 @@ const { slides, items } = Astro.props;
     <div class="splide__track">
       <ul class="splide__list">
         {
-          slides.map((slide) => (
-            <li class="splide__slide" data-splide-hash={slide.slug.current}>
-              <div class="relative">
-                <article class="ministry-preview with-sidebar">
-                  <div class="flow">
-                    <div class="header flow">
-                      <h2 class="text-step-3">{slide.name}</h2>
-                      <PortableText
-                        value={slide.description}
-                        class="text-step--1"
+          slides.map((slide) => {
+            const image = slide.image;
+
+            return (
+              <li class="splide__slide" data-splide-hash={slide.slug.current}>
+                <div class="relative">
+                  <article class="ministry-preview with-sidebar">
+                    <div class="flow">
+                      <div class="header flow">
+                        <h2 class="text-step-3">{slide.name}</h2>
+                        <PortableText
+                          value={slide.description}
+                          class="text-step--1"
+                        />
+                      </div>
+                      <div class="more-link cluster">
+                        <Button
+                          href={`#${slide.slug.current}-list`}
+                          style="none"
+                          theme="primary"
+                          size="none"
+                        >
+                          <slot name="CTA">View Ministries</slot>
+                        </Button>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 448 512"
+                          aria-hidden="true"
+                          width="14"
+                          height="14"
+                        >
+                          <path d="M440.6 273.4c4.7-4.5 7.4-10.8 7.4-17.4s-2.7-12.8-7.4-17.4l-176-168c-9.6-9.2-24.8-8.8-33.9 .8s-8.8 24.8 .8 33.9L364.1 232 24 232c-13.3 0-24 10.7-24 24s10.7 24 24 24l340.1 0L231.4 406.6c-9.6 9.2-9.9 24.3-.8 33.9s24.3 9.9 33.9 .8l176-168z" />
+                        </svg>
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        class="img"
+                        src={urlFor(image)
+                          .width(900)
+                          .height(675)
+                          .auto("format")
+                          .url()}
+                        alt={image.asset.altText || ""}
+                        width={900}
+                        height={675}
+                        style={`background-image: url(${image.asset.metadata.lqip})`}
+                        loading="lazy"
+                        decoding="async"
                       />
                     </div>
-                    <div class="more-link cluster">
-                      <Button
-                        href={`#${slide.slug.current}-list`}
-                        style="none"
-                        theme="primary"
-                        size="none"
-                      >
-                        <slot name="CTA">View Ministries</slot>
-                      </Button>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 448 512"
-                        aria-hidden="true"
-                        width="14"
-                        height="14"
-                      >
-                        <path d="M440.6 273.4c4.7-4.5 7.4-10.8 7.4-17.4s-2.7-12.8-7.4-17.4l-176-168c-9.6-9.2-24.8-8.8-33.9 .8s-8.8 24.8 .8 33.9L364.1 232 24 232c-13.3 0-24 10.7-24 24s10.7 24 24 24l340.1 0L231.4 406.6c-9.6 9.2-9.9 24.3-.8 33.9s24.3 9.9 33.9 .8l176-168z" />
-                      </svg>
-                    </div>
-                  </div>
-                  <div class="frame">
-                    <Picture
-                      src={urlFor(slide.image)
-                        .width(1200)
-                        .height(900)
-                        .fit("crop")
-                        .crop("center")
-                        .format("webp")
-                        .url()}
-                      alt="description"
-                      widths={[600, 900, 1200]}
-                      sizes="100vw"
-                      width={900}
-                      style={`background: ${slide.image.metadata.palette.vibrant.background}`}
-                      aspectRatio={slide.image.metadata.dimensions.aspectRatio}
-                    />
-                  </div>
-                </article>
-              </div>
-              <div class="content-pane" id={`${slide.slug.current}-list`}>
-                <div class="font-header">View {slide.name}</div>
-                <ul class="ministry-list">
-                  {slide[items].map((item) => (
-                    <li>
-                      <ImageCard
-                        imgSrc={urlFor(item.image).width(800).url()}
-                        imgAlt={item.name}
-                        title={item.name}
-                        description={item.preview}
-                        href={`/connect/ministries/${item.slug}`}
-                        external
-                      />
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </li>
-          ))
+                  </article>
+                </div>
+                <div class="content-pane" id={`${slide.slug.current}-list`}>
+                  <div class="font-header">View {slide.name}</div>
+                  <ul class="ministry-list">
+                    {slide[items].map((item) => (
+                      <li>
+                        <ImageCard
+                          image={item.image}
+                          title={item.name}
+                          description={item.preview}
+                          href={`/connect/ministries/${item.slug}`}
+                          external
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </li>
+            );
+          })
         }
       </ul>
     </div>
@@ -137,6 +137,13 @@ const { slides, items } = Astro.props;
 
   .ministry-preview .frame {
     border-radius: var(--rounded-corners);
+  }
+
+  .ministry-preview .img {
+    border-radius: var(--rounded-corners);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 
   .more-link {

@@ -30,7 +30,10 @@ const latestService =
     ...,
     preacher->{
       name,
-      "image": image.asset->,
+      "image": image{
+        ...,
+        asset->
+      },
       contact,
       "type": type.mainType
     }

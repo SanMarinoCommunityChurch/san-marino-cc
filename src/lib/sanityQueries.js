@@ -3,6 +3,15 @@ const pages = `*[_type == 'page'] {
   "slug": slug.current,
   "pageName": name,
   "pageDescription": description,
+  introSections[]{
+    text,
+    heading,
+    layout,
+    "image": image{
+      ...,
+      asset->
+    }
+  },
   content[]{
     ...,
     _type == "image" => {
@@ -10,9 +19,23 @@ const pages = `*[_type == 'page'] {
       asset->
     }
   },
+  "cta": callToAction{
+    "button": {
+      "href": buttonHref,
+      "text": buttonText
+    },
+    heading,
+    text,
+    "image": image{
+      ...,
+      asset->
+    }
+  },
   "background": {
-    "image": image,
-    "asset": image.asset->,
+    "image": image{
+      ...,
+      asset->
+    },
     "crop": image.crop,
     "hotspot": image.hotspot
   },
@@ -31,9 +54,15 @@ const eventsPreview = `*[_type == 'event'] | order(date asc) {
       name,
       "slug": slug.current
     },
-    "image": image.asset->
+    "image": image{
+      ...,
+      asset->
+    },
   },
-  "image": image.asset->,
+  "image": image{
+    ...,
+    asset->
+  },
   "slug": slug.current,
   location,
   preview,
@@ -59,7 +88,10 @@ const eventTypes = `*[_type == 'eventType'] {
       name,
       "slug": slug.current
     },
-    "image": image.asset->,
+    "image": image{
+      ...,
+      asset->
+    },
     "slug": slug.current
   }
 }`;
@@ -73,7 +105,10 @@ const eventsDetail = `*[_type == 'event'] {
   "type": eventType->name,
   "category": category->name,
   "categorySlug": category->slug.current,
-  "image": image.asset->,
+  "image": image{
+    ...,
+    asset->
+  },
   "slug": slug.current,
   associatedMinistry->{
     ...,
@@ -82,12 +117,51 @@ const eventsDetail = `*[_type == 'event'] {
       "slug": slug.current,
     },
     "slug": slug.current,
-    "image": image.asset->,
+    "image": image{
+      ...,
+      asset->
+    },
     "person": ministryContact->{
       ...,
-      "image": image.asset->
+      "image": image{
+        ...,
+        asset->
+      },
     }
   }
+}`;
+
+const servicesList = `*[_type == 'service']|order(date) {
+  ...,
+  "slug": slug.current,
+  serviceType[] {
+    ...,
+    preacher->{
+      name,
+      "image": image{
+        ...,
+        asset->
+      },
+      contact,
+      "type": type.mainType
+    }
+  },
+  "previousService": *[_type == 'service' && ^.date > date]|order(date desc)[0]{
+    "slug": slug.current,
+    name,
+    date,
+    serviceType[] {
+      name
+    }
+  },
+  "nextService": *[_type == 'service' && ^.date < date]|order(date asc)[0]{
+    "slug": slug.current,
+    name,
+    date,
+    serviceType[] {
+      name
+    }
+  },
 }`;
 
 const ministriesPreview = `*[_type == 'ministry'] {
@@ -99,7 +173,10 @@ const ministriesPreview = `*[_type == 'ministry'] {
   },
   preview,
   meetingLocation,
-  "image": image.asset->,
+  "image": image{
+    ...,
+    asset->
+  },
   "slug": slug.current
 }`;
 
@@ -110,13 +187,19 @@ const ministryTypeWithMinistriesPreview = `*[_type == 'ministryType'] {
     name,
     "slug": slug.current
   },
-  "image": image.asset->,
+  "image": image{
+    ...,
+    asset->
+  },
   description,
   "ministries": *[_type == 'ministry' && references(^._id)] {
     name,
     preview,
     meetingLocation,
-    "image": image.asset->,
+    "image": image{
+      ...,
+      asset->
+    },
     "slug": slug.current,
     "category": type->category->{
       name
@@ -134,21 +217,33 @@ const ministriesDetail = `*[_type == 'ministry'] {
   meetingTime,
   meetingLocation,
   description,
-  "image": image.asset->,
+  "image": image{
+    ...,
+    asset->
+  },
   "slug": slug.current,
   "person": ministryContact-> {
     ...,
-    "image": image.asset->
+    "image": image{
+      ...,
+      asset->
+    },
   },
   "associatedEvents": *[_type == 'event' && references(^._id)] {
     ...,
     name,
     date,
-    "image": image.asset->,
+    "image": image{
+      ...,
+      asset->
+    },
     "slug": slug.current,
     associatedMinistry->{
       type,
-      "image": image.asset->
+      "image": image{
+        ...,
+        asset->
+      },
     },
     eventType,
     preview,
@@ -161,16 +256,25 @@ const posts = `*[_type == 'post']|order(publishDate desc) {
   "slug": slug.current,
   "author": author-> {
     name,
-    "image": image.asset->,
+    "image": image{
+      ...,
+      asset->
+    },
     role
   },
   publishDate,
   preview,
   content,
-  "image": image.asset->,
+  "image": image{
+    ...,
+    asset->
+  },
   cta {
     ...,
-    "image": image.asset->
+    "image": image{
+      ...,
+      asset->
+    },
   },
   "category": category->{
     name,
@@ -190,12 +294,18 @@ const postTypes = `*[_type == 'postType'] | order(name asc) {
     "slug": slug.current,
     "author": author-> {
       name,
-      "image": image.asset->,
+      "image": image{
+        ...,
+        asset->
+      },
       role
     },
     publishDate,
     preview,
-    "image": image.asset->,
+    "image": image{
+      ...,
+      asset->
+    },
     "category": category->{
     name,
     "slug": slug.current
@@ -238,15 +348,20 @@ const staffMembers = `*[_type == 'person' && type.mainType == 'staff'] | order(o
   role,
   bio,
   contact,
-  "imageRecord": image,
-  "image": image.asset->,
+  "image": image{
+    ...,
+    asset->
+  },
   "type": type.staffSubtype,
 }`;
 
 const eldersAndDeacons = `*[_type == 'person' && type.mainType == 'eldersAndDeacons'] | order(order asc, lower(name.lastName) asc) {
   name,
   role,
-  "imageRecord": image,
+  "image": image{
+    ...,
+    asset->
+  },
   "type": type.eldersAndDeaconsSubtype,
 }`;
 
@@ -254,7 +369,10 @@ const clergyMembers = `*[_type == 'person' && type.mainType == 'staff' && type.s
   name,
   role,
   bio,
-  "image": image.asset->,
+  "image": image{
+    ...,
+    asset->
+  },
   "type": type.staffSubtype,
 }`;
 
@@ -262,7 +380,10 @@ const programStaffMembers = `*[_type == 'person' && type.mainType == 'staff' && 
   name,
   role,
   bio,
-  "image": image.asset->,
+  "image": image{
+    ...,
+    asset->
+  },
   "type": type.staffSubtype,
 }`;
 
@@ -270,7 +391,10 @@ const adminStaffMembers = `*[_type == 'person' && type.mainType == 'staff' && ty
   name,
   role,
   bio,
-  "image": image.asset->,
+  "image": image{
+    ...,
+    asset->
+  },
   "type": type.staffSubtype,
 }`;
 
@@ -278,11 +402,20 @@ const faq = `*[_type == 'faq'][0] {
   "items": set
 }`;
 
+const settings = `*[_type == 'siteSettings'][0] {
+  ...,
+  "image": defaultImage{
+    ...,
+    asset->
+  }
+}`;
+
 export {
   pages,
   eventsPreview,
   eventTypes,
   eventsDetail,
+  servicesList,
   ministriesPreview,
   ministryTypeWithMinistriesPreview,
   ministriesDetail,
@@ -296,4 +429,5 @@ export {
   programStaffMembers,
   adminStaffMembers,
   faq,
+  settings,
 };

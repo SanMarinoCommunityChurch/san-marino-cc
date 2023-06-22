@@ -1,6 +1,5 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
-import { Image, Picture } from "@astrojs/image/components";
 import BreacrumbAuto from "../../../components/BreadcrumbAuto.astro";
 import InnerHero from "../../../components/InnerHero.astro";
 import ImageCard from "../../../components/ImageCard.astro";
@@ -9,12 +8,12 @@ import Button from "../../../components/Button.astro";
 import { urlFor } from "../../../lib/sanity";
 import { DateTime } from "luxon";
 import { randomizeAndSlice } from "../../../utils/data";
+import { defaultImage } from "../../../lib/settings";
 
 import { PortableText } from "astro-portabletext";
 import { joinNames } from "../../../utils/format";
 
 import MiniPreviewCard from "../../../components/MiniPreviewCard.astro";
-import placeholderImg from "../../../assets/images/church-ext-4.jpg";
 import { allMinistries, previewMinistries } from "../../../lib/ministries";
 
 export async function getStaticPaths() {
@@ -54,16 +53,11 @@ const randomizedMinistries = randomizeAndSlice(
   page,
   3
 );
+
+console.log(defaultImage);
 ---
 
-<!-- <ThirdLayout
-  title={page.name}
-  header={page.name}
-  preview={page.preview}
-  breadcrumbs={breadcrumbs}
-  featuredImage={urlFor(page.image).url()}
-> -->
-<Layout title="">
+<Layout title={page.name} description={page.preview}>
   <main slot="main">
     <InnerHero pageTitle={page.name} pageDescription={page.preview}>
       <Fragment slot="breadcrumbs">
@@ -94,16 +88,16 @@ const randomizedMinistries = randomizeAndSlice(
     <div class="content-wrapper with-sidebar">
       <article>
         <div slot="main-panel" class="main-panel flow">
-          <div class="frame">
-            <Picture
-              src={urlFor(page.image).width(900).format("webp").url()}
-              widths={[600, 900, 1200]}
-              sizes="100vw"
-              aspectRatio={page.image.metadata.dimensions.aspectRatio}
-              alt=""
-              class="featured-image"
-            />
-          </div>
+          <img
+            class="img"
+            src={urlFor(page.image).width(900).height(640).auto("format").url()}
+            alt={page.image.asset.altText || ""}
+            width={900}
+            height={640}
+            style={`background-image: url(${page.image.asset.metadata.lqip})`}
+            loading="lazy"
+            decoding="async"
+          />
           <PortableText value={page.description} />
         </div>
       </article>
@@ -112,7 +106,7 @@ const randomizedMinistries = randomizeAndSlice(
           page.person && (
             <div>
               <ContactAvatar
-                image={page.person.image}
+                image={page.person.image || defaultImage}
                 name={joinNames(page.person.name)}
                 href={
                   page.person.contact.email &&
@@ -134,12 +128,7 @@ const randomizedMinistries = randomizeAndSlice(
                       href={`/connect/events/${DateTime.fromISO(
                         event.date
                       ).toFormat("L-d-yyyy")}-${event.slug}`}
-                      image={
-                        event.image
-                          ? urlFor(event.image).width(300).url()
-                          : placeholderImg
-                      }
-                      imageAlt=""
+                      image={event.image || defaultImage}
                     >
                       <div class="text-step-1 font-header">{event.name}</div>
                       <time class="small-title" datetime={event.date}>
@@ -156,9 +145,6 @@ const randomizedMinistries = randomizeAndSlice(
         }
       </div>
     </div>
-    <!-- <section slot="cta" class="content-wrapper cta">
-    <Feature />
-  </section> -->
     <section class="highlight-section">
       <div class="content-wrapper">
         <div class="more flow">
@@ -170,10 +156,8 @@ const randomizedMinistries = randomizeAndSlice(
                   <ImageCard
                     title={item.name}
                     description={item.preview}
-                    imgSrc={urlFor(item.image).url()}
-                    imgAlt=""
+                    image={item.image}
                     href={`/connect/ministries/${item.slug}`}
-                    aspectRatio={item.image.metadata.dimensions.aspectRatio}
                   />
                 </li>
               ))
@@ -188,7 +172,6 @@ const randomizedMinistries = randomizeAndSlice(
     </section>
   </main>
 </Layout>
-<!-- </ThirdLayout> -->
 
 <style>
   .cta {
@@ -229,6 +212,13 @@ const randomizedMinistries = randomizeAndSlice(
     --width: 7;
     --height: 5;
     border-radius: var(--rounded-corners);
+  }
+
+  .img {
+    border-radius: var(--rounded-corners);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 
   .eyebrow.cluster {

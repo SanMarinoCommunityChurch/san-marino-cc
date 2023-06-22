@@ -1,9 +1,9 @@
 ---
 import Layout from "./Layout.astro";
 import BreadcrumbAuto from "../components/BreadcrumbAuto.astro";
+import { urlFor } from "../lib/sanity";
 
-const { title, name, breadcrumbs, preview, featuredImage, imageMetadata } =
-  Astro.props;
+const { title, name, breadcrumbs, preview, featuredImage } = Astro.props;
 ---
 
 <Layout title={title} description={preview}>
@@ -13,12 +13,16 @@ const { title, name, breadcrumbs, preview, featuredImage, imageMetadata } =
       <div class="content-wrapper">
         <div class="sidebar">
           <img
-            src={featuredImage}
+            src={urlFor(featuredImage)
+              .width(900)
+              .height(900 / 0.75)
+              .auto("format")
+              .url()}
             alt={name}
             class="image"
             width={900}
             height={900 / 0.75}
-            style={`background-image: url(${imageMetadata.metadata.lqip})`}
+            style={`background-image: url(${featuredImage.asset.metadata.lqip})`}
           />
           <slot name="sidebar" />
         </div>

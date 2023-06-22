@@ -49,11 +49,13 @@ const {
         </header>
         <img
           src={urlFor(featuredImage).width(1200).auto("format").url()}
-          alt={featuredImage.altText}
+          alt={featuredImage.asset.altText || ""}
           class="image"
           width={1200}
-          height={1200 / featuredImage.metadata.dimensions.aspectRatio}
-          style={`background-image: url(${featuredImage.metadata.lqip})`}
+          height={1200 / featuredImage.asset.metadata.dimensions.aspectRatio}
+          style={`background-image: url(${featuredImage.asset.metadata.lqip})`}
+          loading="lazy"
+          decoding="async"
         />
         <div>
           <!-- <slot name="sidebar" /> -->

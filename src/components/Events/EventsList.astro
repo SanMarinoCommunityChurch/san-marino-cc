@@ -3,6 +3,7 @@ import DateLabel from "./DateLabel.astro";
 import { DateTime } from "luxon"
 import { groupAsMonths } from "../../utils/events"
 import { urlFor } from "../../lib/sanity";
+import { defaultImage } from "../../lib/settings";
 
 const placeholder = "/church-ext-bg.jpg"
 
@@ -24,14 +25,22 @@ const categoryName = (event) => {
   <section id={month.month}>
   <h2 class="text-step-4">{month.month}</h2>
     <ul class="flow">
-      {month.entries.map(event =>
+      {month.entries.map((event) => {
+        const image = event.image || defaultImage;
+      return (
         <li>
           <a href={`/connect/events/${DateTime.fromISO(event.date).setZone('America/Los_Angeles').toFormat('L-d-yyyy')}-${event.slug}`} class="event-wrapper">
             <div class="frame">
               <DateLabel date={event.date} position="top-left" />
               <img
-                src={event.image ? urlFor(event.image).url() : placeholder}
-                alt=""
+                class="img"
+                src={urlFor(image).width(800).height(800).auto('format').url()}
+                alt={image.asset.altText || ""}
+                width={800}
+                height={800}
+                style={`background-image: url(${image.asset.metadata.lqip})`}
+                loading="lazy"
+                decoding="async"
               />
             </div>
             <div class="flow text">
@@ -54,46 +63,11 @@ const categoryName = (event) => {
             </div>
           </a>
         </li>
-      )}
+      )})}
     </ul>
   </section>
 )}
 </div>
-<!-- <ul class="flow">
-  {
-    events.map((event) => (
-      <li>
-        <a href={`/connect/events/${event.date}`} class="event-wrapper">
-          <div class="frame">
-            <DateLabel date={event.date} position="top-left" />
-            <img
-              src={event.image ? urlFor(event.image).url() : placeholderImg}
-              alt=""
-            />
-          </div>
-          <div class="flow text">
-            <div class="small-title category">
-              {assignCategory(event)}
-            </div>
-            <header class="flow">
-              <h3 class="text-step-2 heading">{event.name}</h3>
-              <time class="time">
-                {formatDate(event.date)}
-                <span class="bullet-spacer">•</span>
-                {formatTimeFromDate(event.date)}
-              </time>
-            </header>
-            <p class="text-step--1">{event.preview}</p>
-            <div class="location-footer text-step--1 cluster font-header">
-            <span class="location-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" height="16" width="16" fill="var(--color-primary-800)"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M192 144a48 48 0 1 0 0 96 48 48 0 1 0 0-96z"/><path class="fa-secondary" d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 112a80 80 0 1 1 0 160 80 80 0 1 1 0-160z"/></svg></span>
-            <span>{event.location}</span>
-          </div>
-          </div>
-        </a>
-      </li>
-    ))
-  }
-</ul> -->
 
 <style>
   section {
@@ -171,12 +145,23 @@ const categoryName = (event) => {
     --height: 1 !important;
   }
 
+  .img {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    transition: all 0.3s ease;
+  }
+
   .heading {
     margin-top: 6px !important;
   }
 
   a.event-wrapper:hover .heading {
     text-decoration: underline;
+  }
+
+  a.event-wrapper:hover .img {
+     transform: scale(1.05);
   }
 
   .bullet-spacer {

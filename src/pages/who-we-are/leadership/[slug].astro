@@ -39,13 +39,14 @@ const breadcrumbs = [
 if (page.type === 'admin') {
   page.type = 'Administrative'
 }
+
+console.log(page.image)
 ---
 
 <PersonLayout
   title={`${joinNames(page.name)} | ${capitalizeFirstLetter(page.type)} Staff, San Marino Community Church`}
   name={`${joinNames(page.name)}`}
-  featuredImage={urlFor(page.imageRecord).width(900).height(900 / 0.75).auto('format').url()}
-  imageMetadata={page.image}
+  featuredImage={page.image}
   breadcrumbs={breadcrumbs}
 >
   <div slot="eyebrow" class="eyebrow">

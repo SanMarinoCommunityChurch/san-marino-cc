@@ -1,23 +1,29 @@
 ---
-import { Image } from "@astrojs/image/components";
-
-const placeholderImg =
-  "https://images.unsplash.com/photo-1529070538774-1843cb3265df?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=900&q=80";
+import { urlFor } from "../lib/sanity";
 
 const {
-  imgSrc = placeholderImg,
-  imgAlt = "",
+  image,
   title = "Title",
   description = "Description",
   href = "#",
-  aspectRatio,
-  external,
 } = Astro.props;
 ---
 
 <article class="img-card">
   <a href={href} class="flow">
     <div class="frame">
+      <img
+        class="img"
+        src={urlFor(image).width(600).height(375).auto("format").url()}
+        alt={image.asset.altText || ""}
+        width={600}
+        height={375}
+        style={`background-image: url(${image.asset.metadata.lqip})`}
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+    <!-- <div class="frame">
       {
         external ? (
           <img src={imgSrc} width={900} alt={imgAlt} />
@@ -30,7 +36,7 @@ const {
           />
         )
       }
-    </div>
+    </div> -->
     <div class="cluster">
       <h3 class="text-step-2">{title}</h3>
       <svg
@@ -83,6 +89,9 @@ const {
   .frame img {
     border-radius: var(--rounded-corners);
     transition: transform 0.3s ease;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 
   .cluster {

@@ -1,6 +1,7 @@
 ---
 import Layout from "./Layout.astro";
 import BreadcrumbAuto from "../components/BreadcrumbAuto.astro";
+import { urlFor } from "../lib/sanity";
 
 const { title, header, breadcrumbs, preview, featuredImage } = Astro.props;
 ---
@@ -21,7 +22,20 @@ const { title, header, breadcrumbs, preview, featuredImage } = Astro.props;
           {
             featuredImage && (
               <section class="frame">
-                <img src={featuredImage} alt="" />
+                <img
+                  class="img"
+                  src={urlFor(featuredImage)
+                    .width(900)
+                    .height(640)
+                    .auto("format")
+                    .url()}
+                  alt={featuredImage.asset.altText || ""}
+                  width={900}
+                  height={640}
+                  style={`background-image: url(${featuredImage.asset.metadata.lqip})`}
+                  loading="lazy"
+                  decoding="async"
+                />
               </section>
             )
           }
@@ -81,5 +95,11 @@ const { title, header, breadcrumbs, preview, featuredImage } = Astro.props;
     --width: 7;
     --height: 5;
     border-radius: var(--rounded-corners);
+  }
+
+  .img {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 </style>

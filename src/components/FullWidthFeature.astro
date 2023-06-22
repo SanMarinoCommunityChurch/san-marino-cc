@@ -1,17 +1,47 @@
 ---
 import { Image, Picture } from "@astrojs/image/components";
-const { imageSrc, imageAlt = "" } = Astro.props;
+import { urlFor } from "../lib/sanity";
+import Button from "./Button.astro";
+const { content } = Astro.props;
+const { button, heading, image, text } = content;
 ---
 
 <div class="feature">
   <div class="content">
     <div class="text">
       <slot />
+      <div class="text-step-5 font-header leading-tight">
+        {heading}
+      </div>
+      <Button href={button.href} width="fit">
+        <span>{button.text}</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 448 512"
+          aria-hidden="true"
+          width="14"
+          height="14"
+          fill="var(--color-primary-100)"
+        >
+          <path
+            d="M440.6 273.4c4.7-4.5 7.4-10.8 7.4-17.4s-2.7-12.8-7.4-17.4l-176-168c-9.6-9.2-24.8-8.8-33.9 .8s-8.8 24.8 .8 33.9L364.1 232 24 232c-13.3 0-24 10.7-24 24s10.7 24 24 24l340.1 0L231.4 406.6c-9.6 9.2-9.9 24.3-.8 33.9s24.3 9.9 33.9 .8l176-168z"
+          ></path></svg
+        >
+      </Button>
     </div>
     <div class="overlay"></div>
   </div>
   <div style="position: relative;">
-    <Image width={1200} src={imageSrc} alt={imageAlt} class="img" />
+    <img
+      src={urlFor(image).width(1200).height(1200).auto("format").url()}
+      alt={image.asset.altText || ""}
+      width={900}
+      height={900}
+      class="img"
+      style={`background-image: url(${image.asset.metadata.lqip})`}
+      loading="lazy"
+      decoding="async"
+    />
   </div>
 </div>
 
@@ -58,6 +88,9 @@ const { imageSrc, imageAlt = "" } = Astro.props;
   .img {
     object-fit: cover;
     height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 
   @media (max-width: 1024px) {

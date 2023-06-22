@@ -1,25 +1,11 @@
 ---
-import Layout from "../../../layouts/Layout.astro";
-import Card from "../../../components/Card.astro";
 import Button from "../../../components/Button.astro";
-import ImageCard from "../../../components/ImageCard.astro";
-import InnerHero from "../../../components/InnerHero.astro";
-import Feature from "../../../components/Feature.astro";
 import MinistrySlider from "../../../components/MinistrySlider.astro";
-import { getSanityData, urlFor } from "../../../lib/sanity";
-import {
-  ministriesPreview,
-  ministryTypeWithMinistriesPreview,
-} from "../../../lib/sanityQueries";
+import { ministryCategories } from "../../../lib/ministries";
 
-import placeholderImg from "../../../assets/images/church-ext-2.jpg";
 import SectionPage from "../../../layouts/SectionPage.astro";
 
-const ministries = await getSanityData(ministriesPreview);
-const ministryTypesToSort = await getSanityData(
-  ministryTypeWithMinistriesPreview
-);
-
+const ministryTypesToSort = ministryCategories;
 const ministryTypes = ministryTypesToSort.sort((a, b) => {
   if (a.name < b.name) {
     return -1;
@@ -29,13 +15,6 @@ const ministryTypes = ministryTypesToSort.sort((a, b) => {
   }
   return 0;
 });
-
-// const categories = [
-//   { title: "Adult Ministry", value: "adult" },
-//   { title: "Youth Ministry", value: "youth" },
-//   { title: "Children's Ministry", value: "children" },
-//   { title: "Music Ministry", value: "music" },
-// ];
 ---
 
 <SectionPage

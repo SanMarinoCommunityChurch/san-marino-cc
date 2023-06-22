@@ -16,7 +16,12 @@ function Avatar({ image, imageAlt = "", heading = "Contact", name, href }) {
     <div className="contact-avatar flex">
       {image ? (
         <div className="frame square">
-          <img src={image} alt={imageAlt} width={200} height={200} />
+          <img
+            src={urlFor(image).width(200).height(200).auto("format").url()}
+            alt={image.asset.altText || ""}
+            width={200}
+            height={200}
+          />
         </div>
       ) : (
         <div className="frame square">
@@ -92,15 +97,7 @@ export default function Tabs({ service }) {
                     <Avatar
                       heading="Sermon by"
                       name={joinNames(preacher.name)}
-                      image={
-                        preacher.image &&
-                        urlFor(preacher.image)
-                          .width(200)
-                          .height(200)
-                          .fit("crop")
-                          .crop("center")
-                          .url()
-                      }
+                      image={preacher.image}
                       imageAlt={joinNames(preacher.name)}
                       href={
                         preacher.type === "staff" &&

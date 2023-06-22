@@ -3,15 +3,25 @@ import Layout from "./Layout.astro";
 import InnerHero from "../components/InnerHero.astro";
 import { PortableText } from "astro-portabletext";
 import InlineImage from "../components/InlineImage.astro";
+import FullWidthFeature from "../components/FullWidthFeature.astro";
 import "../styles/rich-text.css";
 
 import { urlFor } from "../lib/sanity";
 import { filterLocalNav } from "../lib/navigation";
 import { getCurrentPage } from "../lib/pages";
+import IntroSection from "../components/IntroSection.astro";
 
 const { currentPage, localNavSection, contentPadding } = Astro.props;
 const page = getCurrentPage(currentPage);
-const { seo, pageName, pageDescription, background, content } = page;
+const {
+  seo,
+  pageName,
+  pageDescription,
+  background,
+  introSections,
+  cta,
+  content,
+} = page;
 
 const bgImage = background.image
   ? urlFor(background.image).width(1600).height(450).auto("format").url()
@@ -31,6 +41,20 @@ const bgImage = background.image
       bgImage={bgImage}
     />
     <article class:list={["content-wrapper flow", contentPadding && "padding"]}>
+      {
+        introSections &&
+          introSections.map((section) => {
+            return (
+              <IntroSection
+                title={section.heading}
+                image={section.image}
+                layout={section.layout && "flipped"}
+              >
+                <PortableText value={section.text} />
+              </IntroSection>
+            );
+          })
+      }
       <slot />
       {
         content && (
@@ -44,6 +68,13 @@ const bgImage = background.image
       }
     </article>
     <slot name="pre-footer" />
+    {
+      cta && (
+        <aside>
+          <FullWidthFeature content={cta} />
+        </aside>
+      )
+    }
   </main>
 </Layout>
 

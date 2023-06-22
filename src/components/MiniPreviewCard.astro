@@ -1,5 +1,6 @@
 ---
-const { href, image, imageAlt, theme = "light" } = Astro.props;
+import { urlFor } from "../lib/sanity";
+const { href, image, theme = "light" } = Astro.props;
 ---
 
 <a
@@ -8,7 +9,16 @@ const { href, image, imageAlt, theme = "light" } = Astro.props;
   style={`--hover-color:${theme == "dark" ? "var(--dark)" : "var(--light)"}`}
 >
   <div class="frame square">
-    <img src={image} alt={imageAlt} />
+    <img
+      class="img"
+      src={urlFor(image).width(300).height(300).auto("format").url()}
+      alt={image.asset.altText || ""}
+      width={300}
+      height={300}
+      style={`background-image: url(${image.asset.metadata.lqip})`}
+      loading="lazy"
+      decoding="async"
+    />
   </div>
   <div>
     <slot />
@@ -41,6 +51,12 @@ const { href, image, imageAlt, theme = "light" } = Astro.props;
   .frame {
     border-radius: var(--rounded-corners);
     max-width: 30%;
+  }
+
+  .img {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 
   .frame img {

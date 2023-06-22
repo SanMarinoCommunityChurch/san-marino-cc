@@ -53,7 +53,7 @@ const randomizedEvents = randomizeAndSlice(otherEvents, "type", page, 3);
   header={page.name}
   preview={page.preview}
   breadcrumbs={breadcrumbs}
-  featuredImage={page.image && urlFor(page.image).width(900).format('webp').url()}
+  featuredImage={page.image}
 >
   <div slot="eyebrow" class="eyebrow cluster">
     <a class="small-title heading-category" href={`/connect/events/${page.eventType.slug}`}>
@@ -113,7 +113,7 @@ const randomizedEvents = randomizeAndSlice(otherEvents, "type", page, 3);
             {page.associatedMinistry ?
             <div class="flow">
               <div class="small-title">Associated Ministry</div>
-              <MiniPreviewCard theme="dark" href={`/connect/ministries/${page.associatedMinistry.slug}`} image={urlFor(page.associatedMinistry.image).width(300).url()} imageAlt="">
+              <MiniPreviewCard theme="dark" href={`/connect/ministries/${page.associatedMinistry.slug}`} image={page.associatedMinistry.image}>
                 <div class="text-step-1 font-header">{page.associatedMinistry.name}</div>
               </MiniPreviewCard>
             </div> :

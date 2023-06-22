@@ -1,6 +1,7 @@
 ---
 import { PortableText } from "astro-portabletext";
 import { Image, Picture } from "@astrojs/image/components";
+import { urlFor } from "../lib/sanity";
 
 const aspectRatios = {
   square: "square",
@@ -9,11 +10,24 @@ const aspectRatios = {
 };
 
 // frame aspect ratio must be in the format x:y
-function splitAspect(stringRatio) {
-  return stringRatio.split(":");
+
+function buildAspect(stringAspect) {
+  const ratio = stringAspect.split(":");
+  return ratio[0] / ratio[1];
 }
 
-const { title, image, layout = "default", frame } = Astro.props;
+const { title, image, layout = "default" } = Astro.props;
+// set the image height - relative to base width of 900
+// Sanity data - if frame option is set and image has aspect ratio in "x:y" format,
+// convert the aspect into a decimal and divide by it to get height
+// if no aspect set, fall back to square aspect
+// if no frame, set default aspect ratio of the image itself
+// Math.floor - need valid integer for urlbuilder
+const imageHeight = image.frame
+  ? image.aspectRatio
+    ? Math.floor(900 / buildAspect(image.aspectRatio))
+    : 900
+  : Math.floor(900 / image.asset.metadata.dimensions.aspectRatio);
 ---
 
 <section
@@ -26,12 +40,17 @@ const { title, image, layout = "default", frame } = Astro.props;
       <slot />
     </div>
   </div>
-  <div
-    class={frame && "frame"}
-    style={frame &&
-      `--width: ${splitAspect(frame)[0]}; --height: ${splitAspect(frame)[1]}`}
-  >
-    <Picture src={image} widths={[900, 1200]} sizes="100vw" alt="" />
+  <div>
+    <img
+      src={urlFor(image).width(900).height(imageHeight).auto("format").url()}
+      alt={image.asset.altText || ""}
+      class="img"
+      width={900}
+      height={imageHeight}
+      style={`background-image: url(${image.asset.metadata.lqip})`}
+      loading="lazy"
+      decoding="async"
+    />
   </div>
 </section>
 
@@ -46,22 +65,35 @@ const { title, image, layout = "default", frame } = Astro.props;
     order: 2;
   }
 
-  .intro .frame {
-    aspect-ratio: var(--width, 1) / var(--height, 1);
-    /* --width: 1;
-    --height: 1; */
+  .img {
     border-radius: var(--rounded-corners);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
+
+  /* .intro .frame {
+    aspect-ratio: var(--width, 1) / var(--height, 1);
+    --width: 1;
+    --height: 1; 
+    border-radius: var(--rounded-corners);
+  } */
+
+  /* .intro .img {
+    border-radius: var(--rounded-corners);
+    inline-size: 100%;
+    block-size: 100%;
+  } */
 
   .heading {
     margin-bottom: var(--space-l);
   }
-
+  /* 
   .intro .frame img {
     inline-size: 100%;
     block-size: 100%;
     object-fit: cover;
-  }
+  } */
 
   .paragraphs.flow {
     max-width: var(--paragraph-measure);

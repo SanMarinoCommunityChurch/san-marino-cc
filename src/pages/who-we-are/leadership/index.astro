@@ -54,7 +54,7 @@ console.log(eldersAndDeaconsByType);
                   >
                     <div class="frame square">
                       <img
-                        src={urlFor(person.imageRecord)
+                        src={urlFor(person.image)
                           .width(400)
                           .height(400)
                           .auto("format")
@@ -101,7 +101,7 @@ console.log(eldersAndDeaconsByType);
                 <div class="person">
                   <div class="frame square">
                     <img
-                      src={urlFor(person.imageRecord)
+                      src={urlFor(person.image)
                         .width(400)
                         .height(400)
                         .auto("format")
@@ -231,6 +231,10 @@ console.log(eldersAndDeaconsByType);
     border-radius: 9999px;
     max-width: 8rem;
     margin-bottom: 1rem;
+  }
+
+  #staff {
+    margin-block-start: 2rem;
   }
 
   #elders {
