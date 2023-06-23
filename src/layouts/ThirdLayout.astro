@@ -2,8 +2,14 @@
 import Layout from "./Layout.astro";
 import BreadcrumbAuto from "../components/BreadcrumbAuto.astro";
 import { urlFor } from "../lib/sanity";
+import MoreLikeThis from "../components/MoreLikeThis.astro";
+import Card from "../components/Card.astro";
+import DateLabel from "../components/Events/DateLabel.astro";
+import { DateTime } from "luxon"
+import { defaultImage } from "../lib/settings";
 
-const { title, header, breadcrumbs, preview, featuredImage } = Astro.props;
+const { title, header, breadcrumbs, preview, featuredImage, moreContent } =
+  Astro.props;
 ---
 
 <Layout title={title} description={preview}>
@@ -21,22 +27,18 @@ const { title, header, breadcrumbs, preview, featuredImage } = Astro.props;
           </section>
           {
             featuredImage && (
-              <section class="frame">
-                <img
-                  class="img"
-                  src={urlFor(featuredImage)
-                    .width(900)
-                    .height(640)
-                    .auto("format")
-                    .url()}
-                  alt={featuredImage.asset.altText || ""}
-                  width={900}
-                  height={640}
-                  style={`background-image: url(${featuredImage.asset.metadata.lqip})`}
-                  loading="lazy"
-                  decoding="async"
-                />
-              </section>
+              <img
+                class="img"
+                src={urlFor(featuredImage).width(900).auto("format").url()}
+                alt={featuredImage.asset.altText || ""}
+                width={900}
+                height={Math.floor(
+                  900 / featuredImage.asset.metadata.aspectRatio
+                )}
+                style={`background-image: url(${featuredImage.asset.metadata.lqip})`}
+                loading="lazy"
+                decoding="async"
+              />
             )
           }
           <section>
@@ -48,11 +50,53 @@ const { title, header, breadcrumbs, preview, featuredImage } = Astro.props;
         </div>
       </div>
       <slot name="cta" />
-      <section class="highlight-section">
-        <div class="content-wrapper">
-          <slot name="highlight" />
-        </div>
-      </section>
+      {
+        moreContent && (
+          <MoreLikeThis
+            relatedContent={{
+              heading: moreContent.heading,
+              link: moreContent.link,
+            }}
+          >
+          {moreContent.type == 'event' && 
+          <ul class="responsive-grid">
+            {moreContent.content.map(item => {
+              const image = item.image || item.associatedMinistry.image || defaultImage;
+              return (
+                <li>
+                  <Card 
+                    title={item.name} 
+                    image={image}
+                    href={`/connect/events/${DateTime.fromISO(item.date).setZone('America/Los_Angeles').toFormat('L-d-yyyy')}-${item.slug}`}
+                >
+                    <div slot="label" class="event-date">
+                        <DateLabel date={item.date} />
+                    </div>
+                    <div slot="header" class="small-title event-category">
+                        {`${item.eventType.name} event`}
+                    </div>
+                    <p slot="body" class="text-step--1">
+                        {item.preview}
+                    </p>
+                    <div slot="footer" class="location-footer text-step--1 cluster font-header">
+                        <span class="location-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" height="16" width="16" fill="var(--color-primary-800)"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M192 144a48 48 0 1 0 0 96 48 48 0 1 0 0-96z"/><path class="fa-secondary" d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 112a80 80 0 1 1 0 160 80 80 0 1 1 0-160z"/></svg></span>
+                        <span>{item.location}</span>
+                    </div>
+                </Card>
+                  </li>
+              )
+            }
+              )}  
+          </ul>
+        }
+          </MoreLikeThis>
+        )
+        // <section class="highlight-section">
+        //   <div class="content-wrapper">
+        //     <slot name="highlight" />
+        //   </div>
+        // </section>
+      }
     </article>
   </main>
 </Layout>
@@ -91,15 +135,22 @@ const { title, header, breadcrumbs, preview, featuredImage } = Astro.props;
     border-radius: var(--rounded-corners);
   } */
 
-  .frame {
+  /* .frame {
     --width: 7;
     --height: 5;
     border-radius: var(--rounded-corners);
-  }
+  } */
 
   .img {
+    border-radius: var(--rounded-corners);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+  }
+
+  .responsive-grid {
+    --gap: 2rem;
+    --item-min-width: 20rem;
+    --item-max-width: 24rem;
   }
 </style>

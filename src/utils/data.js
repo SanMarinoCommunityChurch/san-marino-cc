@@ -2,14 +2,23 @@ const shuffle = (array) => {
   return array.sort(() => Math.random() - 0.5);
 };
 
-const randomizeAndSlice = (data, filterable, filterAgainst, outputAmount) => {
+const filterAgainst = (data, filterable, filterAgainst) => {
   const filtered = data.filter(
     (item) =>
       item[filterable] == filterAgainst[filterable] &&
       item.name != filterAgainst.name
   );
-  const randomized = shuffle(filtered);
+  return filtered;
+};
+
+const randomizeAndSlice = (data, outputAmount) => {
+  // const filtered = data.filter(
+  //   (item) =>
+  //     item[filterable] == filterAgainst[filterable] &&
+  //     item.name != filterAgainst.name
+  // );
+  const randomized = shuffle(data);
   return randomized.slice(0, outputAmount);
 };
 
-export { randomizeAndSlice };
+export { randomizeAndSlice, filterAgainst };

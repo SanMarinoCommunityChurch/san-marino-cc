@@ -3,15 +3,16 @@ import ThirdLayout from "../../../layouts/ThirdLayout.astro";
 import Card from "../../../components/Card.astro";
 import DateLabel from "../../../components/Events/DateLabel.astro";
 import ContactAvatar from "../../../components/ContactAvatar.astro";
-import MiniPreviewCard from "../../../components/MiniPreviewCard.astro"
+import MoreLikeThis from "../../../components/MoreLikeThis.astro";
+import MiniPreviewCard from "../../../components/MiniPreviewCard.astro";
 import { Image } from "@astrojs/image/components";
 import Button from "../../../components/Button.astro";
-import { randomizeAndSlice } from "../../../utils/data";
+import { randomizeAndSlice, filterAgainst } from "../../../utils/data";
+import { defaultImage } from "../../../lib/settings";
 
 import { PortableText } from "astro-portabletext";
-import { DateTime } from "luxon"
-import { getSanityData, urlFor } from "../../../lib/sanity";
-import { allEvents, previewEvents } from "../../../lib/events"
+import { DateTime } from "luxon";
+import { allEvents, previewEvents } from "../../../lib/events";
 
 import bgImage from "../../../assets/images/church-ext-2.jpg";
 
@@ -20,7 +21,11 @@ export async function getStaticPaths() {
 
   return pages.map((page) => {
     return {
-      params: { slug: `${DateTime.fromISO(page.date).setZone('America/Los_Angeles').toFormat('L-d-yyyy')}-${page.slug}` },
+      params: {
+        slug: `${DateTime.fromISO(page.date)
+          .setZone("America/Los_Angeles")
+          .toFormat("L-d-yyyy")}-${page.slug}`,
+      },
       props: { page },
     };
   });
@@ -31,21 +36,22 @@ const { page } = Astro.props;
 const origin = Astro.url.origin;
 const breadcrumbs = [
   {
-    name: 'Connect',
-    href: '/connect'
+    name: "Connect",
+    href: "/connect",
   },
   {
-    name: 'Events',
-    href: '/connect/events'
+    name: "Events",
+    href: "/connect/events",
   },
   {
     name: page.name,
-    current: true
+    current: true,
   },
 ];
 
 const otherEvents = previewEvents;
-const randomizedEvents = randomizeAndSlice(otherEvents, "type", page, 3);
+const filteredEvents = filterAgainst(otherEvents, "type", page);
+const randomEvents = randomizeAndSlice(filteredEvents, 3);
 ---
 
 <ThirdLayout
@@ -54,9 +60,20 @@ const randomizedEvents = randomizeAndSlice(otherEvents, "type", page, 3);
   preview={page.preview}
   breadcrumbs={breadcrumbs}
   featuredImage={page.image}
+  moreContent={randomEvents.length != 0
+    ? {
+        type: "event",
+        heading: "Events",
+        content: randomEvents,
+        link: "/connect/events",
+      }
+    : undefined}
 >
   <div slot="eyebrow" class="eyebrow cluster">
-    <a class="small-title heading-category" href={`/connect/events/${page.eventType.slug}`}>
+    <a
+      class="small-title heading-category"
+      href={`/connect/events/${page.eventType.slug}`}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         height="12"
@@ -69,7 +86,13 @@ const randomizedEvents = randomizeAndSlice(otherEvents, "type", page, 3);
       >
       <span>{`${page.eventType.name} Events`}</span>
     </a>
-    <time class="small-title" datetime={page.date}>{DateTime.fromISO(page.date).setZone('America/Los_Angeles').toLocaleString(DateTime.DATE_FULL)}</time>
+    <time class="small-title" datetime={page.date}
+      >{
+        DateTime.fromISO(page.date)
+          .setZone("America/Los_Angeles")
+          .toLocaleString(DateTime.DATE_FULL)
+      }</time
+    >
   </div>
   <div slot="main-panel">
     <PortableText value={page.description} />
@@ -78,65 +101,147 @@ const randomizedEvents = randomizeAndSlice(otherEvents, "type", page, 3);
     <div class="sidebar-content">
       <div class="event-box-wrapper">
         <div class="event-box">
-            <div>
-                <h2 class="text-step-2">Event Details</h2>
-                <ul class="event-details flow">
-                    <li>
-                        <div class="small-title cluster">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="14" height="14"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M160 32c0-17.7-14.3-32-32-32S96 14.3 96 32V64H48C21.5 64 0 85.5 0 112v80H448V112c0-26.5-21.5-48-48-48H352V32c0-17.7-14.3-32-32-32s-32 14.3-32 32V64H160V32z"/><path class="fa-secondary" d="M0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192z"/></svg>
-                            <span>Date</span>
-                        </div>
-                        <time class="text-step--1">{DateTime.fromISO(page.date).setZone('America/Los_Angeles').toLocaleString(DateTime.DATE_HUGE)}</time>
-                    </li>
-                    <li>
-                        <div class="small-title cluster">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="14" height="14"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M256 96c-13.3 0-24 10.7-24 24V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24z"/><path class="fa-secondary" d="M256 0a256 256 0 1 1 0 512A256 256 0 1 1 256 0zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"/></svg>
-                            <span>Time</span>
-                        </div>
-                        <time class="text-step--1">{DateTime.fromISO(page.date).setZone('America/Los_Angeles').toLocaleString(DateTime.TIME_SIMPLE)}</time>
-                        {page.hasEndDate &&
-                            <span class="text-step--1">– <time class="text-step--1">{DateTime.fromISO(page.endDate).setZone('America/Los_Angeles').toLocaleString(DateTime.TIME_SIMPLE)}</time></span>
+          <div>
+            <h2 class="text-step-2">Event Details</h2>
+            <ul class="event-details flow">
+              <li>
+                <div class="small-title cluster">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 448 512"
+                    width="14"
+                    height="14"
+                    ><defs
+                      ><style>
+                        .fa-secondary {
+                          opacity: 0.4;
                         }
-                    </li>
-                    <li>
-                        <div class="small-title cluster">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="14" height="14"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M192 144a48 48 0 1 0 0 96 48 48 0 1 0 0-96z"/><path class="fa-secondary" d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 112a80 80 0 1 1 0 160 80 80 0 1 1 0-160z"/></svg>
-                            <span>Location</span>
-                        </div>
-                        <div class="text-step--1">{page.location}</div>
-                    </li>
-                </ul>
-            </div>
-            <Image src={bgImage} alt="" width={600} class="img" />
+                      </style></defs
+                    ><path
+                      class="fa-primary"
+                      d="M160 32c0-17.7-14.3-32-32-32S96 14.3 96 32V64H48C21.5 64 0 85.5 0 112v80H448V112c0-26.5-21.5-48-48-48H352V32c0-17.7-14.3-32-32-32s-32 14.3-32 32V64H160V32z"
+                    ></path><path
+                      class="fa-secondary"
+                      d="M0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192z"
+                    ></path></svg
+                  >
+                  <span>Date</span>
+                </div>
+                <time class="text-step--1"
+                  >{
+                    DateTime.fromISO(page.date)
+                      .setZone("America/Los_Angeles")
+                      .toLocaleString(DateTime.DATE_HUGE)
+                  }</time
+                >
+              </li>
+              <li>
+                <div class="small-title cluster">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 512 512"
+                    width="14"
+                    height="14"
+                    ><defs
+                      ><style>
+                        .fa-secondary {
+                          opacity: 0.4;
+                        }
+                      </style></defs
+                    ><path
+                      class="fa-primary"
+                      d="M256 96c-13.3 0-24 10.7-24 24V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24z"
+                    ></path><path
+                      class="fa-secondary"
+                      d="M256 0a256 256 0 1 1 0 512A256 256 0 1 1 256 0zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"
+                    ></path></svg
+                  >
+                  <span>Time</span>
+                </div>
+                <time class="text-step--1"
+                  >{
+                    DateTime.fromISO(page.date)
+                      .setZone("America/Los_Angeles")
+                      .toLocaleString(DateTime.TIME_SIMPLE)
+                  }</time
+                >
+                {
+                  page.hasEndDate && (
+                    <span class="text-step--1">
+                      –{" "}
+                      <time class="text-step--1">
+                        {DateTime.fromISO(page.endDate)
+                          .setZone("America/Los_Angeles")
+                          .toLocaleString(DateTime.TIME_SIMPLE)}
+                      </time>
+                    </span>
+                  )
+                }
+              </li>
+              <li>
+                <div class="small-title cluster">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 384 512"
+                    width="14"
+                    height="14"
+                    ><defs
+                      ><style>
+                        .fa-secondary {
+                          opacity: 0.4;
+                        }
+                      </style></defs
+                    ><path
+                      class="fa-primary"
+                      d="M192 144a48 48 0 1 0 0 96 48 48 0 1 0 0-96z"
+                    ></path><path
+                      class="fa-secondary"
+                      d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 112a80 80 0 1 1 0 160 80 80 0 1 1 0-160z"
+                    ></path></svg
+                  >
+                  <span>Location</span>
+                </div>
+                <div class="text-step--1">{page.location}</div>
+              </li>
+            </ul>
+          </div>
+          <Image src={bgImage} alt="" width={600} class="img" />
         </div>
         <div class="event-box-lower">
-            {page.associatedMinistry ?
-            <div class="flow">
-              <div class="small-title">Associated Ministry</div>
-              <MiniPreviewCard theme="dark" href={`/connect/ministries/${page.associatedMinistry.slug}`} image={page.associatedMinistry.image}>
-                <div class="text-step-1 font-header">{page.associatedMinistry.name}</div>
-              </MiniPreviewCard>
-            </div> :
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim, alias?</p>
-            }
+          {
+            page.associatedMinistry ? (
+              <div class="flow">
+                <div class="small-title">Associated Ministry</div>
+                <MiniPreviewCard
+                  theme="dark"
+                  href={`/connect/ministries/${page.associatedMinistry.slug}`}
+                  image={page.associatedMinistry.image}
+                >
+                  <div class="text-step-1 font-header">
+                    {page.associatedMinistry.name}
+                  </div>
+                </MiniPreviewCard>
+              </div>
+            ) : (
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim,
+                alias?
+              </p>
+            )
+          }
         </div>
-        </div>
+      </div>
     </div>
   </div>
-  <div slot="highlight" class="more flow">
+  <!-- <div slot="highlight" class="more flow">
     <h2 class="text-step-3">More Events</h2>
     <ul class="responsive-grid">
-        {randomizedEvents.map(item =>
-            <li>
+        {randomEvents.map(item => {
+          const image = item.image || item.associatedMinistry.image || defaultImage;
+            return (<li>
                 <Card 
                     title={item.name} 
-                    img={
-                        item.image ?
-                        urlFor(item.image).url()
-                        :
-                        urlFor(item.associatedMinistry.image).url()
-                    }
-                    
+                    image={image}
                     href={`/connect/events/${DateTime.fromISO(item.date).setZone('America/Los_Angeles').toFormat('L-d-yyyy')}-${item.slug}`}
                 >
                     <div slot="label" class="event-date">
@@ -153,14 +258,13 @@ const randomizedEvents = randomizeAndSlice(otherEvents, "type", page, 3);
                         <span>{item.location}</span>
                     </div>
                 </Card>
-            </li>
+            </li>)}
         )}
     </ul>
     <div class="center-items">
       <Button href="/connect/events">See All Events</Button>
     </div>
-    <!-- <MoreLikeThis relatedItems={randomizedEvents} /> -->
-  </div>
+  </div> -->
 </ThirdLayout>
 
 <style>
@@ -172,13 +276,13 @@ const randomizedEvents = randomizeAndSlice(otherEvents, "type", page, 3);
     --flow-space: 2.5rem;
   }
 
-    .responsive-grid {
+  .responsive-grid {
     --gap: 2rem;
     --item-min-width: 20rem;
     --item-max-width: 24rem;
   }
 
-.location-footer.cluster {
+  .location-footer.cluster {
     gap: 4px;
   }
 
@@ -275,7 +379,7 @@ const randomizedEvents = randomizeAndSlice(otherEvents, "type", page, 3);
     opacity: 0.75;
     mix-blend-mode: overlay;
   }
-  
+
   .event-details {
     margin-top: 1.5rem;
   }

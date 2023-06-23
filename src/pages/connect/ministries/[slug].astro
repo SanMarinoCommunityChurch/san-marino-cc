@@ -5,9 +5,10 @@ import InnerHero from "../../../components/InnerHero.astro";
 import ImageCard from "../../../components/ImageCard.astro";
 import ContactAvatar from "../../../components/ContactAvatar.astro";
 import Button from "../../../components/Button.astro";
+import MoreLikeThis from "../../../components/MoreLikeThis.astro";
 import { urlFor } from "../../../lib/sanity";
 import { DateTime } from "luxon";
-import { randomizeAndSlice } from "../../../utils/data";
+import { randomizeAndSlice, filterAgainst } from "../../../utils/data";
 import { defaultImage } from "../../../lib/settings";
 
 import { PortableText } from "astro-portabletext";
@@ -46,15 +47,8 @@ const breadcrumbs = [
 ];
 
 const otherMinistries = previewMinistries;
-
-const randomizedMinistries = randomizeAndSlice(
-  otherMinistries,
-  "ministryType",
-  page,
-  3
-);
-
-console.log(defaultImage);
+const filteredMinistries = filterAgainst(otherMinistries, "ministryType", page);
+const randomizedMinistries = randomizeAndSlice(filteredMinistries, 3);
 ---
 
 <Layout title={page.name} description={page.preview}>
@@ -145,41 +139,35 @@ console.log(defaultImage);
         }
       </div>
     </div>
-    <section class="highlight-section">
-      <div class="content-wrapper">
-        <div class="more flow">
-          <h2 class="text-step-3">Explore Related Ministries</h2>
+    {
+      randomizedMinistries.length != 0 && (
+        <MoreLikeThis
+          relatedContent={{
+            heading: "Ministries",
+            link: "/connect/ministries",
+          }}
+        >
           <ul class="responsive-grid">
-            {
-              randomizedMinistries.map((item) => (
-                <li>
-                  <ImageCard
-                    title={item.name}
-                    description={item.preview}
-                    image={item.image}
-                    href={`/connect/ministries/${item.slug}`}
-                  />
-                </li>
-              ))
-            }
+            {randomizedMinistries.map((item) => (
+              <li>
+                <ImageCard
+                  title={item.name}
+                  description={item.preview}
+                  image={item.image}
+                  href={`/connect/ministries/${item.slug}`}
+                />
+              </li>
+            ))}
           </ul>
-          <div class="center-items">
-            <Button href="/connect/ministries">See All Ministries</Button>
-          </div>
-          <!-- <MoreLikeThis relatedItems={randomizedMinistries} /> -->
-        </div>
-      </div>
-    </section>
+        </MoreLikeThis>
+      )
+    }
   </main>
 </Layout>
 
 <style>
   .cta {
     margin-block: var(--section-spacer-half);
-  }
-
-  .more {
-    --flow-space: 2.5rem;
   }
 
   .content-wrapper.with-sidebar {
@@ -193,11 +181,6 @@ console.log(defaultImage);
 
   .header.flow {
     --flow-space: 2rem;
-  }
-
-  .highlight-section {
-    padding-block: var(--space-3xl);
-    background-color: var(--color-primary-50);
   }
 
   .breadcrumb-wrapper {

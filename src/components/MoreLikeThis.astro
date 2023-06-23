@@ -1,29 +1,36 @@
 ---
-import ImageCard from "./ImageCard.astro";
-import { urlFor } from "../lib/sanity";
-
-const { relatedItems } = Astro.props;
+import Button from "./Button.astro";
+const { relatedContent } = Astro.props;
+const { heading, link } = relatedContent;
 ---
 
-<ul class="responsive-grid">
-  {
-    relatedItems.map((item) => (
-      <li>
-        <ImageCard
-          title={item.name}
-          description={item.preview}
-          imgSrc={urlFor(item.image).url()}
-          imgAlt=""
-          href="/"
-        />
-      </li>
-    ))
-  }
-</ul>
+<section class="highlight-section">
+  <div class="content-wrapper">
+    <div slot="highlight" class="more flow">
+      <h2 class="text-step-3">
+        Explore Related {heading}
+      </h2>
+      <slot />
+      <div class="center-items">
+        <Button href={link}>
+          See All {heading}
+        </Button>
+      </div>
+    </div>
+  </div>
+</section>
 
 <style>
-  .responsive-grid {
-    --gap: 2rem;
-    --item-min-width: 20rem;
+  .highlight-section {
+    padding-block: var(--space-3xl);
+    background-color: var(--color-primary-50);
+  }
+
+  .highlight-section .content-wrapper {
+    padding-block: 0;
+  }
+
+  .more {
+    --flow-space: 2.5rem;
   }
 </style>

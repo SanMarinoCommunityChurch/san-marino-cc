@@ -1,20 +1,23 @@
 ---
-const placeholderImg =
-  "https://images.unsplash.com/photo-1529070538774-1843cb3265df?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=900&q=80";
+import { urlFor } from "../lib/sanity";
 
-const {
-  href = "/",
-  img = placeholderImg,
-  imgAlt = "",
-  title = "Event Title",
-} = Astro.props;
+const { href = "/", image, title = "Event Title" } = Astro.props;
 ---
 
 <article class="card">
   <a href={href}>
     <slot name="label" />
     <div class="frame">
-      <img src={img} alt={imgAlt} />
+      <img
+        class="img"
+        src={urlFor(image).width(800).height(480).auto("format").url()}
+        alt={image.asset.altText || ""}
+        width={800}
+        height={480}
+        style={`background-image: url(${image.asset.metadata.lqip})`}
+        loading="lazy"
+        decoding="async"
+      />
     </div>
     <div class="text">
       <header>
@@ -63,8 +66,11 @@ const {
     --height: 3;
   }
 
-  .frame img {
+  .img {
     transition: transform 0.2s ease-in-out;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 
   .text {

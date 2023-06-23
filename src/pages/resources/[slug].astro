@@ -8,6 +8,7 @@ import ContactAvatar from "../../components/ContactAvatar.astro";
 import { joinNames } from "../../utils/format";
 import { DateTime } from "luxon";
 import { urlFor } from "../../lib/sanity";
+import { randomizeAndSlice, filterAgainst } from "../../utils/data";
 import "../../styles/rich-text.css";
 
 export async function getStaticPaths() {
@@ -38,6 +39,11 @@ const breadcrumbs = [
     current: true,
   },
 ];
+
+const otherPosts = allPosts;
+const filteredPosts = filterAgainst(otherPosts, "categoryName", page);
+const randomPosts = otherPosts; // randomizeAndSlice(filteredPosts, 3);
+// empty array is not falsey
 ---
 
 <ResourceLayout
@@ -48,6 +54,7 @@ const breadcrumbs = [
   author={page.author}
   publishDate={page.publishDate}
   featuredImage={page.image}
+  moreContent={randomPosts.length != 0 ? randomPosts : undefined}
 >
   <PostCategory
     slot="eyebrow"

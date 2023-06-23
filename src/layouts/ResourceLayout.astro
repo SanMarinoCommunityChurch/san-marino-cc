@@ -2,6 +2,11 @@
 import Layout from "./Layout.astro";
 import BreadcrumbAuto from "../components/BreadcrumbAuto.astro";
 import ContactAvatar from "../components/ContactAvatar.astro";
+import MoreLikeThis from "../components/MoreLikeThis.astro";
+import ImageCard from "../components/ImageCard.astro";
+import Card from "../components/Card.astro";
+import Button from "../components/Button.astro";
+import PostList from "../components/PostList.astro";
 import { joinNames } from "../utils/format";
 import { makeNameSlug } from "../lib/people";
 import { DateTime } from "luxon";
@@ -15,6 +20,7 @@ const {
   featuredImage,
   author,
   publishDate,
+  moreContent,
 } = Astro.props;
 ---
 
@@ -48,11 +54,15 @@ const {
           <p class="text-step-1"><em>{preview}</em></p>
         </header>
         <img
-          src={urlFor(featuredImage).width(1200).auto("format").url()}
+          src={urlFor(featuredImage)
+            .width(1200)
+            .height(675)
+            .auto("format")
+            .url()}
           alt={featuredImage.asset.altText || ""}
           class="image"
           width={1200}
-          height={1200 / featuredImage.asset.metadata.dimensions.aspectRatio}
+          height={675}
           style={`background-image: url(${featuredImage.asset.metadata.lqip})`}
           loading="lazy"
           decoding="async"
@@ -62,6 +72,30 @@ const {
           <slot name="main-panel" />
         </div>
       </div>
+      {
+        moreContent && (
+          <MoreLikeThis
+            relatedContent={{ heading: "Resources", link: "/resources" }}
+          >
+            <PostList posts={moreContent} />
+          </MoreLikeThis>
+          // <section class="highlight-section">
+          //   <div class="content-wrapper">
+          //     <div slot="highlight" class="more flow">
+          //       <h2 class="text-step-3">
+          //         Explore Related {moreContent.heading}
+          //       </h2>
+
+          //       <div class="center-items">
+          //         <Button href={moreContent.link}>
+          //           See All {moreContent.heading}
+          //         </Button>
+          //       </div>
+          //     </div>
+          //   </div>
+          // </section>
+        )
+      }
     </article>
   </main>
 

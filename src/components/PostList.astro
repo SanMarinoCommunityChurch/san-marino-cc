@@ -2,43 +2,46 @@
 import { urlFor } from "../lib/sanity";
 import Card from "./Card.astro";
 import PostCategory from "./PostCategory.astro";
-import DateLabel from "./Events/DateLabel.astro";
 import { DateTime } from "luxon";
 import { joinNames } from "../utils/format";
 import ContactAvatar from "./ContactAvatar.astro";
+import { defaultImage } from "../lib/settings";
 
 const { posts } = Astro.props;
 ---
 
 <ul class="grid">
   {
-    posts.map((post) => (
-      <li>
-        <Card
-          title={post.title}
-          img={urlFor(post.image).width(600).auto("format").url()}
-          href={`/resources/${post.slug}`}
-        >
-          <PostCategory slot="label" name={post.category.name} />
-          <time slot="header" class="post-date" datetime={post.publishDate}>
-            {`${DateTime.fromISO(post.publishDate)
-              .setZone("America/Los_Angeles")
-              .toLocaleString(DateTime.DATE_FULL)}`}
-          </time>
-          <p slot="body" class="preview text-step--1">
-            {post.preview}
-          </p>
-          <div slot="footer" class="location-footer text-step--1 cluster">
-            <ContactAvatar
-              image={post.author.image}
-              heading="Posted by"
-              name={joinNames(post.author.name)}
-              size="small"
-            />
-          </div>
-        </Card>
-      </li>
-    ))
+    posts.map((post) => {
+      const image = post.image || defaultImage;
+      return (
+        <li>
+          <Card
+            title={post.title}
+            image={image}
+            href={`/resources/${post.slug}`}
+          >
+            <PostCategory slot="label" name={post.category.name} />
+            <time slot="header" class="post-date" datetime={post.publishDate}>
+              {`${DateTime.fromISO(post.publishDate)
+                .setZone("America/Los_Angeles")
+                .toLocaleString(DateTime.DATE_FULL)}`}
+            </time>
+            <p slot="body" class="preview text-step--1">
+              {post.preview}
+            </p>
+            <div slot="footer" class="location-footer text-step--1 cluster">
+              <ContactAvatar
+                image={post.author.image}
+                heading="Posted by"
+                name={joinNames(post.author.name)}
+                size="small"
+              />
+            </div>
+          </Card>
+        </li>
+      );
+    })
   }
 </ul>
 
@@ -63,5 +66,18 @@ const { posts } = Astro.props;
     -webkit-box-orient: vertical;
     display: -webkit-box;
     overflow: hidden;
+  }
+
+  @media (max-width: 768px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
   }
 </style>

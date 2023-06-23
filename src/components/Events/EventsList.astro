@@ -26,7 +26,7 @@ const categoryName = (event) => {
   <h2 class="text-step-4">{month.month}</h2>
     <ul class="flow">
       {month.entries.map((event) => {
-        const image = event.image || defaultImage;
+        const image = event.image || event.associatedMinistry.image || defaultImage;
       return (
         <li>
           <a href={`/connect/events/${DateTime.fromISO(event.date).setZone('America/Los_Angeles').toFormat('L-d-yyyy')}-${event.slug}`} class="event-wrapper">

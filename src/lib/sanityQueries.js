@@ -84,6 +84,16 @@ const eventTypes = `*[_type == 'eventType'] {
     location,
     preview,
     "type": eventType->name,
+    associatedMinistry->{
+      "category": type->category->{
+        name,
+        "slug": slug.current
+      },
+      "image": image{
+        ...,
+        asset->
+      },
+    },
     eventType->{
       name,
       "slug": slug.current
@@ -280,6 +290,7 @@ const posts = `*[_type == 'post']|order(publishDate desc) {
     name,
     "slug": slug.current
   },
+  "categoryName": category.name,
   "seo": {
     "title": seoTitle,
     "description": seoDescription,

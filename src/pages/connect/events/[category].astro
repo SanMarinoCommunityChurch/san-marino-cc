@@ -2,10 +2,10 @@
 import ThirdLayout from "../../../layouts/ThirdLayout.astro";
 import CategoryList from "../../../components/Events/CategoryList.astro";
 import EventsList from "../../../components/Events/EventsList.astro";
+import { defaultImage } from "../../../lib/settings";
 
 import { DateTime } from "luxon";
 import { eventCategories } from "../../../lib/events";
-import { eventsPreview, eventTypes } from "../../../lib/sanityQueries";
 
 export async function getStaticPaths() {
   const pages = eventCategories;

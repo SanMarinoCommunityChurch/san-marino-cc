@@ -4,15 +4,15 @@ import Card from "../Card.astro";
 import Button from "../Button.astro";
 import DateLabel from "../Events/DateLabel.astro"
 import { DateTime } from "luxon"
-
+import { defaultImage } from "../../lib/settings";
 import { previewEvents } from "../../lib/events"
 
 const events = previewEvents;
 
-const categoryName = (event) => {
-  const category = event.eventType == 'ministry' ? event.associatedMinistry.category.name : event.category;
-  return category;
-}
+// const categoryName = (event) => {
+//   const category = event.eventType == 'ministry' ? event.associatedMinistry.category.name : event.category;
+//   return category;
+// }
 ---
 
 <div class="splide events-slider">
@@ -22,16 +22,13 @@ const categoryName = (event) => {
       <div class="splide__track" style="padding-block: 4rem;">
       <ul class="splide__list">
         {
-          events.map((event) => (
+          events.map((event) => {
+            const image = event.image || event.associatedMinistry.image || defaultImage;
+            return (
             <li class="splide__slide">
             <Card 
               title={event.name} 
-              img={
-                event.image ?
-                urlFor(event.image).url()
-                :
-                urlFor(event.associatedMinistry.image).url()
-              }
+              image={image}
               href={`/connect/events/${DateTime.fromISO(event.date).setZone('America/Los_Angeles').toFormat('L-d-yyyy')}-${event.slug}`}
             >
               <div slot="label" class="event-date">
@@ -49,7 +46,7 @@ const categoryName = (event) => {
               </div>
             </Card>
             </li>
-          ))
+          )})
         }
     </ul>
     </div>
