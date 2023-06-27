@@ -1,13 +1,18 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import Button from "../../components/Button.astro";
 import Feature from "../../components/Feature.astro";
-import InnerHero from "../../components/InnerHero.astro";
+import FeatureList from "../../components/FeatureList.astro";
 
 import traditionalImg from "../../assets/images/worship.jpg";
 import contemporaryImg from "../../assets/images/contemporary.jpg";
-import bgImage from "../../assets/images/facade-front.jpg";
 import SectionPage from "../../layouts/SectionPage.astro";
+
+import { allFeatures } from "../../lib/pages";
+
+const features = allFeatures.filter(
+  (feature) =>
+    feature._id === "85d14060-84d4-4a40-9702-1058643f5ec9" ||
+    feature._id === "cabb7207-7b72-43a8-9ec3-27cafe575da0"
+);
 ---
 
 <SectionPage
@@ -20,21 +25,7 @@ import SectionPage from "../../layouts/SectionPage.astro";
     reprehenderit sunt quo nam, incidunt possimus ducimus alias error. Nisi,
     porro!
   </div>
-  <Feature href="/worship/live" imgSrc={traditionalImg}>
-    <h2 slot="header" class="text-step-2">Traditional Worship</h2>
-    <Fragment slot="CTA">Join Online</Fragment>
-  </Feature>
-  <Feature
-    href="/worship/live"
-    theme="dark"
-    layout="image-right"
-    imgSrc={contemporaryImg}
-  >
-    <h2 slot="header" class="text-step-2" style="color: var(--color-white);">
-      Contemporary Worship
-    </h2>
-    <Fragment slot="CTA">Join Online</Fragment>
-  </Feature>
+  <FeatureList features={features} />
 </SectionPage>
 <style>
   article {

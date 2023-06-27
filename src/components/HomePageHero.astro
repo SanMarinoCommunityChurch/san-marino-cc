@@ -1,0 +1,109 @@
+---
+import Button from "./Button.astro";
+import { urlFor } from "../lib/sanity";
+
+const { hero, fallbackImg } = Astro.props;
+
+const { eyebrow, header, description, links, media } = hero;
+const link1 = links[0];
+const link2 = links[1];
+---
+
+<article class="hero">
+  <div class="content-wrapper flow">
+    <div>
+      <p class="small-title">{eyebrow}</p>
+      <h1 class="text-step-7 color-white">{header}</h1>
+    </div>
+    <p>{description}</p>
+    <div class="cluster">
+      <Button href={link1.url} theme="white">{link1.name}</Button>
+      {
+        link2 && (
+          <a href={link2.url} class="text-step--1">
+            {link2.name}
+          </a>
+        )
+      }
+    </div>
+  </div>
+  <div class="hero-bg">
+    <div class="overlay"></div>
+    <video
+      playsinline
+      autoplay
+      controls
+      muted
+      loop
+      poster={urlFor(fallbackImg).width(1920).height(1080).auto("format").url()}
+      title={media.title}
+      id="home-video"
+    >
+      <source src={media.asset.url} type={media.asset.mimeType} />
+    </video>
+  </div>
+</article>
+
+<style>
+  .hero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    height: clamp(70vh, 45rem, 80vh);
+    padding-block-start: var(--space-3xl);
+    padding-block-end: var(--space-3xl);
+  }
+
+  .flow {
+    --flow-space: var(--space-m);
+  }
+
+  .content-wrapper {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    color: var(--color-white);
+  }
+
+  .content-wrapper p {
+    max-width: 66ch;
+  }
+
+  .hero-bg {
+    overflow: hidden;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-bg .overlay {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+  }
+
+  .hero-bg video {
+    position: relative;
+    min-width: 100%;
+    min-height: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    width: auto;
+    height: auto;
+    z-index: -100;
+    background-size: cover;
+  }
+
+  .hero-bg img {
+    position: relative;
+    object-fit: cover;
+    z-index: 0;
+  }
+</style>

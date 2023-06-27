@@ -1,0 +1,114 @@
+---
+import SectionPage from "../../layouts/SectionPage.astro";
+import { previewEvents } from "../../lib/events";
+console.log(previewEvents);
+---
+
+<SectionPage
+  currentPage={"88b9cf6b-df9d-4ba2-bed0-e4cddf91201b"}
+  localNavSection="Connect"
+>
+  <div id="calendar"></div>
+</SectionPage>
+
+<style>
+  .fc-event {
+    cursor: pointer !important;
+  }
+</style>
+
+<script>
+  import { Calendar } from "@fullcalendar/core";
+  import dayGridPlugin from "@fullcalendar/daygrid";
+  import { capitalizeFirstLetter } from "../../utils/format";
+  import tippy from "tippy.js";
+  import "tippy.js/dist/tippy.css";
+
+  const calenderEl = document.querySelector("#calendar") as HTMLElement;
+
+  async function getEventData() {
+    const res = await fetch("http://localhost:3000/calendar.json");
+    return res.json();
+  }
+  async function getServiceData() {
+    const res = await fetch("http://localhost:3000/worship.json");
+    return res.json();
+  }
+
+  const eventData = await getEventData();
+  const serviceData = await getServiceData();
+  const { events } = eventData;
+  console.log(events);
+  const { services } = serviceData;
+  console.log(services);
+
+  const eventObjs = events.map((event) => {
+    return {
+      id: event._id,
+      title: event.name,
+      start: event.date,
+      end: event.endDate,
+      extendedProps: {
+        type: "event",
+        description: event.preview,
+        location: event.location,
+        eventType: event.eventType.name,
+        image:
+          event.image &&
+          event.image.asset.url +
+            "?w=200&h=120&fit=crop&crop=center&auto=format",
+        slug: event.slug,
+      },
+    };
+  });
+
+  const serviceObjs = services.flatMap((service) => {
+    return service.serviceType.map((type) => {
+      return {
+        title: capitalizeFirstLetter(type.name) + " Worship",
+        start: `${service.date}T${type.serviceTime}:00`,
+        extendedProps: {
+          type: "service",
+          description: service.name || "Sunday Service",
+          slug: service.slug,
+        },
+      };
+    });
+  });
+
+  console.log(serviceObjs);
+
+  const combinedEvents = [].concat(eventObjs, serviceObjs);
+
+  const calendar = new Calendar(calenderEl, {
+    plugins: [dayGridPlugin],
+    initialView: "dayGridMonth",
+    events: combinedEvents,
+    eventClick: function (info) {
+      info.jsEvent.preventDefault();
+      const instance = tippy(info.el, {
+        trigger: "click",
+        interactive: true,
+        allowHTML: true,
+      });
+      if (info.event.extendedProps.type == "event") {
+        if (info.event.extendedProps.image) {
+          instance.setContent(
+            `<img src="${info.event.extendedProps.image}" width="200" height="120" loading="lazy" /><div class="tooltip-title">${info.event.title}<div>${info.event.extendedProps.description}</div><div><a href="/connect/events/${info.event.extendedProps.slug}">See more</a></div></div>`
+          );
+        } else {
+          instance.setContent(
+            `<div class="tooltip-title">${info.event.title}<div>${info.event.extendedProps.description}</div><div><a href="/connect/events/${info.event.extendedProps.slug}">See more</a></div></div>`
+          );
+        }
+      } else if (info.event.extendedProps.type == "service") {
+        instance.setContent(
+          `<div>${info.event.title}</div><p>${info.event.extendedProps.description}</p><a href="/worship/services/${info.event.extendedProps.slug}">Watch video</a>`
+        );
+      }
+
+      instance.show();
+    },
+  });
+  calendar.render();
+</script>

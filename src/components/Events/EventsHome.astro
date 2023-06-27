@@ -29,7 +29,7 @@ const events = previewEvents;
             <Card 
               title={event.name} 
               image={image}
-              href={`/connect/events/${DateTime.fromISO(event.date).setZone('America/Los_Angeles').toFormat('L-d-yyyy')}-${event.slug}`}
+              href={`/connect/events/${event.slug}`}
             >
               <div slot="label" class="event-date">
                 <DateLabel date={event.date} />

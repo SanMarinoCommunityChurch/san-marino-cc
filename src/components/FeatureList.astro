@@ -1,0 +1,28 @@
+---
+import Feature from "./Feature.astro";
+const { features } = Astro.props;
+
+function isOdd(num) {
+  return num % 2;
+}
+---
+
+<div class="features flow">
+  {
+    features.map((feature, index) => {
+      return (
+        <Feature
+          content={feature}
+          theme={isOdd(index) ? "dark" : "light"}
+          layout={isOdd(index) ? "image-right" : "image-left"}
+        />
+      );
+    })
+  }
+</div>
+
+<style>
+  .features.flow {
+    --flow-space: var(--space-3xl);
+  }
+</style>

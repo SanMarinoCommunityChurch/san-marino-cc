@@ -1,7 +1,8 @@
 import { getSanityData } from "./sanity";
-import { pages } from "./sanityQueries";
+import { pages, features } from "./sanityQueries";
 
 export const pageData = await getSanityData(pages);
+export const allFeatures = await getSanityData(features);
 
 export const getCurrentPage = (id) => {
   // console.log(pageData.find((page) => page._id === id));

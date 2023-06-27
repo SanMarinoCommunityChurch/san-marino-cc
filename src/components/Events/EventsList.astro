@@ -29,7 +29,7 @@ const categoryName = (event) => {
         const image = event.image || event.associatedMinistry.image || defaultImage;
       return (
         <li>
-          <a href={`/connect/events/${DateTime.fromISO(event.date).setZone('America/Los_Angeles').toFormat('L-d-yyyy')}-${event.slug}`} class="event-wrapper">
+          <a href={`/connect/events/${event.slug}`} class="event-wrapper">
             <div class="frame">
               <DateLabel date={event.date} position="top-left" />
               <img

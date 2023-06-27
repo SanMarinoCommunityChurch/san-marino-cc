@@ -45,9 +45,23 @@ const pages = `*[_type == 'page'] {
   }
 }`;
 
+const featureBlocks = `*[_type == 'feature'] {
+  title,
+  _id,
+  description,
+  "image": image{
+    ...,
+    asset->
+  },
+  link,
+  layout,
+  theme
+}`;
+
 const eventsPreview = `*[_type == 'event'] | order(date asc) {
   name,
   date,
+  endDate,
   "category": category->name,
   associatedMinistry->{
     "category": type->category->{
@@ -409,6 +423,14 @@ const adminStaffMembers = `*[_type == 'person' && type.mainType == 'staff' && ty
   "type": type.staffSubtype,
 }`;
 
+const features = `*[_type == 'feature'] {
+  ...,
+  "image": image{
+    ...,
+    asset->
+  }
+}`;
+
 const faq = `*[_type == 'faq'][0] {
   "items": set
 }`;
@@ -418,11 +440,19 @@ const settings = `*[_type == 'siteSettings'][0] {
   "image": defaultImage{
     ...,
     asset->
+  },
+  "homePageHero": homePageHero{
+    ...,
+    "media": media{
+      ...,
+      asset->
+    }
   }
 }`;
 
 export {
   pages,
+  featureBlocks,
   eventsPreview,
   eventTypes,
   eventsDetail,
@@ -439,6 +469,7 @@ export {
   clergyMembers,
   programStaffMembers,
   adminStaffMembers,
+  features,
   faq,
   settings,
 };

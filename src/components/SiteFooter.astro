@@ -1,10 +1,14 @@
 ---
 import Button from "./Button.astro";
 import { DateTime } from "luxon";
+import SocialLinks from "./SocialLinks.astro";
+import { siteSettings } from "../lib/settings";
 
 const year = new Date();
 
 const { fullNavigation, utilityNavigation } = Astro.props;
+
+const socialLinks = siteSettings.socialLinks;
 ---
 
 <footer>
@@ -49,7 +53,7 @@ const { fullNavigation, utilityNavigation } = Astro.props;
           })
         } San Marino Community Church
       </div>
-      <ul>Social links</ul>
+      <SocialLinks links={socialLinks} />
     </div>
   </div>
 </footer>

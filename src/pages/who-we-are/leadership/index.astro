@@ -18,7 +18,6 @@ const staff = allStaff;
 const eldersAndDeacons = allEldersAndDeacons;
 const staffByType = groupAsType(staff);
 const eldersAndDeaconsByType = groupAsType(eldersAndDeacons);
-console.log(eldersAndDeaconsByType);
 ---
 
 <SectionPage
@@ -30,28 +29,78 @@ console.log(eldersAndDeaconsByType);
     <a href="#staff" class="text-step-4 heading-link">Clergy & Staff</a>
     <a href="#elders" class="text-step-4 heading-link">Elders & Deacons</a>
   </div>
-  <div id="staff">
-    <h2 class="sr-only">Clergy & Staff</h2>
-    {
-      staffByType.map((type) => {
-        if (type.type === "admin") {
-          type.type = "Administrative";
-        }
+  <div class="watch">
+    <div id="staff">
+      <h2 class="sr-only">Clergy & Staff</h2>
+      {
+        staffByType.map((type) => {
+          if (type.type === "admin") {
+            type.type = "Administrative";
+          }
 
-        return (
+          return (
+            <section class="columns" id={type.type}>
+              <div>
+                <h3 class="text-step-3">
+                  {`${capitalizeFirstLetter(type.type)} Staff`}
+                </h3>
+              </div>
+              <ul class="grid">
+                {type.entries.map((person) => (
+                  <li>
+                    <a
+                      href={`/who-we-are/leadership/${makeNameSlug(
+                        person.name
+                      )}`}
+                      class="person"
+                    >
+                      <div class="frame square">
+                        <img
+                          src={urlFor(person.image)
+                            .width(400)
+                            .height(400)
+                            .auto("format")
+                            .url()}
+                          width={400}
+                          height={400}
+                          alt={joinNames(person.name)}
+                        />
+                      </div>
+                      <div class="flow">
+                        <h3 class="text-step-1">
+                          {[
+                            person.name.title,
+                            person.name.firstName,
+                            person.name.lastName,
+                          ].join(" ")}
+                        </h3>
+                        <p class="text-step--1">
+                          <em>{person.role}</em>
+                        </p>
+                      </div>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          );
+        })
+      }
+    </div>
+    <div id="elders">
+      <h2 class="sr-only">Elders & Deacons</h2>
+      {
+        eldersAndDeaconsByType.map((type) => (
           <section class="columns" id={type.type}>
             <div>
-              <h3 class="text-step-3">
-                {`${capitalizeFirstLetter(type.type)} Staff`}
-              </h3>
+              <h3 class="text-step-3">{`${capitalizeFirstLetter(
+                type.type
+              )}s`}</h3>
             </div>
             <ul class="grid">
               {type.entries.map((person) => (
                 <li>
-                  <a
-                    href={`/who-we-are/leadership/${makeNameSlug(person.name)}`}
-                    class="person"
-                  >
+                  <div class="person">
                     <div class="frame square">
                       <img
                         src={urlFor(person.image)
@@ -72,61 +121,15 @@ console.log(eldersAndDeaconsByType);
                           person.name.lastName,
                         ].join(" ")}
                       </h3>
-                      <p class="text-step--1">
-                        <em>{person.role}</em>
-                      </p>
                     </div>
-                  </a>
+                  </div>
                 </li>
               ))}
             </ul>
           </section>
-        );
-      })
-    }
-  </div>
-  <div id="elders">
-    <h2 class="sr-only">Elders & Deacons</h2>
-    {
-      eldersAndDeaconsByType.map((type) => (
-        <section class="columns" id={type.type}>
-          <div>
-            <h3 class="text-step-3">{`${capitalizeFirstLetter(
-              type.type
-            )}s`}</h3>
-          </div>
-          <ul class="grid">
-            {type.entries.map((person) => (
-              <li>
-                <div class="person">
-                  <div class="frame square">
-                    <img
-                      src={urlFor(person.image)
-                        .width(400)
-                        .height(400)
-                        .auto("format")
-                        .url()}
-                      width={400}
-                      height={400}
-                      alt={joinNames(person.name)}
-                    />
-                  </div>
-                  <div class="flow">
-                    <h3 class="text-step-1">
-                      {[
-                        person.name.title,
-                        person.name.firstName,
-                        person.name.lastName,
-                      ].join(" ")}
-                    </h3>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </section>
-      ))
-    }
+        ))
+      }
+    </div>
   </div>
 </SectionPage>
 <style>
@@ -161,10 +164,13 @@ console.log(eldersAndDeaconsByType);
     text-decoration: none;
     font-family: var(--font-secondary);
     font-weight: var(--font-weight-header);
+    transition: all 0.2s ease;
   }
 
   .heading-link:hover {
     text-decoration: underline;
+    color: var(--color-primary-800);
+    opacity: 1 !important;
   }
 
   .sticky.cluster {
@@ -233,6 +239,15 @@ console.log(eldersAndDeaconsByType);
     margin-bottom: 1rem;
   }
 
+  .watch {
+    margin-top: 0 !important;
+  }
+
+  #staff,
+  #elders {
+    scroll-margin-top: 8rem;
+  }
+
   #staff {
     margin-block-start: 2rem;
   }
@@ -264,25 +279,31 @@ console.log(eldersAndDeaconsByType);
 </style>
 
 <script>
-  const header = document.querySelector(".sticky");
-  const sections = [...document.querySelectorAll(".watch > div")];
-  // const onIntersect = (entries) => {
-  //   entries.forEach(entry => {
-  //     const intersecting = entry.isIntersecting;
-  //     header.style.backgroundColor =
-  //   })
-  // }
-  // const observer = new IntersectionObserver(
-  //   (entries) => {
-  //     entries.forEach((entry) => {
-  //       const intersecting = entry.isIntersecting;
-  //       entry.target.style.backgroundColor = intersecting
-  //         ? "var(--color-primary-800)"
-  //         : "var(--color-neutral-500";
-  //     });
-  //   },
-  //   { rootMargin: "-50px" }
-  // );
+  const headerLinks = document.querySelectorAll(".sticky a");
+  const sections = document.querySelectorAll(".watch > div");
 
-  // observer.observe(document.querySelector(".watch"));
+  const onIntersect = (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        console.log(`${id} is intersecting!`);
+        headerLinks.forEach((link) => {
+          const a = link as HTMLElement;
+          if (a.hash === `#${id}`) {
+            a.style.opacity = "1";
+          } else {
+            a.style.opacity = "0.5";
+          }
+        });
+      }
+    });
+  };
+
+  const observer = new IntersectionObserver(onIntersect, {
+    rootMargin: "-60px",
+  });
+
+  sections.forEach((el) => {
+    observer.observe(el);
+  });
 </script>

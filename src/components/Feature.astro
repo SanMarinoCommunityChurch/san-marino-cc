@@ -1,7 +1,6 @@
 ---
 import Button from "./Button.astro";
-import { Image, Picture } from "@astrojs/image/components";
-import placeholderImg from "../assets/images/windows.jpg";
+import { urlFor } from "../lib/sanity";
 
 const themes = {
   light: "light",
@@ -13,18 +12,14 @@ const layouts = {
   "image-right": "image-right",
 };
 
-const decorations = {
-  "1": "decoration-1",
-  "2": "decoration-2",
-};
+// const decorations = {
+//   "1": "decoration-1",
+//   "2": "decoration-2",
+// };
 
-const {
-  theme = "light",
-  layout = "image-left",
-  imgSrc = placeholderImg,
-  imgAlt = "",
-  href,
-} = Astro.props;
+const { content, theme = "light", layout = "image-left" } = Astro.props;
+
+const { title, description, link, image } = content;
 ---
 
 <article
@@ -32,37 +27,33 @@ const {
   data-theme={themes[theme]}
   data-layout={layouts[layout]}
 >
-  <a href={href} class="frame img-link">
-    <Picture
-      src={imgSrc}
-      alt={imgAlt}
-      widths={[600, 900]}
-      sizes="100vw"
-      class="feature-img"
-      aspectRatio="7:5"
+  <a href={link.url} class="frame img-link">
+    <img
+      class="img"
+      src={urlFor(image).width(800).height(640).auto("format").url()}
+      alt={image.asset.altText || ""}
+      width={800}
+      height={640}
+      style={`background-image: url(${image.asset.metadata.lqip})`}
+      loading="lazy"
+      decoding="async"
     />
   </a>
   <div class="feature-text flow">
     <div class="feature-header flow">
       <header>
-        <slot name="header">Feature title</slot>
+        <h2 class="text-step-2">{title}</h2>
       </header>
-      <div>
-        <slot name="body"
-          >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem
-          ipsum dolor sit amet</slot
-        >
-      </div>
+      <p>{description}</p>
     </div>
     <footer class="feature-link cluster">
       <Button
-        href={href}
+        href={link.url}
         style="none"
         theme={themes[theme] == "light" ? "primary" : "primary-light"}
         size="none"
       >
-        <slot name="CTA">Learn More</slot>
+        {link.name}
       </Button>
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -73,7 +64,7 @@ const {
         fill={themes[theme] == "light"
           ? "var(--color-primary-900)"
           : "var(--color-primary-100)"}
-        ><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+      >
         <path
           d="M440.6 273.4c4.7-4.5 7.4-10.8 7.4-17.4s-2.7-12.8-7.4-17.4l-176-168c-9.6-9.2-24.8-8.8-33.9 .8s-8.8 24.8 .8 33.9L364.1 232 24 232c-13.3 0-24 10.7-24 24s10.7 24 24 24l340.1 0L231.4 406.6c-9.6 9.2-9.9 24.3-.8 33.9s24.3 9.9 33.9 .8l176-168z"
         ></path></svg
@@ -92,14 +83,22 @@ const {
     grid-template-columns: repeat(7, 1fr);
     gap: 2rem;
     align-items: center;
-    padding-block: 4rem;
+    padding-block: 3rem;
   }
 
   .frame {
-    --width: 7;
-    --height: 5;
+    --width: 5;
+    --height: 4;
     border-radius: var(--rounded-corners);
     grid-column: span 3;
+  }
+
+  .img {
+    border-radius: var(--rounded-corners);
+    transition: transform 0.3s ease;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 
   .feature-text {
@@ -154,7 +153,12 @@ const {
   }
 
   [data-theme="dark"] {
-    color: var(--color-primary-100);
+    color: var(--color-primary-200);
+  }
+
+  [data-theme="dark"] h2,
+  [data-theme="dark"] h3 {
+    color: var(--color-primary-50);
   }
 
   [data-theme="dark"] .feature-bg {

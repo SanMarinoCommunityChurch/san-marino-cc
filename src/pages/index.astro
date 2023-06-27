@@ -1,75 +1,55 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Button from "../components/Button.astro";
+import HomePageHero from "../components/HomePageHero.astro";
 import { Image, Picture } from "@astrojs/image/components";
 import FeaturedVideoBanner from "../components/FeaturedVideoBanner.astro";
 import Feature from "../components/Feature.astro";
+import FeatureList from "../components/FeatureList.astro";
 import EventsHome from "../components/Events/EventsHome.astro";
 import CTA from "../components/CTA.astro";
-import WelcomeQuestions from "../components/WelcomeQuestions.astro";
 import WelcomeQuestionsImage from "../components/WelcomeQuestionsImage.astro";
 import Slider from "../components/Slider.astro";
+import { siteSettings } from "../lib/settings";
+import { allFeatures } from "../lib/pages";
 
-import { sanityClient, getSanityData } from "../lib/sanity";
+const hero = siteSettings.homePageHero;
+const features = allFeatures.filter(
+  (feature) =>
+    feature._id === "7b24cfd6-1805-4939-8b75-fc84189214db" ||
+    feature._id === "e712d400-586a-47b3-9489-734160ef2977"
+);
 
-const getServices = async () => {
-  const query = `*[_type == "service"] | order(date desc)`;
-  const data = await sanityClient.fetch(query);
-  return data;
-};
+// const getServices = async () => {
+//   const query = `*[_type == "service"] | order(date desc)`;
+//   const data = await sanityClient.fetch(query);
+//   return data;
+// };
 
-const services = await getServices();
+// const services = await getServices();
 
-import heroBg from "../assets/images/choir.jpg";
 import welcomeCollage from "../assets/images/welcome-collage.png";
-import churchBg from "../assets/images/church-ext-2.jpg";
-import introImage from "../assets/images/home-feature-1.png";
 import avatar from "../assets/images/jessica-vaughan-lower-headshot.jpg";
-import tower from "../assets/images/church-ext-4.jpg";
-import worship from "../assets/images/worship.jpg";
 import greeting from "../assets/images/greeting.jpg";
 import getInvolvedImg from "../assets/images/congregation.jpg";
 
-const navQuery = `*[_type == 'navigation' && name == 'Main Navigation'].section[] {
-  _key,
-  name,
-  "image": image.asset->,
-  "slug": slug.current,
-  pages[]->{
-    name,
-    "slug": slug.current
-  }
-}`;
-const sanityNav = await getSanityData(navQuery);
+// const navQuery = `*[_type == 'navigation' && name == 'Main Navigation'].section[] {
+//   _key,
+//   name,
+//   "image": image.asset->,
+//   "slug": slug.current,
+//   pages[]->{
+//     name,
+//     "slug": slug.current
+//   }
+// }`;
+// const sanityNav = await getSanityData(navQuery);
 ---
 
 <Layout>
   <main slot="main">
-    <article class="hero">
-      <div class="content-wrapper flow">
-        <div>
-          <p class="small-title">San Marino Community Church</p>
-          <h1 class="text-step-7 color-white">Join us for Easter!</h1>
-        </div>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        </p>
-        <div class="cluster">
-          <Button href="/connect/events" theme="white">Easter Events</Button>
-          <a href="/worship/services" class="text-step--1">See all services</a>
-        </div>
-      </div>
-      <div class="hero-bg">
-        <div class="overlay"></div>
-        <video playsinline autoplay muted loop id="home-video">
-          <source src="/drone-test.mp4" type="video/mp4" />
-        </video>
-        <!-- <img src={heroBg} alt="" /> -->
-      </div>
-    </article>
+    <HomePageHero hero={hero} fallbackImg={siteSettings.image} />
     <FeaturedVideoBanner />
-    <!-- <WelcomeQuestions /> -->
     <WelcomeQuestionsImage />
     <article id="welcome" class="welcome">
       <div class="content-wrapper with-sidebar">
@@ -184,17 +164,7 @@ const sanityNav = await getSanityData(navQuery);
       </div>
     </article>
     <section id="features" class="content-wrapper flow">
-      <Feature href="/connect/events" imgSrc={getInvolvedImg}>
-        <h2 slot="header" class="text-step-2">Get Involved</h2>
-      </Feature>
-      <Feature
-        theme="dark"
-        layout="image-right"
-        imgSrc={greeting}
-        href="/who-we-are/mission-and-beliefs"
-      >
-        <h2 slot="header" class="text-step-2 color-white">Who We Are</h2>
-      </Feature>
+      <FeatureList features={features} />
     </section>
     <section id="events">
       <div class="">
@@ -233,68 +203,6 @@ const sanityNav = await getSanityData(navQuery);
   </main>
 
   <style>
-    .hero {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      height: clamp(70vh, 45rem, 80vh);
-      padding-block-start: var(--space-3xl);
-      padding-block-end: var(--space-3xl);
-    }
-
-    .hero .flow {
-      --flow-space: var(--space-m);
-    }
-
-    .hero .content-wrapper {
-      position: relative;
-      z-index: 3;
-      width: 100%;
-      color: var(--color-white);
-    }
-
-    .hero .content-wrapper p {
-      max-width: 66ch;
-    }
-
-    .hero .hero-bg {
-      overflow: hidden;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    .hero .hero-bg .overlay {
-      position: absolute;
-      z-index: 1;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.4);
-    }
-
-    .hero .hero-bg video {
-      position: relative;
-      min-width: 100%;
-      min-height: 100%;
-      top: 50%;
-      left: 50%;
-      transform: translateX(-50%) translateY(-50%);
-      width: auto;
-      height: auto;
-      z-index: -100;
-      background-size: cover;
-    }
-
-    .hero .hero-bg img {
-      position: relative;
-      object-fit: cover;
-      z-index: 0;
-    }
-
     #welcome,
     #events,
     #resources {
