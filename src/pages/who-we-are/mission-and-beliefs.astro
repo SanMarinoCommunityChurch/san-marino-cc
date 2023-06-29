@@ -37,75 +37,42 @@ const items = [
   localNavSection={"Who We Are"}
   contentPadding
 >
-  <div>
-    <h2 class="small-title center-items">Our Vision Statment</h2>
-    <div class="center-items text-step-1 paragraphs mx-auto">
-      SMCC Vision Statement – To live Christ’s Great Commandment – to love the
-      Lord our God with all our heart, soul, mind, and strength, and to serve
-      and love our neighbor as ourselves.
+  <div class="pre-content flow" slot="pre-content">
+    <div>
+      <h2 class="small-title center-items">Our Vision Statment</h2>
+      <div class="center-items text-step-1 paragraphs mx-auto">
+        SMCC Vision Statement – To live Christ’s Great Commandment – to love the
+        Lord our God with all our heart, soul, mind, and strength, and to serve
+        and love our neighbor as ourselves.
+      </div>
     </div>
-  </div>
-  <div>
-    <h2 class="small-title center-items">Our Mission</h2>
-    <div class="center-items text-step-1 paragraphs mx-auto">
-      Trusting in God’s grace revealed in Jesus Christ, we, the San Marino
-      Community Church seek to:
+    <div>
+      <h2 class="small-title center-items">Our Mission</h2>
+      <div class="center-items text-step-1 paragraphs mx-auto">
+        Trusting in God’s grace revealed in Jesus Christ, we, the San Marino
+        Community Church seek to:
+      </div>
+      <FourPartFeature
+        title="Trusting in God’s grace revealed in Jesus Christ, we, the San Marino Community Church seek to:"
+        items={items}
+      />
+      <div class="center-items text-step-1 paragraphs mx-auto">
+        We do all of this empowered by the Holy Spirit, reflecting the Kingdom
+        of Heaven to the community and the world.
+      </div>
     </div>
-    <FourPartFeature
-      title="Trusting in God’s grace revealed in Jesus Christ, we, the San Marino Community Church seek to:"
-      items={items}
-    />
-    <div class="center-items text-step-1 paragraphs mx-auto">
-      We do all of this empowered by the Holy Spirit, reflecting the Kingdom of
-      Heaven to the community and the world.
+    <div class="" id="principles">
+      <h2 class="text-step-4 center-items">Guiding Principles</h2>
     </div>
-  </div>
-  <div class="" id="principles">
-    <h2 class="text-step-4 center-items">Guiding Principles</h2>
-    <!-- <div class="grid">
-      <IntroSection
-        title="Grow ever more connected with Christ’s love."
-        image={image1}
-        frame="7:5"
-      >
-        <p>
-          Provide inspiring worship experiences Offer a variety of Bible study
-          opportunities Encourage deeper, daily faith exploration
-        </p>
-      </IntroSection>
-      <IntroSection
-        title="Together with the Holy Spirit, foster stronger connections within our church community."
-        image={image2}
-        frame="7:5"
-        layout="flipped"
-      >
-        <p>
-          Provide for member care within our congregation Offer more all-church
-          fellowship opportunities Encourage increased member involvement in the
-          larger church
-        </p>
-      </IntroSection>
-      <IntroSection
-        title="Share God’s love with the world."
-        image={image3}
-        frame="7:5"
-      >
-        <p>
-          Provide prudent stewardship of our resources to benefit our mission
-          partners Offer more opportunities for local hands-on mission
-          experiences Encourage transformational long-distance mission journeys
-        </p>
-      </IntroSection>
-    </div> -->
   </div>
 
   <style>
-    .small-title {
-      margin-bottom: 1.25rem;
+    .pre-content.flow {
+      --flow-space: var(--space-3xl);
     }
 
-    #principles h2 {
-      margin-bottom: var(--section-spacer-half);
+    .small-title {
+      margin-bottom: 1.25rem;
     }
 
     #principles .grid {

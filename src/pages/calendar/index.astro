@@ -1,7 +1,6 @@
 ---
 import SectionPage from "../../layouts/SectionPage.astro";
 import { previewEvents } from "../../lib/events";
-console.log(previewEvents);
 ---
 
 <SectionPage
@@ -27,20 +26,22 @@ console.log(previewEvents);
   const calenderEl = document.querySelector("#calendar") as HTMLElement;
 
   async function getEventData() {
-    const res = await fetch("http://localhost:3000/calendar.json");
+    const res = await fetch(
+      "https://zesty-sawine-052dba.netlify.app/calendar.json"
+    );
     return res.json();
   }
   async function getServiceData() {
-    const res = await fetch("http://localhost:3000/worship.json");
+    const res = await fetch(
+      "https://zesty-sawine-052dba.netlify.app/worship.json"
+    );
     return res.json();
   }
 
   const eventData = await getEventData();
   const serviceData = await getServiceData();
   const { events } = eventData;
-  console.log(events);
   const { services } = serviceData;
-  console.log(services);
 
   const eventObjs = events.map((event) => {
     return {

@@ -1,0 +1,47 @@
+---
+import ImageCard from "./ImageCard.astro";
+// const { content } = Astro.props;
+// const { heading, description, link, image } = content;
+const props = Astro.props;
+const { heading, description, links } = props.node;
+---
+
+<section class="full-width">
+  <h2 class="text-step-4 center-items heading">{heading}</h2>
+  <div class="text mx-auto">
+    <p class="center-items">{description}</p>
+  </div>
+  <div class="responsive-grid">
+    {
+      links.map((item) => {
+        return (
+          <ImageCard
+            title={item.heading}
+            description={item.description}
+            href={item.href}
+            image={item.image}
+          />
+        );
+      })
+    }
+  </div>
+</section>
+
+<style>
+  .full-width {
+    max-width: none !important;
+  }
+
+  .heading {
+    margin-bottom: var(--space-l);
+  }
+
+  .text {
+    max-width: 72ch;
+  }
+
+  .responsive-grid {
+    --item-min-width: 24rem;
+    margin-block: var(--space-xl);
+  }
+</style>

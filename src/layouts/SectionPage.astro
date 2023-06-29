@@ -3,6 +3,7 @@ import Layout from "./Layout.astro";
 import InnerHero from "../components/InnerHero.astro";
 import { PortableText } from "astro-portabletext";
 import InlineImage from "../components/InlineImage.astro";
+import PreviewFeature from "../components/PreviewFeature.astro";
 import FullWidthFeature from "../components/FullWidthFeature.astro";
 import "../styles/rich-text.css";
 
@@ -41,6 +42,7 @@ const bgImage = background.image
       bgImage={bgImage}
     />
     <article class:list={["content-wrapper flow", contentPadding && "padding"]}>
+      <slot name="pre-content" />
       {
         introSections &&
           introSections.map((section) => {
@@ -61,7 +63,9 @@ const bgImage = background.image
           <div class="content rich-text">
             <PortableText
               value={content}
-              components={{ type: { image: InlineImage } }}
+              components={{
+                type: { image: InlineImage, previewFeature: PreviewFeature },
+              }}
             />
           </div>
         )

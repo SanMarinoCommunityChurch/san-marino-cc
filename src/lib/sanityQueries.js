@@ -17,6 +17,16 @@ const pages = `*[_type == 'page'] {
     _type == "image" => {
       ...,
       asset->
+    },
+    _type == "previewFeature" => {
+      ...,
+      links[]{
+        ...,
+        "image": image{
+          ...,
+          asset->
+        }
+      }
     }
   },
   "cta": callToAction{
