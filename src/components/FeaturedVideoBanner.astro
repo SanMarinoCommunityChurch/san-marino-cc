@@ -67,27 +67,24 @@ const compileServiceTypes = (array) => {
     <div class="video-text flow">
       <div class="video-header flow">
         <div>
-          <h2 class="small-title color-primary-200">
-            {
-              `This ${DateTime.fromISO(latestService.date)
-                .setZone("America/Los_Angeles")
-                .toFormat("cccc")}`
-            }
-            <!-- {`This ${getWeekday(latestService.date)}`} -->
-          </h2>
+          <h2 class="small-title color-primary-200">Latest Service</h2>
           <h3 class="text-step-3 color-white">
             {
               DateTime.fromISO(latestService.date)
                 .setZone("America/Los_Angeles")
-                .toLocaleString(DateTime.DATE_FULL)
+                .toLocaleString(DateTime.DATE_HUGE)
             }
             <!-- {formatDateShort(latestService.date)} -->
           </h3>
         </div>
-        <p>{compileServiceTypes(latestService.serviceType).join(" & ")}</p>
+        <p>
+          {`${latestService.name}: `}{
+            compileServiceTypes(latestService.serviceType).join(" & ")
+          }
+        </p>
       </div>
       <div class="cluster">
-        <Button href="/worship/live" theme="primary-light">Worship Live</Button>
+        <Button href="/worship/live" theme="primary-light">View Service</Button>
         <a href="/worship/services" class="text-step--1">See all services</a>
       </div>
     </div>
@@ -107,6 +104,10 @@ const compileServiceTypes = (array) => {
   .video-banner .content-wrapper {
     position: relative;
     z-index: 2;
+  }
+
+  .video-banner .small-title {
+    margin-bottom: 6px;
   }
 
   .video-banner .img-overlay {
@@ -188,6 +189,14 @@ const compileServiceTypes = (array) => {
 
     .video-text {
       text-align: center;
+    }
+
+    .video-link {
+      order: 2;
+    }
+
+    .img-overlay {
+      height: 100% !important;
     }
   }
 </style>

@@ -20,10 +20,10 @@ const { seo, pageName, pageDescription, background, content } = currentPage;
           size="large"
           position="relative"
           name="All"
-          theme={`theme3`}
         />
         {
           allPostTypes.map((type, index) => {
+            console.log(type);
             return (
               <li>
                 <PostCategory
@@ -31,7 +31,7 @@ const { seo, pageName, pageDescription, background, content } = currentPage;
                   size="large"
                   position="relative"
                   name={type.name}
-                  theme={`theme3`}
+                  theme={type.slug}
                 />
               </li>
             );

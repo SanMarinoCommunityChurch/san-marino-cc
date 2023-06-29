@@ -21,7 +21,11 @@ const { posts } = Astro.props;
             image={image}
             href={`/resources/${post.slug}`}
           >
-            <PostCategory slot="label" name={post.category.name} />
+            <PostCategory
+              slot="label"
+              name={post.category.name}
+              theme={post.category.slug}
+            />
             <time slot="header" class="post-date" datetime={post.publishDate}>
               {`${DateTime.fromISO(post.publishDate)
                 .setZone("America/Los_Angeles")

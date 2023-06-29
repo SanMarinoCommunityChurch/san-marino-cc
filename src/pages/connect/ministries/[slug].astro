@@ -119,9 +119,7 @@ const randomizedMinistries = randomizeAndSlice(filteredMinistries, 3);
                 {page.associatedEvents.map((event) => (
                   <li class="cluster">
                     <MiniPreviewCard
-                      href={`/connect/events/${DateTime.fromISO(
-                        event.date
-                      ).toFormat("L-d-yyyy")}-${event.slug}`}
+                      href={`/connect/events/${event.slug}`}
                       image={event.image || defaultImage}
                     >
                       <div class="text-step-1 font-header">{event.name}</div>

@@ -12,6 +12,7 @@ import WelcomeQuestionsImage from "../components/WelcomeQuestionsImage.astro";
 import Slider from "../components/Slider.astro";
 import { siteSettings } from "../lib/settings";
 import { allFeatures } from "../lib/pages";
+import { allPosts } from "../lib/posts";
 
 const hero = siteSettings.homePageHero;
 const features = allFeatures.filter(
@@ -178,6 +179,7 @@ import getInvolvedImg from "../assets/images/congregation.jpg";
       <Slider
         heading="Featured Resources"
         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        slides={allPosts}
       />
       <div class="center-items">
         <Button href="/resources">See All Resources</Button>

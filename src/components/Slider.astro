@@ -1,35 +1,40 @@
 ---
-const placeholderSlides = [
-  {
-    title: "Slide 1",
-    description: "Lorem ipsum",
-    href: "#",
-    img: "https://images.unsplash.com/photo-1682686581580-d99b0230064e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&q=80",
-    imgAlt: "",
-  },
-  {
-    title: "Slide 2",
-    description: "Lorem ipsum",
-    href: "#",
-    img: "https://images.unsplash.com/photo-1682880279219-5e1434044a64?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&q=80",
-    imgAlt: "",
-  },
-  {
-    title: "Slide 3",
-    description: "Lorem ipsum",
-    href: "#",
-    img: "https://images.unsplash.com/photo-1677189945595-6116498f31fe?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&q=80",
-    imgAlt: "",
-  },
-];
-
-const { heading, description, slides = placeholderSlides } = Astro.props;
+import { urlFor } from "../lib/sanity";
+import PostCategory from "../components/PostCategory.astro";
+import { allPostTypes } from "../lib/posts";
+const { heading, description, slides } = Astro.props;
 ---
 
 <section class="splide resources-slider" aria-labelledby="slider-heading">
   <header class="content-wrapper center-items flow">
-    <h2 id="slider-heading" class="text-step-4">{heading}</h2>
-    <p class="paragraph flow">{description}</p>
+    <div>
+      <h2 id="slider-heading" class="text-step-4">{heading}</h2>
+      <p class="paragraph flow">{description}</p>
+    </div>
+    <ul class="cluster types">
+      <PostCategory
+        href="/resources"
+        size="large"
+        position="relative"
+        name="All"
+      />
+      {
+        allPostTypes.map((type, index) => {
+          console.log(type);
+          return (
+            <li>
+              <PostCategory
+                href={`/resources/${type.slug}`}
+                size="large"
+                position="relative"
+                name={type.name}
+                theme={type.slug}
+              />
+            </li>
+          );
+        })
+      }
+    </ul>
   </header>
   <div class="margin-top relative">
     <div class="splide__arrows"></div>
@@ -38,14 +43,26 @@ const { heading, description, slides = placeholderSlides } = Astro.props;
         {
           slides.map((slide) => (
             <li class="splide__slide">
-              <a href={slide.href} class="">
+              <a href={`/resources/${slide.slug}`} class="">
+                <PostCategory
+                  slot="label"
+                  name={slide.category.name}
+                  theme={slide.category.slug}
+                />
                 <div class="slide-text flow">
                   <h3 class="text-step-3 color-white">{slide.title}</h3>
-                  <p>{slide.description}</p>
+                  <p>{slide.preview}</p>
                 </div>
                 <div class="overlay" />
                 <div class="frame video">
-                  <img src={slide.img} alt={slide.imgAlt} />
+                  <img
+                    class="img"
+                    src={urlFor(slide.image).width(900).auto("format").url()}
+                    alt={slide.image.asset.altText}
+                    style={`background-image: url(${slide.image.asset.metadata.lqip})`}
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
               </a>
             </li>
@@ -63,6 +80,14 @@ const { heading, description, slides = placeholderSlides } = Astro.props;
 
   .relative {
     position: relative;
+  }
+
+  #slider-heading {
+    margin-bottom: 1rem;
+  }
+
+  .center-items.flow {
+    --flow-space: 2.5rem;
   }
 
   .paragraph.flow {
@@ -106,6 +131,12 @@ const { heading, description, slides = placeholderSlides } = Astro.props;
 
   .splide__slide a:hover h3 {
     text-decoration: underline;
+  }
+
+  .img {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 
   .splide__slide a img {

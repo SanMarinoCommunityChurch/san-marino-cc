@@ -34,7 +34,6 @@ const { page } = Astro.props;
             size="large"
             position="relative"
             name="All"
-            theme={`theme3`}
           />
         </li>
         {
@@ -46,7 +45,7 @@ const { page } = Astro.props;
                   size="large"
                   position="relative"
                   name={type.name}
-                  theme={`theme3`}
+                  theme={type.slug}
                 />
               </li>
             );
