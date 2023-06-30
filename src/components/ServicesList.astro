@@ -42,12 +42,12 @@ const { services } = Astro.props;
             <time class="date-label" datetime={service.date}>
               <div class="event-day font-header">
                 {DateTime.fromISO(service.date)
-                  .setZone("America/Los_Angeles")
+                  .setZone("America/Los_Angeles", { keepLocalTime: true })
                   .toFormat("d")}
               </div>
               <div class="small-title">
                 {DateTime.fromISO(service.date)
-                  .setZone("America/Los_Angeles")
+                  .setZone("America/Los_Angeles", { keepLocalTime: true })
                   .toFormat("LLL")}
               </div>
             </time>

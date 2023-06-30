@@ -30,11 +30,13 @@ const { slug } = Astro.params;
 const { page } = Astro.props;
 
 const serviceDate = DateTime.fromISO(page.date)
-  .setZone("America/Los_Angeles")
+  .setZone("America/Los_Angeles", { keepLocalTime: true })
   .toLocaleString(DateTime.DATE_HUGE);
+// console.log(page.date);
+// console.log(serviceDate);
 
 const serviceDateSmall = DateTime.fromISO(page.date)
-  .setZone("America/Los_Angeles")
+  .setZone("America/Los_Angeles", { keepLocalTime: true })
   .toLocaleString(DateTime.DATE_FULL);
 
 const breadcrumbs = [
@@ -98,12 +100,16 @@ const description = `Watch video from our ${serviceDate} service.`;
                     >
                       <div class="event-day font-header">
                         {DateTime.fromISO(page.previousService.date)
-                          .setZone("America/Los_Angeles")
+                          .setZone("America/Los_Angeles", {
+                            keepLocalTime: true,
+                          })
                           .toFormat("d")}
                       </div>
                       <div class="small-title">
                         {DateTime.fromISO(page.previousService.date)
-                          .setZone("America/Los_Angeles")
+                          .setZone("America/Los_Angeles", {
+                            keepLocalTime: true,
+                          })
                           .toFormat("LLL")}
                       </div>
                     </time>
@@ -151,12 +157,16 @@ const description = `Watch video from our ${serviceDate} service.`;
                     <time class="date-label" datetime={page.nextService.date}>
                       <div class="event-day font-header">
                         {DateTime.fromISO(page.nextService.date)
-                          .setZone("America/Los_Angeles")
+                          .setZone("America/Los_Angeles", {
+                            keepLocalTime: true,
+                          })
                           .toFormat("d")}
                       </div>
                       <div class="small-title">
                         {DateTime.fromISO(page.nextService.date)
-                          .setZone("America/Los_Angeles")
+                          .setZone("America/Los_Angeles", {
+                            keepLocalTime: true,
+                          })
                           .toFormat("LLL")}
                       </div>
                     </time>
