@@ -71,7 +71,7 @@ const compileServiceTypes = (array) => {
           <h3 class="text-step-3 color-white">
             {
               DateTime.fromISO(latestService.date)
-                .setZone("America/Los_Angeles")
+                .setZone("America/Los_Angeles", { keepLocalTime: true })
                 .toLocaleString(DateTime.DATE_HUGE)
             }
             <!-- {formatDateShort(latestService.date)} -->
