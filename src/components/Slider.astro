@@ -12,12 +12,14 @@ const { heading, description, slides } = Astro.props;
       <p class="paragraph flow">{description}</p>
     </div>
     <ul class="cluster types">
-      <PostCategory
-        href="/resources"
-        size="large"
-        position="relative"
-        name="All"
-      />
+      <li>
+        <PostCategory
+          href="/resources"
+          size="large"
+          position="relative"
+          name="All"
+        />
+      </li>
       {
         allPostTypes.map((type, index) => {
           return (
@@ -59,8 +61,6 @@ const { heading, description, slides } = Astro.props;
                     src={urlFor(slide.image).width(900).auto("format").url()}
                     alt={slide.image.asset.altText}
                     style={`background-image: url(${slide.image.asset.metadata.lqip})`}
-                    loading="lazy"
-                    decoding="async"
                   />
                 </div>
               </a>

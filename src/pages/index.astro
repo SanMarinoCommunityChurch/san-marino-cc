@@ -47,7 +47,10 @@ import getInvolvedImg from "../assets/images/congregation.jpg";
 // const sanityNav = await getSanityData(navQuery);
 ---
 
-<Layout>
+<Layout
+  title={siteSettings.siteName}
+  description={siteSettings.siteDescription}
+>
   <main slot="main">
     <HomePageHero hero={hero} fallbackImg={siteSettings.image} />
     <FeaturedVideoBanner />
