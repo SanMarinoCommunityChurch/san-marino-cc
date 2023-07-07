@@ -3,6 +3,7 @@ import ThirdLayout from "../../../layouts/ThirdLayout.astro";
 import CategoryList from "../../../components/Events/CategoryList.astro";
 import EventsList from "../../../components/Events/EventsList.astro";
 import { defaultImage } from "../../../lib/settings";
+import SidebarLinkItem from "../../../components/SidebarLinkItem.astro";
 
 import { DateTime } from "luxon";
 import { eventCategories } from "../../../lib/events";
@@ -62,9 +63,22 @@ const allCategories = eventCategories;
   <section slot="main-panel">
     <EventsList events={page.events} />
   </section>
-  <aside slot="sidebar" class="flow">
-    <h3 class="text-step-2">Event Categories</h3>
-    <CategoryList categories={allCategories} />
+  <aside
+    slot="sidebar"
+    class="parent flow"
+    style="--flow-space: var(--space-xl);"
+  >
+    <div class="flow">
+      <h3 class="text-step-2">Event Categories</h3>
+      <CategoryList categories={allCategories} />
+    </div>
+    <div>
+      <SidebarLinkItem
+        name="View Calendar"
+        description="View our calendar for more events and services."
+        href="/calendar"
+      />
+    </div>
   </aside>
 </ThirdLayout>
 

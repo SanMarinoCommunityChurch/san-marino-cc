@@ -1,0 +1,95 @@
+---
+import { defaultImage } from "../lib/settings";
+import { urlFor } from "../lib/sanity";
+const { href, name, description } = Astro.props;
+---
+
+<a href={href}>
+  <div class="text flow">
+    <div>{name}</div>
+    <div>{description}</div>
+  </div>
+  <div class="overlay"></div>
+  <img
+    class="img"
+    src={urlFor(defaultImage).width(600).url()}
+    alt={defaultImage.asset.altText}
+    width={600}
+    height={600 / defaultImage.asset.metadata.dimensions.aspectRatio}
+    style={`background-image: url(${defaultImage.asset.metadata.lqip})`}
+    loading="lazy"
+    decoding="async"
+  />
+</a>
+
+<style>
+  a {
+    display: inline-block;
+    position: relative;
+    text-decoration: none;
+    color: white;
+    padding: 1.5rem;
+    border-radius: var(--rounded-corners);
+    overflow: hidden;
+  }
+
+  .text {
+    position: relative;
+    z-index: 1;
+  }
+
+  .text.flow {
+    --flow-space: 0.5rem;
+  }
+
+  .text > :first-child {
+    font-family: var(--font-secondary);
+    font-size: var(--step-1);
+    font-weight: var(--font-weight-header);
+  }
+
+  .text > :last-child {
+    font-size: var(--step--1);
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--color-primary-900);
+    opacity: 0.8;
+    mask-image: linear-gradient(to right, black 45%, rgba(0, 0, 0, 0.4));
+    -webkit-mask-image: linear-gradient(
+      to right,
+      black 45%,
+      rgba(0, 0, 0, 0.4)
+    );
+    transition: all 0.2s ease;
+  }
+
+  .img {
+    position: absolute;
+    /* top: 50%;
+    left: 50%; */
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* transform: translate(-50%, -50%); */
+    transition: all 0.4s ease;
+    z-index: -1;
+    filter: saturate(0);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  a:hover .overlay {
+    opacity: 0.95;
+  }
+
+  a:hover .img {
+    transform: scale(1.03);
+  }
+</style>

@@ -238,6 +238,13 @@ const { slides, items } = Astro.props;
     /* outline: 3px solid var(--color-primary-200); */
   }
 
+  #thumbnail-slider
+    .splide__track--nav
+    > .splide__list
+    > .splide__slide:not(.is-active):hover {
+    background: var(--color-primary-100);
+  }
+
   .thumbnail-slide {
     padding: 0.5rem 0.75rem;
     border-radius: var(--rounded-corners);

@@ -1,4 +1,6 @@
 ---
+import Button from "../../../components/Button.astro";
+import SidebarLinkItem from "../../../components/SidebarLinkItem.astro";
 import CategoryList from "../../../components/Events/CategoryList.astro";
 import EventsList from "../../../components/Events/EventsList.astro";
 import SectionPage from "../../../layouts/SectionPage.astro";
@@ -15,17 +17,27 @@ const categories = eventCategories;
 >
   <div class="with-sidebar">
     <EventsList events={events} />
-    <div class="flow">
-      <h3 class="text-step-2">Event Categories</h3>
-      <CategoryList categories={categories} />
+    <div class="sidebar flow" style="--flow-space: var(--space-xl);">
+      <div class="flow">
+        <h3 class="text-step-2">Event Categories</h3>
+        <CategoryList categories={categories} />
+      </div>
+      <div>
+        <SidebarLinkItem
+          name="View Calendar"
+          description="View our calendar for more events and services."
+          href="/calendar"
+        />
+      </div>
     </div>
   </div>
 </SectionPage>
 
 <style>
   .with-sidebar {
-    --sidebar-gap: 3rem;
+    --sidebar-gap: 5rem;
+    /* --sidebar-gap: 3rem;
     --sidebar-min-width: 15rem;
-    --main-min-width: 60%;
+    --main-min-width: 60%; */
   }
 </style>
