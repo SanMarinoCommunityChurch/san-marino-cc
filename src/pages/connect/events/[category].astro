@@ -3,6 +3,7 @@ import ThirdLayout from "../../../layouts/ThirdLayout.astro";
 import CategoryList from "../../../components/Events/CategoryList.astro";
 import EventsList from "../../../components/Events/EventsList.astro";
 import { defaultImage } from "../../../lib/settings";
+import Button from "../../../components/Button.astro";
 import SidebarLinkItem from "../../../components/SidebarLinkItem.astro";
 
 import { DateTime } from "luxon";
@@ -72,12 +73,13 @@ const allCategories = eventCategories;
       <h3 class="text-step-2">Event Categories</h3>
       <CategoryList categories={allCategories} />
     </div>
-    <div>
+    <div class="sidebar-links">
       <SidebarLinkItem
         name="View Calendar"
         description="View our calendar for more events and services."
         href="/calendar"
       />
+      <Button href="/connect/events/archive">Events Archive</Button>
     </div>
   </aside>
 </ThirdLayout>
@@ -104,5 +106,12 @@ const allCategories = eventCategories;
 
   .small-title.heading-category:hover {
     background-color: var(--color-primary-200);
+  }
+
+  .sidebar-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: flex-start;
   }
 </style>

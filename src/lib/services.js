@@ -1,6 +1,7 @@
 import { getSanityData } from "./sanity";
-import { servicesList } from "./sanityQueries";
+import { servicesList, servicesLatest } from "./sanityQueries";
 
 const allServices = await getSanityData(servicesList);
+const latestService = await getSanityData(servicesLatest);
 
-export { allServices };
+export { allServices, latestService };

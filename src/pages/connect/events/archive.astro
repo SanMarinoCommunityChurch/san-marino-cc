@@ -2,25 +2,25 @@
 import Button from "../../../components/Button.astro";
 import SidebarLinkItem from "../../../components/SidebarLinkItem.astro";
 import CategoryList from "../../../components/Events/CategoryList.astro";
-import EventsList from "../../../components/Events/EventsList.astro";
+import EventsListArchive from "../../../components/Events/EventsListArchive.astro";
 import SectionPage from "../../../layouts/SectionPage.astro";
 import {
   previewEvents,
-  previewFutureEvents,
+  previewPastEvents,
   eventCategories,
 } from "../../../lib/events";
 
-const events = previewFutureEvents;
+const events = previewPastEvents;
 // refactor to get from eventsPreview data -- function get unique
 const categories = eventCategories;
 ---
 
 <SectionPage
-  currentPage={"5f4b0b1f-524b-4486-91f5-9ef997d08fd1"}
+  currentPage={"b486a924-0f49-4439-9bc3-2f0fe56e0e78"}
   localNavSection={"Connect"}
 >
   <div class="with-sidebar">
-    <EventsList events={events} />
+    <EventsListArchive events={events} />
     <div class="sidebar flow" style="--flow-space: var(--space-xl);">
       <div class="flow">
         <h3 class="text-step-2">Event Categories</h3>
@@ -32,7 +32,6 @@ const categories = eventCategories;
           description="View our calendar for more events and services."
           href="/calendar"
         />
-        <Button href="/connect/events/archive">Events Archive</Button>
       </div>
     </div>
   </div>

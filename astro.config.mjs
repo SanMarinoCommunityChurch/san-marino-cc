@@ -8,6 +8,7 @@ import image from "@astrojs/image";
 export default defineConfig({
   site: "https://zesty-sawine-052dba.netlify.app/",
   scopedStyleStrategy: "class",
+  // compressHTML: true,
   integrations: [
     svelte(),
     react(),

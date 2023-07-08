@@ -97,6 +97,64 @@ const eventsPreview = `*[_type == 'event'] | order(date asc) {
   }
 }`;
 
+const futureEventsPreview = `*[_type == 'event' && dateTime(date) > dateTime(now())] | order(date asc) {
+  name,
+  date,
+  endDate,
+  "category": category->name,
+  associatedMinistry->{
+    "category": type->category->{
+      name,
+      "slug": slug.current
+    },
+    "image": image{
+      ...,
+      asset->
+    },
+  },
+  "image": image{
+    ...,
+    asset->
+  },
+  "slug": slug.current,
+  location,
+  preview,
+  "type": eventType->name,
+  eventType->{
+    name,
+    "slug": slug.current
+  }
+}`;
+
+const pastEventsPreview = `*[_type == 'event' && dateTime(date) < dateTime(now())] | order(date desc) {
+  name,
+  date,
+  endDate,
+  "category": category->name,
+  associatedMinistry->{
+    "category": type->category->{
+      name,
+      "slug": slug.current
+    },
+    "image": image{
+      ...,
+      asset->
+    },
+  },
+  "image": image{
+    ...,
+    asset->
+  },
+  "slug": slug.current,
+  location,
+  preview,
+  "type": eventType->name,
+  eventType->{
+    name,
+    "slug": slug.current
+  }
+}`;
+
 const eventTypes = `*[_type == 'eventType'] {
   name,
   "slug": slug.current,
@@ -165,7 +223,24 @@ const eventsDetail = `*[_type == 'event'] {
   }
 }`;
 
-const servicesList = `*[_type == 'service']|order(date) {
+const servicesLatest = `*[_type == 'service' && dateTime(date + 'T7:00:00Z') < dateTime(now())]|order(date desc)[0] {
+  ...,
+  "slug": slug.current,
+    serviceType[] {
+    ...,
+    preacher->{
+      name,
+      "image": image{
+        ...,
+        asset->
+      },
+      contact,
+      "type": type.mainType
+    }
+  },
+}`;
+
+const servicesList = `*[_type == 'service' && dateTime(date + 'T7:00:00Z') < dateTime(now())]|order(date desc) {
   ...,
   "slug": slug.current,
   serviceType[] {
@@ -188,7 +263,7 @@ const servicesList = `*[_type == 'service']|order(date) {
       name
     }
   },
-  "nextService": *[_type == 'service' && ^.date < date]|order(date asc)[0]{
+  "nextService": *[_type == 'service' && ^.date < date && dateTime(date + 'T7:00:00Z') < dateTime(now())]|order(date asc)[0]{
     "slug": slug.current,
     name,
     date,
@@ -464,8 +539,11 @@ export {
   pages,
   featureBlocks,
   eventsPreview,
+  futureEventsPreview,
+  pastEventsPreview,
   eventTypes,
   eventsDetail,
+  servicesLatest,
   servicesList,
   ministriesPreview,
   ministryTypeWithMinistriesPreview,

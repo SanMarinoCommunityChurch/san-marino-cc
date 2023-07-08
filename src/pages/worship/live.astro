@@ -1,51 +1,43 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import Button from "../../components/Button.astro";
-import { Picture } from "@astrojs/image/components";
 import Tabs from "../../components/React/Tabs.jsx";
 import ServicesList from "../../components/ServicesList.astro";
-import ContactAvatar from "../../components/ContactAvatar.astro";
 import { getSanityData, urlFor } from "../../lib/sanity";
-import getYouTubeID from "get-youtube-id";
-import Youtube from "svelte-youtube-embed";
-import { PortableText } from "astro-portabletext";
 import { DateTime } from "luxon";
 import { getCurrentPage } from "../../lib/pages";
-
-import {
-  format12HourTime,
-  capitalizeFirstLetter,
-  joinNames,
-} from "../../utils/format";
+import { latestService, allServices } from "../../lib/services";
 
 const pageTitle = "Worship Live";
 const eyebrow = "San Marino Community Church";
 const pageDescription = "";
 import bgImage from "../../assets/images/outside-stained-glass.jpg";
 
-const latestService =
-  await getSanityData(`*[_type == 'service'] | order(date desc)[0] {
-  ...,
-  serviceType[] {
-    ...,
-    preacher->{
-      name,
-      "image": image{
-        ...,
-        asset->
-      },
-      contact,
-      "type": type.mainType
-    }
-  }
-}`);
+// const latestService =
+//   await getSanityData(`*[_type == 'service'] | order(date desc)[0] {
+//   ...,
+//   serviceType[] {
+//     ...,
+//     preacher->{
+//       name,
+//       "image": image{
+//         ...,
+//         asset->
+//       },
+//       contact,
+//       "type": type.mainType
+//     }
+//   }
+// }`);
 
-const recentServices = await getSanityData(
-  `*[_type == 'service'] | order(date desc)[1...4] {
-    ...,
-    "slug": slug.current
-  }`
-);
+// const recentServices = await getSanityData(
+//   `*[_type == 'service'] | order(date desc)[1...4] {
+//     ...,
+//     "slug": slug.current
+//   }`
+// );
+
+const recentServices = allServices.slice(1, 4);
 
 const currentPage = getCurrentPage("b92afa26-7f3c-4e63-8aa1-90a1b7a9fad2");
 ---
@@ -82,11 +74,11 @@ const currentPage = getCurrentPage("b92afa26-7f3c-4e63-8aa1-90a1b7a9fad2");
       </div>
     </article>
     <section id="recent-services" class="content-wrapper flow">
+      <h2 class="text-step-3">Recent Services</h2>
+      <ServicesList services={recentServices} />
       <div class="center-items">
         <Button href="/worship/services">See All Services</Button>
       </div>
-      <h2 class="text-step-3">Recent Services</h2>
-      <ServicesList services={recentServices} />
     </section>
   </main>
 </Layout>
@@ -210,6 +202,10 @@ const currentPage = getCurrentPage("b92afa26-7f3c-4e63-8aa1-90a1b7a9fad2");
     margin-bottom: 5rem;
     padding-top: 3rem;
     border-top: 1px solid var(--color-neutral-200);
+  }
+
+  #recent-services .center-items {
+    padding-top: var(--space-l);
   }
 
   .blank {

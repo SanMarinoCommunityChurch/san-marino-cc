@@ -1,8 +1,22 @@
 import { getSanityData } from "./sanity";
-import { eventsPreview, eventsDetail, eventTypes } from "./sanityQueries";
+import {
+  eventsPreview,
+  futureEventsPreview,
+  pastEventsPreview,
+  eventsDetail,
+  eventTypes,
+} from "./sanityQueries";
 
 const allEvents = await getSanityData(eventsDetail);
 const previewEvents = await getSanityData(eventsPreview);
+const previewFutureEvents = await getSanityData(futureEventsPreview);
+const previewPastEvents = await getSanityData(pastEventsPreview);
 const eventCategories = await getSanityData(eventTypes);
 
-export { allEvents, previewEvents, eventCategories };
+export {
+  allEvents,
+  previewEvents,
+  previewFutureEvents,
+  previewPastEvents,
+  eventCategories,
+};

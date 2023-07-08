@@ -10,6 +10,19 @@ import { defaultImage } from "../lib/settings";
 
 const { title, header, breadcrumbs, preview, featuredImage, moreContent } =
   Astro.props;
+
+let baseImageHeight = 0;
+let baseImageWidth = 0;
+let cropHeight = 0;
+let croppedAspectRatio = 0;
+
+if (featuredImage) {
+  baseImageHeight = featuredImage.asset.metadata.dimensions.height;
+  baseImageWidth = featuredImage.asset.metadata.dimensions.height;
+  cropHeight = featuredImage.crop ? (baseImageHeight) - ((baseImageHeight * featuredImage.crop.top) + (baseImageHeight * featuredImage.crop.bottom)) : baseImageHeight;
+  croppedAspectRatio = baseImageWidth / cropHeight;
+}
+
 ---
 
 <Layout title={title} description={preview}>
@@ -29,12 +42,10 @@ const { title, header, breadcrumbs, preview, featuredImage, moreContent } =
             featuredImage && (
               <img
                 class="img"
-                src={urlFor(featuredImage).width(900).auto("format").url()}
+                src={urlFor(featuredImage).width(900).height(featuredImage.crop ? Math.floor(900 / croppedAspectRatio) : Math.floor(900 / featuredImage.asset.metadata.dimensions.aspectRatio)).auto("format").url()}
                 alt={featuredImage.asset.altText || ""}
                 width={900}
-                height={Math.floor(
-                  900 / featuredImage.asset.metadata.aspectRatio
-                )}
+                height={featuredImage.crop ? Math.floor(900 / croppedAspectRatio) : Math.floor(900 / featuredImage.asset.metadata.dimensions.aspectRatio)}
                 style={`background-image: url(${featuredImage.asset.metadata.lqip})`}
                 loading="lazy"
                 decoding="async"
@@ -67,7 +78,7 @@ const { title, header, breadcrumbs, preview, featuredImage, moreContent } =
                   <Card 
                     title={item.name} 
                     image={image}
-                    href={`/connect/events/${DateTime.fromISO(item.date).setZone('America/Los_Angeles').toFormat('L-d-yyyy')}-${item.slug}`}
+                    href={`/connect/events/${item.slug}`}
                 >
                     <div slot="label" class="event-date">
                         <DateLabel date={item.date} />
@@ -75,7 +86,7 @@ const { title, header, breadcrumbs, preview, featuredImage, moreContent } =
                     <div slot="header" class="small-title event-category">
                         {`${item.eventType.name} event`}
                     </div>
-                    <p slot="body" class="text-step--1">
+                    <p slot="body" class="card text-step--1">
                         {item.preview}
                     </p>
                     <div slot="footer" class="location-footer text-step--1 cluster font-header">
@@ -128,6 +139,13 @@ const { title, header, breadcrumbs, preview, featuredImage, moreContent } =
     width: fit-content;
   }
 
+  .card.text-step--1 {
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    overflow: hidden;
+  }
+
   /* .content-wrapper.content {
     background-color: var(--color-white);
     padding-block: var(--space-m-2xl);
@@ -162,13 +180,22 @@ const { title, header, breadcrumbs, preview, featuredImage, moreContent } =
     display: flex;
   }
 
-    .small-title.event-category {
-      display: inline-block;
-      color: var(--color-primary-900);
-      line-height: 1;
-      padding: 4px 6px;
-      margin-bottom: 10px;
-      background-color: var(--color-primary-100);
-      border-radius: var(--rounded-corners-small);
+  .small-title.event-category {
+    display: inline-block;
+    color: var(--color-primary-900);
+    line-height: 1;
+    padding: 4px 6px;
+    margin-bottom: 10px;
+    background-color: var(--color-primary-100);
+    border-radius: var(--rounded-corners-small);
+  }
+
+  @media (max-width: 768px) {
+    .card.text-step--1 {
+      -webkit-line-clamp: none;
+      -webkit-box-orient: vertical;
+      display: block;
+      overflow: unset;
     }
+  }
 </style>
