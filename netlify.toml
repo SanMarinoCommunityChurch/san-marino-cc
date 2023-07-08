@@ -23,3 +23,6 @@
 [[redirects]]
   from = "/resources/blog"
   to = "/resources"
+
+[functions]
+  node_bundler = 'esbuild'
