@@ -5,9 +5,9 @@ import Button from "../Button.astro";
 import DateLabel from "../Events/DateLabel.astro"
 import { DateTime } from "luxon"
 import { defaultImage } from "../../lib/settings";
-import { previewEvents } from "../../lib/events"
+import { previewEvents, previewFutureEvents } from "../../lib/events"
 
-const events = previewEvents;
+const events = previewFutureEvents;
 
 // const categoryName = (event) => {
 //   const category = event.eventType == 'ministry' ? event.associatedMinistry.category.name : event.category;
