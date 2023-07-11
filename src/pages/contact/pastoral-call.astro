@@ -1,0 +1,26 @@
+---
+import SectionPage from "../../layouts/SectionPage.astro";
+import Form from "../../components/Form.astro";
+import Button from "../../components/Button.astro";
+import { allForms } from "../../lib/settings";
+
+const form = allForms.find(
+  (item) => item.id === "289eb7b1-17cc-4aa2-ad7b-984db1bfe302"
+);
+---
+
+<SectionPage
+  currentPage={"c27d6639-bd40-454d-b210-63ca75b0dbbd"}
+  localNavSection="Utility"
+>
+  <div class="center-items">
+    <Button href="/contact#forms">See All Forms</Button>
+  </div>
+  <Form formData={form} />
+</SectionPage>
+
+<style>
+  .center-items {
+    margin-bottom: 3rem;
+  }
+</style>

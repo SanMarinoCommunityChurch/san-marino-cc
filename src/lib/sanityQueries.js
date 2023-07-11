@@ -544,6 +544,19 @@ const faq = `*[_type == 'faq'][0] {
   "items": set
 }`;
 
+const forms = `*[_type == 'form'] {
+  "id": _id,
+  "formName": name,
+  "title": overview.title,
+  "description": overview.description,
+  "formType": type,
+  "messageText": fields.message,
+  "image": fields.image{
+    ...,
+    asset->
+  }
+}`;
+
 const settings = `*[_type == 'siteSettings'][0] {
   ...,
   "image": defaultImage{
@@ -556,7 +569,16 @@ const settings = `*[_type == 'siteSettings'][0] {
       ...,
       asset->
     }
-  }
+  },
+  "ogImage": defaultOGImage{
+    ...,
+    asset->
+  },
+  "logo": logo{
+    ...,
+    asset->
+  },
+  contact
 }`;
 
 export {
@@ -584,5 +606,6 @@ export {
   adminStaffMembers,
   features,
   faq,
+  forms,
   settings,
 };

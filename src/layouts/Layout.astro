@@ -29,7 +29,7 @@ const fallbackOGImage = urlFor(defaultImage)
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <SEO
       title={title}
@@ -361,7 +361,11 @@ const fallbackOGImage = urlFor(defaultImage)
       }
 
       .live .with-sidebar {
-        --sidebar-gap: var(--section-spacer);
+        --sidebar-gap: 4rem;
+      }
+
+      .live .service-info {
+        max-width: 48rem;
       }
 
       .live .with-sidebar > .flow:first-child {
@@ -418,6 +422,15 @@ const fallbackOGImage = urlFor(defaultImage)
 
       .live .service-info .text-step-4 {
         margin-top: 8px;
+      }
+      /* 
+      @media (max-width: 1024px) {
+      } */
+
+      @media (max-width: 640px) {
+        .live .service-tabs.center-items {
+          flex-direction: column;
+        }
       }
     </style>
   </body>

@@ -2,6 +2,7 @@
 import Button from "./Button.astro";
 import {Image} from "@astrojs/image/components"
 import {urlFor} from "../lib/sanity"
+import { siteSettings } from "../lib/settings";
 import PopoverHeader from "./Svelte/PopoverHeader.svelte";
 
 const { mainNavigation, fullNavigation, utilityNavigation } = Astro.props;
@@ -10,7 +11,7 @@ const { mainNavigation, fullNavigation, utilityNavigation } = Astro.props;
 <header class="header">
   <PopoverHeader client:load>
     <a slot="logo" href="/" class="font-header logo"
-      >San Marino Community Church</a
+      ><img src={urlFor(siteSettings.logo).width(600).auto('format').url()} width={600} height={Math.floor(600 / siteSettings.logo.asset.metadata.dimensions.aspectRatio)} alt="San Marino Community Church logo" /></a
     >
     <nav slot="mainNav" class="main-nav">
       <ul class="cluster">
@@ -33,7 +34,7 @@ const { mainNavigation, fullNavigation, utilityNavigation } = Astro.props;
       </ul>
     </nav>
     <Fragment slot="headerCTAButton">
-      <Button href="/giving" theme="secondary">Give</Button>
+      <Button href="/giving" theme="secondary" className="give">Give</Button>
     </Fragment>
     <div slot="panel">
       <div class="nav-grid content-wrapper">
@@ -100,6 +101,16 @@ const { mainNavigation, fullNavigation, utilityNavigation } = Astro.props;
 <style>
   .logo {
     color: var(--color-primary-800);
+    display: block;
+  }
+
+  .logo:hover {
+    opacity: 0.7;
+  }
+
+  .logo img {
+    max-height: 90px;
+    width: auto;
   }
 
   .header {
@@ -220,7 +231,7 @@ const { mainNavigation, fullNavigation, utilityNavigation } = Astro.props;
   }
 
   .nav-subgrid {
-    padding-block-start: 7rem;
+    padding-block-start: 8rem;
     padding-block-end: 2rem;
   }
 
@@ -279,9 +290,9 @@ const { mainNavigation, fullNavigation, utilityNavigation } = Astro.props;
       gap: 1rem;
     }
 
-    .main-nav {
+    /* .main-nav {
       display: none;
-    }
+    } */
 
     .img-link {
       display: none;
@@ -299,10 +310,23 @@ const { mainNavigation, fullNavigation, utilityNavigation } = Astro.props;
       font-size: var(--step-1);
     }
 
+    .main-nav {
+      display: none;
+    }
+
     .nav-grid ul.flow {
       --flow-space: 1rem;
     }
 
+    .logo img {
+      max-height: 80px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .give {
+      display: none;
+    }
   }
 
 </style>

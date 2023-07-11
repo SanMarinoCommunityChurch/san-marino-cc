@@ -58,4 +58,10 @@
         transform: var(--disclosure-toggle);
         transition: transform 0.2s ease;
     }
+
+    @media (max-width: 640px) {
+        .answer-wrapper {
+            padding: 2rem 1rem;
+        }
+    }
 </style>

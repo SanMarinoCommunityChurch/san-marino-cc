@@ -12,6 +12,29 @@ import { filterLocalNav } from "../lib/navigation";
 import { getCurrentPage } from "../lib/pages";
 import IntroSection from "../components/IntroSection.astro";
 
+const utilityLocalNav = {
+  name: "More",
+  slug: "",
+  children: [
+    {
+      name: "Give",
+      slug: "/giving",
+    },
+    {
+      name: "Calendar",
+      slug: "/calendar",
+    },
+    {
+      name: "Contact",
+      slug: "/contact",
+    },
+    {
+      name: "Nursery School",
+      slug: "https://www.smccnurseryschool.org/",
+    },
+  ],
+};
+
 const { currentPage, localNavSection, contentPadding } = Astro.props;
 const page = getCurrentPage(currentPage);
 const {
@@ -36,7 +59,9 @@ const bgImage = background.image
   </Fragment>
   <main slot="main">
     <InnerHero
-      localNav={filterLocalNav(localNavSection)}
+      localNav={localNavSection === "Utility"
+        ? utilityLocalNav
+        : filterLocalNav(localNavSection)}
       pageTitle={pageName}
       pageDescription={pageDescription}
       bgImage={bgImage}

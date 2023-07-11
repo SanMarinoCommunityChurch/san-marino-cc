@@ -9,18 +9,6 @@ import { DateTime } from "luxon";
 // const homeYouTubeID = "https://www.youtube.com/live/Gh2c1aAQkJc?feature=share";
 import churchBg from "../assets/images/church-ext-2.jpg";
 
-// const latestService =
-//   await getSanityData(`*[_type == 'service'] | order(date desc)[0] {
-//   ...,
-//   serviceType[] {
-//     ...,
-//     preacher->{
-//       name,
-//       "image": image.asset->
-//     }
-//   }
-// }`);
-
 const compileServiceTypes = (array) => {
   const types = [];
   array.forEach((type) =>
@@ -187,6 +175,10 @@ const compileServiceTypes = (array) => {
 
     .video-text {
       text-align: center;
+    }
+
+    .video-text .cluster {
+      --justify: center;
     }
 
     .video-link {

@@ -1,6 +1,10 @@
 ---
 function buildUrl(sectionUrl, pageUrl) {
-  return `/${sectionUrl}/${pageUrl}`;
+  if (sectionUrl) {
+    return `/${sectionUrl}/${pageUrl}`;
+  } else {
+    return `/${pageUrl}`;
+  }
 }
 
 // Image must be in public directory since it used as CSS background -- changed to Sanity image
@@ -32,11 +36,15 @@ const bgImageStyle = `linear-gradient(to top, rgb(0 0 0 / 0.75) 15%, rgb(0 0 0 /
               {localNav.children.map((item) => (
                 <li class="text-step--1">
                   <a
-                    href={buildUrl(localNav.slug, item.slug)}
+                    href={
+                      localNav.slug
+                        ? buildUrl(localNav.slug, item.slug)
+                        : item.slug
+                    }
                     style={
                       Astro.url.pathname ===
                         buildUrl(localNav.slug, item.slug) &&
-                      "color: var(--color-primary-300)"
+                      "color: var(--active-color); text-decoration: var(--active-decoration);"
                     }
                     class="link"
                   >
@@ -52,11 +60,15 @@ const bgImageStyle = `linear-gradient(to top, rgb(0 0 0 / 0.75) 15%, rgb(0 0 0 /
               {localNav.children.map((item) => (
                 <li class="text-step--1">
                   <a
-                    href={buildUrl(localNav.slug, item.slug)}
+                    href={
+                      localNav.slug
+                        ? buildUrl(localNav.slug, item.slug)
+                        : item.slug
+                    }
                     style={
                       Astro.url.pathname ===
                         buildUrl(localNav.slug, item.slug) &&
-                      "color: var(--color-primary-300)"
+                      "color: var(--active-color); text-decoration: var(--active-decoration);"
                     }
                     class="link"
                   >
@@ -198,6 +210,8 @@ const bgImageStyle = `linear-gradient(to top, rgb(0 0 0 / 0.75) 15%, rgb(0 0 0 /
   }
 
   .link {
+    --active-color: var(--color-primary-300);
+    --active-decoration: none;
     text-decoration: none;
     background-color: #ffffff00;
     padding: 4px 8px 3px;
@@ -212,7 +226,7 @@ const bgImageStyle = `linear-gradient(to top, rgb(0 0 0 / 0.75) 15%, rgb(0 0 0 /
 
   @media (max-width: 768px) {
     .hero {
-      padding-top: 5rem;
+      padding-top: 7rem;
     }
 
     .local-nav {
@@ -223,22 +237,14 @@ const bgImageStyle = `linear-gradient(to top, rgb(0 0 0 / 0.75) 15%, rgb(0 0 0 /
       display: block;
     }
 
-    /* .local-nav {
-      padding: 1rem;
-      width: 100%;
-      position: relative;
-      bottom: -3rem;
+    .link {
+      --active-color: inherit;
+      --active-decoration: underline;
     }
 
-    .local-nav,
-    .local-nav ul.cluster {
-      flex-direction: column;
-      --align: flex-start;
+    .link:hover {
+      color: inherit;
     }
-
-    .local-nav .divider {
-      display: none;
-    } */
   }
 </style>
 

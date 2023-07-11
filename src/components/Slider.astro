@@ -145,6 +145,35 @@ const { heading, description, slides } = Astro.props;
   .splide__slide a:hover img {
     transform: scale(1.1);
   }
+
+  @media (max-width: 768px) {
+    .cluster.types {
+      --justify: center;
+    }
+
+    .splide__slide a {
+      height: 360px;
+    }
+
+    .slide-text {
+      height: 100%;
+      padding: 2rem;
+      justify-content: flex-end;
+    }
+
+    .overlay {
+      height: 100%;
+    }
+
+    .frame.video {
+      height: 100%;
+      aspect-ratio: unset;
+    }
+
+    .splide__pagination {
+      bottom: -2rem;
+    }
+  }
 </style>
 
 <script>
@@ -160,7 +189,7 @@ const { heading, description, slides } = Astro.props;
         padding: "20%",
       },
       768: {
-        padding: "15%",
+        padding: "10%",
         gap: "1em",
       },
     },

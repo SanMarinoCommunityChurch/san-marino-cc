@@ -1,12 +1,16 @@
 ---
 import SectionPage from "../../layouts/SectionPage.astro";
+import Button from "../../components/Button.astro";
 import { previewEvents } from "../../lib/events";
 ---
 
 <SectionPage
   currentPage={"88b9cf6b-df9d-4ba2-bed0-e4cddf91201b"}
-  localNavSection="Connect"
+  localNavSection="Utility"
 >
+  <div class="center-items">
+    <Button href="/connect/events">See All Events</Button>
+  </div>
   <div id="calendar"></div>
 </SectionPage>
 

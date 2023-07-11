@@ -22,6 +22,7 @@ const ministryTypes = ministryTypesToSort.sort((a, b) => {
   localNavSection={"Connect"}
   contentPadding
 >
+  <div class="mobile-only">Swipe for more:</div>
   <MinistrySlider slides={ministryTypes} items="ministries" />
   <div class="center-items">
     <Button href="#thumbnail-slider">Back to Top</Button>
@@ -69,5 +70,18 @@ const ministryTypes = ministryTypesToSort.sort((a, b) => {
 
   .center-items {
     margin-top: var(--space-s);
+  }
+
+  .mobile-only {
+    display: none;
+    font-style: italic;
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    .mobile-only {
+      display: block;
+      margin-bottom: -3rem;
+    }
   }
 </style>

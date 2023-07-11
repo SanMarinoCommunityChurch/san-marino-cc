@@ -9,13 +9,10 @@ const { events } = Astro.props;
 
 const eventsByMonth = groupAsMonths(events);
 
-const categoryName = (event) => {
-  const category = event.eventType == 'ministry' ? event.associatedMinistry.category.name : event.category;
-  return category;
-}
-
-// const categoryName = page.eventType == 'ministry' ? page.associatedMinistry.type.name : page.category;
-// const categorySlug = page.eventType == 'ministry' ? page.associatedMinistry.type.slug : page.categorySlug;
+// const categoryName = (event) => {
+//   const category = event.eventType == 'ministry' ? event.associatedMinistry.category.name : event.category;
+//   return category;
+// }
 ---
 <div>
 {eventsByMonth.map(month =>
@@ -138,8 +135,8 @@ const categoryName = (event) => {
     border-radius: var(--rounded-corners);
     max-width: 30rem;
     position: relative;
-    --width: 1 !important; /* was 4/3 */
-    --height: 1 !important;
+    --width: 1; /* was 4/3 */
+    --height: 1;
   }
 
   .img {
@@ -186,11 +183,11 @@ const categoryName = (event) => {
   }
 
   @media (max-width: 1024px) {
-    a.event-wrapper {
+    /* a.event-wrapper {
       grid-template-columns: 1fr;
       column-gap: 0rem;
       row-gap: 1rem;
-    }
+    } */
 
     .text {
       padding-inline-end: 0rem;
@@ -203,15 +200,36 @@ const categoryName = (event) => {
       overflow: unset;
     }
 
-    .frame {
+    /* .frame {
       grid-column: span 2;
-    }
+    } */
   }
 
   @media (max-width: 768px) {
+    a.event-wrapper {
+      grid-template-columns: 1fr;
+      column-gap: 0rem;
+      row-gap: 2rem;
+      padding: 0;
+    }
+
+    a.event-wrapper:hover {
+      box-shadow: unset;
+    }
+
     .frame {
+      --width: 4;
+      --height: 3;
+    }
+
+    .frame {
+      grid-column: span 2;
       max-width: none;
       justify-self: stretch;
+    }
+
+    ul.flow {
+      --flow-space: var(--space-2xl);
     }
   }
 </style>

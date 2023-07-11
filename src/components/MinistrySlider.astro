@@ -121,7 +121,7 @@ const { slides, items } = Astro.props;
   }
 
   .ministry-preview {
-    display: relative;
+    position: relative;
     background: var(--color-primary-100);
     padding: var(--space-2xl);
     border-radius: var(--rounded-corners);
@@ -267,6 +267,24 @@ const { slides, items } = Astro.props;
   .splide__arrows .splide__arrow svg {
     fill: var(--color-primary-700) !important;
   }
+
+  @media (max-width: 1024px) {
+    .ministry-list {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .ministry-preview {
+      padding: 2rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .ministry-list {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>
 
 <script>
@@ -280,12 +298,8 @@ const { slides, items } = Astro.props;
     gap: "2em",
     pagination: false,
     breakpoints: {
-      1024: {
-        padding: "20%",
-      },
       768: {
-        padding: "15%",
-        gap: "1em",
+        drag: true,
       },
     },
   });

@@ -1,20 +1,5 @@
 ---
-import { capitalizeFirstLetter } from "../utils/format";
-
 const { navigation, className } = Astro.props;
-
-// const origin = url.origin;
-// const deconstructedPathnames = url.pathname.split("/");
-// console.log(deconstructedPathnames);
-// const breadcrumbPieces = deconstructedPathnames.map(path => {
-//     const name = capitalizeFirstLetter(path);
-//     const url = ;
-
-//     return {
-//         name: name,
-//         url: name
-//     }
-// })
 ---
 
 <ul class:list={["text-step--1 cluster small-title", className]}>
@@ -23,8 +8,8 @@ const { navigation, className } = Astro.props;
     navigation &&
       navigation.map((item) => (
         <Fragment>
-          <span class="divider">&gt;</span>
           <li>
+            <span class="divider">&gt;</span>
             {!item.current ? (
               <a href={item.href} class="breadcrumb-link">
                 {item.name}

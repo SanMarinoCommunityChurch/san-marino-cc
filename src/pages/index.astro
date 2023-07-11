@@ -165,23 +165,6 @@ const description = siteSettings.siteDescription;
       <div class="center-items">
         <Button href="/resources">See All Resources</Button>
       </div>
-      <!-- {
-        sanityNav.map((item) => (
-          <div>
-            {item.name}
-            <ul>
-              {item.pages.map((page) => (
-                <li>
-                  {page.name}
-                  <a
-                    href={`/${item.slug}/${page.slug}`}
-                  >{`/${item.slug}/${page.slug}`}</a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))
-      } -->
     </section>
   </main>
 
@@ -242,6 +225,16 @@ const description = siteSettings.siteDescription;
     @media (max-width: 768px) {
       .meet-grid {
         grid-template-columns: 1fr;
+      }
+
+      #welcome,
+      #events,
+      #resources {
+        margin-block: var(--section-spacer-half);
+      }
+
+      #events {
+        margin-block-end: 0;
       }
     }
   </style>
