@@ -21,36 +21,14 @@ const features = allFeatures.filter(
     feature._id === "e712d400-586a-47b3-9489-734160ef2977"
 );
 
-// const getServices = async () => {
-//   const query = `*[_type == "service"] | order(date desc)`;
-//   const data = await sanityClient.fetch(query);
-//   return data;
-// };
-
-// const services = await getServices();
-
 import welcomeCollage from "../assets/images/welcome-collage.png";
 import avatar from "../assets/images/jessica-vaughan-lower-headshot.jpg";
-import greeting from "../assets/images/greeting.jpg";
-import getInvolvedImg from "../assets/images/congregation.jpg";
 
-// const navQuery = `*[_type == 'navigation' && name == 'Main Navigation'].section[] {
-//   _key,
-//   name,
-//   "image": image.asset->,
-//   "slug": slug.current,
-//   pages[]->{
-//     name,
-//     "slug": slug.current
-//   }
-// }`;
-// const sanityNav = await getSanityData(navQuery);
+const title = siteSettings.siteName;
+const description = siteSettings.siteDescription;
 ---
 
-<Layout
-  title={siteSettings.siteName}
-  description={siteSettings.siteDescription}
->
+<Layout meta={{ title: title, description: description }}>
   <main slot="main">
     <HomePageHero hero={hero} fallbackImg={siteSettings.image} />
     <FeaturedVideoBanner />

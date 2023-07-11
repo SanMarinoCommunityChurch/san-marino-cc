@@ -29,7 +29,7 @@ const bgImage = background.image
   : undefined;
 ---
 
-<Layout title={seo.title} description={seo.description}>
+<Layout meta={seo}>
   <Fragment slot="pageHead">
     <link rel="preload" href={bgImage} as="image" />
     <slot name="pageHead" />

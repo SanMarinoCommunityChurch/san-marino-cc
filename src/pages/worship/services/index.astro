@@ -1,23 +1,8 @@
 ---
-import Layout from "../../../layouts/Layout.astro";
 import Button from "../../../components/Button.astro";
-import Feature from "../../../components/Feature.astro";
-import InnerHero from "../../../components/InnerHero.astro";
 import ServicesList from "../../../components/ServicesList.astro";
-import { getSanityData, urlFor } from "../../../lib/sanity";
 import { allServices } from "../../../lib/services";
-
-import { getCurrentPage } from "../../../lib/pages";
 import SectionPage from "../../../layouts/SectionPage.astro";
-
-// import bgImage from "../../../assets/images/easter-service-2.jpg";
-
-// const services = await getSanityData(
-//   `*[_type == 'service'] | order(date desc) {
-//     ...,
-//     "slug": slug.current
-//   }`
-// );
 ---
 
 <SectionPage

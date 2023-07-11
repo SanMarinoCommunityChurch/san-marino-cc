@@ -6,10 +6,10 @@ import PostList from "../../components/PostList.astro";
 import { allPosts, allPostTypes } from "../../lib/posts";
 
 const currentPage = getCurrentPage("b8529063-8a0d-4580-badd-34fcd8e58777");
-const { seo, pageName, pageDescription, background, content } = currentPage;
+const { seo } = currentPage;
 ---
 
-<Layout title={seo.title} description={currentPage.seo.description}>
+<Layout meta={seo}>
   <main slot="main">
     <section class="hero center-items flow">
       <div class="small-title">San Marino Community Church</div>

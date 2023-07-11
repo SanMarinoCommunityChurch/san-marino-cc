@@ -50,10 +50,22 @@ const breadcrumbs = [
 const otherEvents = previewEvents;
 const filteredEvents = filterAgainst(otherEvents, "type", page);
 const randomEvents = randomizeAndSlice(filteredEvents, 3);
+
+const readableDate = DateTime.fromISO(page.date)
+  .setZone("America/Los_Angeles")
+  .toLocaleString(DateTime.DATE_FULL);
 ---
 
 <ThirdLayout
-  title={page.name}
+  meta={{
+    title: `${page.name} | ${readableDate}`,
+    description: page.preview,
+    openGraph: {
+      title: `${page.name} | ${readableDate}`,
+      description: page.preview,
+      image: page.image,
+    },
+  }}
   header={page.name}
   preview={page.preview}
   breadcrumbs={breadcrumbs}

@@ -6,7 +6,17 @@ import { urlFor } from "../lib/sanity";
 const { title, name, breadcrumbs, preview, featuredImage } = Astro.props;
 ---
 
-<Layout title={title} description={preview}>
+<Layout
+  meta={{
+    title: title,
+    description: preview,
+    openGraph: {
+      title: title,
+      description: preview,
+      image: featuredImage,
+    },
+  }}
+>
   <main slot="main">
     <article>
       <BreadcrumbAuto navigation={breadcrumbs} className="breadcrumb-wrapper" />

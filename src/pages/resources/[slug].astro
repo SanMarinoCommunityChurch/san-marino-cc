@@ -1,12 +1,8 @@
 ---
-import Layout from "../../layouts/Layout.astro";
 import ResourceLayout from "../../layouts/ResourceLayout.astro";
 import { allPosts } from "../../lib/posts";
 import { PortableText } from "astro-portabletext";
 import PostCategory from "../../components/PostCategory.astro";
-import ContactAvatar from "../../components/ContactAvatar.astro";
-import { joinNames } from "../../utils/format";
-import { DateTime } from "luxon";
 import { urlFor } from "../../lib/sanity";
 import { randomizeAndSlice, filterAgainst } from "../../utils/data";
 import "../../styles/rich-text.css";
@@ -47,7 +43,7 @@ const randomPosts = otherPosts; // randomizeAndSlice(filteredPosts, 3);
 ---
 
 <ResourceLayout
-  title={page.name}
+  meta={page.seo}
   name={page.title}
   preview={page.preview}
   breadcrumbs={breadcrumbs}

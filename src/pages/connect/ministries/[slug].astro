@@ -51,7 +51,19 @@ const filteredMinistries = filterAgainst(otherMinistries, "ministryType", page);
 const randomizedMinistries = randomizeAndSlice(filteredMinistries, 3);
 ---
 
-<Layout title={page.name} description={page.preview}>
+<Layout
+  meta={{
+    title: `${page.name} | ${page.ministryType}`,
+    description: page.preview,
+    openGraph: {
+      title: `${page.name} | ${page.ministryType}`,
+      description: page.preview,
+      image: page.image,
+    },
+  }}
+  title={page.name}
+  description={page.preview}
+>
   <main slot="main">
     <InnerHero pageTitle={page.name} pageDescription={page.preview}>
       <Fragment slot="breadcrumbs">

@@ -1,28 +1,13 @@
 ---
-import Layout from "../../layouts/Layout.astro";
 import SectionPage from "../../layouts/SectionPage.astro";
-import IntroSection from "../../components/IntroSection.astro";
-import { Image, Picture } from "@astrojs/image/components";
-import InnerHero from "../../components/InnerHero.astro";
-import { getSanityData, urlFor } from "../../lib/sanity";
+import { urlFor } from "../../lib/sanity";
 import { PortableText } from "astro-portabletext";
+import { allMissions } from "../../lib/ministries";
 
-import { getCurrentPage } from "../../lib/pages";
-
-import placeholderImg from "../../assets/images/church-ext-2.jpg";
-// import bgImage from "../../assets/images/easter-flowers.jpg";
-
-const introHeadline = "Engaging our resources to demonstrate Christ's love.";
-const introText = `<p>Mission is the core identity of every Christian and every church; it’s the purpose of the church and not a program of the church. Currently, the reach of SMCC’s God-given creativity, imagination, time, talent, and resources extends from the San Gabriel Valley, across the nation and beyond, to global strategic partners on four continents.</p><p>The goal of the Mission Team is to fully engage all of the church’s resources to demonstrate Christ’s love for the world.</p>`;
-
-const missions = await getSanityData(
-  `*[_type == 'mission'] | order(name asc) {
-  ...,
-  "image": image.asset->
-}`
-);
-
-// const currentPage = getCurrentPage("210cb910-f147-410f-bd0f-c23a6096028b");
+let baseImageHeight = 0;
+let baseImageWidth = 0;
+let cropHeight = 0;
+let croppedAspectRatio = 0;
 ---
 
 <SectionPage
@@ -30,29 +15,251 @@ const missions = await getSanityData(
   localNavSection={"Connect"}
   contentPadding
 >
-  <!-- <IntroSection title={introHeadline} image={placeholderImg} frame="1:1">
-    <Fragment set:html={introText} />
-  </IntroSection> -->
+  <div class="cluster sticky">
+    <div class="small-title">Jump to:</div>
+    <a href="#partners" class="text-step-4 heading-link">Mission Partners</a>
+    <a href="#involvement" class="text-step-4 heading-link"
+      >Mission Involvement</a
+    >
+  </div>
   <div class="mission-list">
-    {
-      missions.map((mission) => (
-        <article class="mission flow">
-          <img src={urlFor(mission.image).width(200).url()} width={200} />
-          <h3 class="text-step-2">{mission.name}</h3>
-          <PortableText value={mission.description} class="text-step--1" />
-        </article>
-      ))
-    }
+    <section id="partners">
+      <h2 class="sr-only">Mission Partners</h2>
+      <p class="text-step-2">
+        <strong>Current Mission Partners:</strong> We commit to on-going support
+        of the following faith-based organizations, both locally and globally, through
+        an allocation from the SMCC annual budget.
+      </p>
+      {
+        allMissions.map((mission) => {
+          const image = mission.image;
+          if (image) {
+            baseImageHeight = image.asset.metadata.dimensions.height;
+            baseImageWidth = image.asset.metadata.dimensions.height;
+            cropHeight = image.crop
+              ? baseImageHeight -
+                (baseImageHeight * image.crop.top +
+                  baseImageHeight * image.crop.bottom)
+              : baseImageHeight;
+            croppedAspectRatio = baseImageWidth / cropHeight;
+          }
+          return (
+            <>
+              {mission.type == "missionPartner" && (
+                <article class="mission">
+                  <img
+                    class="img"
+                    src={urlFor(mission.image)
+                      .width(600)
+                      .height(
+                        image.crop
+                          ? Math.floor(600 / croppedAspectRatio)
+                          : Math.floor(
+                              600 / image.asset.metadata.dimensions.aspectRatio
+                            )
+                      )
+                      .auto("format")
+                      .url()}
+                    alt={`${mission.name} logo`}
+                    width={600}
+                    height={
+                      image.crop
+                        ? Math.floor(600 / croppedAspectRatio)
+                        : Math.floor(
+                            600 / image.asset.metadata.dimensions.aspectRatio
+                          )
+                    }
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="flow">
+                    <h3 class="text-step-3">{mission.name}</h3>
+                    <div class="text flow">
+                      <PortableText value={mission.description} class="" />
+                    </div>
+                  </div>
+                </article>
+              )}
+            </>
+          );
+        })
+      }
+    </section>
+    <section id="involvement">
+      <h2 class="sr-only">Mission Involvement</h2>
+      <p class="text-step-2">
+        <strong>Mission Goal:</strong> We seek to find pathways of opportunity through
+        which our members can invest their capacities in God’s mission.
+      </p>
+      {
+        allMissions.map((mission) => {
+          const image = mission.image;
+          if (image) {
+            baseImageHeight = image.asset.metadata.dimensions.height;
+            baseImageWidth = image.asset.metadata.dimensions.height;
+            cropHeight = image.crop
+              ? baseImageHeight -
+                (baseImageHeight * image.crop.top +
+                  baseImageHeight * image.crop.bottom)
+              : baseImageHeight;
+            croppedAspectRatio = baseImageWidth / cropHeight;
+          }
+          return (
+            <>
+              {mission.type == "missionInvolvement" && (
+                <article class="mission">
+                  <img
+                    class="img"
+                    src={urlFor(mission.image)
+                      .width(600)
+                      .height(
+                        image.crop
+                          ? Math.floor(600 / croppedAspectRatio)
+                          : Math.floor(
+                              600 / image.asset.metadata.dimensions.aspectRatio
+                            )
+                      )
+                      .auto("format")
+                      .url()}
+                    alt={`${mission.name} logo`}
+                    width={600}
+                    height={
+                      image.crop
+                        ? Math.floor(600 / croppedAspectRatio)
+                        : Math.floor(
+                            600 / image.asset.metadata.dimensions.aspectRatio
+                          )
+                    }
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="flow">
+                    <h3 class="text-step-3">{mission.name}</h3>
+                    <div class="text flow">
+                      <PortableText value={mission.description} class="" />
+                    </div>
+                  </div>
+                </article>
+              )}
+            </>
+          );
+        })
+      }
+    </section>
   </div>
 </SectionPage>
 <style>
   .mission-list {
+    margin-top: 0;
+  }
+
+  .mission-list > section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xl);
+  }
+
+  .mission-list > section + section {
+    margin-top: var(--space-3xl);
+  }
+
+  .mission {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr 2.5fr;
     gap: 5rem;
   }
 
-  .mission.flow {
-    --flow-space: 1.5rem;
+  .img {
+    max-height: 12rem;
+    object-fit: contain;
+    /* justify-self: self-end; */
+  }
+
+  .text ul {
+    list-style: disc;
+    padding-left: 1rem;
+  }
+
+  .text a {
+    color: var(--color-primary-800);
+  }
+
+  .sticky {
+    position: sticky;
+    background: white;
+    z-index: 20;
+    padding-block: 1.5rem;
+    top: 5rem;
+    margin-block: 3rem;
+    /* border-bottom: 1px solid var(--color-primary-300); */
+  }
+
+  .heading-link {
+    color: var(--color-primary-800);
+    text-decoration: none;
+    font-family: var(--font-secondary);
+    font-weight: var(--font-weight-header);
+    transition: all 0.2s ease;
+  }
+
+  .heading-link:hover {
+    text-decoration: underline;
+    color: var(--color-primary-800);
+    opacity: 1 !important;
+  }
+
+  .sticky.cluster {
+    --cluster-space: 3rem;
+  }
+
+  #partners,
+  #involvement {
+    scroll-margin-top: 12rem;
+  }
+
+  #involvement {
+    border-top: 1px solid var(--color-neutral-100);
+    padding-top: var(--space-3xl);
+  }
+
+  @media (max-width: 768px) {
+    .mission {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .img {
+      height: 10rem;
+      width: fit-content;
+    }
   }
 </style>
+
+<script>
+  const headerLinks = document.querySelectorAll(".sticky a");
+  const sections = document.querySelectorAll(".mission-list > section");
+
+  const onIntersect = (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        headerLinks.forEach((link) => {
+          const a = link as HTMLElement;
+          if (a.hash === `#${id}`) {
+            a.style.opacity = "1";
+          } else {
+            a.style.opacity = "0.5";
+          }
+        });
+      }
+    });
+  };
+
+  const observer = new IntersectionObserver(onIntersect, {
+    rootMargin: "-60px",
+  });
+
+  sections.forEach((el) => {
+    observer.observe(el);
+  });
+</script>

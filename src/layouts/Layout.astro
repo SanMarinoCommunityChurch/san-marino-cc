@@ -1,170 +1,28 @@
 ---
-import { getSanityData } from "../lib/sanity";
-import { fullNavigationFromSanity } from "../lib/sanityQueries";
 import {
   fullNavigation,
   utilityNavigation,
   mainNavigationFiltered,
 } from "../lib/navigation";
+import { SEO } from "astro-seo";
+import { siteSettings, defaultImage } from "../lib/settings";
+import { urlFor } from "../lib/sanity";
 
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
-// import SiteFooter from "../components/SiteFooter.astro";
 import "../styles/global.css";
 
-import welcomeImg from "../assets/images/people.jpg";
-import worshipImg from "../assets/images/choir.jpg";
-import connectImg from "../assets/images/contemporary.jpg";
-import aboutImg from "../assets/images/church-garden.jpg";
-import resourcesImg from "../assets/images/church-ext-5.jpg";
-
-// const [fullNav] = await getSanityData(fullNavigationFromSanity);
-
-// const mainNavigation = [
-//   {
-//     name: "I’m New",
-//     href: "welcome/im-new",
-//   },
-//   {
-//     name: "Worship Live",
-//     href: "worship/live",
-//     button: true,
-//   },
-//   {
-//     name: "FAQ",
-//     href: "welcome/faq",
-//   },
-// ];
-
-// const fullNavigation = [
-//   {
-//     name: "Welcome",
-//     slug: "welcome",
-//     img: welcomeImg,
-//     children: [
-//       {
-//         name: "I’m New",
-//         slug: "im-new",
-//       },
-//       {
-//         name: "Weekly Schedule",
-//         slug: "weekly-schedule",
-//       },
-//       {
-//         name: "FAQ",
-//         slug: "faq",
-//       },
-//       {
-//         name: "How to Join",
-//         slug: "how-to-join",
-//       },
-//     ],
-//   },
-//   {
-//     name: "Worship",
-//     slug: "worship",
-//     img: worshipImg,
-//     children: [
-//       {
-//         name: "Worship Live",
-//         slug: "live",
-//       },
-//       {
-//         name: "Worship Services",
-//         slug: "services",
-//       },
-//     ],
-//   },
-//   {
-//     name: "Connect",
-//     slug: "connect",
-//     img: connectImg,
-//     children: [
-//       {
-//         name: "Events & Programs",
-//         slug: "events",
-//       },
-//       {
-//         name: "Ministries",
-//         slug: "ministries",
-//       },
-//       {
-//         name: "Missions",
-//         slug: "missions",
-//       },
-//       {
-//         name: "Pastoral Residency",
-//         slug: "pastoral-residency",
-//       },
-//     ],
-//   },
-//   {
-//     name: "Who We Are",
-//     slug: "who-we-are",
-//     img: aboutImg,
-//     children: [
-//       {
-//         name: "Mission & Beliefs",
-//         slug: "mission-and-beliefs",
-//       },
-//       {
-//         name: "Our History",
-//         slug: "our-history",
-//       },
-//       {
-//         name: "Church Leadership",
-//         slug: "leadership",
-//       },
-//     ],
-//   },
-//   {
-//     name: "Resources",
-//     slug: "resources",
-//     img: resourcesImg,
-//     children: [
-//       {
-//         name: "Blog",
-//         slug: "blog",
-//       },
-//       {
-//         name: "Education",
-//         slug: "blog",
-//       },
-//     ],
-//   },
-//   {
-//     name: "Utility",
-//     slug: "",
-//     children: [
-//       {
-//         name: "Give",
-//         slug: "give",
-//         button: true,
-//         description:
-//           "Make a donation to the Foundaiton of San Marino Community Church.",
-//       },
-//       {
-//         name: "Contact",
-//         slug: "contact",
-//         description: "Contact us for location, hours, and other questions.",
-//       },
-//       {
-//         name: "Calendar",
-//         slug: "calendar",
-//         description: "See the current events and programs at SMCC.",
-//       },
-//       {
-//         name: "Nursery School",
-//         slug: "nursery-school",
-//         external: true,
-//         description:
-//           "Our Nursery School provides a place of joy and nurturing for our young children.",
-//       },
-//     ],
-//   },
-// ];
-
-const { title, description } = Astro.props;
+const { meta } = Astro.props;
+// const fallbackName = siteSettings.name;
+// const fallbackDescription = siteSettings.description;
+const { title, description, openGraph } = meta;
+const fallbackOGImage = urlFor(defaultImage)
+  .width(1200)
+  .height(630)
+  .fit("crop")
+  .crop("center")
+  .auto("format")
+  .url();
 ---
 
 <!DOCTYPE html>
@@ -173,8 +31,28 @@ const { title, description } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>{title}</title>
-    <meta name="description" content={description} />
+    <SEO
+      title={title}
+      description={description}
+      openGraph={{
+        basic: {
+          title: openGraph ? openGraph.title : title,
+          type: "website",
+          image: openGraph
+            ? openGraph.image
+              ? urlFor(openGraph.image)
+                  .width(1200)
+                  .height(630)
+                  .auto("format")
+                  .url()
+              : fallbackOGImage
+            : fallbackOGImage,
+        },
+        optional: {
+          description: openGraph ? openGraph.description : description,
+        },
+      }}
+    />
     <link rel="stylesheet" href="https://use.typekit.net/wsf6agj.css" />
     <slot name="pageHead" />
   </head>
@@ -189,359 +67,358 @@ const { title, description } = Astro.props;
       fullNavigation={fullNavigation}
       utilityNavigation={utilityNavigation}
     />
-  </body>
-</html>
+    <style is:global>
+      .content-wrapper {
+        position: relative;
+        max-width: clamp(16rem, var(--wrapper-max-width, 100vw), 80rem);
+        padding-inline: var(--gutter);
+        margin-inline: auto;
+      }
 
-<style is:global>
-  .content-wrapper {
-    position: relative;
-    max-width: clamp(16rem, var(--wrapper-max-width, 100vw), 80rem);
-    padding-inline: var(--gutter);
-    margin-inline: auto;
-  }
+      .with-sidebar {
+        --sidebar-gap: 3rem;
+        --sidebar-min-width: 25rem;
+        --main-min-width: 50%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--sidebar-gap);
+      }
 
-  .with-sidebar {
-    --sidebar-gap: 3rem;
-    --sidebar-min-width: 25rem;
-    --main-min-width: 50%;
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--sidebar-gap);
-  }
+      .with-sidebar > :last-child {
+        flex-basis: var(--sidebar-min-width);
+        flex-grow: 1;
+      }
 
-  .with-sidebar > :last-child {
-    flex-basis: var(--sidebar-min-width);
-    flex-grow: 1;
-  }
+      .with-sidebar > :first-child {
+        flex-basis: 0;
+        flex-grow: 999;
+        min-inline-size: var(--main-min-width);
+      }
 
-  .with-sidebar > :first-child {
-    flex-basis: 0;
-    flex-grow: 999;
-    min-inline-size: var(--main-min-width);
-  }
+      .flow {
+        --flow-space: 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+      }
 
-  .flow {
-    --flow-space: 1rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-  }
+      .flow > * {
+        margin-block: 0;
+      }
 
-  .flow > * {
-    margin-block: 0;
-  }
+      .flow > * + * {
+        margin-block-start: var(--flow-space);
+      }
 
-  .flow > * + * {
-    margin-block-start: var(--flow-space);
-  }
+      .flex {
+        display: flex;
+      }
 
-  .flex {
-    display: flex;
-  }
+      .cluster {
+        --cluster-space: 1rem;
+        --justify: flex-start;
+        --align: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--cluster-space);
+        justify-content: var(--justify);
+        align-items: var(--align);
+      }
 
-  .cluster {
-    --cluster-space: 1rem;
-    --justify: flex-start;
-    --align: center;
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--cluster-space);
-    justify-content: var(--justify);
-    align-items: var(--align);
-  }
+      .responsive-grid {
+        --gap: 1rem;
+        --item-min-width: 30rem;
+        --item-max-width: 1fr;
+        display: grid;
+        grid-gap: var(--gap);
+        grid-template-columns: repeat(
+          auto-fit,
+          minmax(min(var(--item-min-width), 100%), var(--item-max-width))
+        );
+      }
 
-  .responsive-grid {
-    --gap: 1rem;
-    --item-min-width: 30rem;
-    --item-max-width: 1fr;
-    display: grid;
-    grid-gap: var(--gap);
-    grid-template-columns: repeat(
-      auto-fit,
-      minmax(min(var(--item-min-width), 100%), var(--item-max-width))
-    );
-  }
+      .frame {
+        --width: 4;
+        --height: 3;
+        aspect-ratio: var(--width) / var(--height);
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
 
-  .frame {
-    --width: 4;
-    --height: 3;
-    aspect-ratio: var(--width) / var(--height);
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+      .frame.video {
+        --width: 16;
+        --height: 9;
+      }
 
-  .frame.video {
-    --width: 16;
-    --height: 9;
-  }
+      .frame.square {
+        --width: 1;
+        --height: 1;
+      }
 
-  .frame.square {
-    --width: 1;
-    --height: 1;
-  }
+      .frame.avatar {
+        --width: 1;
+        --height: 1;
+        width: 5rem;
+        height: 5rem;
+        border-radius: 9999px;
+      }
 
-  .frame.avatar {
-    --width: 1;
-    --height: 1;
-    width: 5rem;
-    height: 5rem;
-    border-radius: 9999px;
-  }
+      .frame > img,
+      .frame > video,
+      .frame > picture {
+        inline-size: 100%;
+        block-size: 100%;
+        object-fit: cover;
+      }
 
-  .frame > img,
-  .frame > video,
-  .frame > picture {
-    inline-size: 100%;
-    block-size: 100%;
-    object-fit: cover;
-  }
+      .center-items {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
 
-  .center-items {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-  }
+      .small-title {
+        font-family: var(--font-secondary);
+        font-weight: var(--font-weight-semi);
+        font-size: var(--step--1);
+        letter-spacing: 1.5pt;
+        text-transform: uppercase;
+      }
 
-  .small-title {
-    font-family: var(--font-secondary);
-    font-weight: var(--font-weight-semi);
-    font-size: var(--step--1);
-    letter-spacing: 1.5pt;
-    text-transform: uppercase;
-  }
+      .paragraphs.flow {
+        --flow-space: 1.5rem;
+      }
 
-  .paragraphs.flow {
-    --flow-space: 1.5rem;
-  }
+      .paragraphs {
+        max-width: 67ch;
+      }
 
-  .paragraphs {
-    max-width: 67ch;
-  }
+      :where(a, button):not(.btn, .logo, .link) {
+        text-decoration: underline;
+      }
 
-  :where(a, button):not(.btn, .logo, .link) {
-    text-decoration: underline;
-  }
+      :where(a, button):not(.btn, .logo):hover {
+        text-decoration: none;
+      }
 
-  :where(a, button):not(.btn, .logo):hover {
-    text-decoration: none;
-  }
+      .events-pagination .splide__pagination__page.is-active {
+        background: var(--color-primary-300) !important;
+      }
 
-  .events-pagination .splide__pagination__page.is-active {
-    background: var(--color-primary-300) !important;
-  }
+      /* Worship Live YT Embed */
+      .yt-lite {
+        background-color: #000;
+        position: relative;
+        display: block;
+        contain: content;
+        background-position: center center;
+        background-size: cover;
+        cursor: pointer;
+        width: clamp(20rem, 50vw, 80%);
+        height: auto;
+      }
 
-  /* Worship Live YT Embed */
-  .yt-lite {
-    background-color: #000;
-    position: relative;
-    display: block;
-    contain: content;
-    background-position: center center;
-    background-size: cover;
-    cursor: pointer;
-    width: clamp(20rem, 50vw, 80%);
-    height: auto;
-  }
+      /* gradient */
+      .yt-lite::before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAADGCAYAAAAT+OqFAAAAdklEQVQoz42QQQ7AIAgEF/T/D+kbq/RWAlnQyyazA4aoAB4FsBSA/bFjuF1EOL7VbrIrBuusmrt4ZZORfb6ehbWdnRHEIiITaEUKa5EJqUakRSaEYBJSCY2dEstQY7AuxahwXFrvZmWl2rh4JZ07z9dLtesfNj5q0FU3A5ObbwAAAABJRU5ErkJggg==);
+        background-position: top;
+        background-repeat: repeat-x;
+        height: 60px;
+        padding-bottom: 50px;
+        width: 100%;
+        transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
+      }
 
-  /* gradient */
-  .yt-lite::before {
-    content: "";
-    display: block;
-    position: absolute;
-    top: 0;
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAADGCAYAAAAT+OqFAAAAdklEQVQoz42QQQ7AIAgEF/T/D+kbq/RWAlnQyyazA4aoAB4FsBSA/bFjuF1EOL7VbrIrBuusmrt4ZZORfb6ehbWdnRHEIiITaEUKa5EJqUakRSaEYBJSCY2dEstQY7AuxahwXFrvZmWl2rh4JZ07z9dLtesfNj5q0FU3A5ObbwAAAABJRU5ErkJggg==);
-    background-position: top;
-    background-repeat: repeat-x;
-    height: 60px;
-    padding-bottom: 50px;
-    width: 100%;
-    transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
-  }
-
-  /* responsive iframe with a 16:9 aspect ratio
+      /* responsive iframe with a 16:9 aspect ratio
     thanks https://css-tricks.com/responsive-iframes/
 */
-  .yt-lite::after {
-    content: "";
-    display: block;
-    padding-bottom: calc(100% / (16 / 9));
-  }
-  .yt-lite > iframe {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
+      .yt-lite::after {
+        content: "";
+        display: block;
+        padding-bottom: calc(100% / (16 / 9));
+      }
+      .yt-lite > iframe {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
 
-  /* play button */
-  .yt-lite > .lty-playbtn {
-    width: 70px;
-    height: 46px;
-    background-color: #212121;
-    z-index: 1;
-    opacity: 0.8;
-    border-radius: 14%; /* TODO: Consider replacing this with YT's actual svg. Eh. */
-    transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
-    border: none;
-  }
-  .yt-lite:hover > .lty-playbtn {
-    background-color: #f00;
-    opacity: 1;
-  }
-  /* play button triangle */
-  .yt-lite > .lty-playbtn:before {
-    content: "";
-    border-style: solid;
-    border-width: 11px 0 11px 19px;
-    border-color: transparent transparent transparent #fff;
-  }
+      /* play button */
+      .yt-lite > .lty-playbtn {
+        width: 70px;
+        height: 46px;
+        background-color: #212121;
+        z-index: 1;
+        opacity: 0.8;
+        border-radius: 14%; /* TODO: Consider replacing this with YT's actual svg. Eh. */
+        transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
+        border: none;
+      }
+      .yt-lite:hover > .lty-playbtn {
+        background-color: #f00;
+        opacity: 1;
+      }
+      /* play button triangle */
+      .yt-lite > .lty-playbtn:before {
+        content: "";
+        border-style: solid;
+        border-width: 11px 0 11px 19px;
+        border-color: transparent transparent transparent #fff;
+      }
 
-  .yt-lite > .lty-playbtn,
-  .yt-lite > .lty-playbtn:before {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate3d(-50%, -50%, 0);
-  }
+      .yt-lite > .lty-playbtn,
+      .yt-lite > .lty-playbtn:before {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate3d(-50%, -50%, 0);
+      }
 
-  /* Post-click styles */
-  .yt-lite.lyt-activated {
-    cursor: unset;
-  }
-  .yt-lite.lyt-activated::before,
-  .yt-lite.lyt-activated > .lty-playbtn {
-    opacity: 0;
-    pointer-events: none;
-  }
+      /* Post-click styles */
+      .yt-lite.lyt-activated {
+        cursor: unset;
+      }
+      .yt-lite.lyt-activated::before,
+      .yt-lite.lyt-activated > .lty-playbtn {
+        opacity: 0;
+        pointer-events: none;
+      }
 
-  .live .video-wrapper {
-    background-color: var(--color-neutral-100);
-    margin-block: var(--space-xl);
-    display: flex;
-    justify-content: center;
-  }
+      .live .video-wrapper {
+        background-color: var(--color-neutral-100);
+        margin-block: var(--space-xl);
+        display: flex;
+        justify-content: center;
+      }
 
-  .live .service-tabs.center-items {
-    gap: 1rem;
-  }
+      .live .service-tabs.center-items {
+        gap: 1rem;
+      }
 
-  .live.inner .service-tabs {
-    margin-top: -2.5rem;
-  }
+      .live.inner .service-tabs {
+        margin-top: -2.5rem;
+      }
 
-  .live .service-tab {
-    background: transparent;
-    color: var(--color-primary-800);
-    text-decoration: none;
-    border: none;
-    padding: 0.5em 0.85em 0.6em;
-    border-radius: var(--rounded-corners);
-    line-height: 1.25;
-    font-family: var(--font-secondary);
-    font-weight: var(--font-weight-header);
-    font-variant-numeric: lining-nums;
-    cursor: pointer;
-    letter-spacing: 0.02em;
-    transition: all 0.2s ease;
-  }
+      .live .service-tab {
+        background: transparent;
+        color: var(--color-primary-800);
+        text-decoration: none;
+        border: none;
+        padding: 0.5em 0.85em 0.6em;
+        border-radius: var(--rounded-corners);
+        line-height: 1.25;
+        font-family: var(--font-secondary);
+        font-weight: var(--font-weight-header);
+        font-variant-numeric: lining-nums;
+        cursor: pointer;
+        letter-spacing: 0.02em;
+        transition: all 0.2s ease;
+      }
 
-  .live .service-tab:hover {
-    background: var(--color-primary-100);
-  }
+      .live .service-tab:hover {
+        background: var(--color-primary-100);
+      }
 
-  .live .service-tab[data-headlessui-state~="selected"] {
-    background: var(--color-primary-800);
-    color: var(--color-white);
-  }
+      .live .service-tab[data-headlessui-state~="selected"] {
+        background: var(--color-primary-800);
+        color: var(--color-white);
+      }
 
-  /* .panel-2 .video-wrapper {
+      /* .panel-2 .video-wrapper {
     background-color: var(--color-secondary-100);
   } */
 
-  /* .live .video-wrapper > :first-child {
+      /* .live .video-wrapper > :first-child {
     aspect-ratio: 16/9;
     width: clamp(20rem, 50vw, 80%);
     height: auto;
   } */
 
-  .live .service-wrapper {
-    margin-block: var(--space-2xl);
-  }
+      .live .service-wrapper {
+        margin-block: var(--space-2xl);
+      }
 
-  .live .service-wrapper h3 {
-    margin-block: 0.5rem;
-  }
+      .live .service-wrapper h3 {
+        margin-block: 0.5rem;
+      }
 
-  .live .time {
-    font-variant-numeric: lining-nums;
-  }
+      .live .time {
+        font-variant-numeric: lining-nums;
+      }
 
-  .live .bullet-spacer {
-    color: var(--color-primary-300);
-    margin-inline: 0.25rem;
-  }
+      .live .bullet-spacer {
+        color: var(--color-primary-300);
+        margin-inline: 0.25rem;
+      }
 
-  .live .with-sidebar {
-    --sidebar-gap: var(--section-spacer);
-  }
+      .live .with-sidebar {
+        --sidebar-gap: var(--section-spacer);
+      }
 
-  .live .with-sidebar > .flow:first-child {
-    --flow-space: 2rem;
-  }
+      .live .with-sidebar > .flow:first-child {
+        --flow-space: 2rem;
+      }
 
-  .live .sidebar .frame.square {
-    border-radius: 9999px;
-    width: 5rem;
-    height: 5rem;
-  }
+      .live .sidebar .frame.square {
+        border-radius: 9999px;
+        width: 5rem;
+        height: 5rem;
+      }
 
-  .live .sidebar.flex {
-    gap: 1.5rem;
-    align-items: center;
-  }
+      .live .sidebar.flex {
+        gap: 1.5rem;
+        align-items: center;
+      }
 
-  .live .small-title.category {
-    font-size: 13px;
-    display: inline-block;
-    color: var(--color-primary-800);
-    line-height: 1;
-    padding: 4px 6px;
-    background-color: var(--color-primary-100);
-    border-radius: var(--rounded-corners-small);
-  }
+      .live .small-title.category {
+        font-size: 13px;
+        display: inline-block;
+        color: var(--color-primary-800);
+        line-height: 1;
+        padding: 4px 6px;
+        background-color: var(--color-primary-100);
+        border-radius: var(--rounded-corners-small);
+      }
 
-  .live .small-title.category.contemporary {
-    background-color: var(--color-secondary-50);
-    color: var(--color-secondary-600);
-  }
+      .live .small-title.category.contemporary {
+        background-color: var(--color-secondary-50);
+        color: var(--color-secondary-600);
+      }
 
-  .live .service-date {
-    margin-top: var(--space-m);
-    font-size: var(--step-1);
-    font-style: italic;
-  }
+      .live .service-date {
+        margin-top: var(--space-m);
+        font-size: var(--step-1);
+        font-style: italic;
+      }
 
-  .live .contact-avatar .frame.square {
-    border-radius: 9999px;
-    width: 5rem;
-    height: 5rem;
-  }
+      .live .contact-avatar .frame.square {
+        border-radius: 9999px;
+        width: 5rem;
+        height: 5rem;
+      }
 
-  .live .contact-avatar.flex {
-    gap: 1.5rem;
-    align-items: center;
-  }
+      .live .contact-avatar.flex {
+        gap: 1.5rem;
+        align-items: center;
+      }
 
-  .live .contact-avatar .small-title {
-    color: var(--color-primary-800);
-    margin-bottom: 3px;
-  }
+      .live .contact-avatar .small-title {
+        color: var(--color-primary-800);
+        margin-bottom: 3px;
+      }
 
-  .live .service-info .text-step-4 {
-    margin-top: 8px;
-  }
-</style>
+      .live .service-info .text-step-4 {
+        margin-top: 8px;
+      }
+    </style>
+  </body>
+</html>

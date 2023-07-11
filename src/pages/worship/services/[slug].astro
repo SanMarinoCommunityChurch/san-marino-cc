@@ -58,7 +58,16 @@ const serviceTypes = page.serviceType.map((item) => item.name);
 const description = `Watch video from our ${serviceDate} service.`;
 ---
 
-<Layout title={"Service for " + serviceDate}>
+<Layout
+  meta={{
+    title: `${page.name ? page.name : "Sunday Service"} | ${serviceDate}`,
+    description: `Watch video from our ${serviceDate} service.`,
+    openGraph: {
+      title: page.name ? page.name : "Sunday Service",
+      description: `Watch video from our ${serviceDate} service.`,
+    },
+  }}
+>
   <main slot="main">
     <InnerHero
       pageTitle={page.name ? page.name : "Sunday Service"}

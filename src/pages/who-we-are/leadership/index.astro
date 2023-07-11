@@ -286,7 +286,6 @@ const eldersAndDeaconsByType = groupAsType(eldersAndDeacons);
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         const id = entry.target.id;
-        console.log(`${id} is intersecting!`);
         headerLinks.forEach((link) => {
           const a = link as HTMLElement;
           if (a.hash === `#${id}`) {

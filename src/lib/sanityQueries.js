@@ -51,8 +51,16 @@ const pages = `*[_type == 'page'] {
   },
   "seo": {
     "title": seoTitle,
-    "description": seoDescription
-  }
+    "description": seoDescription,
+    openGraph{
+      title,
+      description,
+      "image": image{
+        ...,
+        asset->
+      }
+    }
+  },
 }`;
 
 const featureBlocks = `*[_type == 'feature'] {
@@ -360,6 +368,14 @@ const ministriesDetail = `*[_type == 'ministry'] {
   }
 }`;
 
+const missions = `*[_type == 'mission'] | order(name asc) {
+  ...,
+  "image": image{
+    ...,
+    asset->
+  }
+}`;
+
 const posts = `*[_type == 'post']|order(publishDate desc) {
   "title": name, 
   "slug": slug.current,
@@ -393,6 +409,14 @@ const posts = `*[_type == 'post']|order(publishDate desc) {
   "seo": {
     "title": seoTitle,
     "description": seoDescription,
+    openGraph{
+      title,
+      description,
+      "image": image{
+        ...,
+        asset->
+      }
+    }
   }
 }`;
 
@@ -548,6 +572,7 @@ export {
   ministriesPreview,
   ministryTypeWithMinistriesPreview,
   ministriesDetail,
+  missions,
   posts,
   postTypes,
   fullNavigationFromSanity,

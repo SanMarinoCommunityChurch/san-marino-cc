@@ -8,7 +8,7 @@ import DateLabel from "../components/Events/DateLabel.astro";
 import { DateTime } from "luxon"
 import { defaultImage } from "../lib/settings";
 
-const { title, header, breadcrumbs, preview, featuredImage, moreContent } =
+const { meta, header, breadcrumbs, preview, featuredImage, moreContent } =
   Astro.props;
 
 let baseImageHeight = 0;
@@ -16,16 +16,21 @@ let baseImageWidth = 0;
 let cropHeight = 0;
 let croppedAspectRatio = 0;
 
+// Set image dimensions based on whether user has set crop or not within Sanity -- graceful fallback if no crop is set
 if (featuredImage) {
+  // Set base height to image default
   baseImageHeight = featuredImage.asset.metadata.dimensions.height;
+  // Set base width to image default
   baseImageWidth = featuredImage.asset.metadata.dimensions.height;
+  // If crop is set, calculate a new crop height (assume width doesn't change). Get the crop percentage from Sanity metadata and subtrat it from base image height.
   cropHeight = featuredImage.crop ? (baseImageHeight) - ((baseImageHeight * featuredImage.crop.top) + (baseImageHeight * featuredImage.crop.bottom)) : baseImageHeight;
+  // Get a new aspect ratio based on the crop height
   croppedAspectRatio = baseImageWidth / cropHeight;
 }
 
 ---
 
-<Layout title={title} description={preview}>
+<Layout meta={meta}>
   <main slot="main">
     <article>
       <BreadcrumbAuto navigation={breadcrumbs} className="breadcrumb-wrapper" />

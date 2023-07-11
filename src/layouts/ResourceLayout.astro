@@ -13,7 +13,6 @@ import { DateTime } from "luxon";
 import { urlFor } from "../lib/sanity";
 
 const {
-  title,
   name,
   breadcrumbs,
   preview,
@@ -21,10 +20,11 @@ const {
   author,
   publishDate,
   moreContent,
+  meta,
 } = Astro.props;
 ---
 
-<Layout title={title} description={preview}>
+<Layout meta={meta}>
   <main slot="main">
     <article class="relative">
       <BreadcrumbAuto navigation={breadcrumbs} className="breadcrumb-wrapper" />
