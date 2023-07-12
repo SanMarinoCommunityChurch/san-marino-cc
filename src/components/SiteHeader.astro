@@ -109,8 +109,10 @@ const { mainNavigation, fullNavigation, utilityNavigation } = Astro.props;
   }
 
   .logo img {
-    max-height: 90px;
-    width: auto;
+    max-width: 280px;
+    height: auto;
+    position: relative;
+    top: -1px;
   }
 
   .header {
@@ -302,7 +304,12 @@ const { mainNavigation, fullNavigation, utilityNavigation } = Astro.props;
       grid-template-columns: 1fr;
       gap: 1rem;
     }
+  }
 
+  @media (max-width: 870px) {
+    .main-nav {
+      display: none;
+    }
   }
 
   @media (max-width: 768px) {
@@ -310,16 +317,18 @@ const { mainNavigation, fullNavigation, utilityNavigation } = Astro.props;
       font-size: var(--step-1);
     }
 
-    .main-nav {
+    /* .main-nav {
       display: none;
-    }
+    } */
 
     .nav-grid ul.flow {
       --flow-space: 1rem;
     }
+  }
 
+  @media (max-width: 640px) {
     .logo img {
-      max-height: 80px;
+      max-width: 240px;
     }
   }
 

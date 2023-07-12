@@ -74,7 +74,7 @@
         justify-content: center;
         align-items: center;
         background-color: var(--color-white);
-        padding-block: 6px;
+        padding-block: 1rem;
         padding-inline: var(--space-l);
         box-shadow: var(--menu-toggle-shadow);
         transition: box-shadow 0.2s ease;
