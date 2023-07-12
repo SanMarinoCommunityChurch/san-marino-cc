@@ -1,6 +1,6 @@
-import { allServices } from "../../lib/services";
+import { allServicesForCalendar } from "../../lib/services";
 
-const services = allServices;
+const services = allServicesForCalendar;
 
 export function get({ params, request }) {
   return {

@@ -248,6 +248,14 @@ const servicesLatest = `*[_type == 'service' && dateTime(date + 'T7:00:00Z') < d
   },
 }`;
 
+const servicesListCalendar = `*[_type == 'service']|order(date desc) {
+  ...,
+  "slug": slug.current,
+  serviceType[] {
+    ...,
+  }
+}`;
+
 const servicesList = `*[_type == 'service' && dateTime(date + 'T7:00:00Z') < dateTime(now())]|order(date desc) {
   ...,
   "slug": slug.current,
@@ -591,6 +599,7 @@ export {
   eventsDetail,
   servicesLatest,
   servicesList,
+  servicesListCalendar,
   ministriesPreview,
   ministryTypeWithMinistriesPreview,
   ministriesDetail,

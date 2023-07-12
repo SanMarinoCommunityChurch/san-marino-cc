@@ -4,7 +4,7 @@ const { title = "Explore more", items } = Astro.props;
 ---
 
 <aside class="sticky">
-  <h3 class="heading">{title}</h3>
+  <div class="heading">{title}</div>
   <ul class="flow items">
     {
       items.map((item) => (
@@ -31,6 +31,10 @@ const { title = "Explore more", items } = Astro.props;
   }
 
   .heading {
+    font-family: var(--font-secondary);
+    font-weight: var(--font-weight-header);
+    color: var(--color-header-text);
+    line-height: 1.2;
     font-size: var(--step-2);
     margin-bottom: 2rem;
   }
