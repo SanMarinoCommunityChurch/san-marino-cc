@@ -7,7 +7,7 @@ import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://zesty-sawine-052dba.netlify.app",
+  site: "https://idyllic-alfajores-503e42.netlify.app",
   scopedStyleStrategy: "class",
   // compressHTML: true,
   integrations: [
