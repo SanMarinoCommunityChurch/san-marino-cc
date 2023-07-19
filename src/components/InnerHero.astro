@@ -1,9 +1,9 @@
 ---
-function buildUrl(sectionUrl, pageUrl) {
-  if (sectionUrl) {
-    return `/${sectionUrl}/${pageUrl}`;
+function buildUrl(item) {
+  if (item.sectionSlug) {
+    return `/${item.pageSlug.fullUrl}`;
   } else {
-    return `/${pageUrl}`;
+    return `/${item.pageSlug.current}`;
   }
 }
 
@@ -33,17 +33,12 @@ const bgImageStyle = `linear-gradient(to top, rgb(0 0 0 / 0.75) 15%, rgb(0 0 0 /
             <div class="small-title">{localNav.name}</div>
             <div class="divider">|</div>
             <ul class="cluster">
-              {localNav.children.map((item) => (
+              {localNav.pages.map((item) => (
                 <li class="text-step--1">
                   <a
-                    href={
-                      localNav.slug
-                        ? buildUrl(localNav.slug, item.slug)
-                        : item.slug
-                    }
+                    href={buildUrl(item)}
                     style={
-                      Astro.url.pathname ===
-                        buildUrl(localNav.slug, item.slug) &&
+                      Astro.url.pathname === buildUrl(item) &&
                       "color: var(--active-color); text-decoration: var(--active-decoration);"
                     }
                     class="link"
@@ -57,17 +52,12 @@ const bgImageStyle = `linear-gradient(to top, rgb(0 0 0 / 0.75) 15%, rgb(0 0 0 /
           <details class="local-nav-mobile">
             <summary>{localNav.name}</summary>
             <ul class="cluster">
-              {localNav.children.map((item) => (
+              {localNav.pages.map((item) => (
                 <li class="text-step--1">
                   <a
-                    href={
-                      localNav.slug
-                        ? buildUrl(localNav.slug, item.slug)
-                        : item.slug
-                    }
+                    href={buildUrl(item)}
                     style={
-                      Astro.url.pathname ===
-                        buildUrl(localNav.slug, item.slug) &&
+                      Astro.url.pathname === buildUrl(item) &&
                       "color: var(--active-color); text-decoration: var(--active-decoration);"
                     }
                     class="link"

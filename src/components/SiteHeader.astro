@@ -16,15 +16,15 @@ const { mainNavigation, fullNavigation, utilityNavigation } = Astro.props;
     <nav slot="mainNav" class="main-nav">
       <ul class="cluster">
         {
-          mainNavigation.map((navItem) => (
+          mainNavigation.entries.map((navItem, index) => (
             <li>
               <Button
-                href={`/${navItem.href}`}
-                style={!navItem.button ? "nav" : "solid"}
-                theme={!navItem.button ? "neutral" : "primary-2"}
+                href={navItem.internal ? `/${navItem.internal.pageSlug.fullUrl}` : `${navItem.href}`}
+                style={index == 1 ? "solid" : "nav"}
+                theme={index == 1 ? "primary-2" : "neutral"}
               >
                 {navItem.name}
-                {navItem.name == 'Worship Live' &&
+                {index == 1 &&
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" width="18" height="18" fill="var(--color-primary-50)" style="margin: 0;"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M576 128c0-11.8-6.5-22.6-16.9-28.2s-23-5-32.9 1.6L384 196.2V315.8l142.2 94.8c9.8 6.5 22.4 7.2 32.9 1.6s16.9-16.4 16.9-28.2V128z"/><path class="fa-secondary" d="M0 128C0 92.7 28.7 64 64 64H320c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128z"/></svg>
             }
               </Button>
@@ -40,20 +40,20 @@ const { mainNavigation, fullNavigation, utilityNavigation } = Astro.props;
       <div class="nav-grid content-wrapper">
         <div class="nav-subgrid">
           {
-            fullNavigation.map(
+            fullNavigation.entries.map(
               (navItem) =>
-                navItem.name !== "Utility" && (
                   <div class="flow">
-                    {navItem.img && (
+                    {navItem.image && (
                       <a
-                        href={`/${navItem.slug}/${navItem.children[0].slug}`}
+                        href={`/${navItem.pages[0].pageSlug.fullUrl}`}
                         class="img-link"
                       >
                         <div class="overlay" />
                         <img
-                          src={urlFor(navItem.img).width(400).url()}
-                          alt=""
+                          src={urlFor(navItem.image).width(400).height(300).auto('format').url()}
+                          alt={navItem.image.asset.altText}
                           width={400}
+                          height={300}
                           class="nav-img"
                           loading="eager"
                         />
@@ -61,37 +61,31 @@ const { mainNavigation, fullNavigation, utilityNavigation } = Astro.props;
                     )}
                     <div class="small-title">{navItem.name}</div>
                     <ul class="flow">
-                      {navItem.children.map((navChild) => (
+                      {navItem.pages.map((navChild) => (
                         <li>
-                          <a href={`/${navItem.slug}/${navChild.slug}`}>
+                          <a href={navChild._type == 'page' ? navChild.sectionSlug ? `/${navChild.pageSlug.fullUrl}` : `/${navChild.pageSlug.current}` : `${navChild.href}`}>
                             {navChild.name}
                           </a>
                         </li>
                       ))}
                     </ul>
                   </div>
-                )
             )
           }
         </div>
       </div>
       <div class="utilities-wrapper">
         <div class="nav-utilities content-wrapper">
-          {
-            utilityNavigation.map(
-              (navItem) =>
-                  <ul class="">
-                    {navItem.children.map((navChild) => (
-                      <li class="utility-item">
-                        <a href={`/${navChild.slug}`}>
-                          <div class="small-title">{navChild.name}</div>
-                          <p>{navChild.description}</p>
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-            )
-          }
+          <ul>
+            {utilityNavigation.entries.map((navItem) => (
+              <li class="utility-item">
+                <a href={navItem._type == 'page' ? navItem.sectionSlug ? `/${navItem.pageSlug.fullUrl}` : `/${navItem.pageSlug.current}` : `${navItem.href}`}>
+                  <div class="small-title">{navItem.name}</div>
+                  <p>{navItem.description}</p>
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>

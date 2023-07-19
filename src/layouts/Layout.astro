@@ -1,8 +1,6 @@
 ---
 import {
-  fullNavigation,
-  utilityNavigation,
-  mainNavigationFiltered,
+  allNavigation,
 } from "../lib/navigation";
 import { SEO } from "astro-seo";
 import { siteSettings, defaultImage } from "../lib/settings";
@@ -11,6 +9,16 @@ import { urlFor } from "../lib/sanity";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import "../styles/global.css";
+
+const fullNavigation = allNavigation.find(
+  (nav) => nav._id === "a0714f38-2dff-4ce5-b350-be13904afa67"
+);
+const utilityNavigation = allNavigation.find(
+  (nav) => nav._id === "ba5e977f-7457-4dda-b26e-c616e37a0fd2"
+);
+const mainNavigation = allNavigation.find(
+  (nav) => nav._id === "0cde77d9-0c19-4642-84df-0523c76cec63"
+);
 
 const { meta } = Astro.props;
 // const fallbackName = siteSettings.name;
@@ -30,7 +38,7 @@ const fallbackOGImage = urlFor(defaultImage)
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/smcc-favicon.png" />
     <SEO
       title={title}
       description={description}
@@ -58,7 +66,7 @@ const fallbackOGImage = urlFor(defaultImage)
   </head>
   <body>
     <SiteHeader
-      mainNavigation={mainNavigationFiltered}
+      mainNavigation={mainNavigation}
       fullNavigation={fullNavigation}
       utilityNavigation={utilityNavigation}
     />

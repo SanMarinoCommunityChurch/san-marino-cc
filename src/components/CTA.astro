@@ -2,17 +2,23 @@
 import { Image } from "@astrojs/image/components";
 import Button from "./Button.astro";
 import bgImage from "../assets/images/church-ext-4.jpg";
+const { content } = Astro.props;
+const { heading, text, linkName, href } = content;
 ---
 
 <article>
   <section class="cta-top">
     <div class="content-wrapper center-items flow">
-      <h2 class="text-step-4 color-white">New? Start here.</h2>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua.
-      </p>
-      <Button href="/" theme="primary-light">Call to Action</Button>
+      <h2 class="text-step-4 color-white">{heading}</h2>
+      <p>{text}</p>
+      <Button
+        href={href.sectionSlug
+          ? `/${href.pageSlug.fullUrl}`
+          : `/${href.pageSlug.current}`}
+        theme="primary-light"
+      >
+        {linkName}
+      </Button>
     </div>
     <Image src={bgImage} alt="" />
   </section>
@@ -21,8 +27,7 @@ import bgImage from "../assets/images/church-ext-4.jpg";
       <div class="flow">
         <h3 class="text-step-2">Sign up for email updates</h3>
         <p class="paragraphs">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          Let us know if you would like to receive our weekly email updates.
         </p>
       </div>
       <form class="cluster">

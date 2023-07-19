@@ -15,13 +15,21 @@ const socialLinks = siteSettings.socialLinks;
   <div class="content-wrapper">
     <div class="nav-grid">
       {
-        fullNavigation.map((navItem) => (
+        fullNavigation.entries.map((navItem) => (
           <div class="flow">
             <div class="small-title">{navItem.name}</div>
             <ul class="flow">
-              {navItem.children.map((navChild) => (
+              {navItem.pages.map((navChild) => (
                 <li>
-                  <a href={`/${navItem.slug}/${navChild.slug}`}>
+                  <a
+                    href={
+                      navChild._type == "page"
+                        ? navChild.sectionSlug
+                          ? `/${navChild.pageSlug.fullUrl}`
+                          : `/${navChild.pageSlug.current}`
+                        : `${navChild.href}`
+                    }
+                  >
                     {navChild.name}
                   </a>
                 </li>
@@ -33,9 +41,19 @@ const socialLinks = siteSettings.socialLinks;
       <div class="flow">
         <ul class="flow">
           {
-            utilityNavigation[0].children.map((navChild) => (
+            utilityNavigation.entries.map((navItem) => (
               <li>
-                <a href={`/${navChild.slug}`}>{navChild.name}</a>
+                <a
+                  href={
+                    navItem._type == "page"
+                      ? navItem.sectionSlug
+                        ? `/${navItem.pageSlug.fullUrl}`
+                        : `/${navItem.pageSlug.current}`
+                      : `${navItem.href}`
+                  }
+                >
+                  {navItem.name}
+                </a>
               </li>
             ))
           }

@@ -19,7 +19,7 @@ const layouts = {
 
 const { content, theme = "light", layout = "image-left" } = Astro.props;
 
-const { title, description, link, image } = content;
+const { title, description, linkName, href, image } = content;
 ---
 
 <article
@@ -27,7 +27,12 @@ const { title, description, link, image } = content;
   data-theme={themes[theme]}
   data-layout={layouts[layout]}
 >
-  <a href={link.url} class="frame img-link">
+  <a
+    href={href.sectionSlug
+      ? `/${href.pageSlug.fullUrl}`
+      : `/${href.pageSlug.current}`}
+    class="frame img-link"
+  >
     <img
       class="img"
       src={urlFor(image).width(800).height(640).auto("format").url()}
@@ -48,12 +53,14 @@ const { title, description, link, image } = content;
     </div>
     <footer class="feature-link cluster">
       <Button
-        href={link.url}
+        href={href.sectionSlug
+          ? `/${href.pageSlug.fullUrl}`
+          : `/${href.pageSlug.current}`}
         style="none"
         theme={themes[theme] == "light" ? "primary" : "primary-light"}
         size="none"
       >
-        {link.name}
+        {linkName}
       </Button>
       <svg
         xmlns="http://www.w3.org/2000/svg"

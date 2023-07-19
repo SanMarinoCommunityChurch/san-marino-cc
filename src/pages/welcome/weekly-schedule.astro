@@ -6,18 +6,15 @@ import traditionalImg from "../../assets/images/worship.jpg";
 import contemporaryImg from "../../assets/images/contemporary.jpg";
 import SectionPage from "../../layouts/SectionPage.astro";
 
-import { allFeatures } from "../../lib/pages";
-
-const features = allFeatures.filter(
-  (feature) =>
-    feature._id === "85d14060-84d4-4a40-9702-1058643f5ec9" ||
-    feature._id === "cabb7207-7b72-43a8-9ec3-27cafe575da0"
-);
+// const features = allFeatures.filter(
+//   (feature) =>
+//     feature._id === "85d14060-84d4-4a40-9702-1058643f5ec9" ||
+//     feature._id === "cabb7207-7b72-43a8-9ec3-27cafe575da0"
+// );
 ---
 
 <SectionPage
   currentPage={"1fde3a48-27a1-4361-a045-8bbde2561893"}
-  localNavSection={"Welcome"}
   contentPadding
 >
   <div class="center-items text-step-1 paragraphs mx-auto">
@@ -25,7 +22,7 @@ const features = allFeatures.filter(
     reprehenderit sunt quo nam, incidunt possimus ducimus alias error. Nisi,
     porro!
   </div>
-  <FeatureList features={features} />
+  <!-- <FeatureList features={features} /> -->
 </SectionPage>
 <style>
   article {

@@ -13,14 +13,28 @@ const link2 = links[1];
   <div class="content-wrapper flow">
     <div>
       <p class="small-title">{eyebrow}</p>
-      <h1 class="text-step-7 color-white">{header}</h1>
+      <h1 class="text-step-8 color-white">{header}</h1>
     </div>
     <p>{description}</p>
     <div class="cluster">
-      <Button href={link1.url} theme="white">{link1.name}</Button>
+      <Button
+        href={link1.href.sectionSlug
+          ? link1.href.pageSlug.fullUrl
+          : link1.href.pageSlug.current}
+        theme="white"
+      >
+        {link1.name}
+      </Button>
       {
         link2 && (
-          <a href={link2.url} class="text-step--1">
+          <a
+            href={
+              link1.href.sectionSlug
+                ? link1.href.pageSlug.fullUrl
+                : link1.href.pageSlug.current
+            }
+            class="text-step--1"
+          >
             {link2.name}
           </a>
         )
@@ -50,6 +64,7 @@ const link2 = links[1];
     display: flex;
     flex-direction: column;
     justify-content: center;
+    text-align: center;
     align-items: flex-start;
     height: clamp(70vh, 45rem, 80vh);
     padding-block-start: var(--space-3xl);
@@ -58,6 +73,7 @@ const link2 = links[1];
 
   .flow {
     --flow-space: var(--space-m);
+    align-items: center;
   }
 
   .content-wrapper {

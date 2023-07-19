@@ -8,24 +8,30 @@ import Feature from "../components/Feature.astro";
 import FeatureList from "../components/FeatureList.astro";
 import EventsHome from "../components/Events/EventsHome.astro";
 import CTA from "../components/CTA.astro";
+import ContactAvatar from "../components/ContactAvatar.astro";
 import WelcomeQuestionsImage from "../components/WelcomeQuestionsImage.astro";
 import Slider from "../components/Slider.astro";
 import { siteSettings } from "../lib/settings";
-import { allFeatures } from "../lib/pages";
+import { homePage } from "../lib/pages";
 import { allPosts } from "../lib/posts";
+import { urlFor } from "../lib/sanity";
 
-const hero = siteSettings.homePageHero;
-const features = allFeatures.filter(
-  (feature) =>
-    feature._id === "7b24cfd6-1805-4939-8b75-fc84189214db" ||
-    feature._id === "e712d400-586a-47b3-9489-734160ef2977"
-);
+// const hero = siteSettings.homePageHero;
+// const features = allFeatures.filter(
+//   (feature) =>
+//     feature._id === "7b24cfd6-1805-4939-8b75-fc84189214db" ||
+//     feature._id === "e712d400-586a-47b3-9489-734160ef2977"
+// );
 
 import welcomeCollage from "../assets/images/welcome-collage.png";
 import avatar from "../assets/images/jessica-vaughan-lower-headshot.jpg";
+import { joinNames } from "../utils/format";
 
 const title = siteSettings.siteName;
 const description = siteSettings.siteDescription;
+const { hero, welcome, welcomeLinks, features, homeCta, featuredResources } =
+  homePage;
+const resources = featuredResources.resourceLinks;
 ---
 
 <Layout meta={{ title: title, description: description }}>
@@ -37,24 +43,37 @@ const description = siteSettings.siteDescription;
       <div class="content-wrapper with-sidebar">
         <div class="flow">
           <div class="frame avatar">
-            <Image
-              src={avatar}
-              width={200}
-              alt="Pastor Jessica Vaughan Lower"
+            <img
+              src={urlFor(welcome.person.image)
+                .width(300)
+                .height(300)
+                .auto("format")
+                .url()}
+              width={300}
+              height={300}
+              alt={joinNames(welcome.person.name)}
             />
           </div>
-          <h2 class="text-step-2">Pastor's Welcome</h2>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem
-            ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum
-            dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt.
-          </p>
-          <p class="small-title">— Rev. Jessica Vaughan Lower</p>
+          <h2 class="text-step-2">{welcome.heading}</h2>
+          <p>{welcome.text}</p>
+          <p class="small-title">— {joinNames(welcome.person.name)}</p>
           <div class="meet-grid">
-            <a href="/who-we-are/church-leadership" class="flow">
+            {
+              welcome.links.map((link) => (
+                <a
+                  href={
+                    link.href.sectionSlug
+                      ? `/${link.href.pageSlug.fullUrl}`
+                      : `/${link.href.pageSlug.current}`
+                  }
+                  class="flow"
+                >
+                  <h3 class="small-title">{link.name}</h3>
+                  <p class="text-step--1">{link.text}</p>
+                </a>
+              ))
+            }
+            <!-- <a href="/who-we-are/church-leadership" class="flow">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 640 512"
@@ -132,16 +151,27 @@ const description = siteSettings.siteDescription;
               <p class="text-step--1">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
               </p>
-            </a>
+            </a> -->
           </div>
         </div>
         <div>
-          <Picture
+          <img
+            src={urlFor(welcome.image).width(900).auto("format").url()}
+            alt={welcome.image.asset.altText || ""}
+            class="img"
+            width={900}
+            height={Math.floor(
+              900 / welcome.image.asset.metadata.dimensions.aspectRatio
+            )}
+            loading="lazy"
+            decoding="async"
+          />
+          <!-- <Picture
             src={welcomeCollage}
             alt=""
             widths={[600, 900, 1200]}
             sizes="100vw"
-          />
+          /> -->
         </div>
       </div>
     </article>
@@ -155,12 +185,12 @@ const description = siteSettings.siteDescription;
         </EventsHome>
       </div>
     </section>
-    <CTA />
+    <CTA content={homeCta} />
     <section id="resources">
       <Slider
-        heading="Featured Resources"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-        slides={allPosts}
+        heading={featuredResources.heading}
+        description={featuredResources.description}
+        slides={resources}
       />
       <div class="center-items">
         <Button href="/resources">See All Resources</Button>

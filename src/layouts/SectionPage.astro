@@ -5,45 +5,49 @@ import { PortableText } from "astro-portabletext";
 import InlineImage from "../components/InlineImage.astro";
 import PreviewFeature from "../components/PreviewFeature.astro";
 import FullWidthFeature from "../components/FullWidthFeature.astro";
+import FeatureList from "../components/FeatureList.astro";
 import "../styles/rich-text.css";
 
 import { urlFor } from "../lib/sanity";
-import { filterLocalNav } from "../lib/navigation";
+import { filterLocalNav, allNavigation } from "../lib/navigation";
 import { getCurrentPage } from "../lib/pages";
 import IntroSection from "../components/IntroSection.astro";
 
-const utilityLocalNav = {
-  name: "More",
-  slug: "",
-  children: [
-    {
-      name: "Give",
-      slug: "/giving",
-    },
-    {
-      name: "Calendar",
-      slug: "/calendar",
-    },
-    {
-      name: "Contact",
-      slug: "/contact",
-    },
-    {
-      name: "Nursery School",
-      slug: "https://www.smccnurseryschool.org/",
-    },
-  ],
-};
+// const utilityLocalNav = {
+//   name: "More",
+//   pages: [
+//     {
+//       name: "Give",
+//       slug: "/giving",
+//     },
+//     {
+//       name: "Calendar",
+//       slug: "/calendar",
+//     },
+//     {
+//       name: "Contact",
+//       slug: "/contact",
+//     },
+//     {
+//       name: "Nursery School",
+//       slug: "https://www.smccnurseryschool.org/",
+//     },
+//   ],
+// };
 
 const { currentPage, localNavSection, contentPadding } = Astro.props;
 const page = getCurrentPage(currentPage);
 const {
   seo,
+  template,
   pageName,
   pageDescription,
   background,
+  sectionSlug,
+  pageSlug,
   introSections,
   cta,
+  pageContent,
   content,
 } = page;
 
@@ -59,9 +63,7 @@ const bgImage = background.image
   </Fragment>
   <main slot="main">
     <InnerHero
-      localNav={localNavSection === "Utility"
-        ? utilityLocalNav
-        : filterLocalNav(localNavSection)}
+      localNav={filterLocalNav(currentPage)}
       pageTitle={pageName}
       pageDescription={pageDescription}
       bgImage={bgImage}
@@ -83,6 +85,11 @@ const bgImage = background.image
           })
       }
       <slot />
+      {
+        template == "features" && (
+          <FeatureList features={pageContent.features} />
+        )
+      }
       {
         content && (
           <div class="content rich-text">

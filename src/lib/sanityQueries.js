@@ -1,6 +1,8 @@
 const pages = `*[_type == 'page'] {
   _id,
   "slug": slug.current,
+  sectionSlug,
+  pageSlug,
   "pageName": name,
   "pageDescription": description,
   introSections[]{
