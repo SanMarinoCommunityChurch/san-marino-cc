@@ -1,0 +1,17 @@
+---
+import FeatureList from "../components/FeatureList.astro";
+
+const { content } = Astro.props;
+const { introParagraph, features } = content;
+---
+
+<Fragment>
+  {
+    introParagraph && (
+      <p class="center-items text-step-1 paragraphs mx-auto">
+        {introParagraph}
+      </p>
+    )
+  }
+  {features && <FeatureList features={features} />}
+</Fragment>

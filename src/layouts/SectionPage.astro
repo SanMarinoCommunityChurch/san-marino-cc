@@ -13,6 +13,14 @@ import { filterLocalNav, allNavigation } from "../lib/navigation";
 import { getCurrentPage } from "../lib/pages";
 import IntroSection from "../components/IntroSection.astro";
 
+import DefaultTemplate from "../pageTemplates/DefaultTemplate.astro";
+import AboutTemplate from "../pageTemplates/AboutTemplate.astro";
+import ContactTemplate from "../pageTemplates/ContactTemplate.astro";
+import GiveTemplate from "../pageTemplates/GiveTemplate.astro";
+import MissionsTemplate from "../pageTemplates/MissionsTemplate.astro";
+import FeaturesTemplate from "../pageTemplates/FeaturesTemplate.astro";
+import FAQTemplate from "../pageTemplates/FAQTemplate.astro";
+
 // const utilityLocalNav = {
 //   name: "More",
 //   pages: [
@@ -51,9 +59,19 @@ const {
   content,
 } = page;
 
-const bgImage = background.image
-  ? urlFor(background.image).width(1600).height(450).auto("format").url()
+////// Page name, header text/bg image, and cta are all handled on this layout.
+////// pageContent is passed down to child template components
+
+const bgImage = pageContent.headerBgImage
+  ? urlFor(pageContent.headerBgImage)
+      .width(1600)
+      .height(450)
+      .auto("format")
+      .url()
   : undefined;
+// const bgImage = background.image
+//   ? urlFor(background.image).width(1600).height(450).auto("format").url()
+//   : undefined;
 ---
 
 <Layout meta={seo}>
@@ -65,11 +83,19 @@ const bgImage = background.image
     <InnerHero
       localNav={filterLocalNav(currentPage)}
       pageTitle={pageName}
-      pageDescription={pageDescription}
+      pageDescription={pageContent.headerText}
       bgImage={bgImage}
     />
     <article class:list={["content-wrapper flow", contentPadding && "padding"]}>
-      <slot name="pre-content" />
+      {template == "default" && <DefaultTemplate content={pageContent} />}
+      {template == "about" && <AboutTemplate content={pageContent} />}
+      {template == "contact" && <ContactTemplate content={pageContent} />}
+      {template == "give" && <GiveTemplate content={pageContent} />}
+      {template == "contentCTA" && <DefaultTemplate content={pageContent} />}
+      {template == "missions" && <MissionsTemplate content={pageContent} />}
+      {template == "features" && <FeaturesTemplate content={pageContent} />}
+      {template == "faq" && <FAQTemplate content={pageContent} />}
+      <!-- <slot name="pre-content" />
       {
         introSections &&
           introSections.map((section) => {
@@ -83,14 +109,14 @@ const bgImage = background.image
               </IntroSection>
             );
           })
-      }
+      } -->
       <slot />
-      {
+      <!-- {
         template == "features" && (
           <FeatureList features={pageContent.features} />
         )
-      }
-      {
+      } -->
+      <!-- {
         content && (
           <div class="content rich-text">
             <PortableText
@@ -101,13 +127,13 @@ const bgImage = background.image
             />
           </div>
         )
-      }
+      } -->
     </article>
     <slot name="pre-footer" />
     {
-      cta && (
+      pageContent.cta && (
         <aside>
-          <FullWidthFeature content={cta} />
+          <FullWidthFeature content={pageContent.cta} />
         </aside>
       )
     }

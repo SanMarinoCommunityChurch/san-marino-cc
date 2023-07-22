@@ -1,0 +1,56 @@
+---
+import Accordion from "../components/Svelte/Accordion.svelte";
+import SidebarLinks from "../components/SidebarLinks.astro";
+import { PortableText } from "astro-portabletext";
+
+const { content } = Astro.props;
+const { faqs, faqSidebar } = content;
+---
+
+<Fragment>
+  <div class="with-sidebar">
+    <div class="faq flow">
+      {
+        faqs.set.map((item) => (
+          <Accordion client:load>
+            <Fragment slot="question">{item.question}</Fragment>
+            <div class="text flow" slot="answer">
+              <PortableText value={item.answer} />
+            </div>
+          </Accordion>
+        ))
+      }
+      <Accordion client:load>
+        <Fragment slot="question">What are your service options?</Fragment>
+        <Fragment slot="answer">
+          <p>
+            We offer <a href="/">three different Sunday worship experiences</a>.
+            The first two are live-streamed online and archived to assist you in
+            worshipping whenever is most convenient for you.
+          </p>
+        </Fragment>
+      </Accordion>
+      <Accordion client:load />
+    </div>
+    <SidebarLinks title={faqSidebar.heading} items={faqSidebar.links} />
+  </div>
+</Fragment>
+
+<style>
+  .faq.flow {
+    gap: 2rem;
+  }
+
+  .text ul {
+    list-style: disc;
+    padding-left: 2rem;
+  }
+
+  .text ul > * + * {
+    margin-top: 1rem;
+  }
+
+  .text a {
+    color: var(--color-primary-800);
+  }
+</style>

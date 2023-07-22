@@ -1,17 +1,15 @@
 ---
 import SectionPage from "../../layouts/SectionPage.astro";
 import Button from "../../components/Button.astro";
-import { previewEvents } from "../../lib/events";
 ---
 
-<SectionPage
-  currentPage={"88b9cf6b-df9d-4ba2-bed0-e4cddf91201b"}
-  localNavSection="Utility"
->
+<SectionPage currentPage={"88b9cf6b-df9d-4ba2-bed0-e4cddf91201b"}>
+  <div id="calendar">
+    <div id="loading" style="text-align: center;">...Loading calendar</div>
+  </div>
   <div class="center-items">
     <Button href="/connect/events">See All Events</Button>
   </div>
-  <div id="calendar"></div>
 </SectionPage>
 
 <style>
@@ -30,17 +28,27 @@ import { previewEvents } from "../../lib/events";
   const calenderEl = document.querySelector("#calendar") as HTMLElement;
 
   async function getEventData() {
-    const res = await fetch(
-      "https://idyllic-alfajores-503e42.netlify.app/calendar.json"
-    );
+    const res = await fetch("http://localhost:3000/calendar.json");
     return res.json();
   }
+
   async function getServiceData() {
-    const res = await fetch(
-      "https://idyllic-alfajores-503e42.netlify.app/worship.json"
-    );
+    const res = await fetch("http://localhost:3000/worship.json");
     return res.json();
   }
+  // async function getEventData() {
+  //   const res = await fetch(
+  //     "https://idyllic-alfajores-503e42.netlify.app/calendar.json"
+  //   );
+  //   return res.json();
+  // }
+
+  // async function getServiceData() {
+  //   const res = await fetch(
+  //     "https://idyllic-alfajores-503e42.netlify.app/worship.json"
+  //   );
+  //   return res.json();
+  // }
 
   const eventData = await getEventData();
   const serviceData = await getServiceData();
@@ -80,8 +88,6 @@ import { previewEvents } from "../../lib/events";
       };
     });
   });
-
-  console.log(serviceObjs);
 
   const combinedEvents = [].concat(eventObjs, serviceObjs);
 

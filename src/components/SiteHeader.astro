@@ -45,7 +45,7 @@ const { mainNavigation, fullNavigation, utilityNavigation } = Astro.props;
                   <div class="flow">
                     {navItem.image && (
                       <a
-                        href={`/${navItem.pages[0].pageSlug.fullUrl}`}
+                        href={navItem.pages[0].sectionSlug ? `/${navItem.pages[0].pageSlug.fullUrl}` : `/${navItem.pages[0].pageSlug.current}`}
                         class="img-link"
                       >
                         <div class="overlay" />

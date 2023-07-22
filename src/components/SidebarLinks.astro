@@ -1,5 +1,6 @@
 ---
 import { Image } from "@astrojs/image/components";
+import { urlFor } from "../lib/sanity";
 const { title = "Explore more", items } = Astro.props;
 ---
 
@@ -9,13 +10,23 @@ const { title = "Explore more", items } = Astro.props;
     {
       items.map((item) => (
         <li class="item">
-          <a href={item.href}>
+          <a
+            href={
+              item.href.sectionSlug
+                ? `/${item.href.pageSlug.fullUrl}`
+                : `/${item.href.pageSlug.current}`
+            }
+          >
             <div class="text flow">
-              <div>{item.name}</div>
+              <div>{item.heading}</div>
               <div>{item.description}</div>
             </div>
             <div class="overlay" />
-            <Image class="img" src={item.image} alt="x" width={900} />
+            <img
+              class="img"
+              src={urlFor(item.image).width(900).auto("format").url()}
+              alt={item.image.asset.altText || ""}
+            />
           </a>
         </li>
       ))

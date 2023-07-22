@@ -1,20 +1,36 @@
 ---
-import SectionPage from "../../layouts/SectionPage.astro";
-import { urlFor } from "../../lib/sanity";
+import IntroSection from "../components/IntroSection.astro";
 import { PortableText } from "astro-portabletext";
-import { allMissions } from "../../lib/ministries";
+import { urlFor } from "../lib/sanity";
+import { isOdd } from "../utils/data";
+import { allMissions } from "../lib/ministries";
 
-// let baseImageHeight = 0;
-// let baseImageWidth = 0;
-// let cropHeight = 0;
-// let croppedAspectRatio = 0;
+const { content } = Astro.props;
+const { textAndImageBlocks, missionsText } = content;
+
+let baseImageHeight = 0;
+let baseImageWidth = 0;
+let cropHeight = 0;
+let croppedAspectRatio = 0;
 ---
 
-<SectionPage
-  currentPage={"210cb910-f147-410f-bd0f-c23a6096028b"}
-  contentPadding
->
-  <!-- <div class="cluster sticky">
+<Fragment>
+  <i class="fa-duotone fa-user" style="color: var(--color-primary-800)"></i>
+  {
+    textAndImageBlocks &&
+      textAndImageBlocks.map((section, index) => {
+        return (
+          <IntroSection
+            title={section.heading}
+            image={section.image}
+            layout={isOdd(index) ? "flipped" : ""}
+          >
+            <PortableText value={section.text} />
+          </IntroSection>
+        );
+      })
+  }
+  <div class="cluster sticky">
     <div class="small-title">Jump to:</div>
     <a href="#partners" class="text-step-4 heading-link">Mission Partners</a>
     <a href="#involvement" class="text-step-4 heading-link"
@@ -145,10 +161,115 @@ import { allMissions } from "../../lib/ministries";
         })
       }
     </section>
-  </div> -->
-</SectionPage>
+  </div>
+</Fragment>
 
-<!-- <script>
+<style>
+  .mission-list {
+    margin-top: 0;
+  }
+
+  .mission-list > section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xl);
+  }
+
+  .mission-list > section + section {
+    margin-top: var(--space-3xl);
+  }
+
+  .mission {
+    display: grid;
+    grid-template-columns: 1fr 2.5fr;
+    gap: 5rem;
+  }
+
+  .img {
+    max-height: 12rem;
+    object-fit: contain;
+    /* justify-self: self-end; */
+  }
+
+  .text ul {
+    list-style: disc;
+    padding-left: 1rem;
+  }
+
+  .text a {
+    color: var(--color-primary-800);
+  }
+
+  .sticky {
+    position: sticky;
+    background: white;
+    z-index: 20;
+    padding-block: 1.5rem;
+    top: 5rem;
+    margin-block: 3rem;
+    /* border-bottom: 1px solid var(--color-primary-300); */
+  }
+
+  .heading-link {
+    color: var(--color-primary-800);
+    text-decoration: none;
+    font-family: var(--font-secondary);
+    font-weight: var(--font-weight-header);
+    transition: all 0.2s ease;
+  }
+
+  .heading-link:hover {
+    text-decoration: underline;
+    color: var(--color-primary-800);
+    opacity: 1 !important;
+  }
+
+  .sticky.cluster {
+    --cluster-space: 3rem;
+  }
+
+  #partners,
+  #involvement {
+    scroll-margin-top: 12rem;
+  }
+
+  #involvement {
+    border-top: 1px solid var(--color-neutral-100);
+    padding-top: var(--space-3xl);
+  }
+
+  @media (max-width: 768px) {
+    .mission {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .img {
+      height: 10rem;
+      width: fit-content;
+    }
+
+    .sticky.cluster {
+      --cluster-space: 1rem;
+    }
+
+    .heading-link {
+      font-size: var(--step-1);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .heading-link {
+      font-size: var(--step-0);
+    }
+
+    .sticky.cluster {
+      --cluster-space: 0.5rem;
+    }
+  }
+</style>
+
+<script>
   const headerLinks = document.querySelectorAll(".sticky a");
   const sections = document.querySelectorAll(".mission-list > section");
 
@@ -175,4 +296,4 @@ import { allMissions } from "../../lib/ministries";
   sections.forEach((el) => {
     observer.observe(el);
   });
-</script> -->
+</script>

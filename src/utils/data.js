@@ -1,3 +1,7 @@
+function isOdd(num) {
+  return num % 2;
+}
+
 const shuffle = (array) => {
   return array.sort(() => Math.random() - 0.5);
 };
@@ -21,4 +25,4 @@ const randomizeAndSlice = (data, outputAmount) => {
   return randomized.slice(0, outputAmount);
 };
 
-export { randomizeAndSlice, filterAgainst };
+export { randomizeAndSlice, filterAgainst, isOdd };

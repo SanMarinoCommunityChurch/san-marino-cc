@@ -1,0 +1,43 @@
+---
+import IntroSection from "../components/IntroSection.astro";
+import PreviewFeature from "../components/PreviewFeature.astro";
+import InlineImage from "../components/InlineImage.astro";
+import { PortableText } from "astro-portabletext";
+import "../styles/rich-text.css";
+
+function isOdd(num) {
+  return num % 2;
+}
+
+const { content } = Astro.props;
+const { textAndImageBlocks, richContent } = content;
+---
+
+<Fragment>
+    {
+      textAndImageBlocks &&
+        textAndImageBlocks.map((section, index) => {
+          return (
+            <IntroSection
+              title={section.heading}
+              image={section.image}
+              layout={isOdd(index) ? "flipped" : ""}
+            >
+              <PortableText value={section.text} />
+            </IntroSection>
+          );
+        })
+    }
+    {
+      richContent && (
+        <div class="content rich-text">
+          <PortableText
+            value={richContent}
+            components={{
+              type: { image: InlineImage, previewFeature: PreviewFeature },
+            }}
+          />
+        </div>
+      )
+    }
+</Fragment>

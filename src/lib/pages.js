@@ -123,6 +123,7 @@ export const homePage = await getSanityData(`*[_type == 'homePage'][0] {
     links[]{
       name,
       text,
+      icon,
       "href": href->{
         name,
         sectionSlug,
@@ -132,11 +133,13 @@ export const homePage = await getSanityData(`*[_type == 'homePage'][0] {
   },
   welcomeLinks{
     heading,
+    description,
     links[]{
       "image": image{
         ...,
         asset->
       },
+      icon,
       "href": href[0].slug
     }
   },
@@ -184,9 +187,142 @@ export const homePage = await getSanityData(`*[_type == 'homePage'][0] {
   }
 }`);
 
+export const sanityPageData = await getSanityData(`*[_type == 'page'] {
+  _id,
+  template,
+  sectionSlug,
+  pageSlug,
+  "pageName": name,
+  "pageContent": {
+    "headerText": description,
+    "headerBgImage": image{
+      ...,
+      asset->
+    },
+    template == 'features' || template == 'give' => {
+      introParagraph
+    },
+    template == 'about' => {
+      visionStatement
+    },
+    template == 'default' || template == 'about' || template == 'give' || template == 'missions' => {
+      "textAndImageBlocks": introSections[]{
+        heading,
+        text,
+        "image": image{
+          ...,
+          asset->
+        }
+      }
+    },
+    template == 'features' || template == 'give' => {
+      features[]{
+        title,
+        description,
+        "image": image{
+          ...,
+          asset->
+        },
+        "linkName": link.name,
+        "href": link.href->{
+          name,
+          sectionSlug,
+          pageSlug
+        }
+      }
+    },
+    template == 'faq' => {
+      faqs->{
+        set
+      },
+      faqSidebar{
+        heading,
+        "links": imageLinks[]{
+          heading,
+          description,
+          icon,
+          "image": image{
+            ...,
+            asset->
+          },
+          "href": href[0]->{
+            sectionSlug,
+            pageSlug
+          }
+        }
+      }
+    },
+    template == 'missions' => {
+      missionsText
+    },
+    template == 'contact' => {
+      contact
+    },
+    template == 'contact' || template == 'give' => {
+      "imageLinksSection": imageLinks{
+        heading,
+        description,
+        icon,
+        "links": links[]{
+          "image": image{
+            ...,
+            asset->
+          },
+          "href": href[0].slug
+        }
+      }
+    },
+    template == 'default' || template == 'give' || template == 'contentCTA' => {
+      "richContent": content[]{
+        ...,
+        _type == "image" => {
+          ...,
+          asset->
+        },
+        _type == "previewFeature" => {
+          ...,
+          links[]{
+            ...,
+            "image": image{
+              ...,
+              asset->
+            }
+          }
+        },
+      }
+    },
+    template == 'default' || template == 'about' || template == 'contact' || template == 'give' || template == 'faq' || template == 'missions' || template == 'contentCTA' => {
+      "cta": callToAction{
+        "button": {
+          "href": buttonHref,
+          "text": buttonText
+        },
+        heading,
+        text,
+        "image": image{
+          ...,
+          asset->
+        }
+      }
+    }
+  },
+  "seo": {
+    "title": seoTitle,
+    "description": seoDescription,
+    openGraph{
+      title,
+      description,
+      "image": image{
+        ...,
+        asset->
+      }
+    }
+  },
+}`);
+
 export const getCurrentPage = (id) => {
   // console.log(pageData.find((page) => page._id === id));
   // Return all page data from pageData Sanity query
   // Sanity API only called once
-  return pageData.find((page) => page._id === id);
+  return sanityPageData.find((page) => page._id === id);
 };

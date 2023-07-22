@@ -1,7 +1,5 @@
 ---
-import {
-  allNavigation,
-} from "../lib/navigation";
+import { allNavigation } from "../lib/navigation";
 import { SEO } from "astro-seo";
 import { siteSettings, defaultImage } from "../lib/settings";
 import { urlFor } from "../lib/sanity";
@@ -62,6 +60,8 @@ const fallbackOGImage = urlFor(defaultImage)
       }}
     />
     <link rel="stylesheet" href="https://use.typekit.net/wsf6agj.css" />
+    <script defer src="/fontawesome/duotone.min.js"></script>
+    <script defer src="/fontawesome/fontawesome.min.js"></script>
     <slot name="pageHead" />
   </head>
   <body>
