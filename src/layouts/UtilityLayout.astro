@@ -1,0 +1,79 @@
+---
+import Layout from "./Layout.astro";
+import InnerHero from "../components/InnerHero.astro";
+import FullWidthFeature from "../components/FullWidthFeature.astro";
+
+import { urlFor } from "../lib/sanity";
+import { getCurrentPage } from "../lib/pages";
+
+import UtilityTemplate from "../pageTemplates/UtilityTemplate.astro";
+import ContactTemplate from "../pageTemplates/ContactTemplate.astro";
+
+const { currentPage, contentPadding } = Astro.props;
+const page = getCurrentPage(currentPage);
+const { seo, template, pageName, pageContent } = page;
+
+////// Page name, header text/bg image, and cta are all handled on this layout.
+////// pageContent is passed down to child template components
+
+const bgImage = pageContent.headerBgImage
+  ? urlFor(pageContent.headerBgImage)
+      .width(1600)
+      .height(450)
+      .auto("format")
+      .url()
+  : undefined;
+---
+
+<Layout meta={seo}>
+  <Fragment slot="pageHead">
+    <link rel="preload" href={bgImage} as="image" />
+    <slot name="pageHead" />
+  </Fragment>
+  <main slot="main">
+    <InnerHero
+      pageTitle={pageName}
+      pageDescription={pageContent.headerText}
+      bgImage={bgImage}
+    />
+    <article class:list={["content-wrapper flow", contentPadding && "padding"]}>
+      <!-- {template == "utility" && <UtilityTemplate content={pageContent} />}
+      {template == "contact" && <ContactTemplate content={pageContent} />} -->
+      <slot />
+    </article>
+    <slot name="pre-footer" />
+    {
+      pageContent.cta && (
+        <aside>
+          <FullWidthFeature content={pageContent.cta} />
+        </aside>
+      )
+    }
+  </main>
+</Layout>
+
+<style>
+  article.content-wrapper {
+    margin-block-start: var(--section-spacer-half);
+    margin-block-end: var(--section-spacer);
+  }
+
+  .padding {
+    padding-block-start: var(--space-2xl);
+  }
+
+  .content-wrapper.flow {
+    --flow-space: var(--space-3xl);
+  }
+
+  @media (max-width: 768px) {
+    article.content-wrapper {
+      margin-block-start: 3rem;
+      margin-block-end: 3rem;
+    }
+
+    .padding {
+      padding-block-start: 1rem;
+    }
+  }
+</style>

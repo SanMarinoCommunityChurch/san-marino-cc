@@ -1,16 +1,17 @@
 ---
 import SectionPage from "../../layouts/SectionPage.astro";
+import UtilityLayout from "../../layouts/UtilityLayout.astro";
 import Button from "../../components/Button.astro";
 ---
 
-<SectionPage currentPage={"88b9cf6b-df9d-4ba2-bed0-e4cddf91201b"}>
+<UtilityLayout currentPage={"88b9cf6b-df9d-4ba2-bed0-e4cddf91201b"}>
   <div id="calendar">
     <div id="loading" style="text-align: center;">...Loading calendar</div>
   </div>
   <div class="center-items">
     <Button href="/connect/events">See All Events</Button>
   </div>
-</SectionPage>
+</UtilityLayout>
 
 <style>
   .fc-event {

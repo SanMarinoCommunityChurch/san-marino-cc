@@ -240,13 +240,15 @@ const bgImageStyle = `linear-gradient(to top, rgb(0 0 0 / 0.75) 15%, rgb(0 0 0 /
 
 <script>
   const localNav = document.querySelector(".local-nav");
-  const navLinks = localNav.querySelectorAll("a");
   const currentURL = window.location.pathname;
-  navLinks.forEach((link) => {
-    if (link.pathname + "/" === currentURL || link.pathname === currentURL) {
-      link.style.color = "var(--color-primary-300)";
-    }
-  });
+  if (localNav) {
+    const navLinks = localNav.querySelectorAll("a");
+    navLinks.forEach((link) => {
+      if (link.pathname + "/" === currentURL || link.pathname === currentURL) {
+        link.style.color = "var(--color-primary-300)";
+      }
+    });
+  }
 </script>
 
 <script>
