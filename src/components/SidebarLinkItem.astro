@@ -1,13 +1,14 @@
 ---
 import { defaultImage } from "../lib/settings";
 import { urlFor } from "../lib/sanity";
-const { href, name, description } = Astro.props;
+const { href, name, description, icon } = Astro.props;
 ---
 
 <a href={href}>
   <div class="text flow">
-    <div>{name}</div>
-    <div>{description}</div>
+    {icon && <i class={`fa-duotone fa-${icon}`} />}
+    <div class="item-heading">{name}</div>
+    <p>{description}</p>
   </div>
   <div class="overlay"></div>
   <img
@@ -40,15 +41,16 @@ const { href, name, description } = Astro.props;
 
   .text.flow {
     --flow-space: 0.5rem;
+    align-items: flex-start;
   }
 
-  .text > :first-child {
+  .text .item-heading {
     font-family: var(--font-secondary);
     font-size: var(--step-1);
     font-weight: var(--font-weight-header);
   }
 
-  .text > :last-child {
+  .text p {
     font-size: var(--step--1);
   }
 

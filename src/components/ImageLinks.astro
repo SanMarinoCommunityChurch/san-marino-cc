@@ -1,0 +1,184 @@
+---
+import { urlFor } from "../lib/sanity";
+const { links } = Astro.props;
+---
+
+<div class="responsive-grid">
+  {
+    links.map((link) => {
+      let href = "";
+      if (link.href.type == "page") {
+        href = link.href.sectionSlug
+          ? link.href.pageSlug.fullUrl
+          : link.href.pageSlug.current;
+      } else {
+        href = link.href.pageSlug;
+      }
+      return (
+        <a href={`/${href}`}>
+          <div class="relative flow text">
+            {link.icon && <i class={`fa-duotone fa-${link.icon}`} />}
+            <div>{link.heading}</div>
+            {link.description && <p class="description">{link.description}</p>}
+          </div>
+          <div class="overlay" />
+          <img
+            src={urlFor(link.image).width(600).auto("format").url()}
+            alt={link.image.asset.altText || ""}
+            width={600}
+            class="img"
+            style={`background-image: url(${link.image.asset.metadata.lqip})`}
+            loading="lazy"
+            decoding="async"
+          />
+        </a>
+      );
+    })
+  }
+</div>
+
+<style>
+  .content-wrapper {
+    margin-block: 6rem;
+  }
+
+  .center-items {
+    font-size: var(--step-2);
+    margin-bottom: 3rem;
+  }
+
+  .cluster {
+    --cluster-space: 0.75rem;
+    --align: center;
+  }
+
+  .relative {
+    z-index: 1;
+  }
+
+  .text.flow {
+    --flow-space: 0.5rem;
+    align-items: flex-start;
+  }
+
+  .responsive-grid {
+    --item-min-width: 15rem;
+  }
+
+  .responsive-grid > a {
+    position: relative;
+    height: 24rem;
+    text-decoration: none;
+    border-radius: var(--rounded-corners);
+    font-family: var(--font-secondary);
+    font-weight: var(--font-weight-header);
+    font-size: var(--step-2);
+    line-height: 1.15;
+    padding: 2rem;
+    transition: all 0.2s ease;
+    color: var(--color-white);
+    background-color: var(--bg-color);
+    overflow: hidden;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    --svg-fill: var(--color-white);
+  }
+
+  .description {
+    font-family: var(--font-primary);
+    font-size: var(--step--1);
+    line-height: 1.5;
+    font-weight: 400;
+  }
+
+  svg {
+    transition: transform 0.2s ease;
+  }
+
+  .arrow {
+    position: relative;
+    top: 1px;
+  }
+
+  .responsive-grid > :nth-child(2) .overlay {
+    background: #115e59;
+  }
+
+  .responsive-grid > :nth-child(3) .overlay {
+    background: #c06507;
+  }
+  /* 
+  .responsive-grid > :nth-child(1) {
+    --color: var(--color-primary-800);
+    --bg-color: var(--color-primary-100);
+    --hover-color: var(--color);
+    --hover-bg-color: var(--color-primary-200);
+    --border-color: var(--color-primary-300);
+    --svg-fill: var(--color);
+  }
+
+  .responsive-grid > :nth-child(2) {
+    --color: var(--color-white);
+    --bg-color: var(--color-secondary-500);
+    --hover-color: var(--color);
+    --hover-bg-color: var(--color-secondary-600);
+    --border-color: var(--color-secondary-200);
+    --svg-fill: var(--color);
+  }
+
+  .responsive-grid > :nth-child(3) {
+    --color: var(--color-primary-800);
+    --bg-color: var(--color-tertiary-200);
+    --hover-color: var(--color);
+    --hover-bg-color: var(--color-tertiary-300);
+    --border-color: var(--color-tertiary-500);
+    --svg-fill: var(--color);
+  }
+
+  .responsive-grid > :nth-child(4) {
+    --color: var(--color-white);
+    --bg-color: var(--color-primary-800);
+    --hover-color: var(--color);
+    --hover-bg-color: var(--color-primary-900);
+    --border-color: var(--color-primary-400);
+    --svg-fill: var(--color);
+  } */
+
+  .responsive-grid a:hover svg {
+    transform: translateX(4px);
+  }
+
+  .responsive-grid a:hover .overlay {
+    opacity: 1;
+  }
+
+  .responsive-grid a:hover .img {
+    transform: scale(1.05);
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--color-primary-900);
+    opacity: 0.9;
+    mask-image: linear-gradient(to top, black, transparent);
+    -webkit-mask-image: linear-gradient(to top, black, transparent);
+    transition: all 0.3s ease;
+  }
+
+  .img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.5s ease;
+    z-index: -1;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+</style>

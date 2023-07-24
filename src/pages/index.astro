@@ -9,7 +9,7 @@ import FeatureList from "../components/FeatureList.astro";
 import EventsHome from "../components/Events/EventsHome.astro";
 import CTA from "../components/CTA.astro";
 import ContactAvatar from "../components/ContactAvatar.astro";
-import WelcomeQuestionsImage from "../components/WelcomeQuestionsImage.astro";
+import ImageLinks from "../components/ImageLinks.astro";
 import Slider from "../components/Slider.astro";
 import { siteSettings } from "../lib/settings";
 import { homePage } from "../lib/pages";
@@ -38,7 +38,10 @@ const resources = featuredResources.resourceLinks;
   <main slot="main">
     <HomePageHero hero={hero} fallbackImg={siteSettings.image} />
     <FeaturedVideoBanner />
-    <WelcomeQuestionsImage />
+    <section id="welcome-questions" class="content-wrapper">
+      <h2 class="center-items">{welcomeLinks.heading}</h2>
+      <ImageLinks links={welcomeLinks.links} />
+    </section>
     <article id="welcome" class="welcome">
       <div class="content-wrapper with-sidebar">
         <div class="flow">
@@ -68,6 +71,10 @@ const resources = featuredResources.resourceLinks;
                   }
                   class="flow"
                 >
+                  <i
+                    class={`fa-duotone fa-${link.icon}`}
+                    style="color: var(--color-primary-800);"
+                  />
                   <h3 class="small-title">{link.name}</h3>
                   <p class="text-step--1">{link.text}</p>
                 </a>
@@ -200,9 +207,15 @@ const resources = featuredResources.resourceLinks;
 
   <style>
     #welcome,
+    #welcome-questions,
     #events,
     #resources {
       margin-block: var(--section-spacer);
+    }
+
+    #welcome-questions .center-items {
+      font-size: var(--step-2);
+      margin-bottom: 3rem;
     }
 
     #events {
@@ -250,6 +263,10 @@ const resources = featuredResources.resourceLinks;
 
     .meet-grid a:hover {
       background-color: var(--color-primary-100);
+    }
+
+    .meet-grid .flow {
+      align-items: flex-start;
     }
 
     @media (max-width: 768px) {

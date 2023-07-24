@@ -1,5 +1,4 @@
 ---
-import { Image } from "@astrojs/image/components";
 import { urlFor } from "../lib/sanity";
 const { title = "Explore more", items } = Astro.props;
 ---
@@ -8,28 +7,36 @@ const { title = "Explore more", items } = Astro.props;
   <div class="heading">{title}</div>
   <ul class="flow items">
     {
-      items.map((item) => (
-        <li class="item">
-          <a
-            href={
-              item.href.sectionSlug
-                ? `/${item.href.pageSlug.fullUrl}`
-                : `/${item.href.pageSlug.current}`
-            }
-          >
-            <div class="text flow">
-              <div>{item.heading}</div>
-              <div>{item.description}</div>
-            </div>
-            <div class="overlay" />
-            <img
-              class="img"
-              src={urlFor(item.image).width(900).auto("format").url()}
-              alt={item.image.asset.altText || ""}
-            />
-          </a>
-        </li>
-      ))
+      items.map((item) => {
+        let href = "";
+        if (item.href.type == "page") {
+          href = item.href.sectionSlug
+            ? item.href.pageSlug.fullUrl
+            : item.href.pageSlug.current;
+        } else {
+          href = item.href.pageSlug;
+        }
+        return (
+          <li class="item">
+            <a href={`/${href}`}>
+              <div class="text flow">
+                {item.icon && <i class={`fa-duotone fa-${item.icon}`} />}
+                <div class="item-heading">{item.heading}</div>
+                <p>{item.description}</p>
+              </div>
+              <div class="overlay" />
+              <img
+                class="img"
+                src={urlFor(item.image).width(900).auto("format").url()}
+                alt={item.image.asset.altText || ""}
+                width={900}
+                loading="lazy"
+                decoding="async"
+              />
+            </a>
+          </li>
+        );
+      })
     }
   </ul>
 </aside>
@@ -67,15 +74,16 @@ const { title = "Explore more", items } = Astro.props;
 
   .text.flow {
     --flow-space: 0.5rem;
+    align-items: flex-start;
   }
 
-  .text > :first-child {
+  .text .item-heading {
     font-family: var(--font-secondary);
     font-size: var(--step-1);
     font-weight: var(--font-weight-header);
   }
 
-  .text > :last-child {
+  .text p {
     font-size: var(--step--1);
   }
 

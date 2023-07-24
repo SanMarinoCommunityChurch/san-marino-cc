@@ -27,28 +27,28 @@ import Button from "../../components/Button.astro";
 
   const calenderEl = document.querySelector("#calendar") as HTMLElement;
 
-  async function getEventData() {
-    const res = await fetch("http://localhost:3000/calendar.json");
-    return res.json();
-  }
-
-  async function getServiceData() {
-    const res = await fetch("http://localhost:3000/worship.json");
-    return res.json();
-  }
   // async function getEventData() {
-  //   const res = await fetch(
-  //     "https://idyllic-alfajores-503e42.netlify.app/calendar.json"
-  //   );
+  //   const res = await fetch("http://localhost:3000/calendar.json");
   //   return res.json();
   // }
 
   // async function getServiceData() {
-  //   const res = await fetch(
-  //     "https://idyllic-alfajores-503e42.netlify.app/worship.json"
-  //   );
+  //   const res = await fetch("http://localhost:3000/worship.json");
   //   return res.json();
   // }
+  async function getEventData() {
+    const res = await fetch(
+      "https://idyllic-alfajores-503e42.netlify.app/calendar.json"
+    );
+    return res.json();
+  }
+
+  async function getServiceData() {
+    const res = await fetch(
+      "https://idyllic-alfajores-503e42.netlify.app/worship.json"
+    );
+    return res.json();
+  }
 
   const eventData = await getEventData();
   const serviceData = await getServiceData();

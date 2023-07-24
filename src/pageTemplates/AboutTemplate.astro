@@ -1,53 +1,71 @@
 ---
 import IntroSection from "../components/IntroSection.astro";
+import ImageLinks from "../components/ImageLinks.astro";
 import { PortableText } from "astro-portabletext";
 import { isOdd } from "../utils/data";
 
 const { content } = Astro.props;
 const { visionStatement, textAndImageBlocks } = content;
+const { vision, mission, sectionHeading } = visionStatement;
 ---
 
 <Fragment>
-  <!-- <div class="pre-content flow" slot="pre-content">
+  <div class="content flow">
     <div>
-      <h2 class="small-title center-items">Our Vision Statment</h2>
+      <h2 class="small-title center-items">{vision.heading}</h2>
       <div class="center-items text-step-1 paragraphs mx-auto">
-        SMCC Vision Statement – To live Christ’s Great Commandment – to love the
-        Lord our God with all our heart, soul, mind, and strength, and to serve
-        and love our neighbor as ourselves.
+        {vision.text}
       </div>
     </div>
     <div>
-      <h2 class="small-title center-items">Our Mission</h2>
+      <h2 class="small-title center-items">{mission.heading}</h2>
       <div class="center-items text-step-1 paragraphs mx-auto">
-        Trusting in God’s grace revealed in Jesus Christ, we, the San Marino
-        Community Church seek to:
+        {mission.text}
       </div>
-      <FourPartFeature
-        title="Trusting in God’s grace revealed in Jesus Christ, we, the San Marino Community Church seek to:"
-        items={items}
-      />
+      <div class="spacer"><ImageLinks links={mission.links} /></div>
       <div class="center-items text-step-1 paragraphs mx-auto">
-        We do all of this empowered by the Holy Spirit, reflecting the Kingdom
-        of Heaven to the community and the world.
+        {mission.textAfter}
       </div>
     </div>
-    <div class="" id="principles">
-      <h2 class="text-step-4 center-items">Guiding Principles</h2>
-    </div>
-  </div> -->
-  {
-    textAndImageBlocks &&
-      textAndImageBlocks.map((section, index) => {
-        return (
-          <IntroSection
-            title={section.heading}
-            image={section.image}
-            layout={isOdd(index) ? "flipped" : ""}
-          >
-            <PortableText value={section.text} />
-          </IntroSection>
-        );
-      })
-  }
+  </div>
+  <div class="content flow" id="principles">
+    <h2 class="text-step-4 center-items">{sectionHeading}</h2>
+    {
+      textAndImageBlocks &&
+        textAndImageBlocks.map((section, index) => {
+          return (
+            <IntroSection
+              title={section.heading}
+              image={section.image}
+              layout={isOdd(index) ? "flipped" : ""}
+            >
+              <PortableText value={section.text} />
+            </IntroSection>
+          );
+        })
+    }
+  </div>
 </Fragment>
+
+<style>
+  .content.flow {
+    --flow-space: var(--space-3xl);
+  }
+
+  .small-title {
+    margin-bottom: 1.25rem;
+  }
+
+  .spacer {
+    margin-block: var(--space-xl);
+  }
+
+  #principles {
+    margin-top: var(--space-3xl);
+  }
+
+  #principles ul {
+    list-style-type: disc;
+    margin-inline-start: 1rem;
+  }
+</style>

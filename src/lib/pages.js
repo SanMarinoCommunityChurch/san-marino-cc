@@ -135,12 +135,23 @@ export const homePage = await getSanityData(`*[_type == 'homePage'][0] {
     heading,
     description,
     links[]{
+      heading,
+      description,
       "image": image{
         ...,
         asset->
       },
       icon,
-      "href": href[0].slug
+      "href": href[0]{
+        _type == 'reference' => @-> {
+          "type": _type,
+          sectionSlug,
+          pageSlug,
+        },
+        _type != 'reference' => {
+          "pageSlug": slug
+        }
+      }
     }
   },
   features[]{
@@ -203,7 +214,36 @@ export const sanityPageData = await getSanityData(`*[_type == 'page'] {
       introParagraph
     },
     template == 'about' => {
-      visionStatement
+      visionStatement{
+        sectionHeading,
+        mission{
+          heading,
+          text,
+          textAfter,
+          "links": highlights[]{
+            heading,
+            description,
+            icon,
+            "image": image{
+              ...,
+              asset->
+            },
+            "href": href[0]{
+              _type == 'reference' => @-> {
+                "type": _type,
+                sectionSlug,
+                pageSlug
+              },
+              _type != 'reference' => {
+                "pageSlug": slug
+              }
+            }
+          }
+        },
+        vision{
+          ...
+        }
+      }
     },
     template == 'default' || template == 'about' || template == 'give' || template == 'missions' => {
       "textAndImageBlocks": introSections[]{
@@ -245,15 +285,24 @@ export const sanityPageData = await getSanityData(`*[_type == 'page'] {
             ...,
             asset->
           },
-          "href": href[0]->{
-            sectionSlug,
-            pageSlug
+          "href": href[0]{
+            _type == 'reference' => @-> {
+              "type": _type,
+              sectionSlug,
+              pageSlug
+            },
+            _type != 'reference' => {
+              "pageSlug": slug
+            }
           }
         }
       }
     },
     template == 'missions' => {
-      missionsText
+      missionsTypes[]{
+        heading,
+        text
+      }
     },
     template == 'contact' => {
       contact
@@ -268,7 +317,16 @@ export const sanityPageData = await getSanityData(`*[_type == 'page'] {
             ...,
             asset->
           },
-          "href": href[0].slug
+          "href": href[0]{
+            _type == 'reference' => @-> {
+              "type": _type,
+              sectionSlug,
+              pageSlug
+            },
+            _type != 'reference' => {
+              "pageSlug": slug
+            }
+          }
         }
       }
     },

@@ -4,9 +4,10 @@ import { PortableText } from "astro-portabletext";
 import { urlFor } from "../lib/sanity";
 import { isOdd } from "../utils/data";
 import { allMissions } from "../lib/ministries";
+import { slugify } from "../utils/format";
 
 const { content } = Astro.props;
-const { textAndImageBlocks, missionsText } = content;
+const { textAndImageBlocks, missionsTypes } = content;
 
 let baseImageHeight = 0;
 let baseImageWidth = 0;
@@ -15,7 +16,6 @@ let croppedAspectRatio = 0;
 ---
 
 <Fragment>
-  <i class="fa-duotone fa-user" style="color: var(--color-primary-800)"></i>
   {
     textAndImageBlocks &&
       textAndImageBlocks.map((section, index) => {
@@ -32,19 +32,21 @@ let croppedAspectRatio = 0;
   }
   <div class="cluster sticky">
     <div class="small-title">Jump to:</div>
-    <a href="#partners" class="text-step-4 heading-link">Mission Partners</a>
-    <a href="#involvement" class="text-step-4 heading-link"
-      >Mission Involvement</a
+    <a
+      href={`#${slugify(missionsTypes[0].heading)}`}
+      class="text-step-4 heading-link">{missionsTypes[0].heading}</a
+    >
+    <a
+      href={`#${slugify(missionsTypes[1].heading)}`}
+      class="text-step-4 heading-link">{missionsTypes[1].heading}</a
     >
   </div>
   <div class="mission-list">
-    <section id="partners">
-      <h2 class="sr-only">Mission Partners</h2>
-      <p class="text-step-2">
-        <strong>Current Mission Partners:</strong> We commit to on-going support
-        of the following faith-based organizations, both locally and globally, through
-        an allocation from the SMCC annual budget.
-      </p>
+    <section id={slugify(missionsTypes[0].heading)}>
+      <h2 class="sr-only">{missionsTypes[0].heading}</h2>
+      <div class="text-step-2">
+        <PortableText value={missionsTypes[0].text} />
+      </div>
       {
         allMissions.map((mission) => {
           const image = mission.image;
@@ -100,12 +102,11 @@ let croppedAspectRatio = 0;
         })
       }
     </section>
-    <section id="involvement">
-      <h2 class="sr-only">Mission Involvement</h2>
-      <p class="text-step-2">
-        <strong>Mission Goal:</strong> We seek to find pathways of opportunity through
-        which our members can invest their capacities in God’s mission.
-      </p>
+    <section id={slugify(missionsTypes[1].heading)}>
+      <h2 class="sr-only">{missionsTypes[1].heading}</h2>
+      <div class="text-step-2">
+        <PortableText value={missionsTypes[1].text} />
+      </div>
       {
         allMissions.map((mission) => {
           const image = mission.image;
@@ -228,12 +229,11 @@ let croppedAspectRatio = 0;
     --cluster-space: 3rem;
   }
 
-  #partners,
-  #involvement {
+  .mission-list [id] {
     scroll-margin-top: 12rem;
   }
 
-  #involvement {
+  .mission-list [id]:last-of-type {
     border-top: 1px solid var(--color-neutral-100);
     padding-top: var(--space-3xl);
   }
