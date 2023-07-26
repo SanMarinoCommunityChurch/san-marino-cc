@@ -1,13 +1,16 @@
 ---
 import { urlFor } from "../lib/sanity";
-// const { imageSrc, imageAlt = "", width = 900, height } = Astro.props;
 const props = Astro.props;
 const image = props.node.asset;
 ---
 
 <img
-  src={urlFor(image).width(1200).auto("format").url()}
+  src={urlFor(image).width(900).auto("format").url()}
   alt={image.altText || ""}
+  width={900}
+  height={Math.floor(900 / image.metadata.dimensions.aspectRatio)}
+  loading="lazy"
+  decoding="async"
 />
 
 <style>

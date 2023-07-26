@@ -3,6 +3,9 @@ import ResourceLayout from "../../layouts/ResourceLayout.astro";
 import { allPosts } from "../../lib/posts";
 import { PortableText } from "astro-portabletext";
 import PostCategory from "../../components/PostCategory.astro";
+import InlineImage from "../../components/InlineImage.astro";
+import InlineYoutubeEmbed from "../../components/InlineYoutubeEmbed.astro";
+import PreviewFeature from "../../components/PreviewFeature.astro";
 import { urlFor } from "../../lib/sanity";
 import { randomizeAndSlice, filterAgainst } from "../../utils/data";
 import "../../styles/rich-text.css";
@@ -62,7 +65,16 @@ const randomPosts = otherPosts; // randomizeAndSlice(filteredPosts, 3);
   />
   <div slot="sidebar" class="flow"></div>
   <div slot="main-panel" class="rich-text">
-    <PortableText value={page.content} />
+    <PortableText
+      value={page.richContent}
+      components={{
+        type: {
+          image: InlineImage,
+          previewFeature: PreviewFeature,
+          youtube: InlineYoutubeEmbed,
+        },
+      }}
+    />
   </div>
 </ResourceLayout>
 

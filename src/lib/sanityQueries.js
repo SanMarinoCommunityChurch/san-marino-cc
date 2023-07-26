@@ -404,7 +404,26 @@ const posts = `*[_type == 'post']|order(publishDate desc) {
   },
   publishDate,
   preview,
-  content,
+  "richContent": content[]{
+    ...,
+    _type == 'image' => {
+      ...,
+      asset->
+    },
+    _type == 'youtube' => {
+      ...,
+    },
+    _type == 'previewFeature' => {
+      ...,
+      links[]{
+        ...,
+        "image": image{
+          ...,
+          asset->
+        }
+      }
+    }
+  },
   "image": image{
     ...,
     asset->
@@ -574,17 +593,16 @@ const forms = `*[_type == 'form'] {
 }`;
 
 const settings = `*[_type == 'siteSettings'][0] {
-  ...,
+  siteName,
+  siteDescription,
+  socialLinks[]{
+    name,
+    icon,
+    url
+  },
   "image": defaultImage{
     ...,
     asset->
-  },
-  "homePageHero": homePageHero{
-    ...,
-    "media": media{
-      ...,
-      asset->
-    }
   },
   "ogImage": defaultOGImage{
     ...,
@@ -594,7 +612,7 @@ const settings = `*[_type == 'siteSettings'][0] {
     ...,
     asset->
   },
-  contact
+  footer,
 }`;
 
 export {

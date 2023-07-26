@@ -22,8 +22,12 @@ const socialLinks = siteSettings.socialLinks;
         San Marino Community Church
       </div>
       <div class="address" style="color: var(--color-primary-200);">
-        1750 Virginia Road <span>|</span> San Marino, California 91108<br />
-        626-282-4181 <span>|</span> SMCC@smccpby.com
+        {siteSettings.footer.address}<br />
+        {siteSettings.footer.phone}
+        <span>|</span>
+        <a href={`mailto:${siteSettings.footer.email}`}
+          >{siteSettings.footer.email}</a
+        >
       </div>
     </div>
     <div class="nav-grid">
@@ -87,7 +91,7 @@ const socialLinks = siteSettings.socialLinks;
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     gap: 2rem;
-    padding-block: 5rem;
+    padding-block: 4rem;
   }
 
   .nav-grid > :last-child {

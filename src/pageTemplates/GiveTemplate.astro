@@ -6,6 +6,7 @@ import ImageCard from "../components/ImageCard.astro";
 import FullWidthFeature from "../components/FullWidthFeature.astro";
 import { PortableText } from "astro-portabletext";
 import InlineImage from "../components/InlineImage.astro";
+import InlineYoutubeEmbed from "../components/InlineYoutubeEmbed.astro";
 import PreviewFeature from "../components/PreviewFeature.astro";
 import { isOdd } from "../utils/data";
 import { constructHref } from "../lib/navigation";
@@ -61,7 +62,11 @@ const bgImageStyle = `linear-gradient(to top, rgb(0 0 0 / 0.75) 15%, rgb(0 0 0 /
             <ImageCard
               title={link.heading}
               description={link.description}
-              href={constructHref(link.href)}
+              href={
+                link.href.pageSlug[0] === "#"
+                  ? link.href.pageSlug
+                  : constructHref(link.href)
+              }
               image={link.image}
             />
           );
@@ -112,7 +117,11 @@ const bgImageStyle = `linear-gradient(to top, rgb(0 0 0 / 0.75) 15%, rgb(0 0 0 /
           <PortableText
             value={richContent}
             components={{
-              type: { image: InlineImage, previewFeature: PreviewFeature },
+              type: {
+                image: InlineImage,
+                previewFeature: PreviewFeature,
+                youtube: InlineYoutubeEmbed,
+              },
             }}
           />
         </div>
@@ -249,7 +258,7 @@ const bgImageStyle = `linear-gradient(to top, rgb(0 0 0 / 0.75) 15%, rgb(0 0 0 /
   }
 
   #ways-to-give {
-    scroll-margin-top: -12rem;
+    scroll-margin-top: -15rem;
   }
 
   @media (max-width: 768px) {

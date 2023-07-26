@@ -19,6 +19,13 @@
   max-width: none;
 }
 
+.rich-text iframe {
+  border: none;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .rich-text h2 {
   font-size: var(--step-4);
 }

@@ -2,6 +2,7 @@
 import IntroSection from "../components/IntroSection.astro";
 import PreviewFeature from "../components/PreviewFeature.astro";
 import InlineImage from "../components/InlineImage.astro";
+import InlineYoutubeEmbed from "../components/InlineYoutubeEmbed.astro";
 import { PortableText } from "astro-portabletext";
 import "../styles/rich-text.css";
 
@@ -35,7 +36,11 @@ const { textAndImageBlocks, richContent } = content;
         <PortableText
           value={richContent}
           components={{
-            type: { image: InlineImage, previewFeature: PreviewFeature },
+            type: {
+              image: InlineImage,
+              previewFeature: PreviewFeature,
+              youtube: InlineYoutubeEmbed,
+            },
           }}
         />
       </div>

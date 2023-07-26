@@ -4,6 +4,6 @@ import { settings, forms } from "./sanityQueries";
 const siteSettings = await getSanityData(settings);
 const allForms = await getSanityData(forms);
 const defaultImage = siteSettings.image;
-const contact = siteSettings.contact;
+// const contact = siteSettings.contact;
 
-export { siteSettings, defaultImage, contact, allForms };
+export { siteSettings, defaultImage, allForms };

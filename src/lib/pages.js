@@ -370,6 +370,9 @@ export const sanityPageData = await getSanityData(`*[_type == 'page'] {
           ...,
           asset->
         },
+        _type == "youtube" => {
+          ...,
+        },
         _type == "previewFeature" => {
           ...,
           links[]{
