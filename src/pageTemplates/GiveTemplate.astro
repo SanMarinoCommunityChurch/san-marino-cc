@@ -8,6 +8,7 @@ import { PortableText } from "astro-portabletext";
 import InlineImage from "../components/InlineImage.astro";
 import PreviewFeature from "../components/PreviewFeature.astro";
 import { isOdd } from "../utils/data";
+import { constructHref } from "../lib/navigation";
 import "../styles/rich-text.css";
 
 const { pageName, content } = Astro.props;
@@ -48,19 +49,19 @@ const bgImageStyle = `linear-gradient(to top, rgb(0 0 0 / 0.75) 15%, rgb(0 0 0 /
     <div class="responsive-grid">
       {
         givingLinks.map((link) => {
-          let href = "";
-          if (link.href.type == "page") {
-            href = link.href.sectionSlug
-              ? link.href.pageSlug.fullUrl
-              : link.href.pageSlug.current;
-          } else {
-            href = link.href.pageSlug;
-          }
+          // let href = "";
+          // if (link.href.type == "page") {
+          //   href = link.href.sectionSlug
+          //     ? link.href.pageSlug.fullUrl
+          //     : link.href.pageSlug.current;
+          // } else {
+          //   href = link.href.pageSlug;
+          // }
           return (
             <ImageCard
               title={link.heading}
               description={link.description}
-              href={href}
+              href={constructHref(link.href)}
               image={link.image}
             />
           );
