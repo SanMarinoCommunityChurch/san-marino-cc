@@ -1,5 +1,4 @@
 ---
-import SectionPage from "../../layouts/SectionPage.astro";
 import UtilityLayout from "../../layouts/UtilityLayout.astro";
 import Button from "../../components/Button.astro";
 ---
@@ -8,8 +7,9 @@ import Button from "../../components/Button.astro";
   <div id="calendar">
     <div id="loading" style="text-align: center;">...Loading calendar</div>
   </div>
-  <div class="center-items">
+  <div class="center-items cluster">
     <Button href="/connect/events">See All Events</Button>
+    <Button href="/worship/services">See All Services</Button>
   </div>
 </UtilityLayout>
 

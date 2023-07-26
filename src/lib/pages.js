@@ -210,7 +210,7 @@ export const sanityPageData = await getSanityData(`*[_type == 'page'] {
       ...,
       asset->
     },
-    template == 'features' || template == 'give' => {
+    template == 'features' => {
       introParagraph
     },
     template == 'about' => {
@@ -249,13 +249,17 @@ export const sanityPageData = await getSanityData(`*[_type == 'page'] {
       "textAndImageBlocks": introSections[]{
         heading,
         text,
-        "image": image{
-          ...,
-          asset->
-        }
+        mediaType,
+        "media": {
+          video,
+          "image": image{
+            ...,
+            asset->
+          }
+        },
       }
     },
-    template == 'features' || template == 'give' => {
+    template == 'features' => {
       features[]{
         title,
         description,
@@ -307,7 +311,7 @@ export const sanityPageData = await getSanityData(`*[_type == 'page'] {
     template == 'contact' => {
       contact
     },
-    template == 'contact' || template == 'give' => {
+    template == 'contact' => {
       "imageLinksSection": imageLinks{
         heading,
         description,
@@ -327,6 +331,35 @@ export const sanityPageData = await getSanityData(`*[_type == 'page'] {
               "pageSlug": slug
             }
           }
+        }
+      }
+    },
+    template == 'give' => {
+      givingLinks[]{
+        heading,
+        description,
+        "image": image{
+          ...,
+          asset->
+        },
+        "href": href[0]{
+          _type == 'reference' => @-> {
+            "type": _type,
+            sectionSlug,
+            pageSlug
+          },
+          _type != 'reference' => {
+            "pageSlug": slug
+          }
+        }
+      },
+      iconGrid{
+        heading,
+        gridItems[]{
+          heading,
+          icon,
+          description,
+          externalLink
         }
       }
     },

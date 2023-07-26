@@ -4,6 +4,7 @@ import {Image} from "@astrojs/image/components"
 import {urlFor} from "../lib/sanity"
 import { siteSettings } from "../lib/settings";
 import PopoverHeader from "./Svelte/PopoverHeader.svelte";
+import { constructHref } from "../lib/navigation"
 
 const { mainNavigation, fullNavigation, utilityNavigation } = Astro.props;
 ---
@@ -16,10 +17,11 @@ const { mainNavigation, fullNavigation, utilityNavigation } = Astro.props;
     <nav slot="mainNav" class="main-nav">
       <ul class="cluster">
         {
-          mainNavigation.entries.map((navItem, index) => (
+          mainNavigation.entries.map((navItem, index) => {
+          return (
             <li>
               <Button
-                href={navItem.internal ? `/${navItem.internal.pageSlug.fullUrl}` : `${navItem.href}`}
+                href={constructHref(navItem)}
                 style={index == 1 ? "solid" : "nav"}
                 theme={index == 1 ? "primary-2" : "neutral"}
               >
@@ -29,7 +31,7 @@ const { mainNavigation, fullNavigation, utilityNavigation } = Astro.props;
             }
               </Button>
             </li>
-          ))
+          )})
         }
       </ul>
     </nav>
@@ -63,7 +65,7 @@ const { mainNavigation, fullNavigation, utilityNavigation } = Astro.props;
                     <ul class="flow">
                       {navItem.pages.map((navChild) => (
                         <li>
-                          <a href={navChild._type == 'page' ? navChild.sectionSlug ? `/${navChild.pageSlug.fullUrl}` : `/${navChild.pageSlug.current}` : `${navChild.href}`}>
+                          <a href={constructHref(navChild)}>
                             {navChild.name}
                           </a>
                         </li>
@@ -79,7 +81,8 @@ const { mainNavigation, fullNavigation, utilityNavigation } = Astro.props;
           <ul>
             {utilityNavigation.entries.map((navItem) => (
               <li class="utility-item">
-                <a href={navItem._type == 'page' ? navItem.sectionSlug ? `/${navItem.pageSlug.fullUrl}` : `/${navItem.pageSlug.current}` : `${navItem.href}`}>
+                <a href={constructHref(navItem)}>
+                  <i class={`fa-duotone fa-${navItem.icon}`} style="color: var(--color-primary-800);"></i>
                   <div class="small-title">{navItem.name}</div>
                   <p>{navItem.description}</p>
                 </a>
@@ -256,7 +259,7 @@ const { mainNavigation, fullNavigation, utilityNavigation } = Astro.props;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
-    align-items: start;
+    align-items: flex-start;
   }
   
   .nav-utilities ul a {

@@ -48,7 +48,7 @@ const {
               heading="Posted by"
               name={joinNames(author.name)}
               size="small"
-              href={`/who-we-are/leadership/${makeNameSlug(author.name)}`}
+              href={author.slug && `/who-we-are/leadership/${author.slug}`}
             />
           </div>
           <p class="text-step-1"><em>{preview}</em></p>

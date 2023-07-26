@@ -20,6 +20,7 @@ import GiveTemplate from "../pageTemplates/GiveTemplate.astro";
 import MissionsTemplate from "../pageTemplates/MissionsTemplate.astro";
 import FeaturesTemplate from "../pageTemplates/FeaturesTemplate.astro";
 import FAQTemplate from "../pageTemplates/FAQTemplate.astro";
+import UtilityTemplate from "../pageTemplates/UtilityTemplate.astro";
 
 // const utilityLocalNav = {
 //   name: "More",
@@ -43,21 +44,37 @@ import FAQTemplate from "../pageTemplates/FAQTemplate.astro";
 //   ],
 // };
 
-const { currentPage, localNavSection, contentPadding } = Astro.props;
+const givingLocalNav = {
+  name: "Giving",
+  pages: [
+    {
+      name: "Ways to Give",
+      pageSlug: {
+        current: "giving",
+      },
+    },
+    {
+      name: "The Foundation of SMCC",
+      sectionSlug: "giving",
+      pageSlug: {
+        fullUrl: "giving/the-foundation-of-smcc",
+        current: "the-foundation-of-smcc",
+      },
+    },
+    {
+      name: "Stewardship",
+      sectionSlug: "giving",
+      pageSlug: {
+        fullUrl: "giving/stewardship",
+        current: "stewardship",
+      },
+    },
+  ],
+};
+
+const { currentPage, contentPadding } = Astro.props;
 const page = getCurrentPage(currentPage);
-const {
-  seo,
-  template,
-  pageName,
-  pageDescription,
-  background,
-  sectionSlug,
-  pageSlug,
-  introSections,
-  cta,
-  pageContent,
-  content,
-} = page;
+const { seo, template, sectionSlug, pageName, pageContent } = page;
 
 ////// Page name, header text/bg image, and cta are all handled on this layout.
 ////// pageContent is passed down to child template components
@@ -81,7 +98,9 @@ const bgImage = pageContent.headerBgImage
   </Fragment>
   <main slot="main">
     <InnerHero
-      localNav={filterLocalNav(currentPage)}
+      localNav={sectionSlug == "giving"
+        ? givingLocalNav
+        : filterLocalNav(currentPage)}
       pageTitle={pageName}
       pageDescription={pageContent.headerText}
       bgImage={bgImage}
@@ -95,6 +114,7 @@ const bgImage = pageContent.headerBgImage
       {template == "missions" && <MissionsTemplate content={pageContent} />}
       {template == "features" && <FeaturesTemplate content={pageContent} />}
       {template == "faq" && <FAQTemplate content={pageContent} />}
+      {template == "utility" && <UtilityTemplate content={pageContent} />}
       <!-- <slot name="pre-content" />
       {
         introSections &&

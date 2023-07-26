@@ -7,7 +7,7 @@ const allNavigation = await getSanityData(`*[_type == 'navigation']{
   name,
   entries[]{
     _type == 'navigationSection' => {
-      _type,
+      "type": _type,
       name,
       "image": image{
         ...,
@@ -15,29 +15,54 @@ const allNavigation = await getSanityData(`*[_type == 'navigation']{
       },
       "pages": pages[]{
         _type == 'reference' => @-> {
-        _type,
-        _id,
-        name,
-        sectionSlug,
-        pageSlug
+          "type": _type,
+          _id,
+          name,
+          sectionSlug,
+          pageSlug
         },
         _type == 'link' => {
-        ...
+          ...,
+          "type": _type,
+          "href": href[0]{
+            _type == 'reference' => @-> {
+              "type": _type,
+              sectionSlug,
+              pageSlug
+            },
+            _type == 'externalLink' => {
+              "type": _type,
+              "fullUrl": url,
+            },
+            _type == 'slugString' => {
+              "type": _type,
+              "fullUrl": slug
+            }
+          }
         }
       }
     },
     _type == 'link' => {
       ...,
-      _type,
-      "internal": internal->{
-        _id,
-        name,
-        sectionSlug,
-        pageSlug
-      }
+      "type": _type,
+      "href": href[0]{
+        _type == 'reference' => @-> {
+          "type": _type,
+          sectionSlug,
+          pageSlug
+        },
+        _type == 'externalLink' => {
+          "type": _type,
+          "fullUrl": url,
+        },
+        _type == 'slugString' => {
+          "type": _type,
+          "fullUrl": slug
+        }
+      },
     },
     _type == 'reference' => @-> {
-      _type,
+      "type": _type,
       _id,
       name,
       sectionSlug,
@@ -116,6 +141,28 @@ const filterLocalNav = (pageId) => {
   );
 };
 
+function constructHref(navItem) {
+  function buildPageSlug(page) {
+    return page.sectionSlug ? page.pageSlug.fullUrl : page.pageSlug.current;
+  }
+
+  let href = "";
+
+  if (navItem.type == "page") {
+    href = `/${buildPageSlug(navItem)}`;
+  } else if (navItem.type == "link") {
+    if (navItem.href.type == "page") {
+      href = `/${buildPageSlug(navItem.href)}`;
+    } else if (navItem.href.type == "slugString") {
+      href = `/${navItem.href.fullUrl}`;
+    } else if (navItem.href.type == "externalLink") {
+      href = navItem.href.fullUrl;
+    }
+  }
+
+  return href;
+}
+
 // // pass in the entry id's from Sanity - in case someone changes the name
 // const fullNavigation = getNavigationSet("a0714f38-2dff-4ce5-b350-be13904afa67");
 // // get the main navigation item from Sanity
@@ -135,4 +182,5 @@ export {
   // filterLocalNav,
   allNavigation,
   filterLocalNav,
+  constructHref,
 };

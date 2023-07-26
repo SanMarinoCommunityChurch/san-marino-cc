@@ -3,6 +3,7 @@ import Button from "./Button.astro";
 import { DateTime } from "luxon";
 import SocialLinks from "./SocialLinks.astro";
 import { siteSettings } from "../lib/settings";
+import { constructHref } from "../lib/navigation";
 
 const year = new Date();
 
@@ -13,6 +14,18 @@ const socialLinks = siteSettings.socialLinks;
 
 <footer>
   <div class="content-wrapper">
+    <div class="info center-items flow">
+      <div
+        class="font-header text-step-2"
+        style="color: var(--color-neutral-100);"
+      >
+        San Marino Community Church
+      </div>
+      <div class="address" style="color: var(--color-primary-200);">
+        1750 Virginia Road <span>|</span> San Marino, California 91108<br />
+        626-282-4181 <span>|</span> SMCC@smccpby.com
+      </div>
+    </div>
     <div class="nav-grid">
       {
         fullNavigation.entries.map((navItem) => (
@@ -21,17 +34,7 @@ const socialLinks = siteSettings.socialLinks;
             <ul class="flow">
               {navItem.pages.map((navChild) => (
                 <li>
-                  <a
-                    href={
-                      navChild._type == "page"
-                        ? navChild.sectionSlug
-                          ? `/${navChild.pageSlug.fullUrl}`
-                          : `/${navChild.pageSlug.current}`
-                        : `${navChild.href}`
-                    }
-                  >
-                    {navChild.name}
-                  </a>
+                  <a href={constructHref(navChild)}>{navChild.name}</a>
                 </li>
               ))}
             </ul>
@@ -43,17 +46,7 @@ const socialLinks = siteSettings.socialLinks;
           {
             utilityNavigation.entries.map((navItem) => (
               <li>
-                <a
-                  href={
-                    navItem._type == "page"
-                      ? navItem.sectionSlug
-                        ? `/${navItem.pageSlug.fullUrl}`
-                        : `/${navItem.pageSlug.current}`
-                      : `${navItem.href}`
-                  }
-                >
-                  {navItem.name}
-                </a>
+                <a href={constructHref(navItem)}>{navItem.name}</a>
               </li>
             ))
           }
@@ -79,6 +72,15 @@ const socialLinks = siteSettings.socialLinks;
 <style>
   footer {
     background-color: var(--color-primary-900);
+  }
+
+  .info {
+    padding-top: 4rem;
+  }
+
+  .info .address span {
+    margin-inline: var(--space-2xs);
+    color: var(--color-neutral-50);
   }
 
   .nav-grid {

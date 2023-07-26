@@ -225,6 +225,7 @@ const eventsDetail = `*[_type == 'event'] {
     },
     "person": ministryContact->{
       ...,
+      "slug": slug.current,
       "image": image{
         ...,
         asset->
@@ -240,6 +241,7 @@ const servicesLatest = `*[_type == 'service' && dateTime(date + 'T7:00:00Z') < d
     ...,
     preacher->{
       name,
+      "slug": slug.current,
       "image": image{
         ...,
         asset->
@@ -265,6 +267,7 @@ const servicesList = `*[_type == 'service' && dateTime(date + 'T7:00:00Z') < dat
     ...,
     preacher->{
       name,
+      "slug": slug.current,
       "image": image{
         ...,
         asset->
@@ -351,6 +354,7 @@ const ministriesDetail = `*[_type == 'ministry'] {
   "slug": slug.current,
   "person": ministryContact-> {
     ...,
+    "slug": slug.current,
     "image": image{
       ...,
       asset->
@@ -395,7 +399,8 @@ const posts = `*[_type == 'post']|order(publishDate desc) {
       ...,
       asset->
     },
-    role
+    role,
+    "slug": slug.current,
   },
   publishDate,
   preview,
@@ -491,6 +496,7 @@ const staffMembers = `*[_type == 'person' && type.mainType == 'staff'] | order(o
   name,
   role,
   bio,
+  "slug": slug.current,
   contact,
   "image": image{
     ...,

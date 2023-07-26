@@ -1,13 +1,6 @@
 ---
-import { PortableText } from "astro-portabletext";
-import { Image, Picture } from "@astrojs/image/components";
 import { urlFor } from "../lib/sanity";
-
-const aspectRatios = {
-  square: "square",
-  "4x3": "4x3",
-  "7x5": "7x5",
-};
+import getYouTubeID from "get-youtube-id";
 
 // frame aspect ratio must be in the format x:y
 
@@ -16,18 +9,30 @@ function buildAspect(stringAspect) {
   return ratio[0] / ratio[1];
 }
 
-const { title, image, layout = "default" } = Astro.props;
+const { title, mediaType, media, layout = "default" } = Astro.props;
 // set the image height - relative to base width of 900
 // Sanity data - if frame option is set and image has aspect ratio in "x:y" format,
 // convert the aspect into a decimal and divide by it to get height
 // if no aspect set, fall back to square aspect
 // if no frame, set default aspect ratio of the image itself
 // Math.floor - need valid integer for urlbuilder
-const imageHeight = image.frame
-  ? image.aspectRatio
-    ? Math.floor(900 / buildAspect(image.aspectRatio))
-    : 900
-  : Math.floor(900 / image.asset.metadata.dimensions.aspectRatio);
+let imageHeight = null;
+if (mediaType !== "video") {
+  imageHeight = media.image.frame
+    ? media.image.aspectRatio
+      ? Math.floor(900 / buildAspect(media.image.aspectRatio))
+      : 900
+    : Math.floor(900 / media.image.asset.metadata.dimensions.aspectRatio);
+}
+// const imageHeight = image.frame
+//   ? image.aspectRatio
+//     ? Math.floor(900 / buildAspect(image.aspectRatio))
+//     : 900
+//   : Math.floor(900 / image.asset.metadata.dimensions.aspectRatio);
+let videoUrl = "";
+if (mediaType === "video") {
+  videoUrl = media.video.url;
+}
 ---
 
 <section
@@ -40,18 +45,35 @@ const imageHeight = image.frame
       <slot />
     </div>
   </div>
-  <div>
-    <img
-      src={urlFor(image).width(900).height(imageHeight).auto("format").url()}
-      alt={image.asset.altText || ""}
-      class="img"
-      width={900}
-      height={imageHeight}
-      style={`background-image: url(${image.asset.metadata.lqip})`}
-      loading="lazy"
-      decoding="async"
-    />
-  </div>
+  {
+    mediaType === "video" ? (
+      <iframe
+        width="560"
+        height="315"
+        src={`https://www.youtube.com/embed/${getYouTubeID(videoUrl)}`}
+        title="YouTube video player"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+      />
+    ) : (
+      <div>
+        <img
+          src={urlFor(media.image)
+            .width(900)
+            .height(imageHeight)
+            .auto("format")
+            .url()}
+          alt={media.image.asset.altText || ""}
+          class="img"
+          width={900}
+          height={imageHeight}
+          style={`background-image: url(${media.image.asset.metadata.lqip})`}
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+    )
+  }
 </section>
 
 <style>

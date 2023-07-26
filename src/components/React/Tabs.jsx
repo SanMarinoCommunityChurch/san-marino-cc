@@ -101,7 +101,7 @@ export default function Tabs({ service }) {
                       imageAlt={joinNames(preacher.name)}
                       href={
                         preacher.type === "staff" &&
-                        `/who-we-are/leadership/${makeNameSlug(preacher.name)}`
+                        `/who-we-are/leadership/${preacher.slug}`
                       }
                     />
                   )}

@@ -9,6 +9,7 @@ import { Image } from "@astrojs/image/components";
 import Button from "../../../components/Button.astro";
 import { randomizeAndSlice, filterAgainst } from "../../../utils/data";
 import { defaultImage } from "../../../lib/settings";
+import "../../../styles/rich-text.css";
 
 import { PortableText } from "astro-portabletext";
 import { DateTime } from "luxon";
@@ -104,7 +105,7 @@ const readableDate = DateTime.fromISO(page.date)
       }</time
     >
   </div>
-  <div slot="main-panel">
+  <div slot="main-panel" class="rich-text">
     <PortableText value={page.description} />
   </div>
   <div slot="sidebar">
@@ -289,7 +290,7 @@ const readableDate = DateTime.fromISO(page.date)
   .responsive-grid {
     --gap: 2rem;
     --item-min-width: 20rem;
-    --item-max-width: 24rem;
+    --item-max-width: 23rem;
   }
 
   .location-footer.cluster {
@@ -305,7 +306,7 @@ const readableDate = DateTime.fromISO(page.date)
   }
 
   .eyebrow.cluster {
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
   }
 
   .eyebrow > :last-child {

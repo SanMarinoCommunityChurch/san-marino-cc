@@ -22,7 +22,8 @@ let croppedAspectRatio = 0;
         return (
           <IntroSection
             title={section.heading}
-            image={section.image}
+            mediaType={section.mediaType}
+            media={section.media}
             layout={isOdd(index) ? "flipped" : ""}
           >
             <PortableText value={section.text} />

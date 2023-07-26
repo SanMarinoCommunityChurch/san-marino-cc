@@ -16,6 +16,7 @@ import { joinNames } from "../../../utils/format";
 
 import MiniPreviewCard from "../../../components/MiniPreviewCard.astro";
 import { allMinistries, previewMinistries } from "../../../lib/ministries";
+import "../../../styles/rich-text.css";
 
 export async function getStaticPaths() {
   const pages = allMinistries;
@@ -72,7 +73,11 @@ const randomizedMinistries = randomizeAndSlice(filteredMinistries, 3);
           className="breadcrumb-wrapper"
         />
       </Fragment>
-      <div slot="eyebrow" class="eyebrow cluster" style="margin-bottom: -1rem;">
+      <div
+        slot="eyebrow"
+        class="eyebrow cluster"
+        style="margin-bottom: -0.5rem;"
+      >
         <a
           class="small-title heading-category"
           href={`/connect/ministries#${page.typeSlug}`}
@@ -104,7 +109,9 @@ const randomizedMinistries = randomizeAndSlice(filteredMinistries, 3);
             loading="lazy"
             decoding="async"
           />
-          <PortableText value={page.description} />
+          <div class="rich-text">
+            <PortableText value={page.description} />
+          </div>
         </div>
       </article>
       <div slot="sidebar" class="sidebar-content">
@@ -115,8 +122,11 @@ const randomizedMinistries = randomizeAndSlice(filteredMinistries, 3);
                 image={page.person.image || defaultImage}
                 name={joinNames(page.person.name)}
                 href={
-                  page.person.contact.email &&
-                  `mailto:${page.person.contact.email}`
+                  page.person.slug
+                    ? `/who-we-are/leadership/${page.person.slug}`
+                    : page.person.contact
+                    ? `mailto:${page.person.contact.email}`
+                    : undefined
                 }
               />
             </div>
@@ -215,7 +225,7 @@ const randomizedMinistries = randomizeAndSlice(filteredMinistries, 3);
   }
 
   .eyebrow.cluster {
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
   }
 
   .eyebrow > :last-child {
@@ -249,7 +259,7 @@ const randomizedMinistries = randomizeAndSlice(filteredMinistries, 3);
   .responsive-grid {
     --gap: 2rem;
     --item-min-width: 20rem;
-    --item-max-width: 24rem;
+    --item-max-width: 23rem;
   }
 
   .sidebar-content {
@@ -274,7 +284,7 @@ const randomizedMinistries = randomizeAndSlice(filteredMinistries, 3);
 
   .associated-events .text-step-1 {
     color: var(--color-primary-800);
-    margin-bottom: 0px;
+    margin-bottom: 6px;
   }
 
   .associated-events li:hover .text-step-1 {

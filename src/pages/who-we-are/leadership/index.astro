@@ -46,9 +46,7 @@ const eldersAndDeaconsByType = groupAsType(eldersAndDeacons);
                 {type.entries.map((person) => (
                   <li>
                     <a
-                      href={`/who-we-are/leadership/${makeNameSlug(
-                        person.name
-                      )}`}
+                      href={`/who-we-are/leadership/${person.slug}`}
                       class="person"
                     >
                       <div class="frame square">

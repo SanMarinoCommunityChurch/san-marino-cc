@@ -1,23 +1,10 @@
 ---
-import SectionPage from "../../layouts/SectionPage.astro";
 import Form from "../../components/Form.astro";
 import Button from "../../components/Button.astro";
-
-const form = {
-  id: "form1",
-  formName: "contactForm1",
-  title: "I’m New",
-  description:
-    "We don’t know what encouraged you to look for a church, let alone what brought you to this website for SMCC, but we don’t believe that you’re here by accident. We would love to meet you!",
-  formType: "general",
-  messageText: "Let us know if you have questions or comments:",
-};
+import UtilityLayout from "../../layouts/UtilityLayout.astro";
 ---
 
-<SectionPage
-  currentPage={"c27d6639-bd40-454d-b210-63ca75b0dbbd"}
-  localNavSection="Utility"
->
+<UtilityLayout currentPage={"c27d6639-bd40-454d-b210-63ca75b0dbbd"}>
   <div class="center-items flow">
     <h2 class="text-step-3">Thank you!</h2>
     <p>
@@ -26,9 +13,9 @@ const form = {
     </p>
   </div>
   <div class="center-items">
-    <Button href="/contact">See All Forms</Button>
+    <Button href="/contact#forms">See All Forms</Button>
   </div>
-</SectionPage>
+</UtilityLayout>
 
 <style>
   .center-items:first-of-type {
