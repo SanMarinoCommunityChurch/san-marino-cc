@@ -41,6 +41,17 @@ const link2 = links[1];
       }
     </div>
   </div>
+  <div class="video-controls cluster">
+    <Button
+      style="none"
+      theme="primary-light"
+      className="icon-wrapper"
+      id="playButton"
+    >
+      <span class="text-step--1">Pause</span>
+      <i class="fa-duotone fa-play-pause"></i>
+    </Button>
+  </div>
   <div class="hero-bg">
     <div class="overlay"></div>
     <video
@@ -74,6 +85,18 @@ const link2 = links[1];
   .flow {
     --flow-space: var(--space-m);
     align-items: center;
+  }
+
+  .video-controls {
+    position: absolute;
+    z-index: 50;
+    right: 3rem;
+    top: 2rem;
+    color: white;
+  }
+
+  .icon-wrapper:hover {
+    background: rgba(255, 255, 255, 0.2);
   }
 
   .content-wrapper {
@@ -123,3 +146,20 @@ const link2 = links[1];
     z-index: 0;
   }
 </style>
+
+<script>
+  const video = document.getElementById("home-video");
+  const playButton = document.querySelector("#playButton");
+  const buttonText = playButton.children[0];
+  let playState = true;
+
+  playButton.addEventListener("click", () => {
+    if (!playState) {
+      video.play();
+    } else {
+      video.pause();
+    }
+    playState = !playState;
+    buttonText.textContent = playState ? "Pause" : "Play";
+  });
+</script>
