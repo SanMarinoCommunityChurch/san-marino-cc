@@ -9,6 +9,8 @@ import { Image } from "@astrojs/image/components";
 import Button from "../../../components/Button.astro";
 import { randomizeAndSlice, filterAgainst } from "../../../utils/data";
 import { defaultImage } from "../../../lib/settings";
+import InlineImage from "../../../components/InlineImage.astro";
+import InlineYoutubeEmbed from "../../../components/InlineYoutubeEmbed.astro";
 import "../../../styles/rich-text.css";
 
 import { PortableText } from "astro-portabletext";
@@ -106,7 +108,15 @@ const readableDate = DateTime.fromISO(page.date)
     >
   </div>
   <div slot="main-panel" class="rich-text">
-    <PortableText value={page.description} />
+    <PortableText
+      value={page.richContent}
+      components={{
+        type: {
+          image: InlineImage,
+          youtube: InlineYoutubeEmbed,
+        },
+      }}
+    />
   </div>
   <div slot="sidebar">
     <div class="sidebar-content">
@@ -234,10 +244,10 @@ const readableDate = DateTime.fromISO(page.date)
                 </MiniPreviewCard>
               </div>
             ) : (
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim,
-                alias?
-              </p>
+              <a href="/calendar" class="cluster">
+                <i class="fa-duotone fa-calendar-days" />
+                See more events on our calendar.
+              </a>
             )
           }
         </div>

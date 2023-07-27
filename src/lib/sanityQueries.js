@@ -200,6 +200,16 @@ const eventTypes = `*[_type == 'eventType'] {
 
 const eventsDetail = `*[_type == 'event'] {
   ...,
+  "richContent": description[]{
+    ...,
+    _type == "image" => {
+      ...,
+      asset->
+    },
+    _type == "youtube" => {
+      ...,
+    },
+  },
   eventType->{
     name,
     "slug": slug.current
