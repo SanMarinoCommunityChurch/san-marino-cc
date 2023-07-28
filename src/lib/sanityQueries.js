@@ -331,7 +331,9 @@ const ministryTypeWithMinistriesPreview = `*[_type == 'ministryType'] {
     ...,
     asset->
   },
-  description,
+  "richContent": description[]{
+    ...
+  },
   "ministries": *[_type == 'ministry' && references(^._id)] {
     name,
     preview,
@@ -356,7 +358,16 @@ const ministriesDetail = `*[_type == 'ministry'] {
   preview,
   meetingTime,
   meetingLocation,
-  description,
+  "richContent": description[]{
+    ...,
+    _type == "image" => {
+      ...,
+      asset->
+    },
+    _type == "youtube" => {
+      ...,
+    },
+  },
   "image": image{
     ...,
     asset->
@@ -397,6 +408,12 @@ const missions = `*[_type == 'mission'] | order(name asc) {
   "image": image{
     ...,
     asset->
+  },
+  "richContent": description[]{
+    ...,
+    _type == 'youtube' => {
+      ...,
+    },
   }
 }`;
 

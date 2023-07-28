@@ -2,10 +2,10 @@ import fetch from "node-fetch";
 import { schedule } from "@netlify/functions";
 
 const BUILD_HOOK =
-  "https://api.netlify.com/build_hooks/64bec5a29f284f0ab9091aaf";
+  "https://api.netlify.com/build_hooks/64c2f8eb7b3da1159f3bf745";
 
-// 9pm UTC-7
-const cronInterval = "0 4 * * *";
+// daily at 11pm UTC-7
+const cronInterval = "0 6 * * *";
 
 const handler = schedule(cronInterval, async () => {
   await fetch(BUILD_HOOK, {

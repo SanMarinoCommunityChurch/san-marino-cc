@@ -251,11 +251,15 @@ export const sanityPageData = await getSanityData(`*[_type == 'page'] {
         text,
         mediaType,
         "media": {
-          video,
-          "image": image{
-            ...,
-            asset->
-          }
+          mediaType == 'video' => {
+            video
+          },
+          mediaType == 'image' => {
+            "image": image{
+              ...,
+              asset->
+            }
+          },
         },
       }
     },

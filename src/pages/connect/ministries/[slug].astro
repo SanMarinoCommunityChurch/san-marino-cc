@@ -12,6 +12,8 @@ import { randomizeAndSlice, filterAgainst } from "../../../utils/data";
 import { defaultImage } from "../../../lib/settings";
 
 import { PortableText } from "astro-portabletext";
+import InlineImage from "../../../components/InlineImage.astro";
+import InlineYoutubeEmbed from "../../../components/InlineYoutubeEmbed.astro";
 import { joinNames } from "../../../utils/format";
 
 import MiniPreviewCard from "../../../components/MiniPreviewCard.astro";
@@ -110,7 +112,15 @@ const randomizedMinistries = randomizeAndSlice(filteredMinistries, 3);
             decoding="async"
           />
           <div class="rich-text">
-            <PortableText value={page.description} />
+            <PortableText
+              value={page.richContent}
+              components={{
+                type: {
+                  image: InlineImage,
+                  youtube: InlineYoutubeEmbed,
+                },
+              }}
+            />
           </div>
         </div>
       </article>

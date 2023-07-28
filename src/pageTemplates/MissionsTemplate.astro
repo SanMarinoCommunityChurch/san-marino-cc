@@ -1,6 +1,7 @@
 ---
 import IntroSection from "../components/IntroSection.astro";
 import { PortableText } from "astro-portabletext";
+import InlineYoutubeEmbed from "../components/InlineYoutubeEmbed.astro";
 import { urlFor } from "../lib/sanity";
 import { isOdd } from "../utils/data";
 import { allMissions } from "../lib/ministries";
@@ -93,7 +94,10 @@ let croppedAspectRatio = 0;
                   <div class="flow">
                     <h3 class="text-step-3">{mission.name}</h3>
                     <div class="text flow">
-                      <PortableText value={mission.description} class="" />
+                      <PortableText
+                        value={mission.richContent}
+                        components={{ type: { youtube: InlineYoutubeEmbed } }}
+                      />
                     </div>
                   </div>
                 </article>
@@ -153,7 +157,10 @@ let croppedAspectRatio = 0;
                   <div class="flow">
                     <h3 class="text-step-3">{mission.name}</h3>
                     <div class="text flow">
-                      <PortableText value={mission.description} class="" />
+                      <PortableText
+                        value={mission.richContent}
+                        components={{ type: { youtube: InlineYoutubeEmbed } }}
+                      />
                     </div>
                   </div>
                 </article>
