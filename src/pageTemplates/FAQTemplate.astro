@@ -20,17 +20,6 @@ const { faqs, faqSidebar } = content;
           </Accordion>
         ))
       }
-      <Accordion client:load>
-        <Fragment slot="question">What are your service options?</Fragment>
-        <Fragment slot="answer">
-          <p>
-            We offer <a href="/">three different Sunday worship experiences</a>.
-            The first two are live-streamed online and archived to assist you in
-            worshipping whenever is most convenient for you.
-          </p>
-        </Fragment>
-      </Accordion>
-      <Accordion client:load />
     </div>
     <SidebarLinks title={faqSidebar.heading} items={faqSidebar.links} />
   </div>

@@ -5,16 +5,17 @@ import { ministryCategories } from "../../../lib/ministries";
 
 import SectionPage from "../../../layouts/SectionPage.astro";
 
-const ministryTypesToSort = ministryCategories;
-const ministryTypes = ministryTypesToSort.sort((a, b) => {
-  if (a.name < b.name) {
-    return -1;
-  }
-  if (a.name > b.name) {
-    return 1;
-  }
-  return 0;
-});
+// const ministryTypesToSort = ministryCategories;
+// const sortOrder = [""];
+// const ministryTypes = ministryTypesToSort.sort((a, b) => {
+//   if (a.name < b.name) {
+//     return -1;
+//   }
+//   if (a.name > b.name) {
+//     return 1;
+//   }
+//   return 0;
+// });
 ---
 
 <SectionPage
@@ -22,10 +23,6 @@ const ministryTypes = ministryTypesToSort.sort((a, b) => {
   contentPadding
 >
   <!-- <div class="mobile-only">Swipe for more:</div> -->
-  <MinistrySlider slides={ministryTypes} items="ministries" />
-  <div class="center-items">
-    <Button href="#thumbnail-slider">Back to Top</Button>
-  </div>
 </SectionPage>
 
 <style>

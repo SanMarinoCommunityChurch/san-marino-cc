@@ -16,23 +16,29 @@ import SectionPage from "../../../layouts/SectionPage.astro";
 
 const staff = allStaff;
 const eldersAndDeacons = allEldersAndDeacons;
-const staffByType = groupAsType(staff);
-const eldersAndDeaconsByType = groupAsType(eldersAndDeacons);
+const staffByType = groupAsType(staff, ["clergy", "program", "admin"]);
+const eldersAndDeaconsByType = groupAsType(eldersAndDeacons, [
+  "elder",
+  "deacon",
+]);
 ---
 
 <SectionPage currentPage={"fb0d80b4-b5ac-43bc-96eb-9c2146228d3a"}>
   <div class="cluster sticky">
     <div class="small-title">Jump to:</div>
-    <a href="#staff" class="text-step-4 heading-link">Clergy & Staff</a>
+    <a href="#staff" class="text-step-4 heading-link">Pastors & Staff</a>
     <a href="#elders" class="text-step-4 heading-link">Elders & Deacons</a>
   </div>
   <div class="watch">
     <div id="staff">
-      <h2 class="sr-only">Clergy & Staff</h2>
+      <h2 class="sr-only">Pastors & Staff</h2>
       {
         staffByType.map((type) => {
           if (type.type === "admin") {
             type.type = "Administrative";
+          }
+          if (type.type === "clergy") {
+            type.type = "Pastoral";
           }
 
           return (
@@ -49,18 +55,20 @@ const eldersAndDeaconsByType = groupAsType(eldersAndDeacons);
                       href={`/who-we-are/leadership/${person.slug}`}
                       class="person"
                     >
-                      <div class="frame square">
-                        <img
-                          src={urlFor(person.image)
-                            .width(400)
-                            .height(400)
-                            .auto("format")
-                            .url()}
-                          width={400}
-                          height={400}
-                          alt={joinNames(person.name)}
-                        />
-                      </div>
+                      {person.image && (
+                        <div class="frame square">
+                          <img
+                            src={urlFor(person.image)
+                              .width(400)
+                              .height(400)
+                              .auto("format")
+                              .url()}
+                            width={400}
+                            height={400}
+                            alt={joinNames(person.name)}
+                          />
+                        </div>
+                      )}
                       <div class="flow">
                         <h3 class="text-step-1">
                           {[
@@ -96,18 +104,20 @@ const eldersAndDeaconsByType = groupAsType(eldersAndDeacons);
               {type.entries.map((person) => (
                 <li>
                   <div class="person">
-                    <div class="frame square">
-                      <img
-                        src={urlFor(person.image)
-                          .width(400)
-                          .height(400)
-                          .auto("format")
-                          .url()}
-                        width={400}
-                        height={400}
-                        alt={joinNames(person.name)}
-                      />
-                    </div>
+                    {person.image && (
+                      <div class="frame square">
+                        <img
+                          src={urlFor(person.image)
+                            .width(400)
+                            .height(400)
+                            .auto("format")
+                            .url()}
+                          width={400}
+                          height={400}
+                          alt={joinNames(person.name)}
+                        />
+                      </div>
+                    )}
                     <div class="flow">
                       <h3 class="text-step-1">
                         {[
@@ -201,7 +211,7 @@ const eldersAndDeaconsByType = groupAsType(eldersAndDeacons);
   .person {
     display: flex;
     flex-direction: column;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: center;
     text-align: center;
     height: 100%;

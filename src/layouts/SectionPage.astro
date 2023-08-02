@@ -20,6 +20,7 @@ import GiveTemplate from "../pageTemplates/GiveTemplate.astro";
 import MissionsTemplate from "../pageTemplates/MissionsTemplate.astro";
 import FeaturesTemplate from "../pageTemplates/FeaturesTemplate.astro";
 import FAQTemplate from "../pageTemplates/FAQTemplate.astro";
+import MinistryTypesTemplate from "../pageTemplates/MinistryTypesTemplate.astro";
 import UtilityTemplate from "../pageTemplates/UtilityTemplate.astro";
 
 // const utilityLocalNav = {
@@ -112,6 +113,11 @@ const bgImage = pageContent.headerBgImage
       {template == "give" && <GiveTemplate content={pageContent} />}
       {template == "contentCTA" && <DefaultTemplate content={pageContent} />}
       {template == "missions" && <MissionsTemplate content={pageContent} />}
+      {
+        template == "ministryTypes" && (
+          <MinistryTypesTemplate content={pageContent} />
+        )
+      }
       {template == "features" && <FeaturesTemplate content={pageContent} />}
       {template == "faq" && <FAQTemplate content={pageContent} />}
       {template == "utility" && <UtilityTemplate content={pageContent} />}

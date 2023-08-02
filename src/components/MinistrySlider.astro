@@ -36,25 +36,22 @@ const { slides, items } = Astro.props;
             const image = slide.image;
 
             return (
-              <li class="splide__slide" data-splide-hash={slide.slug.current}>
+              <li class="splide__slide" data-splide-hash={slide.slug}>
                 <div class="relative">
                   <article class="ministry-preview with-sidebar">
                     <div class="flow">
                       <div class="header flow">
                         <h2 class="text-step-3">{slide.name}</h2>
-                        <PortableText
-                          value={slide.description}
-                          class="text-step--1"
-                        />
+                        <p class="text-step--1">{slide.preview}</p>
                       </div>
                       <div class="more-link cluster">
                         <Button
-                          href={`#${slide.slug.current}-list`}
+                          href={`/connect/ministries/${slide.slug}`}
                           style="none"
                           theme="primary"
                           size="none"
                         >
-                          <slot name="CTA">View Ministries</slot>
+                          <slot name="CTA">Read more</slot>
                         </Button>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -67,7 +64,10 @@ const { slides, items } = Astro.props;
                         </svg>
                       </div>
                     </div>
-                    <div>
+                    <a
+                      href={`/connect/ministries/${slide.slug}`}
+                      class="img-link-wrapper"
+                    >
                       <img
                         class="img"
                         src={urlFor(image)
@@ -82,7 +82,7 @@ const { slides, items } = Astro.props;
                         loading="lazy"
                         decoding="async"
                       />
-                    </div>
+                    </a>
                   </article>
                 </div>
                 <div class="content-pane" id={`${slide.slug.current}-list`}>
@@ -144,6 +144,14 @@ const { slides, items } = Astro.props;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+  }
+
+  .img-link-wrapper {
+    transition: all 0.3s ease;
+  }
+
+  .img-link-wrapper:hover {
+    opacity: 0.8;
   }
 
   .more-link {

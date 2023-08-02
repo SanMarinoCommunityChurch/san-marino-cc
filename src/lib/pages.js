@@ -213,6 +213,33 @@ export const sanityPageData = await getSanityData(`*[_type == 'page'] {
     template == 'features' => {
       introParagraph
     },
+    template == 'ministryTypes' => {
+      "ministryTypes": ministryTypesList[]->{
+        name,
+        preview,
+        category->{
+          name,
+          "slug": slug.current
+        },
+        "slug": slug.current,
+        "image": image{
+          ...,
+          asset->
+        },
+        "ministries": *[_type == 'ministry' && references(^._id)]|order(name asc) {
+          name,
+          preview,
+          "image": image{
+            ...,
+            asset->
+          },
+          "slug": slug.current,
+          "category": type->category->{
+            name
+          }
+        }
+      }
+    },
     template == 'about' => {
       visionStatement{
         sectionHeading,

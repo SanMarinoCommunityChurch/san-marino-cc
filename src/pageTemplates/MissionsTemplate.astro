@@ -35,19 +35,19 @@ let croppedAspectRatio = 0;
   <div class="cluster sticky">
     <div class="small-title">Jump to:</div>
     <a
-      href={`#${slugify(missionsTypes[0].heading)}`}
-      class="text-step-4 heading-link">{missionsTypes[0].heading}</a
-    >
-    <a
       href={`#${slugify(missionsTypes[1].heading)}`}
       class="text-step-4 heading-link">{missionsTypes[1].heading}</a
     >
+    <a
+      href={`#${slugify(missionsTypes[0].heading)}`}
+      class="text-step-4 heading-link">{missionsTypes[0].heading}</a
+    >
   </div>
   <div class="mission-list">
-    <section id={slugify(missionsTypes[0].heading)}>
-      <h2 class="sr-only">{missionsTypes[0].heading}</h2>
+    <section id={slugify(missionsTypes[1].heading)}>
+      <h2 class="sr-only">{missionsTypes[1].heading}</h2>
       <div class="text-step-2">
-        <PortableText value={missionsTypes[0].text} />
+        <PortableText value={missionsTypes[1].text} />
       </div>
       {
         allMissions.map((mission) => {
@@ -107,10 +107,10 @@ let croppedAspectRatio = 0;
         })
       }
     </section>
-    <section id={slugify(missionsTypes[1].heading)}>
-      <h2 class="sr-only">{missionsTypes[1].heading}</h2>
+    <section id={slugify(missionsTypes[0].heading)}>
+      <h2 class="sr-only">{missionsTypes[0].heading}</h2>
       <div class="text-step-2">
-        <PortableText value={missionsTypes[1].text} />
+        <PortableText value={missionsTypes[0].text} />
       </div>
       {
         allMissions.map((mission) => {

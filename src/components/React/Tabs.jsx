@@ -105,6 +105,19 @@ export default function Tabs({ service }) {
                       }
                     />
                   )}
+                  {type.podcastId && (
+                    <iframe
+                      style={{ borderRadius: 12 + "px" }}
+                      src={`https://open.spotify.com/embed/episode/${type.podcastId}?utm_source=generator`}
+                      width="496"
+                      className="podcastEmbed"
+                      height="279"
+                      frameBorder="0"
+                      allowfullscreen=""
+                      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                      loading="lazy"
+                    ></iframe>
+                  )}
                 </div>
               </article>
             </Tab.Panel>

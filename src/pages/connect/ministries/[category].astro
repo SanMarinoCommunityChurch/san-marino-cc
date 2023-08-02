@@ -1,0 +1,261 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import BreacrumbAuto from "../../../components/BreadcrumbAuto.astro";
+import InnerHero from "../../../components/InnerHero.astro";
+import ImageCard from "../../../components/ImageCard.astro";
+import ContactAvatar from "../../../components/ContactAvatar.astro";
+import Button from "../../../components/Button.astro";
+// import MoreLikeThis from "../../../components/MoreLikeThis.astro";
+import { urlFor } from "../../../lib/sanity";
+import { DateTime } from "luxon";
+import { randomizeAndSlice, filterAgainst } from "../../../utils/data";
+import { defaultImage } from "../../../lib/settings";
+
+import { PortableText } from "astro-portabletext";
+import InlineImage from "../../../components/InlineImage.astro";
+import InlineYoutubeEmbed from "../../../components/InlineYoutubeEmbed.astro";
+import { joinNames } from "../../../utils/format";
+
+import MiniPreviewCard from "../../../components/MiniPreviewCard.astro";
+import { ministryCategories } from "../../../lib/ministries";
+import "../../../styles/rich-text.css";
+
+export async function getStaticPaths() {
+  const pages = ministryCategories;
+
+  return pages.map((page) => {
+    return {
+      params: { category: page.slug },
+      props: { page },
+    };
+  });
+}
+
+const { category } = Astro.params;
+const { page } = Astro.props;
+
+const breadcrumbs = [
+  {
+    name: "Connect",
+    href: "/connect",
+  },
+  {
+    name: "Ministries",
+    href: "/connect/ministries",
+  },
+  {
+    name: page.name,
+    current: true,
+  },
+];
+
+// const otherMinistries = previewMinistries;
+// const filteredMinistries = filterAgainst(otherMinistries, "ministryType", page);
+// const randomizedMinistries = randomizeAndSlice(filteredMinistries, 3);
+---
+
+<Layout
+  meta={{
+    title: `${page.name}`,
+    description: page.preview,
+    openGraph: {
+      title: `${page.name}`,
+      description: page.preview,
+      image: page.image,
+    },
+  }}
+  title={page.name}
+  description={page.preview}
+>
+  <main slot="main">
+    <InnerHero pageTitle={page.name} pageDescription={page.preview}>
+      <Fragment slot="breadcrumbs">
+        <BreacrumbAuto
+          navigation={breadcrumbs}
+          className="breadcrumb-wrapper"
+        />
+      </Fragment>
+      <div
+        slot="eyebrow"
+        class="eyebrow cluster"
+        style="margin-bottom: -0.5rem;"
+      >
+        <a
+          class="small-title heading-category"
+          href={`/connect/ministries#${page.typeSlug}`}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="12"
+            width="12"
+            fill="var(--color-primary-800)"
+            viewBox="0 0 448 512"
+            ><path
+              d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
+            ></path></svg
+          >
+          <span>All Ministries</span>
+        </a>
+      </div>
+    </InnerHero>
+    <div class="content-wrapper with-sidebar">
+      <article>
+        <div slot="main-panel" class="main-panel flow">
+          <img
+            class="img"
+            src={urlFor(page.image).width(900).height(640).auto("format").url()}
+            alt={page.image.asset.altText || ""}
+            width={900}
+            height={640}
+            style={`background-image: url(${page.image.asset.metadata.lqip})`}
+            loading="lazy"
+            decoding="async"
+          />
+          <div class="rich-text">
+            <PortableText
+              value={page.richContent}
+              components={{
+                type: {
+                  image: InlineImage,
+                  youtube: InlineYoutubeEmbed,
+                },
+              }}
+            />
+          </div>
+        </div>
+      </article>
+      <div slot="sidebar" class="sidebar-content">
+        <section class="associated-ministries flow">
+          <h2 class="text-step-2">{`View ${page.name}`}</h2>
+          <ul class="flow" style="--flow-space: 2rem;">
+            {
+              page.ministries.map((item) => (
+                <li>
+                  <MiniPreviewCard
+                    href={`/connect/ministries/${item.slug}`}
+                    image={item.image || defaultImage}
+                  >
+                    <div class="text-step-1 font-header">{item.name}</div>
+                  </MiniPreviewCard>
+                </li>
+              ))
+            }
+          </ul>
+        </section>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .cta {
+    margin-block: var(--section-spacer-half);
+  }
+
+  .content-wrapper.with-sidebar {
+    --sidebar-gap: 5rem;
+    padding-block: var(--space-3xl);
+  }
+
+  .main-panel.flow {
+    --flow-space: 3rem;
+  }
+
+  .header.flow {
+    --flow-space: 2rem;
+  }
+
+  .breadcrumb-wrapper {
+    position: absolute;
+    z-index: 10;
+    padding-inline-start: var(--space-l);
+    top: 1rem;
+    width: fit-content;
+  }
+
+  .frame {
+    --width: 7;
+    --height: 5;
+    border-radius: var(--rounded-corners);
+  }
+
+  .img {
+    border-radius: var(--rounded-corners);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .eyebrow.cluster {
+    margin-bottom: 1rem;
+  }
+
+  .eyebrow > :last-child {
+    font-variant-numeric: lining-nums;
+    color: var(--color-primary-800);
+  }
+
+  .featured-image {
+    border-radius: var(--rounded-corners);
+  }
+
+  .small-title.heading-category {
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: var(--color-primary-800);
+    width: fit-content;
+    line-height: 1;
+    padding: 6px 9px;
+    background-color: var(--color-primary-200);
+    border-radius: var(--rounded-corners-small);
+    transition: all 0.2s ease;
+  }
+
+  .small-title.heading-category:hover {
+    background-color: var(--color-primary-100);
+  }
+
+  .responsive-grid {
+    --gap: 2rem;
+    --item-min-width: 20rem;
+    --item-max-width: 23rem;
+  }
+
+  .sidebar-content {
+    padding-top: 1rem;
+  }
+
+  .font-header {
+    line-height: 1.15;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    overflow: hidden;
+  }
+
+  .associated-ministries {
+    margin-top: 0;
+  }
+
+  .associated-ministries > :first-child {
+    margin-bottom: 0.5rem;
+  }
+
+  .associated-ministries .text-step-1 {
+    color: var(--color-primary-800);
+    margin-bottom: 6px;
+  }
+
+  .associated-ministries li:hover .text-step-1 {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    .breadcrumb-wrapper {
+      padding-inline-start: 1rem;
+    }
+  }
+</style>

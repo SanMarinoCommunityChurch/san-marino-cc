@@ -89,6 +89,12 @@ const bgImageStyle = `linear-gradient(to top, rgb(0 0 0 / 0.75) 15%, rgb(0 0 0 /
         })
     }
     <div class="icon-grid-section">
+      <div class="center-items">
+        <Button href="https://smcc.breezechms.com/give/online" target="_blank">
+          <span>Make a Gift</span>
+          <i class="fa-duotone fa-arrow-right"></i>
+        </Button>
+      </div>
       <h2 class="center-items">{iconGrid.heading}</h2>
       <div class="icon-grid">
         {
@@ -103,12 +109,6 @@ const bgImageStyle = `linear-gradient(to top, rgb(0 0 0 / 0.75) 15%, rgb(0 0 0 /
             </a>
           ))
         }
-      </div>
-      <div class="center-items">
-        <Button href="https://smcc.breezechms.com/give/online" target="_blank">
-          <span>Make a Donation</span>
-          <i class="fa-duotone fa-arrow-right"></i>
-        </Button>
       </div>
     </div>
     {
@@ -226,12 +226,12 @@ const bgImageStyle = `linear-gradient(to top, rgb(0 0 0 / 0.75) 15%, rgb(0 0 0 /
   }
 
   .icon-grid-section div.center-items {
-    margin-top: 2rem;
+    margin-bottom: 2rem;
   }
 
   .icon-grid-section h2.center-items {
     font-size: var(--step-2);
-    margin-bottom: 2rem;
+    margin-top: 2rem;
   }
 
   .icon-grid {

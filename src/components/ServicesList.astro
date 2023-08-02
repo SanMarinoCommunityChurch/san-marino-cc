@@ -3,7 +3,7 @@ import { Image } from "@astrojs/image/components";
 import DateLabel from "./Events/DateLabel.astro";
 import { capitalizeFirstLetter } from "../utils/format";
 import getYouTubeID from "get-youtube-id";
-import { joinTypes } from "../utils/format";
+import { joinTypes, joinNames } from "../utils/format";
 
 import bgImage from "../assets/images/church-ext-2.jpg";
 import { DateTime } from "luxon";
@@ -35,66 +35,70 @@ const { services } = Astro.props;
 
 <ul class="flow">
   {
-    services.map((service) => (
-      <li>
-        <a href={`/worship/services/${service.slug}`} class="service-wrapper">
-          <div class="date-label-wrapper">
-            <time class="date-label" datetime={service.date}>
-              <div class="event-day font-header">
-                {DateTime.fromISO(service.date)
-                  .setZone("America/Los_Angeles", { keepLocalTime: true })
-                  .toFormat("d")}
-              </div>
-              <div class="small-title">
-                {DateTime.fromISO(service.date)
-                  .setZone("America/Los_Angeles", { keepLocalTime: true })
-                  .toFormat("LLL")}
-              </div>
-            </time>
-            <Image src={bgImage} alt="" />
-          </div>
-          <div class="flow content">
-            <div>
-              <div class="small-title category">
-                {joinTypes(service.serviceType)}
-              </div>
-              <h3 class="text-step-2">
-                {service.name ? service.name : "Sunday Service"}
-              </h3>
+    services.map((service) => {
+      const serviceDate = DateTime.fromISO(service.date)
+        .setZone("America/Los_Angeles", { keepLocalTime: true })
+        .toLocaleString(DateTime.DATE_HUGE);
+      return (
+        <li>
+          <a href={`/worship/services/${service.slug}`} class="service-wrapper">
+            <div class="date-label-wrapper">
+              <time class="date-label" datetime={service.date}>
+                <div class="event-day font-header">
+                  {DateTime.fromISO(service.date)
+                    .setZone("America/Los_Angeles", { keepLocalTime: true })
+                    .toFormat("d")}
+                </div>
+                <div class="small-title">
+                  {DateTime.fromISO(service.date)
+                    .setZone("America/Los_Angeles", { keepLocalTime: true })
+                    .toFormat("LLL")}
+                </div>
+              </time>
+              <Image src={bgImage} alt="" />
             </div>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad vel
-              sint natus ea sit vero.
-            </p>
-          </div>
-          <div class="frame video">
-            <div class="icon">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 512 512"
-                width="40"
-                height="40"
-                fill="var(--color-white)"
-                aria-hidden="true"
-              >
-                <path d="M256 32a224 224 0 1 1 0 448 224 224 0 1 1 0-448zm0 480A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm72.7-256L208 329.7V182.3L328.7 256zM212.5 147.5c-7.4-4.5-16.7-4.7-24.3-.5s-12.3 12.3-12.3 20.9V344c0 8.7 4.7 16.7 12.3 20.9s16.8 4.1 24.3-.5l144-88c7.1-4.4 11.5-12.1 11.5-20.5s-4.4-16.1-11.5-20.5l-144-88z" />
-              </svg>
+            <div class="flow content">
+              <div>
+                <div class="small-title category">
+                  {joinTypes(service.serviceType)}
+                </div>
+                <h3 class="text-step-2">
+                  {service.name ? service.name : "Sunday Service"}
+                </h3>
+              </div>
+              <p>{`Watch video from our ${serviceDate} service, with sermon by ${joinNames(
+                service.serviceType[0].preacher.name
+              )}.`}</p>
             </div>
-            <div class="overlay" />
-            <img
-              src={
-                service.serviceType[0].video
-                  ? `https://img.youtube.com/vi/${getYouTubeID(
-                      service.serviceType[0].video.url
-                    )}/sddefault.jpg`
-                  : videoImg
-              }
-              alt=""
-            />
-          </div>
-        </a>
-      </li>
-    ))
+            <div class="frame video">
+              <div class="icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                  width="40"
+                  height="40"
+                  fill="var(--color-white)"
+                  aria-hidden="true"
+                >
+                  <path d="M256 32a224 224 0 1 1 0 448 224 224 0 1 1 0-448zm0 480A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm72.7-256L208 329.7V182.3L328.7 256zM212.5 147.5c-7.4-4.5-16.7-4.7-24.3-.5s-12.3 12.3-12.3 20.9V344c0 8.7 4.7 16.7 12.3 20.9s16.8 4.1 24.3-.5l144-88c7.1-4.4 11.5-12.1 11.5-20.5s-4.4-16.1-11.5-20.5l-144-88z" />
+                </svg>
+              </div>
+              <div class="overlay" />
+              <img
+                src={
+                  service.serviceType[0].video
+                    ? `https://img.youtube.com/vi/${getYouTubeID(
+                        service.serviceType[0].video.url
+                      )}/sddefault.jpg`
+                    : videoImg
+                }
+                alt=""
+              />
+            </div>
+          </a>
+        </li>
+      );
+    })
   }
 </ul>
 

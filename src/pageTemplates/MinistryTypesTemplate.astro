@@ -1,0 +1,12 @@
+---
+import MinistrySlider from "../components/MinistrySlider.astro";
+import Button from "../components/Button.astro";
+const { content } = Astro.props;
+---
+
+<Fragment>
+  <MinistrySlider slides={content.ministryTypes} items="ministries" />
+  <div class="center-items">
+    <Button href="#thumbnail-slider">Back to Top</Button>
+  </div>
+</Fragment>

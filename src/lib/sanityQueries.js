@@ -327,6 +327,8 @@ const ministryTypeWithMinistriesPreview = `*[_type == 'ministryType'] {
     name,
     "slug": slug.current
   },
+  preview,
+  "slug": slug.current,
   "image": image{
     ...,
     asset->
@@ -334,7 +336,7 @@ const ministryTypeWithMinistriesPreview = `*[_type == 'ministryType'] {
   "richContent": description[]{
     ...
   },
-  "ministries": *[_type == 'ministry' && references(^._id)] {
+  "ministries": *[_type == 'ministry' && references(^._id)]|order(name asc) {
     name,
     preview,
     meetingLocation,

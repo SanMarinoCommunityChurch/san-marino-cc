@@ -6,7 +6,7 @@ const moveInArray = (arr, from, to) => {
 };
 
 // Refactor because this is the exact same function as {groupByMonth} in utils/events
-const groupAsType = (people) => {
+const groupAsType = (people, sortInstructions) => {
   const types = [];
   const peopleByType = [];
 
@@ -18,14 +18,19 @@ const groupAsType = (people) => {
   });
 
   // Reorder array for page display
-  if (types[0] !== "clergy") {
-    let index = types.indexOf("clergy");
-    moveInArray(types, index, 0);
-  }
-  if (types[1] !== "program") {
-    let index = types.indexOf("program");
-    moveInArray(types, index, 1);
-  }
+  // if (types[0] !== "clergy") {
+  //   let index = types.indexOf("clergy");
+  //   moveInArray(types, index, 0);
+  // }
+  // if (types[1] !== "program") {
+  //   let index = types.indexOf("program");
+  //   moveInArray(types, index, 1);
+  // }
+
+  // if (types[0] !== "elder") {
+  //   let index = types.indexOf("elder");
+  //   moveInArray(types, index, 0);
+  // }
 
   types.forEach((type) => {
     let personType = {};
@@ -33,7 +38,16 @@ const groupAsType = (people) => {
     personType.entries = people.filter((person) => person.type === type);
     peopleByType.push(personType);
   });
-  return peopleByType;
+
+  if (sortInstructions) {
+    return peopleByType.sort((a, b) => {
+      return (
+        sortInstructions.indexOf(a.type) - sortInstructions.indexOf(b.type)
+      );
+    });
+  } else {
+    return peopleByType;
+  }
 };
 
 export { groupAsType };
