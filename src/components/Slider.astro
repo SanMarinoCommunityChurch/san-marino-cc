@@ -29,7 +29,7 @@ const { heading, description, slides } = Astro.props;
                 size="large"
                 position="relative"
                 name={type.name}
-                theme={type.slug}
+                theme={type.theme}
               />
             </li>
           );
@@ -48,7 +48,7 @@ const { heading, description, slides } = Astro.props;
                 <PostCategory
                   slot="label"
                   name={slide.category.name}
-                  theme={slide.category.slug}
+                  theme={slide.category.theme}
                 />
                 <div class="slide-text flow">
                   <h3 class="text-step-3 color-white">{slide.title}</h3>
@@ -79,6 +79,11 @@ const { heading, description, slides } = Astro.props;
 
   .relative {
     position: relative;
+  }
+
+  .cluster.types {
+    max-width: 50rem;
+    justify-content: center;
   }
 
   #slider-heading {

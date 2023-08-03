@@ -10,19 +10,31 @@ const sizes = {
 };
 
 const themes = {
-  workshops: {
+  "accent-teal": {
     foreground: "#0E4B47",
     background: "#c5e3e1",
   },
-  education: {
+  "accent-orange": {
     foreground: "#8f4b00",
     background: "#ECD1B5",
   },
-  updates: {
+  "accent-purple": {
+    foreground: "#4b1754",
+    background: "#dbd1dd",
+  },
+  "accent-pink": {
+    foreground: "#7a1246",
+    background: "#dabfcc",
+  },
+  "accent-yellow": {
+    foreground: "#8b6f00",
+    background: "#ffefb7",
+  },
+  "brand-dark-blue": {
     foreground: "#172554",
     background: "#C0CBF0",
   },
-  default: {
+  "brand-light-blue": {
     foreground: "var(--color-primary-900)",
     background: "var(--color-primary-100)",
   },
@@ -33,7 +45,7 @@ const {
   position = "absolute",
   size = "small",
   href,
-  theme = "default",
+  theme = "brand-light-blue",
   ...props
 } = Astro.props;
 

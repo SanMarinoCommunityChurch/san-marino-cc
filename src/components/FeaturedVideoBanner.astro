@@ -60,13 +60,10 @@ const compileServiceTypes = (array) => {
                 .setZone("America/Los_Angeles", { keepLocalTime: true })
                 .toLocaleString(DateTime.DATE_HUGE)
             }
-            <!-- {formatDateShort(latestService.date)} -->
           </h3>
         </div>
         <p>
-          {latestService.name && `${latestService.name}: `}{
-            compileServiceTypes(latestService.serviceType).join(" & ")
-          }
+          {compileServiceTypes(latestService.serviceType).join(" & ")}
         </p>
       </div>
       <div class="cluster">

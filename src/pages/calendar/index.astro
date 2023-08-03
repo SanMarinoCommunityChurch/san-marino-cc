@@ -39,14 +39,14 @@ import Button from "../../components/Button.astro";
   // }
   async function getEventData() {
     const res = await fetch(
-      "https://idyllic-alfajores-503e42.netlify.app/calendar.json"
+      "https://sanmarinocommunitychurch.com/calendar.json"
     );
     return res.json();
   }
 
   async function getServiceData() {
     const res = await fetch(
-      "https://idyllic-alfajores-503e42.netlify.app/worship.json"
+      "https://sanmarinocommunitychurch.com/worship.json"
     );
     return res.json();
   }

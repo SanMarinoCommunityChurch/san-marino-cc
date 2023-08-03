@@ -7,7 +7,7 @@ import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://idyllic-alfajores-503e42.netlify.app",
+  site: "https://sanmarinocommunitychurch.com",
   scopedStyleStrategy: "class",
   // compressHTML: true,
   integrations: [

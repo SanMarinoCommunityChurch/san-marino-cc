@@ -109,9 +109,16 @@ export const homePage = await getSanityData(`*[_type == 'homePage'][0] {
   welcome{
     heading,
     text,
-    "image": image{
+    "media": media[0]{
+      _type == 'image' => {
         ...,
+        "type": _type,
         asset->
+      },
+      _type == 'youtube' => {
+        "type": _type,
+        url
+      }
     },
     "person": person->{
       name,
@@ -192,6 +199,7 @@ export const homePage = await getSanityData(`*[_type == 'homePage'][0] {
       publishDate,
       "category": category->{
         name,
+        theme,
         "slug": slug.current
       }
     }

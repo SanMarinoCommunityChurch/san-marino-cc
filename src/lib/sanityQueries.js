@@ -466,6 +466,7 @@ const posts = `*[_type == 'post']|order(publishDate desc) {
   },
   "category": category->{
     name,
+    theme,
     "slug": slug.current
   },
   "categoryName": category.name,
@@ -485,6 +486,7 @@ const posts = `*[_type == 'post']|order(publishDate desc) {
 
 const postTypes = `*[_type == 'postType'] | order(name asc) {
   name,
+  theme,
   "slug": slug.current,
   "posts": *[_type == 'post' && references(^._id)]|order(publishDate desc) {
     "title": name,
@@ -504,6 +506,7 @@ const postTypes = `*[_type == 'postType'] | order(name asc) {
       asset->
     },
     "category": category->{
+    theme,
     name,
     "slug": slug.current
   },

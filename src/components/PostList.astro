@@ -24,7 +24,7 @@ const { posts } = Astro.props;
             <PostCategory
               slot="label"
               name={post.category.name}
-              theme={post.category.slug}
+              theme={post.category.theme}
             />
             <time slot="header" class="post-date" datetime={post.publishDate}>
               {`${DateTime.fromISO(post.publishDate)

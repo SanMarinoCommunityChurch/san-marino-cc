@@ -13,6 +13,7 @@ import ImageLinks from "../components/ImageLinks.astro";
 import Slider from "../components/Slider.astro";
 import { siteSettings } from "../lib/settings";
 import { homePage } from "../lib/pages";
+import getYouTubeID from "get-youtube-id";
 import { allPosts } from "../lib/posts";
 import { urlFor } from "../lib/sanity";
 
@@ -162,23 +163,32 @@ const resources = featuredResources.resourceLinks;
           </div>
         </div>
         <div>
-          <img
-            src={urlFor(welcome.image).width(900).auto("format").url()}
-            alt={welcome.image.asset.altText || ""}
-            class="img"
-            width={900}
-            height={Math.floor(
-              900 / welcome.image.asset.metadata.dimensions.aspectRatio
-            )}
-            loading="lazy"
-            decoding="async"
-          />
-          <!-- <Picture
-            src={welcomeCollage}
-            alt=""
-            widths={[600, 900, 1200]}
-            sizes="100vw"
-          /> -->
+          {
+            welcome.media.type == "image" ? (
+              <img
+                src={urlFor(welcome.media).width(900).auto("format").url()}
+                alt={welcome.media.asset.altText || ""}
+                class="img"
+                width={900}
+                height={Math.floor(
+                  900 / welcome.media.asset.metadata.dimensions.aspectRatio
+                )}
+                loading="lazy"
+                decoding="async"
+              />
+            ) : (
+              <iframe
+                width="560"
+                height="315"
+                src={`https://www.youtube.com/embed/${getYouTubeID(
+                  welcome.media.url
+                )}`}
+                title="YouTube video player"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+              />
+            )
+          }
         </div>
       </div>
     </article>
@@ -243,6 +253,11 @@ const resources = featuredResources.resourceLinks;
 
     #features.flow {
       --flow-space: var(--space-3xl);
+    }
+
+    iframe {
+      border: 0;
+      width: 100%;
     }
 
     .meet-grid {

@@ -31,7 +31,7 @@ const { seo } = currentPage;
                   size="large"
                   position="relative"
                   name={type.name}
-                  theme={type.slug}
+                  theme={type.theme}
                 />
               </li>
             );
@@ -68,6 +68,11 @@ const { seo } = currentPage;
 
   .types {
     margin-top: 3rem;
+  }
+
+  .cluster.types {
+    max-width: 50rem;
+    justify-content: center;
   }
 
   article.content-wrapper {
