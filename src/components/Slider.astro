@@ -29,7 +29,7 @@ const { heading, description, slides } = Astro.props;
                 size="large"
                 position="relative"
                 name={type.name}
-                theme={type.theme}
+                theme={"default"}
               />
             </li>
           );
@@ -48,7 +48,7 @@ const { heading, description, slides } = Astro.props;
                 <PostCategory
                   slot="label"
                   name={slide.category.name}
-                  theme={slide.category.theme}
+                  theme={"default"}
                 />
                 <div class="slide-text flow">
                   <h3 class="text-step-3 color-white">{slide.title}</h3>
