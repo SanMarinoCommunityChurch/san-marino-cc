@@ -5,6 +5,7 @@ const url = props.node.url;
 const ytID = getYouTubeID(url);
 ---
 
+<!-- <lite-youtube videoid={ytID}></lite-youtube> -->
 <iframe
   width="800"
   height="450"
@@ -18,3 +19,8 @@ const ytID = getYouTubeID(url);
     border-radius: var(--rounded-corners);
   }
 </style>
+
+<!-- <script>
+  import "lite-youtube-embed/src/lite-yt-embed.js";
+  import "lite-youtube-embed/src/lite-yt-embed.css";
+</script> -->

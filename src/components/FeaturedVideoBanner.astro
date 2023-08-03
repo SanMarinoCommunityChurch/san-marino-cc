@@ -1,13 +1,14 @@
 ---
 import Button from "./Button.astro";
-import { Image } from "@astrojs/image/components";
+import { getSanityData, urlFor } from "../lib/sanity";
 import { latestService } from "../lib/services";
 import { format12HourTime } from "../utils/format";
 import getYouTubeId from "get-youtube-id";
 import { DateTime } from "luxon";
 
-// const homeYouTubeID = "https://www.youtube.com/live/Gh2c1aAQkJc?feature=share";
-import churchBg from "../assets/images/church-ext-2.jpg";
+const bgImage = await getSanityData(
+  `*[_id == "image-49e672b21479083a60c233227848c2b3a74a5eae-1620x1080-jpg"][0]`
+);
 
 const compileServiceTypes = (array) => {
   const types = [];
@@ -36,14 +37,12 @@ const compileServiceTypes = (array) => {
             ></path></svg
           >
         </div>
-        <!-- <div class="overlay"></div> -->
-        <Image
+        <img
           src={`https://img.youtube.com/vi/${getYouTubeId(
             latestService.serviceType[0].video.url
           )}/sddefault.jpg`}
           width={300}
           height={225}
-          format="webp"
           alt={`Latest service YouTube thumbnail.`}
           loading="lazy"
           decoding="async"
@@ -72,7 +71,17 @@ const compileServiceTypes = (array) => {
       </div>
     </div>
   </div>
-  <Image src={churchBg} class="img-overlay" width={900} alt="" format="webp" />
+  <img
+    src={urlFor(bgImage)
+      .width(600)
+      .height(Math.floor(600 / bgImage.metadata.dimensions.aspectRatio))
+      .auto("format")
+      .url()}
+    class="img-overlay"
+    width={600}
+    height={Math.floor(600 / bgImage.metadata.dimensions.aspectRatio)}
+    alt={bgImage.altText || ""}
+  />
 </article>
 
 <style>
@@ -99,10 +108,11 @@ const compileServiceTypes = (array) => {
     left: 0;
     bottom: 0;
     width: fit-content;
-    height: clamp(150%, 50rem, 220%);
+    height: 150%;
+    transform: translateY(-25%);
     object-fit: contain;
-    opacity: 0.9;
-    mix-blend-mode: multiply;
+    opacity: 0.5;
+    mix-blend-mode: luminosity;
     filter: saturate(0);
     mask-image: linear-gradient(to right, black, transparent);
     -webkit-mask-image: linear-gradient(to right, black, transparent);
@@ -180,10 +190,6 @@ const compileServiceTypes = (array) => {
 
     .video-link {
       order: 2;
-    }
-
-    .img-overlay {
-      height: 100% !important;
     }
   }
 </style>

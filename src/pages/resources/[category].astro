@@ -29,6 +29,7 @@ const { page } = Astro.props;
     <section class="hero center-items flow">
       <div class="small-title">San Marino Community Church</div>
       <h1 class="text-step-6 heading">{`Resources: ${page.name}`}</h1>
+      {page.text && <p>{page.text}</p>}
       <ul class="cluster types">
         <li>
           <PostCategory
@@ -47,7 +48,11 @@ const { page } = Astro.props;
                   size="large"
                   position="relative"
                   name={type.name}
-                  theme={"default"}
+                  theme={
+                    Astro.url.pathname === `/resources/${type.slug}`
+                      ? "active"
+                      : "default"
+                  }
                 />
               </li>
             );
@@ -73,8 +78,10 @@ const { page } = Astro.props;
       var(--color-primary-900)
     );
   }
+
   .hero .heading {
     color: var(--color-primary-50);
+    margin-bottom: 1rem;
   }
 
   .hero.flow {

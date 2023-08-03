@@ -87,8 +87,13 @@ export default function Tabs({ service }) {
                   </div>
                   <PortableText value={type.serviceDescription} />
                   {type.programLink && (
-                    <a href={type.programLink} width="fit">
-                      Download Program
+                    <a
+                      href={type.programLink}
+                      target="_blank"
+                      className="program-link"
+                    >
+                      <span>Download Program</span>
+                      <i className="fa-duotone fa-arrow-up-right-from-square fa-xs"></i>
                     </a>
                   )}
                 </div>
@@ -113,7 +118,7 @@ export default function Tabs({ service }) {
                       className="podcastEmbed"
                       height="279"
                       frameBorder="0"
-                      allowfullscreen=""
+                      allowFullScreen=""
                       allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                       loading="lazy"
                     ></iframe>

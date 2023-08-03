@@ -37,8 +37,6 @@ const bgImage = pageContent.headerBgImage
       bgImage={bgImage}
     />
     <article class:list={["content-wrapper flow", contentPadding && "padding"]}>
-      <!-- {template == "utility" && <UtilityTemplate content={pageContent} />}
-      {template == "contact" && <ContactTemplate content={pageContent} />} -->
       <slot />
     </article>
     <slot name="pre-footer" />

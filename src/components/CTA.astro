@@ -1,7 +1,11 @@
 ---
-import { Image } from "@astrojs/image/components";
+import { getSanityData, urlFor } from "../lib/sanity";
 import Button from "./Button.astro";
-import bgImage from "../assets/images/church-ext-4.jpg";
+
+const bgImage = await getSanityData(
+  `*[_id == "image-e83f53d39f32b13b60cd4f527b18dfa6d3c480d0-1660x2048-jpg"][0]`
+);
+
 const { content } = Astro.props;
 const { heading, text, linkName, href } = content;
 ---
@@ -20,7 +24,18 @@ const { heading, text, linkName, href } = content;
         {linkName}
       </Button>
     </div>
-    <Image src={bgImage} alt="" />
+    <img
+      src={urlFor(bgImage)
+        .width(1200)
+        .height(675)
+        .fit("crop")
+        .crop("top")
+        .auto("format")
+        .url()}
+      alt={bgImage.altText}
+      width={1200}
+      height={675}
+    />
   </section>
   <section class="cta-bottom">
     <div class="content-wrapper center-items flow">
@@ -73,12 +88,15 @@ const { heading, text, linkName, href } = content;
 
   .cta-top img {
     position: absolute;
-    bottom: -50%;
-    transform: translateY(50%);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: auto;
     object-fit: cover;
     filter: saturate(0);
     mix-blend-mode: multiply;
-    opacity: 0.9;
+    opacity: 0.95;
     z-index: 1;
   }
 

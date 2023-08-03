@@ -205,7 +205,16 @@ const fallbackOGImage = urlFor(defaultImage)
         max-width: 67ch;
       }
 
-      :where(a, button):not(.btn, .logo, .link) {
+      :where(a, button):not(
+          .btn,
+          .logo,
+          .link,
+          .fc-button,
+          .fc-col-header-cell-cushion,
+          .fc-daygrid-day-number,
+          .fc-list-day-text,
+          .fc-list-day-side-text
+        ) {
         text-decoration: underline;
       }
 
@@ -213,7 +222,15 @@ const fallbackOGImage = urlFor(defaultImage)
         text-decoration: none;
       }
 
+      .fc-event {
+        cursor: pointer;
+      }
+
       .events-pagination .splide__pagination__page.is-active {
+        background: var(--color-primary-300) !important;
+      }
+
+      .splide__pagination__page.is-active {
         background: var(--color-primary-300) !important;
       }
 
@@ -340,6 +357,31 @@ const fallbackOGImage = urlFor(defaultImage)
       .live .service-tab[data-headlessui-state~="selected"] {
         background: var(--color-primary-800);
         color: var(--color-white);
+      }
+
+      .program-link {
+        text-decoration: none;
+        font-family: var(--font-secondary);
+        font-weight: var(--font-weight-semi);
+        font-size: var(--step--1);
+        line-height: 1.15;
+        padding: 0.75em 1em 0.78rem;
+        width: fit-content;
+        letter-spacing: 1.5pt;
+        text-transform: uppercase;
+        border-radius: 4px;
+        color: inherit;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.45rem;
+        transition: all 0.2s ease-in-out;
+        background-color: var(--color-primary-800);
+        color: var(--color-white);
+      }
+
+      .program-link:hover {
+        background-color: var(--color-primary-900);
       }
 
       /* .panel-2 .video-wrapper {

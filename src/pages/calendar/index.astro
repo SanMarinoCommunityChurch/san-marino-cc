@@ -22,11 +22,13 @@ import Button from "../../components/Button.astro";
 <script>
   import { Calendar } from "@fullcalendar/core";
   import dayGridPlugin from "@fullcalendar/daygrid";
+  import listPlugin from "@fullcalendar/list";
   import { capitalizeFirstLetter } from "../../utils/format";
   import tippy from "tippy.js";
   import "tippy.js/dist/tippy.css";
 
   const calenderEl = document.querySelector("#calendar") as HTMLElement;
+  const mediaQuery = window.matchMedia("(max-width: 768px)");
 
   // async function getEventData() {
   //   const res = await fetch("http://localhost:3000/calendar.json");
@@ -93,8 +95,18 @@ import Button from "../../components/Button.astro";
   const combinedEvents = [].concat(eventObjs, serviceObjs);
 
   const calendar = new Calendar(calenderEl, {
-    plugins: [dayGridPlugin],
-    initialView: "dayGridMonth",
+    plugins: [dayGridPlugin, listPlugin],
+    initialView: mediaQuery.matches ? "listWeek" : "dayGridMonth",
+    headerToolbar: {
+      start: "title",
+      center: "dayGridMonth,listWeek",
+      end: "today prev,next",
+    },
+    buttonText: {
+      today: "Today",
+      dayGridMonth: "View Month",
+      listWeek: "View List",
+    },
     events: combinedEvents,
     eventClick: function (info) {
       info.jsEvent.preventDefault();
@@ -123,4 +135,8 @@ import Button from "../../components/Button.astro";
     },
   });
   calendar.render();
+  mediaQuery.addEventListener("change", () => {
+    console.log("media breakpoint");
+    calendar.render();
+  });
 </script>

@@ -68,7 +68,6 @@ const {
           decoding="async"
         />
         <div>
-          <!-- <slot name="sidebar" /> -->
           <slot name="main-panel" />
         </div>
       </div>
@@ -79,21 +78,6 @@ const {
           >
             <PostList posts={moreContent} />
           </MoreLikeThis>
-          // <section class="highlight-section">
-          //   <div class="content-wrapper">
-          //     <div slot="highlight" class="more flow">
-          //       <h2 class="text-step-3">
-          //         Explore Related {moreContent.heading}
-          //       </h2>
-
-          //       <div class="center-items">
-          //         <Button href={moreContent.link}>
-          //           See All {moreContent.heading}
-          //         </Button>
-          //       </div>
-          //     </div>
-          //   </div>
-          // </section>
         )
       }
     </article>

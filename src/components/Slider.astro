@@ -51,14 +51,20 @@ const { heading, description, slides } = Astro.props;
                   theme={"default"}
                 />
                 <div class="slide-text flow">
-                  <h3 class="text-step-3 color-white">{slide.title}</h3>
+                  <h3 class="text-step-3 color-white">{slide.name}</h3>
                   <p>{slide.preview}</p>
                 </div>
                 <div class="overlay" />
-                <div class="frame video">
+                <div class="img-wrapper">
                   <img
                     class="img"
-                    src={urlFor(slide.image).width(900).auto("format").url()}
+                    src={urlFor(slide.image)
+                      .width(900)
+                      .height(675)
+                      .auto("format")
+                      .url()}
+                    width={900}
+                    height={675}
                     alt={slide.image.asset.altText}
                     style={`background-image: url(${slide.image.asset.metadata.lqip})`}
                   />
@@ -68,6 +74,7 @@ const { heading, description, slides } = Astro.props;
           ))
         }
       </ul>
+      <ul class="splide__pagination"></ul>
     </div>
   </div>
 </section>
@@ -84,6 +91,10 @@ const { heading, description, slides } = Astro.props;
   .cluster.types {
     max-width: 50rem;
     justify-content: center;
+  }
+
+  .text-step-3 {
+    line-height: 1.15;
   }
 
   #slider-heading {
@@ -103,6 +114,7 @@ const { heading, description, slides } = Astro.props;
     align-items: flex-end;
     position: relative;
     text-decoration: none;
+    min-height: 20rem;
   }
 
   .slide-text {
@@ -116,7 +128,12 @@ const { heading, description, slides } = Astro.props;
   }
 
   .slide-text.flow {
-    --flow-space: 6px;
+    --flow-space: 9px;
+  }
+
+  .slide-text p {
+    font-size: var(--step-0);
+    line-height: 1.5;
   }
 
   .overlay {
@@ -129,9 +146,11 @@ const { heading, description, slides } = Astro.props;
     z-index: 1;
   }
 
-  .frame {
+  .img-wrapper {
     width: 100%;
+    height: 100%;
     border-radius: var(--rounded-corners);
+    overflow: hidden;
   }
 
   .splide__slide a:hover h3 {
@@ -152,6 +171,10 @@ const { heading, description, slides } = Astro.props;
 
   .splide__slide a:hover img {
     transform: scale(1.1);
+  }
+
+  .splide__pagination {
+    bottom: 0rem;
   }
 
   @media (max-width: 768px) {
@@ -190,8 +213,10 @@ const { heading, description, slides } = Astro.props;
 
   const splide = new Splide(".resources-slider", {
     type: "loop",
-    padding: "25%",
+    padding: "20%",
+    perPage: 2,
     gap: "2em",
+    // autoHeight: true,
     breakpoints: {
       1024: {
         padding: "20%",

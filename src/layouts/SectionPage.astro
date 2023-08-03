@@ -121,39 +121,7 @@ const bgImage = pageContent.headerBgImage
       {template == "features" && <FeaturesTemplate content={pageContent} />}
       {template == "faq" && <FAQTemplate content={pageContent} />}
       {template == "utility" && <UtilityTemplate content={pageContent} />}
-      <!-- <slot name="pre-content" />
-      {
-        introSections &&
-          introSections.map((section) => {
-            return (
-              <IntroSection
-                title={section.heading}
-                image={section.image}
-                layout={section.layout && "flipped"}
-              >
-                <PortableText value={section.text} />
-              </IntroSection>
-            );
-          })
-      } -->
       <slot />
-      <!-- {
-        template == "features" && (
-          <FeatureList features={pageContent.features} />
-        )
-      } -->
-      <!-- {
-        content && (
-          <div class="content rich-text">
-            <PortableText
-              value={content}
-              components={{
-                type: { image: InlineImage, previewFeature: PreviewFeature },
-              }}
-            />
-          </div>
-        )
-      } -->
     </article>
     <slot name="pre-footer" />
     {

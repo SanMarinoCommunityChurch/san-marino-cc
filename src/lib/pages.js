@@ -110,15 +110,10 @@ export const homePage = await getSanityData(`*[_type == 'homePage'][0] {
     heading,
     text,
     "media": media[0]{
-      _type == 'image' => {
-        ...,
-        "type": _type,
-        asset->
-      },
-      _type == 'youtube' => {
-        "type": _type,
-        url
-      }
+      ...,
+      "type": _type,
+      asset->,
+      url
     },
     "person": person->{
       name,
@@ -286,15 +281,11 @@ export const sanityPageData = await getSanityData(`*[_type == 'page'] {
         text,
         mediaType,
         "media": {
-          mediaType == 'video' => {
-            video
-          },
-          mediaType == 'image' => {
-            "image": image{
-              ...,
-              asset->
-            }
-          },
+          video,
+          "image": image{
+            ...,
+            asset->
+          }
         },
       }
     },

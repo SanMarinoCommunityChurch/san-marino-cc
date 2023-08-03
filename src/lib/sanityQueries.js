@@ -486,7 +486,7 @@ const posts = `*[_type == 'post']|order(publishDate desc) {
 
 const postTypes = `*[_type == 'postType'] | order(name asc) {
   name,
-  theme,
+  text,
   "slug": slug.current,
   "posts": *[_type == 'post' && references(^._id)]|order(publishDate desc) {
     "title": name,

@@ -10,6 +10,9 @@ export default defineConfig({
   site: "https://sanmarinocommunitychurch.com",
   scopedStyleStrategy: "class",
   // compressHTML: true,
+  // experimental: {
+  //   assets: true,
+  // },
   integrations: [
     svelte(),
     react(),
