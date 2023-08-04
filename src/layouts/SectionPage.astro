@@ -1,17 +1,12 @@
 ---
 import Layout from "./Layout.astro";
 import InnerHero from "../components/InnerHero.astro";
-import { PortableText } from "astro-portabletext";
-import InlineImage from "../components/InlineImage.astro";
-import PreviewFeature from "../components/PreviewFeature.astro";
 import FullWidthFeature from "../components/FullWidthFeature.astro";
-import FeatureList from "../components/FeatureList.astro";
 import "../styles/rich-text.css";
 
 import { urlFor } from "../lib/sanity";
-import { filterLocalNav, allNavigation } from "../lib/navigation";
+import { filterLocalNav } from "../lib/navigation";
 import { getCurrentPage } from "../lib/pages";
-import IntroSection from "../components/IntroSection.astro";
 
 import DefaultTemplate from "../pageTemplates/DefaultTemplate.astro";
 import AboutTemplate from "../pageTemplates/AboutTemplate.astro";
@@ -20,30 +15,9 @@ import GiveTemplate from "../pageTemplates/GiveTemplate.astro";
 import MissionsTemplate from "../pageTemplates/MissionsTemplate.astro";
 import FeaturesTemplate from "../pageTemplates/FeaturesTemplate.astro";
 import FAQTemplate from "../pageTemplates/FAQTemplate.astro";
+import LeadershipTemplate from "../pageTemplates/LeadershipTemplate.astro";
 import MinistryTypesTemplate from "../pageTemplates/MinistryTypesTemplate.astro";
 import UtilityTemplate from "../pageTemplates/UtilityTemplate.astro";
-
-// const utilityLocalNav = {
-//   name: "More",
-//   pages: [
-//     {
-//       name: "Give",
-//       slug: "/giving",
-//     },
-//     {
-//       name: "Calendar",
-//       slug: "/calendar",
-//     },
-//     {
-//       name: "Contact",
-//       slug: "/contact",
-//     },
-//     {
-//       name: "Nursery School",
-//       slug: "https://www.smccnurseryschool.org/",
-//     },
-//   ],
-// };
 
 const givingLocalNav = {
   name: "Giving",
@@ -92,7 +66,19 @@ const bgImage = pageContent.headerBgImage
 //   : undefined;
 ---
 
-<Layout meta={seo}>
+<Layout
+  meta={{
+    title: seo.title || pageName,
+    description: seo.description || pageContent.headerText || undefined,
+    ogTitle: seo.ogTitle || seo.title || pageName,
+    ogDescription:
+      seo.ogDescription ||
+      seo.description ||
+      pageContent.headerText ||
+      undefined,
+    ogImage: seo.ogImage || pageContent.headerBgImage || undefined,
+  }}
+>
   <Fragment slot="pageHead">
     <link rel="preload" href={bgImage} as="image" />
     <slot name="pageHead" />
@@ -113,6 +99,7 @@ const bgImage = pageContent.headerBgImage
       {template == "give" && <GiveTemplate content={pageContent} />}
       {template == "contentCTA" && <DefaultTemplate content={pageContent} />}
       {template == "missions" && <MissionsTemplate content={pageContent} />}
+      {template == "leadership" && <LeadershipTemplate content={pageContent} />}
       {
         template == "ministryTypes" && (
           <MinistryTypesTemplate content={pageContent} />
@@ -152,6 +139,10 @@ const bgImage = pageContent.headerBgImage
     article.content-wrapper {
       margin-block-start: 3rem;
       margin-block-end: 3rem;
+    }
+
+    .content-wrapper.flow {
+      --flow-space: var(--space-2xl);
     }
 
     .padding {

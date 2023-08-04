@@ -48,24 +48,16 @@ const breadcrumbs = [
     current: true,
   },
 ];
-
-// const otherMinistries = previewMinistries;
-// const filteredMinistries = filterAgainst(otherMinistries, "ministryType", page);
-// const randomizedMinistries = randomizeAndSlice(filteredMinistries, 3);
 ---
 
 <Layout
   meta={{
-    title: `${page.name}`,
+    title: page.name,
     description: page.preview,
-    openGraph: {
-      title: `${page.name}`,
-      description: page.preview,
-      image: page.image,
-    },
+    ogTitle: page.name,
+    ogDescription: page.preview,
+    ogImage: page.image || undefined,
   }}
-  title={page.name}
-  description={page.preview}
 >
   <main slot="main">
     <InnerHero pageTitle={page.name} pageDescription={page.preview}>

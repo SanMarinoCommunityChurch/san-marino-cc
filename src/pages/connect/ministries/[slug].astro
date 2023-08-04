@@ -56,16 +56,12 @@ const randomizedMinistries = randomizeAndSlice(filteredMinistries, 3);
 
 <Layout
   meta={{
-    title: `${page.name} | ${page.ministryType}`,
-    description: page.preview,
-    openGraph: {
-      title: `${page.name} | ${page.ministryType}`,
-      description: page.preview,
-      image: page.image,
-    },
+    title: page.name,
+    description: `${page.category}. ${page.preview}`,
+    ogTitle: page.name,
+    ogDescription: `${page.category}. ${page.preview}`,
+    ogImage: page.image || undefined,
   }}
-  title={page.name}
-  description={page.preview}
 >
   <main slot="main">
     <InnerHero pageTitle={page.name} pageDescription={page.preview}>
@@ -308,6 +304,11 @@ const randomizedMinistries = randomizeAndSlice(filteredMinistries, 3);
   @media (max-width: 768px) {
     .breadcrumb-wrapper {
       padding-inline-start: 1rem;
+    }
+
+    .content-wrapper.with-sidebar {
+      --sidebar-gap: 2rem;
+      padding-block: var(--space-xl);
     }
   }
 </style>

@@ -3,11 +3,9 @@ import Layout from "../layouts/Layout.astro";
 import Button from "../components/Button.astro";
 import HomePageHero from "../components/HomePageHero.astro";
 import FeaturedVideoBanner from "../components/FeaturedVideoBanner.astro";
-import Feature from "../components/Feature.astro";
 import FeatureList from "../components/FeatureList.astro";
 import EventsHome from "../components/Events/EventsHome.astro";
 import CTA from "../components/CTA.astro";
-import ContactAvatar from "../components/ContactAvatar.astro";
 import ImageLinks from "../components/ImageLinks.astro";
 import Slider from "../components/Slider.astro";
 import { siteSettings } from "../lib/settings";
@@ -21,14 +19,27 @@ const fadedFacade = await getSanityData(
   `*[_id == "image-37f76aac3b4cccb1fb411cd57856963bd8d61405-1365x2048-jpg"][0]`
 );
 
-const title = siteSettings.siteName;
-const description = siteSettings.siteDescription;
-const { hero, welcome, welcomeLinks, features, homeCta, featuredResources } =
-  homePage;
+const {
+  hero,
+  welcome,
+  welcomeLinks,
+  features,
+  homeCta,
+  featuredResources,
+  seo,
+} = homePage;
 const resources = featuredResources.resourceLinks;
 ---
 
-<Layout meta={{ title: title, description: description }}>
+<Layout
+  meta={{
+    title: seo.title || undefined,
+    description: seo.description || undefined,
+    ogTitle: seo.ogTitle || seo.title || undefined,
+    ogDescription: seo.ogDescription || seo.description || undefined,
+    ogImage: seo.ogImage || undefined,
+  }}
+>
   <main slot="main">
     <HomePageHero hero={hero} fallbackImg={siteSettings.image} />
     <FeaturedVideoBanner />
@@ -221,6 +232,7 @@ const resources = featuredResources.resourceLinks;
       }
 
       #welcome,
+      #welcome-questions,
       #events,
       #resources {
         margin-block: var(--section-spacer-half);
@@ -228,6 +240,20 @@ const resources = featuredResources.resourceLinks;
 
       #events {
         margin-block-end: 0;
+      }
+
+      #welcome .with-sidebar > :first-child {
+        order: 2;
+      }
+
+      #welcome .with-sidebar > :last-child {
+        order: 1;
+      }
+    }
+
+    @media (max-width: 640px) {
+      #resources {
+        margin-top: 2rem;
       }
     }
   </style>

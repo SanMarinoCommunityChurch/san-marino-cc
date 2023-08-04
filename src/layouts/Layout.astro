@@ -1,7 +1,7 @@
 ---
 import { allNavigation } from "../lib/navigation";
 import { SEO } from "astro-seo";
-import { siteSettings, defaultImage } from "../lib/settings";
+import { siteSettings, defaultImage, defaultOgImage } from "../lib/settings";
 import { urlFor } from "../lib/sanity";
 
 import SiteHeader from "../components/SiteHeader.astro";
@@ -21,14 +21,8 @@ const mainNavigation = allNavigation.find(
 const { meta } = Astro.props;
 // const fallbackName = siteSettings.name;
 // const fallbackDescription = siteSettings.description;
-const { title, description, openGraph } = meta;
-const fallbackOGImage = urlFor(defaultImage)
-  .width(1200)
-  .height(630)
-  .fit("crop")
-  .crop("center")
-  .auto("format")
-  .url();
+const { title, description, ogTitle, ogImage, ogImageExternal, ogDescription } =
+  meta;
 ---
 
 <!DOCTYPE html>
@@ -38,24 +32,28 @@ const fallbackOGImage = urlFor(defaultImage)
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/png" href="/smcc-favicon.png" />
     <SEO
-      title={title}
-      description={description}
+      title={title
+        ? `${title} | ${siteSettings.siteName}`
+        : siteSettings.siteName}
+      description={description || siteSettings.siteDescription}
       openGraph={{
         basic: {
-          title: openGraph ? openGraph.title : title,
+          title: ogTitle,
           type: "website",
-          image: openGraph
-            ? openGraph.image
-              ? urlFor(openGraph.image)
-                  .width(1200)
-                  .height(630)
-                  .auto("format")
-                  .url()
-              : fallbackOGImage
-            : fallbackOGImage,
+          image: ogImageExternal
+            ? ogImageExternal
+            : ogImage
+            ? urlFor(ogImage).width(1200).height(630).auto("format").url()
+            : urlFor(defaultOgImage)
+                .width(1200)
+                .height(630)
+                .fit("crop")
+                .crop("center")
+                .auto("format")
+                .url(),
         },
         optional: {
-          description: openGraph ? openGraph.description : description,
+          description: ogDescription || siteSettings.siteDescription,
         },
       }}
     />
@@ -222,6 +220,10 @@ const fallbackOGImage = urlFor(defaultImage)
         text-decoration: none;
       }
 
+      .colored-link a {
+        color: var(--color-primary-800);
+      }
+
       .fc-event {
         cursor: pointer;
       }
@@ -384,16 +386,6 @@ const fallbackOGImage = urlFor(defaultImage)
         background-color: var(--color-primary-900);
       }
 
-      /* .panel-2 .video-wrapper {
-    background-color: var(--color-secondary-100);
-  } */
-
-      /* .live .video-wrapper > :first-child {
-    aspect-ratio: 16/9;
-    width: clamp(20rem, 50vw, 80%);
-    height: auto;
-  } */
-
       .live .service-wrapper {
         margin-block: var(--space-2xl);
       }
@@ -477,6 +469,7 @@ const fallbackOGImage = urlFor(defaultImage)
 
       .podcastEmbed {
         margin-top: 2rem;
+        width: 100%;
       }
       /* 
       @media (max-width: 1024px) {

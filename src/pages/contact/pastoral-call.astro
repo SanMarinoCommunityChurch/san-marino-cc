@@ -7,9 +7,16 @@ import { allForms } from "../../lib/settings";
 const form = allForms.find(
   (item) => item.id === "289eb7b1-17cc-4aa2-ad7b-984db1bfe302"
 );
+console.log(form);
 ---
 
-<UtilityLayout currentPage={"c27d6639-bd40-454d-b210-63ca75b0dbbd"}>
+<UtilityLayout
+  currentPage={"c27d6639-bd40-454d-b210-63ca75b0dbbd"}
+  extraData={{
+    title: form.title,
+    description: form.description,
+  }}
+>
   <Form formData={form} />
   <div class="center-items">
     <Button href="/contact#forms">See All Forms</Button>

@@ -50,14 +50,6 @@ const bgImageStyle = `linear-gradient(to top, rgb(0 0 0 / 0.75) 15%, rgb(0 0 0 /
     <div class="responsive-grid">
       {
         givingLinks.map((link) => {
-          // let href = "";
-          // if (link.href.type == "page") {
-          //   href = link.href.sectionSlug
-          //     ? link.href.pageSlug.fullUrl
-          //     : link.href.pageSlug.current;
-          // } else {
-          //   href = link.href.pageSlug;
-          // }
           return (
             <ImageCard
               title={link.heading}
@@ -201,7 +193,7 @@ const bgImageStyle = `linear-gradient(to top, rgb(0 0 0 / 0.75) 15%, rgb(0 0 0 /
     margin-block-start: var(--section-spacer-half);
     position: relative;
     z-index: 10;
-    top: -12rem;
+    top: -10rem;
     background: white;
     border-radius: var(--rounded-corners);
   }
@@ -266,14 +258,27 @@ const bgImageStyle = `linear-gradient(to top, rgb(0 0 0 / 0.75) 15%, rgb(0 0 0 /
     article.content-wrapper {
       margin-block-start: 3rem;
       margin-block-end: 3rem;
+      top: -4rem;
+    }
+
+    article.content-wrapper.flow {
+      --flow-space: var(--space-2xl);
     }
 
     .padding {
       padding-block-start: 1rem;
     }
 
+    .icon-grid-section {
+      padding-inline: 1rem;
+    }
+
     .icon-grid {
       grid-template-columns: 1fr;
+    }
+
+    .hero {
+      padding-block: 6rem;
     }
   }
 </style>

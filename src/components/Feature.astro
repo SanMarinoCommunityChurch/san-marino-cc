@@ -12,11 +12,6 @@ const layouts = {
   "image-right": "image-right",
 };
 
-// const decorations = {
-//   "1": "decoration-1",
-//   "2": "decoration-2",
-// };
-
 const { content, theme = "light", layout = "image-left" } = Astro.props;
 
 const { title, description, linkName, href, image } = content;
@@ -265,6 +260,13 @@ const { title, description, linkName, href, image } = content;
 
     [data-layout="image-right"] .feature-bg {
       grid-column: span 7;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .feature-text {
+      padding-inline: 1.5rem;
+      padding-block: 2rem;
     }
   }
 </style>

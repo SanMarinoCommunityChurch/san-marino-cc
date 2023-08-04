@@ -1,5 +1,4 @@
 ---
-import Layout from "../../../layouts/Layout.astro";
 import PersonLayout from "../../../layouts/PersonLayout.astro";
 import { allStaff, makeNameSlug } from "../../../lib/people";
 import { PortableText } from "astro-portabletext";
@@ -45,8 +44,9 @@ if (page.type === 'clergy') {
 ---
 
 <PersonLayout
-  title={`${joinNames(page.name)} | ${capitalizeFirstLetter(page.type)} Staff, San Marino Community Church`}
+  title={`${joinNames(page.name)}`}
   name={`${joinNames(page.name)}`}
+  preview={`${joinNames(page.name)}, ${page.role}, is a member of the ${page.type} staff at San Marino Community Church.`}
   featuredImage={page.image}
   breadcrumbs={breadcrumbs}
 >

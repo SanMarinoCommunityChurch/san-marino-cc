@@ -9,14 +9,34 @@ import { getCurrentPage } from "../../lib/pages";
 import { latestService, allServices } from "../../lib/services";
 
 const eyebrow = "San Marino Community Church";
-import bgImage from "../../assets/images/outside-stained-glass.jpg";
 
 const recentServices = allServices.slice(1, 4);
 
 const currentPage = getCurrentPage("b92afa26-7f3c-4e63-8aa1-90a1b7a9fad2");
+
+// meta={currentPage.seo}
 ---
 
-<Layout meta={currentPage.seo}>
+<Layout
+  meta={{
+    title: currentPage.seo.title || currentPage.pageName,
+    description:
+      currentPage.seo.description ||
+      currentPage.pageContent.headerText ||
+      undefined,
+    ogTitle:
+      currentPage.seo.ogTitle || currentPage.seo.title || currentPage.pageName,
+    ogDescription:
+      currentPage.seo.ogDescription ||
+      currentPage.seo.description ||
+      currentPage.pageContent.headerText ||
+      undefined,
+    ogImage:
+      currentPage.seo.ogImage ||
+      currentPage.pageContent.headerBgImage ||
+      undefined,
+  }}
+>
   <main slot="main">
     <section class="hero center-items flow">
       <div class="small-title">{eyebrow}</div>
@@ -30,15 +50,6 @@ const currentPage = getCurrentPage("b92afa26-7f3c-4e63-8aa1-90a1b7a9fad2");
           }</time
         >
       </div>
-      <!-- <Picture
-        src={bgImage}
-        alt=""
-        widths={[600, 1200, 1920]}
-        sizes="100vw"
-        aspectRatio="16:9"
-        loading="eager"
-        class="bg-image"
-      /> -->
     </section>
     <article class="flow">
       <div class="live">

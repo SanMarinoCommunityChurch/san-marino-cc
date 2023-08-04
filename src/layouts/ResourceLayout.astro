@@ -3,12 +3,8 @@ import Layout from "./Layout.astro";
 import BreadcrumbAuto from "../components/BreadcrumbAuto.astro";
 import ContactAvatar from "../components/ContactAvatar.astro";
 import MoreLikeThis from "../components/MoreLikeThis.astro";
-import ImageCard from "../components/ImageCard.astro";
-import Card from "../components/Card.astro";
-import Button from "../components/Button.astro";
 import PostList from "../components/PostList.astro";
 import { joinNames } from "../utils/format";
-import { makeNameSlug } from "../lib/people";
 import { DateTime } from "luxon";
 import { urlFor } from "../lib/sanity";
 
@@ -20,11 +16,19 @@ const {
   author,
   publishDate,
   moreContent,
-  meta,
+  seo,
 } = Astro.props;
 ---
 
-<Layout meta={meta}>
+<Layout
+  meta={{
+    title: seo.title || name,
+    description: seo.description || preview || undefined,
+    ogTitle: seo.ogTitle || seo.title || name,
+    ogDescription: seo.ogDescription || seo.description || preview || undefined,
+    ogImage: seo.ogImage || featuredImage || undefined,
+  }}
+>
   <main slot="main">
     <article class="relative">
       <BreadcrumbAuto navigation={breadcrumbs} className="breadcrumb-wrapper" />

@@ -6,6 +6,7 @@ import BreadcrumbAuto from "../../../components/BreadcrumbAuto.astro";
 import Tabs from "../../../components/React/Tabs";
 import { Image } from "@astrojs/image/components";
 import { joinTypes } from "../../../utils/format";
+import getYouTubeId from "get-youtube-id";
 import { makeNameSlug } from "../../../lib/people";
 
 import { PortableText } from "astro-portabletext";
@@ -54,18 +55,18 @@ const breadcrumbs = [
   },
 ];
 
-const serviceTypes = page.serviceType.map((item) => item.name);
 const description = `Watch video from our ${serviceDate} service.`;
 ---
 
 <Layout
   meta={{
-    title: `${page.name ? page.name : "Sunday Service"} | ${serviceDate}`,
+    title: `${serviceDate}`,
     description: `Watch video from our ${serviceDate} service.`,
-    openGraph: {
-      title: page.name ? page.name : "Sunday Service",
-      description: `Watch video from our ${serviceDate} service.`,
-    },
+    ogTitle: `${page.name ? page.name : "Sunday Service"}, ${serviceDate}`,
+    ogDescription: `Watch video from our ${serviceDate} service.`,
+    ogImageExternal: `https://img.youtube.com/vi/${getYouTubeId(
+      page.serviceType[0].video.url
+    )}/hqdefault.jpg`,
   }}
 >
   <main slot="main">
@@ -341,6 +342,35 @@ const description = `Watch video from our ${serviceDate} service.`;
 
     .more .grid {
       grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .more a.service-wrapper,
+    .more .flex[data-more="next"] a.service-wrapper {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .more .small-title.category {
+      padding: 0;
+      background: none;
+    }
+
+    .more .flex[data-more="next"] {
+      align-items: flex-start;
+    }
+
+    .more .flex[data-more="next"] a.service-wrapper .text {
+      text-align: left;
+    }
+
+    .more .flex[data-more="next"] a.service-wrapper .text {
+      text-align: left;
+    }
+
+    .more .flex[data-more="next"] a.service-wrapper .date-label-wrapper {
+      order: -1;
     }
   }
 </style>

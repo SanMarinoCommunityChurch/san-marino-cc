@@ -51,7 +51,7 @@ const { heading, description, slides } = Astro.props;
                   theme={"default"}
                 />
                 <div class="slide-text flow">
-                  <h3 class="text-step-3 color-white">{slide.name}</h3>
+                  <h3 class="text-step-2 color-white">{slide.name}</h3>
                   <p>{slide.preview}</p>
                 </div>
                 <div class="overlay" />
@@ -114,15 +114,16 @@ const { heading, description, slides } = Astro.props;
     align-items: flex-end;
     position: relative;
     text-decoration: none;
-    min-height: 20rem;
+    min-height: 24rem;
   }
 
   .slide-text {
-    position: absolute;
+    position: relative;
     left: 0;
     bottom: 0;
     width: 100%;
-    padding: 3rem;
+    height: 100%;
+    padding: 2rem;
     color: var(--color-primary-100);
     z-index: 2;
   }
@@ -147,6 +148,8 @@ const { heading, description, slides } = Astro.props;
   }
 
   .img-wrapper {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     border-radius: var(--rounded-corners);
@@ -160,6 +163,7 @@ const { heading, description, slides } = Astro.props;
   .img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -176,6 +180,12 @@ const { heading, description, slides } = Astro.props;
   .splide__pagination {
     bottom: 0rem;
   }
+
+  /* @media (max-width: 1024px) {
+    .splide__slide a {
+      
+    }
+  } */
 
   @media (max-width: 768px) {
     .cluster.types {
@@ -202,7 +212,7 @@ const { heading, description, slides } = Astro.props;
     }
 
     .splide__pagination {
-      bottom: -2rem;
+      bottom: -1rem;
     }
   }
 </style>
@@ -219,11 +229,17 @@ const { heading, description, slides } = Astro.props;
     // autoHeight: true,
     breakpoints: {
       1024: {
-        padding: "20%",
+        padding: "15%",
+        perPage: 1,
       },
       768: {
         padding: "10%",
         gap: "1em",
+        perPage: 1,
+      },
+      640: {
+        padding: "2rem",
+        perPage: 1,
       },
     },
   });

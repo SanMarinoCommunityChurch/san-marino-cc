@@ -5,7 +5,6 @@ import { urlFor } from "../lib/sanity";
 import MoreLikeThis from "../components/MoreLikeThis.astro";
 import Card from "../components/Card.astro";
 import DateLabel from "../components/Events/DateLabel.astro";
-import { DateTime } from "luxon"
 import { defaultImage } from "../lib/settings";
 
 const { meta, header, breadcrumbs, preview, featuredImage, moreContent } =
@@ -27,7 +26,6 @@ if (featuredImage) {
   // Get a new aspect ratio based on the crop height
   croppedAspectRatio = baseImageWidth / cropHeight;
 }
-
 ---
 
 <Layout meta={meta}>
@@ -151,19 +149,6 @@ if (featuredImage) {
     overflow: hidden;
   }
 
-  /* .content-wrapper.content {
-    background-color: var(--color-white);
-    padding-block: var(--space-m-2xl);
-    box-shadow: var(--shadow-large);
-    border-radius: var(--rounded-corners);
-  } */
-
-  /* .frame {
-    --width: 7;
-    --height: 5;
-    border-radius: var(--rounded-corners);
-  } */
-
   .img {
     border-radius: var(--rounded-corners);
     background-position: center;
@@ -205,6 +190,15 @@ if (featuredImage) {
 
     .breadcrumb-wrapper {
       padding-inline-start: 1rem;
+    }
+
+    .content-wrapper.with-sidebar {
+      --sidebar-gap: 2rem;
+      padding-block: var(--space-xl);
+    }
+
+    .highlight-section {
+      padding-block: var(--space-xl);
     }
   }
 </style>

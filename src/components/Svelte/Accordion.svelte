@@ -63,5 +63,9 @@
         .answer-wrapper {
             padding: 2rem 1rem;
         }
+
+        .question-wrapper {
+            gap: 1rem;
+        }
     }
 </style>

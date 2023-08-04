@@ -50,7 +50,7 @@ const bgImageStyle = `linear-gradient(to top, rgb(0 0 0 / 0.75) 15%, rgb(0 0 0 /
             </ul>
           </div>
           <details class="local-nav-mobile">
-            <summary>{localNav.name}</summary>
+            <summary>{`${localNav.name} Pages`}</summary>
             <ul class="cluster">
               {localNav.pages.map((item) => (
                 <li class="text-step--1">
@@ -170,7 +170,7 @@ const bgImageStyle = `linear-gradient(to top, rgb(0 0 0 / 0.75) 15%, rgb(0 0 0 /
   }
 
   .local-nav-mobile .cluster {
-    --cluster-space: 0.5rem;
+    --cluster-space: 0.85rem;
     margin-top: 1rem;
   }
 

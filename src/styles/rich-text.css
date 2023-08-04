@@ -42,3 +42,11 @@
 .rich-text a {
   color: var(--color-primary-800);
 }
+
+@media (max-width: 768px) {
+  .rich-text > * {
+    margin-inline: 0;
+    max-width: none;
+    width: 100%;
+  }
+}

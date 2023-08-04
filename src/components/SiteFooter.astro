@@ -155,7 +155,17 @@ const socialLinks = siteSettings.socialLinks;
 
   @media (max-width: 640px) {
     .nav-grid {
+      text-align: center;
       grid-template-columns: 1fr;
+    }
+
+    .nav-grid ul.flow {
+      --flow-space: 1rem;
+    }
+
+    .sub-footer .cluster {
+      --justify: center;
+      text-align: center;
     }
   }
 </style>

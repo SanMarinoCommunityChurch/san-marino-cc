@@ -45,7 +45,7 @@ const { heading, text, linkName, href } = content;
           Let us know if you would like to receive our weekly email updates.
         </p>
       </div>
-      <form class="cluster">
+      <form class="form cluster">
         <label for="name">
           <span class="sr-only">Name</span>
           <input id="name" name="name" type="text" placeholder="Your Name" />
@@ -138,6 +138,23 @@ const { heading, text, linkName, href } = content;
   @media (max-width: 768px) {
     .cta-bottom .content-wrapper {
       padding-inline: 1rem;
+    }
+
+    .form.cluster {
+      width: 100%;
+      flex-direction: column;
+      --align: stretch;
+    }
+
+    input {
+      width: 100%;
+    }
+
+    .cta-top img {
+      object-fit: cover;
+      transform: translateY(0);
+      inset: 0;
+      height: 100%;
     }
   }
 </style>

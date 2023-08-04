@@ -9,9 +9,9 @@ import { getCurrentPage } from "../lib/pages";
 import UtilityTemplate from "../pageTemplates/UtilityTemplate.astro";
 import ContactTemplate from "../pageTemplates/ContactTemplate.astro";
 
-const { currentPage, contentPadding } = Astro.props;
+const { currentPage, extraData, contentPadding } = Astro.props;
 const page = getCurrentPage(currentPage);
-const { seo, template, pageName, pageContent } = page;
+const { seo, pageName, pageContent } = page;
 
 ////// Page name, header text/bg image, and cta are all handled on this layout.
 ////// pageContent is passed down to child template components
@@ -25,7 +25,23 @@ const bgImage = pageContent.headerBgImage
   : undefined;
 ---
 
-<Layout meta={seo}>
+<Layout
+  meta={{
+    title: extraData ? `${pageName} — ${extraData.title}` : pageName,
+    description: extraData
+      ? `${extraData.description}`
+      : pageContent.headerText
+      ? pageContent.headerText
+      : undefined,
+    ogTitle: extraData ? `${pageName} — ${extraData.title}` : pageName,
+    ogDescription: extraData
+      ? `${extraData.description}`
+      : pageContent.headerText
+      ? pageContent.headerText
+      : undefined,
+    ogImage: seo.ogImage || pageContent.headerBgImage || undefined,
+  }}
+>
   <Fragment slot="pageHead">
     <link rel="preload" href={bgImage} as="image" />
     <slot name="pageHead" />

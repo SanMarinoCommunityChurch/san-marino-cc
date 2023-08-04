@@ -151,29 +151,9 @@ const { mainNavigation, fullNavigation, utilityNavigation } = Astro.props;
     background-color: transparent;
   }
 
-  /* .nav-grid {
-    display: grid;
-    grid-template-columns: repeat(3fr, 1fr);
-    gap: 1rem;
-  } */
-
-  /* .nav-grid > :first-child {
-    grid-column: 2/10;
-    padding-right: 2rem;
-  }
-
-  .nav-grid > :last-child {
-    grid-column: span 3;
-    background-color: var(--color-primary-900);
-  } */
-
   .nav-grid .small-title, .utilities-wrapper .small-title {
     color: var(--color-primary-800);
   }
-
-  /* .nav-grid > :last-child .small-title {
-    color: var(--color-primary-100);
-  } */
 
   .nav-grid .flow {
     --flow-space: 1rem;
@@ -247,10 +227,6 @@ const { mainNavigation, fullNavigation, utilityNavigation } = Astro.props;
     /* color: var(--color-primary-100); */
   }
 
-  /* .nav-utilities {
-    padding-inline: 3rem;
-  } */
-
   .nav-utilities ul.flow {
     --flow-space: 0.5rem;
   }
@@ -289,10 +265,6 @@ const { mainNavigation, fullNavigation, utilityNavigation } = Astro.props;
       gap: 1rem;
     }
 
-    /* .main-nav {
-      display: none;
-    } */
-
     .img-link {
       display: none;
     }
@@ -317,6 +289,10 @@ const { mainNavigation, fullNavigation, utilityNavigation } = Astro.props;
     /* .main-nav {
       display: none;
     } */
+
+    .nav-grid.content-wrapper {
+      padding-inline: 2rem;
+    }
 
     .nav-grid ul.flow {
       --flow-space: 1rem;

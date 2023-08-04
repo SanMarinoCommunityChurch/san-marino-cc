@@ -473,15 +473,13 @@ const posts = `*[_type == 'post']|order(publishDate desc) {
   "seo": {
     "title": seoTitle,
     "description": seoDescription,
-    openGraph{
-      title,
-      description,
-      "image": image{
-        ...,
-        asset->
-      }
+    "ogTitle": openGraph.title,
+    "ogDescription": openGraph.description,
+    "ogImage": openGraph.image{
+      ...,
+      asset->
     }
-  }
+  },
 }`;
 
 const postTypes = `*[_type == 'postType'] | order(name asc) {

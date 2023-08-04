@@ -4,7 +4,14 @@ import Button from "../../components/Button.astro";
 import UtilityLayout from "../../layouts/UtilityLayout.astro";
 ---
 
-<UtilityLayout currentPage={"c27d6639-bd40-454d-b210-63ca75b0dbbd"}>
+<UtilityLayout
+  currentPage={"c27d6639-bd40-454d-b210-63ca75b0dbbd"}
+  extraData={{
+    title: "Contact Success!",
+    description:
+      "Your form submission has been received. One of our staff will follow up with you shortly.",
+  }}
+>
   <div class="center-items flow">
     <h2 class="text-step-3">Thank you!</h2>
     <p>

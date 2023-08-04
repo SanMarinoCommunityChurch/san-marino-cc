@@ -10,11 +10,9 @@ const { title, name, breadcrumbs, preview, featuredImage } = Astro.props;
   meta={{
     title: title,
     description: preview,
-    openGraph: {
-      title: title,
-      description: preview,
-      image: featuredImage,
-    },
+    ogTitle: title,
+    ogDescription: preview,
+    ogImage: featuredImage,
   }}
 >
   <main slot="main">

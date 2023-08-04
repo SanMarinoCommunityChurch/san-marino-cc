@@ -198,7 +198,17 @@ export const homePage = await getSanityData(`*[_type == 'homePage'][0] {
         "slug": slug.current
       }
     }
-  }
+  },
+  "seo": {
+    "title": seoTitle,
+    "description": seoDescription,
+    "ogTitle": openGraph.title,
+    "ogDescription": openGraph.description,
+    "ogImage": openGraph.image{
+      ...,
+      asset->
+    }
+  },
 }`);
 
 export const sanityPageData = await getSanityData(`*[_type == 'page'] {
@@ -332,6 +342,12 @@ export const sanityPageData = await getSanityData(`*[_type == 'page'] {
         }
       }
     },
+    template == 'leadership' => {
+      leadershipTypes[]{
+        heading,
+        text
+      }
+    },
     template == 'missions' => {
       missionsTypes[]{
         heading,
@@ -393,7 +409,7 @@ export const sanityPageData = await getSanityData(`*[_type == 'page'] {
         }
       }
     },
-    template == 'default' || template == 'give' || template == 'contentCTA' => {
+    template == 'default' || template == 'give' || template == 'contentCTA' || template == 'leadership' => {
       "richContent": content[]{
         ...,
         _type == "image" => {
@@ -433,13 +449,11 @@ export const sanityPageData = await getSanityData(`*[_type == 'page'] {
   "seo": {
     "title": seoTitle,
     "description": seoDescription,
-    openGraph{
-      title,
-      description,
-      "image": image{
-        ...,
-        asset->
-      }
+    "ogTitle": openGraph.title,
+    "ogDescription": openGraph.description,
+    "ogImage": openGraph.image{
+      ...,
+      asset->
     }
   },
 }`);

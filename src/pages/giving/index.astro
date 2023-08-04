@@ -4,14 +4,22 @@ import { getCurrentPage } from "../../lib/pages";
 import GiveTemplate from "../../pageTemplates/GiveTemplate.astro";
 
 const page = getCurrentPage("a3ff79bf-b5c6-4404-a820-087c8e504007");
-const { seo, template, pageName, pageContent } = page;
+const { seo, pageName, pageContent } = page;
 ---
 
-<Layout meta={seo}>
-  <!-- <Fragment slot="pageHead">
-    <link rel="preload" href={bgImage} as="image" />
-    <slot name="pageHead" />
-  </Fragment> -->
+<Layout
+  meta={{
+    title: seo.title || pageName,
+    description: seo.description || pageContent.headerText || undefined,
+    ogTitle: seo.ogTitle || seo.title || pageName,
+    ogDescription:
+      seo.ogDescription ||
+      seo.description ||
+      pageContent.headerText ||
+      undefined,
+    ogImage: seo.ogImage || pageContent.headerBgImage || undefined,
+  }}
+>
   <main slot="main">
     <GiveTemplate pageName={pageName} content={pageContent} />
   </main>

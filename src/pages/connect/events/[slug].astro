@@ -61,13 +61,11 @@ const readableDate = DateTime.fromISO(page.date)
 
 <ThirdLayout
   meta={{
-    title: `${page.name} | ${readableDate}`,
+    title: `${page.name} • ${readableDate}`,
     description: page.preview,
-    openGraph: {
-      title: `${page.name} | ${readableDate}`,
-      description: page.preview,
-      image: page.image,
-    },
+    ogTitle: `${page.name} • ${readableDate}`,
+    ogDescription: `Event on ${readableDate}. ${page.preview}`,
+    ogImage: page.image || undefined,
   }}
   header={page.name}
   preview={page.preview}

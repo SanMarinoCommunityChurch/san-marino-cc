@@ -1,7 +1,13 @@
 ---
 import ImageLinks from "../components/ImageLinks.astro";
 import { PortableText } from "astro-portabletext";
+import Form from "../components/Form.astro";
 import { homePage } from "../lib/pages";
+import { allForms } from "../lib/settings";
+
+const form = allForms.find(
+  (item) => item.id === "e8c86294-ce8a-4564-a8ee-42cd81769516"
+);
 
 const { content } = Astro.props;
 const { contact } = content;
@@ -39,10 +45,9 @@ const { contact } = content;
       <h2 class="center-items">{homePage.welcomeLinks.heading}</h2>
       <ImageLinks links={homePage.welcomeLinks.links} />
     </section>
-
-    <!-- <div id="forms">
-      <WelcomeQuestionsImage />
-    </div> -->
+    <section>
+      <Form formData={form} />
+    </section>
   </div>
 </Fragment>
 

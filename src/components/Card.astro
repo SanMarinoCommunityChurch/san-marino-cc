@@ -96,4 +96,10 @@ const { href = "/", image, title = "Event Title" } = Astro.props;
   .card:hover .card-title {
     text-decoration: underline;
   }
+
+  @media (max-width: 640px) {
+    .card {
+      max-width: none;
+    }
+  }
 </style>

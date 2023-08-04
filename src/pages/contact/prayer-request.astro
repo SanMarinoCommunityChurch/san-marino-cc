@@ -9,7 +9,14 @@ const form = allForms.find(
 );
 ---
 
-<UtilityLayout currentPage={"c27d6639-bd40-454d-b210-63ca75b0dbbd"}>
+<UtilityLayout
+  currentPage={"c27d6639-bd40-454d-b210-63ca75b0dbbd"}
+  extraData={{
+    title: form.title,
+    description: form.description,
+    image: form.image,
+  }}
+>
   <Form formData={form} />
   <div class="center-items">
     <Button href="/contact#forms">See All Forms</Button>

@@ -1,8 +1,3 @@
-# [[plugins]]
-#  package = "@netlify/plugin-a11y"
-#  [plugins.inputs]
-#    failWithIssues = false
-#    ignoreGuidelines = ['WCAG2AA.Principle1.Guideline1_4.1_4_3.G18', 'WCAG2AA.Principle1.Guideline1_4.1_4_3.G145']
 [[redirects]]
   from = "/welcome"
   to = "/welcome/im-new"
@@ -22,6 +17,110 @@
 [[redirects]]
   from = "/resources/blog"
   to = "/resources"
+
+[[redirects]]
+  from = "/welcome/sunday-service-times"
+  to = "/welcome/our-services"
+
+[[redirects]]
+  from = "/welcome/first-time-visitors"
+  to = "/welcome/im-new"
+
+[[redirects]]
+  from = "/about/what-we-believe"
+  to = "/who-we-are/mission-and-beliefs"
+
+[[redirects]]
+  from = "/about/our-history"
+  to = "/who-we-are/our-history"
+
+[[redirects]]
+  from = "/about/staff"
+  to = "/who-we-are/leadership"
+
+[[redirects]]
+  from = "/about/elders-deacons"
+  to = "/who-we-are/leadership"
+
+[[redirects]]
+  from = "/about/news"
+  to = "/resources/news"
+
+[[redirects]]
+  from = "/connect/programs-events"
+  to = "/resources/events"
+
+[[redirects]]
+  from = "/connect/adult-ministries"
+  to = "/connect/ministries/adult-ministries"
+
+[[redirects]]
+  from = "/connect/youth-ministries"
+  to = "/connect/ministries/youth-ministries"
+
+[[redirects]]
+  from = "/connect/childrens-ministries"
+  to = "/connect/ministries/childrens-ministries"
+
+[[redirects]]
+  from = "/connect/music-ministries"
+  to = "/connect/ministries/music-ministries"
+
+[[redirects]]
+  from = "/connect/membership"
+  to = "/welcome/how-to-join"
+
+[[redirects]]
+  from = "/serve/mission-partners"
+  to = "/connect/missions"
+
+[[redirects]]
+  from = "/serve/mission-involvement"
+  to = "/connect/missions"
+
+[[redirects]]
+  from = "/serve/deacon-ministries"
+  to = "/connect/ministries/deacon-ministries"
+
+[[redirects]]
+  from = "/serve/pastoral-residency"
+  to = "/connect/pastoral-residency"
+
+[[redirects]]
+  from = "/give/stewardship-campaign-2022"
+  to = "/giving/stewardship"
+
+[[redirects]]
+  from = "/give/ways-to-give"
+  to = "/giving"
+
+[[redirects]]
+  from = "/give/the-foundation-of-smcc"
+  to = "/giving/the-foundation-of-smcc"
+
+[[redirects]]
+  from = "/give/other-giving-opportunities"
+  to = "/giving/#ways-to-give"
+
+[[redirects]]
+  from = "/watch/traditional-live"
+  to = "/worship/live"
+
+[[redirects]]
+  from = "/watch/contemporary-live"
+  to = "/worship/live"
+
+[[redirects]]
+  from = "/watch/sermon-podcast-archive"
+  to = "/worship/services"
+
+[[redirects]]
+  from = "/contact/baptisms-memorials-weddings"
+  to = "/connect/weddings-memorials-and-rentals"
+
+[[redirects]]
+  from = "/contact/employment"
+  to = "/contact"
 
 [functions]
   node_bundler = 'esbuild'
