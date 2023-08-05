@@ -80,13 +80,16 @@ import Button from "../../components/Button.astro";
 
   const serviceObjs = services.flatMap((service) => {
     return service.serviceType.map((type) => {
+      const serviceDate = `${service.date}T${type.serviceTime}:00`;
+      const now = new Date();
+      const serviceDateTime = new Date(serviceDate);
       return {
         title: capitalizeFirstLetter(type.name) + " Worship",
-        start: `${service.date}T${type.serviceTime}:00`,
+        start: serviceDate,
         extendedProps: {
           type: "service",
           description: service.name || "Sunday Service",
-          slug: service.slug,
+          slug: serviceDateTime > now ? `live` : `services/${service.slug}`,
         },
       };
     });
@@ -127,7 +130,7 @@ import Button from "../../components/Button.astro";
         }
       } else if (info.event.extendedProps.type == "service") {
         instance.setContent(
-          `<div>${info.event.title}</div><p>${info.event.extendedProps.description}</p><a href="/worship/services/${info.event.extendedProps.slug}">Watch video</a>`
+          `<div>${info.event.title}</div><p>${info.event.extendedProps.description}</p><a href="/worship/${info.event.extendedProps.slug}">Watch video</a>`
         );
       }
 

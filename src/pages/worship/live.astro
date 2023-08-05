@@ -3,7 +3,6 @@ import Layout from "../../layouts/Layout.astro";
 import Button from "../../components/Button.astro";
 import Tabs from "../../components/React/Tabs.jsx";
 import ServicesList from "../../components/ServicesList.astro";
-import { getSanityData, urlFor } from "../../lib/sanity";
 import { DateTime } from "luxon";
 import { getCurrentPage } from "../../lib/pages";
 import { latestService, allServices } from "../../lib/services";
@@ -13,8 +12,6 @@ const eyebrow = "San Marino Community Church";
 const recentServices = allServices.slice(1, 4);
 
 const currentPage = getCurrentPage("b92afa26-7f3c-4e63-8aa1-90a1b7a9fad2");
-
-// meta={currentPage.seo}
 ---
 
 <Layout
