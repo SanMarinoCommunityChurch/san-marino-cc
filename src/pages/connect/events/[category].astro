@@ -2,15 +2,13 @@
 import ThirdLayout from "../../../layouts/ThirdLayout.astro";
 import CategoryList from "../../../components/Events/CategoryList.astro";
 import EventsList from "../../../components/Events/EventsList.astro";
-import { defaultImage } from "../../../lib/settings";
 import Button from "../../../components/Button.astro";
 import SidebarLinkItem from "../../../components/SidebarLinkItem.astro";
 
-import { DateTime } from "luxon";
-import { eventCategories } from "../../../lib/events";
+import { eventCategories, eventsByCategory } from "../../../lib/events";
 
 export async function getStaticPaths() {
-  const pages = eventCategories;
+  const pages = eventsByCategory;
 
   return pages.map((page) => {
     return {
@@ -38,7 +36,6 @@ const breadcrumbs = [
   },
 ];
 const allCategories = eventCategories;
-// const categories = await getSanityData(eventTypes);
 ---
 
 <ThirdLayout
@@ -68,7 +65,15 @@ const allCategories = eventCategories;
     </a>
   </div>
   <section slot="main-panel">
-    <EventsList events={page.events} />
+    {
+      page.events.length !== 0 ? (
+        <EventsList events={page.events} />
+      ) : (
+        <div style="font-style: italic;">
+          No {page.name} events at this time.
+        </div>
+      )
+    }
   </section>
   <aside
     slot="sidebar"

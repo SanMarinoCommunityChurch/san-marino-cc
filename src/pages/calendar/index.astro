@@ -13,9 +13,37 @@ import Button from "../../components/Button.astro";
   </div>
 </UtilityLayout>
 
-<style>
+<style is:global>
   .fc-event {
     cursor: pointer !important;
+  }
+
+  .fc-h-event {
+    background-color: var(--color-primary-800);
+    border: var(--color-primary-800) 1px solid;
+  }
+
+  .fc-daygrid-event-dot {
+    border-color: var(--color-primary-400);
+  }
+
+  .tippy-box {
+    background-color: var(--color-primary-900);
+  }
+
+  .tippy-arrow {
+    color: var(--color-primary-900);
+  }
+
+  .tooltip-title {
+    font-family: var(--font-secondary);
+    font-weight: var(--font-weight-header);
+    font-size: var(--step-0);
+    line-height: 1.15;
+  }
+
+  .tippy-content > * + * {
+    margin-top: 9px;
   }
 </style>
 
@@ -23,6 +51,7 @@ import Button from "../../components/Button.astro";
   import { Calendar } from "@fullcalendar/core";
   import dayGridPlugin from "@fullcalendar/daygrid";
   import listPlugin from "@fullcalendar/list";
+  import googleCalendarPlugin from "@fullcalendar/google-calendar";
   import { capitalizeFirstLetter } from "../../utils/format";
   import tippy from "tippy.js";
   import "tippy.js/dist/tippy.css";
@@ -98,7 +127,8 @@ import Button from "../../components/Button.astro";
   const combinedEvents = [].concat(eventObjs, serviceObjs);
 
   const calendar = new Calendar(calenderEl, {
-    plugins: [dayGridPlugin, listPlugin],
+    plugins: [dayGridPlugin, listPlugin, googleCalendarPlugin],
+    googleCalendarApiKey: "AIzaSyALfrmXSrV_Qxgtod5Jvu9FBQrnzRmYsRQ",
     initialView: mediaQuery.matches ? "listWeek" : "dayGridMonth",
     headerToolbar: {
       start: "title",
@@ -110,7 +140,16 @@ import Button from "../../components/Button.astro";
       dayGridMonth: "View Month",
       listWeek: "View List",
     },
-    events: combinedEvents,
+    eventSources: [
+      {
+        googleCalendarId:
+          "c_634dd972237f4bda93a24955f2b6032fb19b779f1a17aa6170da70e79197663d@group.calendar.google.com",
+      },
+      {
+        events: combinedEvents,
+      },
+    ],
+    // events: combinedEvents,
     eventClick: function (info) {
       info.jsEvent.preventDefault();
       const instance = tippy(info.el, {
@@ -118,19 +157,36 @@ import Button from "../../components/Button.astro";
         interactive: true,
         allowHTML: true,
       });
+      console.log(info.event);
       if (info.event.extendedProps.type == "event") {
         if (info.event.extendedProps.image) {
           instance.setContent(
-            `<img src="${info.event.extendedProps.image}" width="200" height="120" loading="lazy" /><div class="tooltip-title">${info.event.title}<div>${info.event.extendedProps.description}</div><div><a href="/connect/events/${info.event.extendedProps.slug}">See more</a></div></div>`
+            `<img src="${info.event.extendedProps.image}" width="200" height="120" loading="lazy" /><div class="tooltip-title">${info.event.title}</div><div>${info.event.extendedProps.description}</div><div><a href="/connect/events/${info.event.extendedProps.slug}">See more</a></div>`
           );
         } else {
           instance.setContent(
-            `<div class="tooltip-title">${info.event.title}<div>${info.event.extendedProps.description}</div><div><a href="/connect/events/${info.event.extendedProps.slug}">See more</a></div></div>`
+            `<div class="tooltip-title">${info.event.title}</div><div>${info.event.extendedProps.description}</div><div><a href="/connect/events/${info.event.extendedProps.slug}">See more</a></div>`
           );
         }
       } else if (info.event.extendedProps.type == "service") {
         instance.setContent(
-          `<div>${info.event.title}</div><p>${info.event.extendedProps.description}</p><a href="/worship/${info.event.extendedProps.slug}">Watch video</a>`
+          `<div class="tooltip-title">${info.event.title}</div><p>${info.event.extendedProps.description}</p><a href="/worship/${info.event.extendedProps.slug}">Watch video</a>`
+        );
+      } else if (info.event.extendedProps.description) {
+        instance.setContent(
+          `<div class="tooltip-title">${info.event.title}<div></div>${
+            info.event.extendedProps.description
+          }</div>${
+            info.event.url &&
+            `<div><a href=${info.event.url} target="_blank">Google Calendar link</a></div>`
+          }`
+        );
+      } else {
+        instance.setContent(
+          `<div class="tooltip-title">${info.event.title}</div>${
+            info.event.url &&
+            `<div><a href=${info.event.url} target="_blank">Google Calendar link</a></div>`
+          }`
         );
       }
 

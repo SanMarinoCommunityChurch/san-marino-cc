@@ -1,13 +1,13 @@
 ---
 import DateLabel from "./DateLabel.astro";
 import { DateTime } from "luxon"
-import { groupAsMonths } from "../../utils/events"
+// import { groupAsMonths } from "../../utils/events"
 import { urlFor } from "../../lib/sanity";
 import { defaultImage } from "../../lib/settings";
 
 const { events } = Astro.props;
 
-const eventsByMonth = groupAsMonths(events);
+// const eventsByMonth = groupAsMonths(events);
 
 // const categoryName = (event) => {
 //   const category = event.eventType == 'ministry' ? event.associatedMinistry.category.name : event.category;
@@ -15,9 +15,9 @@ const eventsByMonth = groupAsMonths(events);
 // }
 ---
 <div>
-{eventsByMonth.map(month =>
-  <section id={month.month}>
-  <h2 class="text-step-4">{month.month}</h2>
+{events.map(month =>
+  <section id={month.type}>
+  <h2 class="text-step-4">{month.type}</h2>
     <ul class="flow">
       {month.entries.map((event) => {
         const image = event.image || event.associatedMinistry.image || defaultImage;

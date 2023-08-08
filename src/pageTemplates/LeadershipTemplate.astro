@@ -1,18 +1,9 @@
 ---
 import { urlFor } from "../lib/sanity";
 import { joinNames, capitalizeFirstLetter, slugify } from "../utils/format";
-import { allStaff, allEldersAndDeacons } from "../lib/people";
-import { groupAsType } from "../utils/people";
+import { staffByType, eldersAndDeaconsByType } from "../lib/people";
 import { PortableText } from "astro-portabletext";
 import "../styles/rich-text.css";
-
-const staff = allStaff;
-const eldersAndDeacons = allEldersAndDeacons;
-const staffByType = groupAsType(staff, ["clergy", "program", "admin"]);
-const eldersAndDeaconsByType = groupAsType(eldersAndDeacons, [
-  "elder",
-  "deacon",
-]);
 
 const { content } = Astro.props;
 const { leadershipTypes, richContent } = content;

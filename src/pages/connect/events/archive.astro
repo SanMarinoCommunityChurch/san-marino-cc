@@ -1,23 +1,18 @@
 ---
-import Button from "../../../components/Button.astro";
 import SidebarLinkItem from "../../../components/SidebarLinkItem.astro";
 import CategoryList from "../../../components/Events/CategoryList.astro";
 import EventsListArchive from "../../../components/Events/EventsListArchive.astro";
 import SectionPage from "../../../layouts/SectionPage.astro";
-import {
-  previewEvents,
-  previewPastEvents,
-  eventCategories,
-} from "../../../lib/events";
+import { pastEvents, eventCategories } from "../../../lib/events";
 
-const events = previewPastEvents;
+// const events = previewPastEvents;
 // refactor to get from eventsPreview data -- function get unique
 const categories = eventCategories;
 ---
 
 <SectionPage currentPage={"b486a924-0f49-4439-9bc3-2f0fe56e0e78"}>
   <div class="with-sidebar">
-    <EventsListArchive events={events} />
+    <EventsListArchive events={pastEvents} />
     <div class="sidebar flow" style="--flow-space: var(--space-xl);">
       <div class="flow">
         <h3 class="text-step-2">Event Categories</h3>

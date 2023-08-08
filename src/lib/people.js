@@ -1,9 +1,18 @@
 import { getSanityData } from "./sanity";
+import { groupTypes, sortTypes } from "../utils/data";
 import { staffMembers, eldersAndDeacons } from "./sanityQueries";
 import { slugify } from "../utils/format";
 
 const allStaff = await getSanityData(staffMembers);
 const allEldersAndDeacons = await getSanityData(eldersAndDeacons);
+
+const staffGrouped = groupTypes(allStaff, "type");
+const staffByType = sortTypes(staffGrouped, ["clergy", "program", "admin"]);
+const eldersAndDeaconsGrouped = groupTypes(allEldersAndDeacons, "type");
+const eldersAndDeaconsByType = sortTypes(eldersAndDeaconsGrouped, [
+  "elder",
+  "deacon",
+]);
 
 const makeNameSlug = (name) => {
   let arr = [name.firstName, name.lastName];
@@ -14,4 +23,10 @@ const makeNameSlug = (name) => {
   //   .replace(/\s+/g, "-")}`;
 };
 
-export { allStaff, allEldersAndDeacons, makeNameSlug };
+export {
+  allStaff,
+  allEldersAndDeacons,
+  staffByType,
+  eldersAndDeaconsByType,
+  makeNameSlug,
+};

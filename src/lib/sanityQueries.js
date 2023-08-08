@@ -168,7 +168,7 @@ const pastEventsPreview = `*[_type == 'event' && dateTime(date) < dateTime(now()
 const eventTypes = `*[_type == 'eventType'] {
   name,
   "slug": slug.current,
-  "events": *[_type == 'event' && references(^._id)] {
+  "events": *[_type == 'event' && references(^._id)] | order(date asc) {
     ...,
     name,
     date,

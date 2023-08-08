@@ -1,4 +1,6 @@
 import { getSanityData } from "./sanity";
+import { groupTypes } from "../utils/data";
+import { getMonth } from "../utils/format";
 import {
   eventsPreview,
   futureEventsPreview,
@@ -13,10 +15,22 @@ const previewFutureEvents = await getSanityData(futureEventsPreview);
 const previewPastEvents = await getSanityData(pastEventsPreview);
 const eventCategories = await getSanityData(eventTypes);
 
+const futureEvents = groupTypes(previewFutureEvents, "date", getMonth);
+const pastEvents = groupTypes(previewPastEvents, "date", getMonth);
+const eventsByCategory = eventCategories.map((category) => {
+  return {
+    ...category,
+    events: groupTypes(category.events, "date", getMonth),
+  };
+});
+
 export {
   allEvents,
   previewEvents,
   previewFutureEvents,
   previewPastEvents,
   eventCategories,
+  futureEvents,
+  pastEvents,
+  eventsByCategory,
 };
