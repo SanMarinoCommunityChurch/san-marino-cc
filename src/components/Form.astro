@@ -117,7 +117,7 @@ const { formData } = Astro.props;
       )
     }
     <div>
-      <input type="submit" />
+      <input type="submit" value="Submit" />
     </div>
   </div>
 </form>
@@ -219,6 +219,7 @@ const { formData } = Astro.props;
   input[type="submit"] {
     background-color: var(--color-primary-800);
     color: var(--color-white);
+    border: 0;
     font-size: var(--step--1);
     line-height: 1.15;
     padding: 0.75em 1em 0.78rem;
@@ -231,15 +232,12 @@ const { formData } = Astro.props;
     justify-content: center;
     align-items: center;
     gap: 0.45rem;
+    cursor: pointer;
     transition: all 0.2s ease-in-out;
   }
 
   input[type="submit"]:hover {
     background-color: var(--color-primary-900);
-  }
-
-  input[type="submit"] {
-    cursor: pointer;
   }
 
   .form .overlay {

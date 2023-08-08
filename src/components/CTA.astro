@@ -45,22 +45,33 @@ const { heading, text, linkName, href } = content;
           Let us know if you would like to receive our weekly email updates.
         </p>
       </div>
-      <form class="form cluster">
-        <label for="name">
+      <form
+        class="form cluster"
+        name="home-page-email-signup"
+        method="POST"
+        data-netlify="true"
+        action="/contact/success"
+      >
+        <label for="signup_name">
           <span class="sr-only">Name</span>
-          <input id="name" name="name" type="text" placeholder="Your Name" />
+          <input
+            id="signup_name"
+            name="name"
+            type="text"
+            placeholder="Your Name"
+          />
         </label>
-        <label for="email">
+        <label for="signup_email">
           <span class="sr-only">Email</span>
           <input
-            id="email"
+            id="signup_email"
             name="email"
             type="email"
             placeholder="Your Email"
             required
           />
         </label>
-        <Button type="submit">Submit</Button>
+        <input type="submit" value="Submit" />
       </form>
     </div>
   </section>
@@ -133,6 +144,30 @@ const { heading, text, linkName, href } = content;
 
   input::placeholder {
     color: var(--color-neutral-200);
+  }
+
+  input[type="submit"] {
+    background-color: var(--color-primary-800);
+    color: var(--color-white);
+    border: 0;
+    font-size: var(--step--1);
+    line-height: 1.15;
+    padding: 0.75em 1em 0.78rem;
+    font-family: var(--font-secondary);
+    font-weight: var(--font-weight-semi);
+    text-transform: uppercase;
+    letter-spacing: 1.5pt;
+    border-radius: 4px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    gap: 0.45rem;
+    transition: all 0.2s ease-in-out;
+  }
+
+  input[type="submit"]:hover {
+    background-color: var(--color-primary-900);
   }
 
   @media (max-width: 768px) {
