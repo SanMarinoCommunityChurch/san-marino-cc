@@ -30,7 +30,6 @@ const { title, description, ogTitle, ogImage, ogImageExternal, ogDescription } =
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/png" href="/smcc-favicon.png" />
     <SEO
       title={title
         ? `${title} | ${siteSettings.siteName}`
@@ -57,6 +56,8 @@ const { title, description, ogTitle, ogImage, ogImageExternal, ogDescription } =
         },
       }}
     />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="icon" type="image/png" href="/smcc-favicon.png" />
     <link rel="stylesheet" href="https://use.typekit.net/wsf6agj.css" />
     <script defer src="/fontawesome/duotone.min.js"></script>
     <script defer src="/fontawesome/brands.min.js"></script>
