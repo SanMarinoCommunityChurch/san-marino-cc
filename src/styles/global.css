@@ -78,8 +78,8 @@
   --space-s-l: clamp(0.94rem, calc(0.54rem + 1.98vw), 2.13rem);
   --space-m-2xl: clamp(1.44rem, calc(0.5rem + 4.69vw), 4.25rem);
   --gutter: var(--space-s-l);
-  --font-primary: portada-text, var(--font-sans);
-  --font-secondary: freight-sans-pro, var(--font-sans);
+  --font-primary: "Portada Text", var(--font-sans);
+  --font-secondary: "Freight Sans", var(--font-sans);
   --font-emphasis: var(--font-sans);
   --font-sans: system-ui, "Segoe UI", Helvetica, Arial, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji";

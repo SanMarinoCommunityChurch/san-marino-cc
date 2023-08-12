@@ -38,7 +38,9 @@ const socialLinks = siteSettings.socialLinks;
             <ul class="flow">
               {navItem.pages.map((navChild) => (
                 <li>
-                  <a href={constructHref(navChild)}>{navChild.name}</a>
+                  <a class="footer-link" href={constructHref(navChild)}>
+                    {navChild.name}
+                  </a>
                 </li>
               ))}
             </ul>
@@ -50,7 +52,9 @@ const socialLinks = siteSettings.socialLinks;
           {
             utilityNavigation.entries.map((navItem) => (
               <li>
-                <a href={constructHref(navItem)}>{navItem.name}</a>
+                <a class="footer-link" href={constructHref(navItem)}>
+                  {navItem.name}
+                </a>
               </li>
             ))
           }
@@ -130,6 +134,10 @@ const socialLinks = siteSettings.socialLinks;
   .nav-grid ul a:hover {
     color: var(--color-primary-100);
     opacity: 0.9;
+  }
+
+  .footer-link {
+    display: inline-block;
   }
 
   .sub-footer {

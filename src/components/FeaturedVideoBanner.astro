@@ -17,6 +17,16 @@ const compileServiceTypes = (array) => {
   );
   return types;
 };
+
+const today = DateTime.now().setZone("America/Los_Angeles").toISODate();
+// console.log(today);
+
+const latestServiceDate = DateTime.fromISO(latestService.date).setZone(
+  "America/Los_Angeles",
+  { keepLocalTime: true }
+);
+
+// console.log(latestServiceDate.toISODate());
 ---
 
 <article class="video-banner">
@@ -52,13 +62,11 @@ const compileServiceTypes = (array) => {
     <div class="video-text flow">
       <div class="video-header flow">
         <div>
-          <h2 class="small-title color-primary-200">Latest Service</h2>
+          <h2 class="small-title color-primary-200">
+            {latestServiceDate === today ? "Today" : "Latest Service"}
+          </h2>
           <h3 class="text-step-3 color-white">
-            {
-              DateTime.fromISO(latestService.date)
-                .setZone("America/Los_Angeles", { keepLocalTime: true })
-                .toLocaleString(DateTime.DATE_HUGE)
-            }
+            {latestServiceDate.toLocaleString(DateTime.DATE_HUGE)}
           </h3>
         </div>
         <p>
