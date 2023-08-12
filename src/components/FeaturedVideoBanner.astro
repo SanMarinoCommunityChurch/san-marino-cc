@@ -63,7 +63,11 @@ const latestServiceDate = DateTime.fromISO(latestService.date).setZone(
       <div class="video-header flow">
         <div>
           <h2 class="small-title color-primary-200">
-            {latestServiceDate === today ? "Today" : "Latest Service"}
+            {
+              latestServiceDate.toISODate() === today
+                ? "Today"
+                : "Latest Service"
+            }
           </h2>
           <h3 class="text-step-3 color-white">
             {latestServiceDate.toLocaleString(DateTime.DATE_HUGE)}
