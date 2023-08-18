@@ -143,7 +143,7 @@ const randomizedMinistries = randomizeAndSlice(filteredMinistries, 3);
           page.associatedEvents[0] && (
             <section class="associated-events flow">
               <h2 class="text-step-2">Associated Events</h2>
-              <ul>
+              <ul class="flow" style="--flow-space: 2rem;">
                 {page.associatedEvents.map((event) => (
                   <li class="cluster">
                     <MiniPreviewCard
