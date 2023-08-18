@@ -383,7 +383,7 @@ const ministriesDetail = `*[_type == 'ministry'] {
       asset->
     },
   },
-  "associatedEvents": *[_type == 'event' && references(^._id)] {
+  "associatedEvents": *[_type == 'event' && references(^._id)]|order(date asc) {
     ...,
     name,
     date,

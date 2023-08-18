@@ -152,9 +152,9 @@ const randomizedMinistries = randomizeAndSlice(filteredMinistries, 3);
                     >
                       <div class="text-step-1 font-header">{event.name}</div>
                       <time class="small-title" datetime={event.date}>
-                        {DateTime.fromISO(event.date).toLocaleString(
-                          DateTime.DATE_FULL
-                        )}
+                        {DateTime.fromISO(event.date)
+                          .setZone("America/Los_Angeles")
+                          .toLocaleString(DateTime.DATE_FULL)}
                       </time>
                     </MiniPreviewCard>
                   </li>
