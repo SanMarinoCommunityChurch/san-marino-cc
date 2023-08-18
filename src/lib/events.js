@@ -16,7 +16,8 @@ const previewPastEvents = await getSanityData(pastEventsPreview);
 const eventCategories = await getSanityData(eventTypes);
 
 const futureEvents = groupTypes(previewFutureEvents, "date", getMonth);
-const pastEvents = groupTypes(previewPastEvents, "date", getMonth);
+// const pastEvents = groupTypes(previewPastEvents, "date", getMonth);
+const pastEvents = previewPastEvents;
 const eventsByCategory = eventCategories.map((category) => {
   return {
     ...category,
