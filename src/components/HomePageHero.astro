@@ -60,11 +60,11 @@ const link2 = links[1];
       controls
       muted
       loop
-      poster={urlFor(fallbackImg).width(1920).height(1080).auto("format").url()}
-      title={media.title}
+      poster={urlFor(fallbackImg).width(1200).height(675).auto("format").url()}
+      title="Panning aerial view of San Marino Community Church."
       id="home-video"
     >
-      <source src={media.asset.url} type={media.asset.mimeType} />
+      <source src="/drone-test.mp4" type="video/mp4" />
     </video>
   </div>
 </article>
@@ -148,7 +148,7 @@ const link2 = links[1];
 </style>
 
 <script>
-  const video = document.getElementById("home-video");
+  const video = document.getElementById("home-video") as HTMLVideoElement;
   const playButton = document.querySelector("#playButton");
   const buttonText = playButton.children[0];
   let playState = true;
