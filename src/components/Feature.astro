@@ -1,6 +1,7 @@
 ---
 import Button from "./Button.astro";
 import { urlFor } from "../lib/sanity";
+import ImageOpt from "./ImageOpt.astro";
 
 const themes = {
   light: "light",
@@ -28,15 +29,11 @@ const { title, description, linkName, href, image } = content;
       : `/${href.pageSlug.current}`}
     class="frame img-link"
   >
-    <img
+    <ImageOpt
       class="img"
       src={urlFor(image).width(800).height(640).auto("format").url()}
       alt={image.asset.altText || ""}
-      width={800}
-      height={640}
       style={`background-image: url(${image.asset.metadata.lqip})`}
-      loading="lazy"
-      decoding="async"
     />
   </a>
   <div class="feature-text flow">

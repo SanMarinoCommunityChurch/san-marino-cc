@@ -1,5 +1,7 @@
 ---
 import { urlFor } from "../lib/sanity";
+import ImageOpt from "./ImageOpt.astro";
+
 const { links } = Astro.props;
 ---
 
@@ -22,14 +24,11 @@ const { links } = Astro.props;
             {link.description && <p class="description">{link.description}</p>}
           </div>
           <div class="overlay" />
-          <img
+          <ImageOpt
             src={urlFor(link.image).width(600).auto("format").url()}
             alt={link.image.asset.altText || ""}
-            width={600}
             class="img"
             style={`background-image: url(${link.image.asset.metadata.lqip})`}
-            loading="lazy"
-            decoding="async"
           />
         </a>
       );

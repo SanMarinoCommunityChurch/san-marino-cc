@@ -1,6 +1,7 @@
 ---
 import { urlFor } from "../lib/sanity";
 import getYouTubeID from "get-youtube-id";
+import ImageOpt from "./ImageOpt.astro";
 
 // frame aspect ratio must be in the format x:y
 
@@ -48,7 +49,7 @@ if (media.image) {
   {
     media.image ? (
       <div>
-        <img
+        <ImageOpt
           src={urlFor(media.image)
             .width(900)
             .height(imageHeight)
@@ -56,11 +57,7 @@ if (media.image) {
             .url()}
           alt={media.image.asset.altText || ""}
           class="img"
-          width={900}
-          height={imageHeight}
           style={`background-image: url(${media.image.asset.metadata.lqip})`}
-          loading="lazy"
-          decoding="async"
         />
       </div>
     ) : media.video ? (

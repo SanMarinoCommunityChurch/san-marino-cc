@@ -3,6 +3,7 @@ import { urlFor } from "../lib/sanity";
 import { joinNames, capitalizeFirstLetter, slugify } from "../utils/format";
 import { staffByType, eldersAndDeaconsByType } from "../lib/people";
 import { PortableText } from "astro-portabletext";
+import ImageOpt from "../components/ImageOpt.astro";
 import "../styles/rich-text.css";
 
 const { content } = Astro.props;
@@ -53,14 +54,12 @@ const { leadershipTypes, richContent } = content;
                     >
                       {person.image && (
                         <div class="frame square">
-                          <img
+                          <ImageOpt
                             src={urlFor(person.image)
                               .width(400)
                               .height(400)
                               .auto("format")
                               .url()}
-                            width={400}
-                            height={400}
                             alt={joinNames(person.name)}
                           />
                         </div>
@@ -105,14 +104,12 @@ const { leadershipTypes, richContent } = content;
                   <div class="person">
                     {person.image && (
                       <div class="frame square">
-                        <img
+                        <ImageOpt
                           src={urlFor(person.image)
                             .width(400)
                             .height(400)
                             .auto("format")
                             .url()}
-                          width={400}
-                          height={400}
                           alt={joinNames(person.name)}
                         />
                       </div>
@@ -303,7 +300,7 @@ const { leadershipTypes, richContent } = content;
       if (entry.isIntersecting) {
         const id = entry.target.id;
         headerLinks.forEach((link) => {
-          const a = link as HTMLElement;
+          const a = link as HTMLAnchorElement;
           if (a.hash === `#${id}`) {
             a.style.opacity = "1";
           } else {

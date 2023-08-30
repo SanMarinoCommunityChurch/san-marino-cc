@@ -1,9 +1,9 @@
 ---
 import Button from "./Button.astro";
-import { Image, Picture } from "@astrojs/image/components";
 import { PortableText } from "astro-portabletext";
 import ImageCard from "./ImageCard.astro";
 import { urlFor } from "../lib/sanity";
+import ImageOpt from "./ImageOpt.astro";
 
 const { slides, items } = Astro.props;
 ---
@@ -68,7 +68,7 @@ const { slides, items } = Astro.props;
                       href={`/connect/ministries/${slide.slug}`}
                       class="img-link-wrapper"
                     >
-                      <img
+                      <ImageOpt
                         class="img"
                         src={urlFor(image)
                           .width(900)
@@ -76,11 +76,7 @@ const { slides, items } = Astro.props;
                           .auto("format")
                           .url()}
                         alt={image.asset.altText || ""}
-                        width={900}
-                        height={675}
                         style={`background-image: url(${image.asset.metadata.lqip})`}
-                        loading="lazy"
-                        decoding="async"
                       />
                     </a>
                   </article>

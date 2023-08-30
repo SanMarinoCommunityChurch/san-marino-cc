@@ -1,6 +1,7 @@
 ---
 import { defaultImage } from "../lib/settings";
 import { urlFor } from "../lib/sanity";
+import ImageOpt from "./ImageOpt.astro";
 const { href, name, description, icon } = Astro.props;
 ---
 
@@ -11,15 +12,14 @@ const { href, name, description, icon } = Astro.props;
     <p>{description}</p>
   </div>
   <div class="overlay"></div>
-  <img
+  <ImageOpt
     class="img"
-    src={urlFor(defaultImage).width(600).url()}
+    src={urlFor(defaultImage)
+      .width(600)
+      .height(600 / defaultImage.asset.metadata.dimensions.aspectRatio)
+      .url()}
     alt={defaultImage.asset.altText}
-    width={600}
-    height={600 / defaultImage.asset.metadata.dimensions.aspectRatio}
     style={`background-image: url(${defaultImage.asset.metadata.lqip})`}
-    loading="lazy"
-    decoding="async"
   />
 </a>
 

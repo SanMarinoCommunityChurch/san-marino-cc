@@ -1,5 +1,6 @@
 ---
 import { urlFor } from "../lib/sanity";
+import ImageOpt from "./ImageOpt.astro";
 const { title = "Explore more", items } = Astro.props;
 ---
 
@@ -25,13 +26,10 @@ const { title = "Explore more", items } = Astro.props;
                 <p>{item.description}</p>
               </div>
               <div class="overlay" />
-              <img
+              <ImageOpt
                 class="img"
                 src={urlFor(item.image).width(900).auto("format").url()}
                 alt={item.image.asset.altText || ""}
-                width={900}
-                loading="lazy"
-                decoding="async"
               />
             </a>
           </li>

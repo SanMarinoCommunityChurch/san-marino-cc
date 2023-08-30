@@ -1,5 +1,6 @@
 ---
 import { urlFor } from "../lib/sanity";
+import ImageOpt from "./ImageOpt.astro";
 const { href, image, theme = "light" } = Astro.props;
 ---
 
@@ -9,15 +10,11 @@ const { href, image, theme = "light" } = Astro.props;
   style={`--hover-color:${theme == "dark" ? "var(--dark)" : "var(--light)"}`}
 >
   <div class="frame square">
-    <img
+    <ImageOpt
       class="img"
       src={urlFor(image).width(300).height(300).auto("format").url()}
       alt={image.asset.altText || ""}
-      width={300}
-      height={300}
       style={`background-image: url(${image.asset.metadata.lqip})`}
-      loading="lazy"
-      decoding="async"
     />
   </div>
   <div>
