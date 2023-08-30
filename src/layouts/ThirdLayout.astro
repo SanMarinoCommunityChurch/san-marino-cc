@@ -6,6 +6,7 @@ import MoreLikeThis from "../components/MoreLikeThis.astro";
 import Card from "../components/Card.astro";
 import DateLabel from "../components/Events/DateLabel.astro";
 import { defaultImage } from "../lib/settings";
+import ImageOpt from "../components/ImageOpt.astro";
 
 const { meta, header, breadcrumbs, preview, featuredImage, moreContent } =
   Astro.props;
@@ -43,15 +44,11 @@ if (featuredImage) {
           </section>
           {
             featuredImage && (
-              <img
+              <ImageOpt
                 class="img"
                 src={urlFor(featuredImage).width(900).height(featuredImage.crop ? Math.floor(900 / croppedAspectRatio) : Math.floor(900 / featuredImage.asset.metadata.dimensions.aspectRatio)).auto("format").url()}
                 alt={featuredImage.asset.altText || ""}
-                width={900}
-                height={featuredImage.crop ? Math.floor(900 / croppedAspectRatio) : Math.floor(900 / featuredImage.asset.metadata.dimensions.aspectRatio)}
                 style={`background-image: url(${featuredImage.asset.metadata.lqip})`}
-                loading="lazy"
-                decoding="async"
               />
             )
           }

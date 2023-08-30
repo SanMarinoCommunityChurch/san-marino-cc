@@ -4,7 +4,7 @@ import Button from "../../../components/Button.astro";
 import InnerHero from "../../../components/InnerHero.astro";
 import BreadcrumbAuto from "../../../components/BreadcrumbAuto.astro";
 import Tabs from "../../../components/React/Tabs";
-import { Image } from "@astrojs/image/components";
+import ImageOpt from "../../../components/ImageOpt.astro";
 import { joinTypes } from "../../../utils/format";
 import getYouTubeId from "get-youtube-id";
 import { makeNameSlug } from "../../../lib/people";
@@ -14,7 +14,8 @@ import { DateTime } from "luxon";
 import { getSanityData, urlFor } from "../../../lib/sanity";
 import { allServices } from "../../../lib/services";
 
-import bgImage from "../../../assets/images/church-ext-2.jpg";
+// import bgImage from "../../../assets/images/church-ext-2.jpg";
+const bgImage = "./public/church-ext-2.jpg";
 
 export async function getStaticPaths() {
   const pages = allServices;
@@ -123,7 +124,7 @@ const description = `Watch video from our ${serviceDate} service.`;
                           .toFormat("LLL")}
                       </div>
                     </time>
-                    <Image src={bgImage} alt="" />
+                    <ImageOpt src={bgImage} width={500} height={500} alt="" />
                   </div>
                   <div class="flow">
                     <div class="text">
@@ -180,7 +181,7 @@ const description = `Watch video from our ${serviceDate} service.`;
                           .toFormat("LLL")}
                       </div>
                     </time>
-                    <Image src={bgImage} alt="" />
+                    <ImageOpt src={bgImage} alt="" />
                   </div>
                 </a>
               </div>

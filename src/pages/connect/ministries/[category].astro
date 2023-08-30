@@ -10,6 +10,7 @@ import { urlFor } from "../../../lib/sanity";
 import { DateTime } from "luxon";
 import { randomizeAndSlice, filterAgainst } from "../../../utils/data";
 import { defaultImage } from "../../../lib/settings";
+import ImageOpt from "../../../components/ImageOpt.astro";
 
 import { PortableText } from "astro-portabletext";
 import InlineImage from "../../../components/InlineImage.astro";
@@ -90,15 +91,11 @@ const breadcrumbs = [
     <div class="content-wrapper with-sidebar">
       <article>
         <div slot="main-panel" class="main-panel flow">
-          <img
+          <ImageOpt
             class="img"
             src={urlFor(page.image).width(900).height(640).auto("format").url()}
             alt={page.image.asset.altText || ""}
-            width={900}
-            height={640}
             style={`background-image: url(${page.image.asset.metadata.lqip})`}
-            loading="lazy"
-            decoding="async"
           />
           <div class="rich-text">
             <PortableText

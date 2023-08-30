@@ -4,6 +4,7 @@ import BreadcrumbAuto from "../components/BreadcrumbAuto.astro";
 import ContactAvatar from "../components/ContactAvatar.astro";
 import MoreLikeThis from "../components/MoreLikeThis.astro";
 import PostList from "../components/PostList.astro";
+import ImageOpt from "../components/ImageOpt.astro";
 import { joinNames } from "../utils/format";
 import { DateTime } from "luxon";
 import { urlFor } from "../lib/sanity";
@@ -57,7 +58,7 @@ const {
           </div>
           <p class="text-step-1"><em>{preview}</em></p>
         </header>
-        <img
+        <ImageOpt
           src={urlFor(featuredImage)
             .width(1200)
             .height(675)
@@ -65,11 +66,7 @@ const {
             .url()}
           alt={featuredImage.asset.altText || ""}
           class="image"
-          width={1200}
-          height={675}
           style={`background-image: url(${featuredImage.asset.metadata.lqip})`}
-          loading="lazy"
-          decoding="async"
         />
         <div>
           <slot name="main-panel" />

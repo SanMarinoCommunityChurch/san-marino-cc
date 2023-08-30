@@ -19,6 +19,7 @@ import { joinNames } from "../../../utils/format";
 import MiniPreviewCard from "../../../components/MiniPreviewCard.astro";
 import { allMinistries, previewMinistries } from "../../../lib/ministries";
 import "../../../styles/rich-text.css";
+import ImageOpt from "../../../components/ImageOpt.astro";
 
 export async function getStaticPaths() {
   const pages = allMinistries;
@@ -97,15 +98,11 @@ const randomizedMinistries = randomizeAndSlice(filteredMinistries, 3);
     <div class="content-wrapper with-sidebar">
       <article>
         <div slot="main-panel" class="main-panel flow">
-          <img
+          <ImageOpt
             class="img"
             src={urlFor(page.image).width(900).height(640).auto("format").url()}
             alt={page.image.asset.altText || ""}
-            width={900}
-            height={640}
             style={`background-image: url(${page.image.asset.metadata.lqip})`}
-            loading="lazy"
-            decoding="async"
           />
           <div class="rich-text">
             <PortableText

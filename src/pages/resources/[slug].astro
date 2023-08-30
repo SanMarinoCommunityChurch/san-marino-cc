@@ -40,8 +40,12 @@ const breadcrumbs = [
 ];
 
 const otherPosts = allPosts;
-const filteredPosts = filterAgainst(otherPosts, "categoryName", page);
-const randomPosts = otherPosts; // randomizeAndSlice(filteredPosts, 3);
+// const filteredPosts = filterAgainst(otherPosts, "categoryName", page);
+const filteredPosts = otherPosts.filter(
+  (post) =>
+    post.category.name === page.category.name && post.title !== page.title
+);
+const randomPosts = randomizeAndSlice(filteredPosts, 3);
 // empty array is not falsey
 ---
 
