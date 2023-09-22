@@ -1,12 +1,13 @@
 ---
-import ImageOpt from "./ImageOpt.astro";
+// import ImageOpt from "./ImageOpt.astro";
+import { Image } from "astro:assets";
 import DateLabel from "./Events/DateLabel.astro";
 import { capitalizeFirstLetter } from "../utils/format";
 import getYouTubeID from "get-youtube-id";
 import { joinTypes, joinNames } from "../utils/format";
 
-// import bgImage from "../assets/images/church-ext-2.jpg";
-const bgImage = "./public/church-ext-2.jpg";
+import bgImage from "../assets/images/church-ext-2.jpg";
+// const bgImage = "./public/church-ext-2.jpg";
 import { DateTime } from "luxon";
 
 const niceDate = (dateString) => {
@@ -56,7 +57,7 @@ const { services } = Astro.props;
                     .toFormat("LLL")}
                 </div>
               </time>
-              <ImageOpt src={bgImage} width={500} height={500} alt="" />
+              <Image src={bgImage} width={500} height={500} alt="" format="webp" />
             </div>
             <div class="date-label-mobile">
               <time class="" datetime={service.date}>

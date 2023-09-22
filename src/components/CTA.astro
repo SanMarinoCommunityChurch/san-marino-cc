@@ -2,6 +2,7 @@
 import { getSanityData, urlFor } from "../lib/sanity";
 import Button from "./Button.astro";
 import ImageOpt from "./ImageOpt.astro";
+import { Image } from "astro:assets";
 
 const bgImage = await getSanityData(
   `*[_id == "image-e83f53d39f32b13b60cd4f527b18dfa6d3c480d0-1660x2048-jpg"][0]`
@@ -25,7 +26,7 @@ const { heading, text, linkName, href } = content;
         {linkName}
       </Button>
     </div>
-    <ImageOpt
+    <Image
       src={urlFor(bgImage)
         .width(1200)
         .height(675)
@@ -33,6 +34,9 @@ const { heading, text, linkName, href } = content;
         .crop("top")
         .auto("format")
         .url()}
+        width={1200}
+        height={675}
+        format="webp"
       alt={bgImage.altText}
     />
   </section>

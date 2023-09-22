@@ -5,7 +5,8 @@ import { latestService } from "../lib/services";
 import { format12HourTime } from "../utils/format";
 import getYouTubeId from "get-youtube-id";
 import { DateTime } from "luxon";
-import ImageOpt from "./ImageOpt.astro";
+// import ImageOpt from "./ImageOpt.astro";
+import { Image } from "astro:assets";
 
 const bgImage = await getSanityData(
   `*[_id == "image-49e672b21479083a60c233227848c2b3a74a5eae-1620x1080-jpg"][0]`
@@ -84,12 +85,15 @@ const latestServiceDate = DateTime.fromISO(latestService.date).setZone(
       </div>
     </div>
   </div>
-  <ImageOpt
+  <Image
     src={urlFor(bgImage)
       .width(600)
       .height(Math.floor(600 / bgImage.metadata.dimensions.aspectRatio))
       .auto("format")
       .url()}
+      width={600}
+      height={Math.floor(600 / bgImage.metadata.dimensions.aspectRatio)}
+      format="webp"
     class="img-overlay"
     alt={bgImage.altText || ""}
   />

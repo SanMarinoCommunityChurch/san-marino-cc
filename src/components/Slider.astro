@@ -1,6 +1,7 @@
 ---
 import { urlFor } from "../lib/sanity";
-import ImageOpt from "./ImageOpt.astro";
+// import ImageOpt from "./ImageOpt.astro";
+import { Image } from "astro:assets";
 import PostCategory from "../components/PostCategory.astro";
 import { allPostTypes } from "../lib/posts";
 const { heading, description, slides } = Astro.props;
@@ -57,13 +58,16 @@ const { heading, description, slides } = Astro.props;
                 </div>
                 <div class="overlay" />
                 <div class="img-wrapper">
-                  <ImageOpt
+                  <Image
                     class="img"
                     src={urlFor(slide.image)
                       .width(900)
                       .height(675)
                       .auto("format")
                       .url()}
+                    width={900}
+                    height={675}
+                    format="webp"
                     alt={slide.image.asset.altText || slide.name || ""}
                     style={`background-image: url(${slide.image.asset.metadata.lqip})`}
                   />

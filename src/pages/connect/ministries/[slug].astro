@@ -10,6 +10,7 @@ import { urlFor } from "../../../lib/sanity";
 import { DateTime } from "luxon";
 import { randomizeAndSlice, filterAgainst } from "../../../utils/data";
 import { defaultImage } from "../../../lib/settings";
+import setImageHeight from "../../../utils/setImageHeight"
 
 import { PortableText } from "astro-portabletext";
 import InlineImage from "../../../components/InlineImage.astro";
@@ -19,7 +20,8 @@ import { joinNames } from "../../../utils/format";
 import MiniPreviewCard from "../../../components/MiniPreviewCard.astro";
 import { allMinistries, previewMinistries } from "../../../lib/ministries";
 import "../../../styles/rich-text.css";
-import ImageOpt from "../../../components/ImageOpt.astro";
+// import ImageOpt from "../../../components/ImageOpt.astro";
+import { Image } from "astro:assets";
 
 export async function getStaticPaths() {
   const pages = allMinistries;
@@ -98,9 +100,12 @@ const randomizedMinistries = randomizeAndSlice(filteredMinistries, 3);
     <div class="content-wrapper with-sidebar">
       <article>
         <div slot="main-panel" class="main-panel flow">
-          <ImageOpt
+          <Image
             class="img"
-            src={urlFor(page.image).width(900).height(640).auto("format").url()}
+            src={urlFor(page.image).width(900).height(page.image.crop ? Math.floor(900 / setImageHeight(page.image)) : Math.floor(900 / page.image.asset.metadata.dimensions.aspectRatio)).auto("format").url()}
+            width={900}
+            height={page.image.crop ? Math.floor(900 / setImageHeight(page.image)) : Math.floor(900 / page.image.asset.metadata.dimensions.aspectRatio)}
+            format="webp"
             alt={page.image.asset.altText || ""}
             style={`background-image: url(${page.image.asset.metadata.lqip})`}
           />
@@ -212,12 +217,6 @@ const randomizedMinistries = randomizeAndSlice(filteredMinistries, 3);
     padding-inline-start: var(--space-l);
     top: 1rem;
     width: fit-content;
-  }
-
-  .frame {
-    --width: 7;
-    --height: 5;
-    border-radius: var(--rounded-corners);
   }
 
   .img {

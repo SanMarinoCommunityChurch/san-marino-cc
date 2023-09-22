@@ -4,7 +4,8 @@ import { DateTime } from "luxon"
 // import { groupAsMonths } from "../../utils/events"
 import { urlFor } from "../../lib/sanity";
 import { defaultImage } from "../../lib/settings";
-import ImageOpt from "../ImageOpt.astro";
+// import ImageOpt from "../ImageOpt.astro";
+import { Image } from "astro:assets";
 
 const { events } = Astro.props;
 
@@ -27,9 +28,12 @@ const { events } = Astro.props;
           <a href={`/connect/events/${event.slug}`} class="event-wrapper">
             <div class="frame">
               <DateLabel date={event.date} position="top-left" />
-              <ImageOpt
+              <Image
                 class="img"
                 src={urlFor(image).width(800).height(800).auto('format').url()}
+                width={800}
+                height={800}
+                format="webp"
                 alt={image.asset.altText || ""}
                 style={`background-image: url(${image.asset.metadata.lqip})`}
               />

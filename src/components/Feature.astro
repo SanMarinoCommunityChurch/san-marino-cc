@@ -1,7 +1,8 @@
 ---
 import Button from "./Button.astro";
 import { urlFor } from "../lib/sanity";
-import ImageOpt from "./ImageOpt.astro";
+// import ImageOpt from "./ImageOpt.astro";
+import { Image } from "astro:assets";
 
 const themes = {
   light: "light",
@@ -29,9 +30,12 @@ const { title, description, linkName, href, image } = content;
       : `/${href.pageSlug.current}`}
     class="frame img-link"
   >
-    <ImageOpt
+    <Image
       class="img"
       src={urlFor(image).width(800).height(640).auto("format").url()}
+      width={800}
+      height={640}
+      format="webp"
       alt={image.asset.altText || ""}
       style={`background-image: url(${image.asset.metadata.lqip})`}
     />

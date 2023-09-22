@@ -1,6 +1,7 @@
 ---
 import { urlFor } from "../lib/sanity";
-import ImageOpt from "./ImageOpt.astro";
+// import ImageOpt from "./ImageOpt.astro";
+import { Image } from "astro:assets";
 
 const {
   image,
@@ -14,9 +15,12 @@ const {
 <article class="img-card">
   <a href={href} class="flow">
     <div class="frame">
-      <ImageOpt
+      <Image
         class="img"
         src={urlFor(image).width(600).height(375).auto("format").url()}
+        width={600}
+        height={375}
+        format="webp"
         alt={image.asset.altText || ""}
         style={`background-image: url(${image.asset.metadata.lqip})`}
       />

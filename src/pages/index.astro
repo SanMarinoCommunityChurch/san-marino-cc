@@ -14,7 +14,8 @@ import getYouTubeID from "get-youtube-id";
 import { allPosts } from "../lib/posts";
 import { urlFor, getSanityData } from "../lib/sanity";
 import { joinNames } from "../utils/format";
-import ImageOpt from "../components/ImageOpt.astro";
+// import ImageOpt from "../components/ImageOpt.astro";
+import { Image } from "astro:assets";
 
 const fadedFacade = await getSanityData(
   `*[_id == "image-37f76aac3b4cccb1fb411cd57856963bd8d61405-1365x2048-jpg"][0]`
@@ -52,12 +53,15 @@ const resources = featuredResources.resourceLinks;
       <div class="content-wrapper with-sidebar">
         <div class="flow">
           <div class="frame avatar">
-            <ImageOpt
+            <Image
               src={urlFor(welcome.person.image)
                 .width(300)
                 .height(300)
                 .auto("format")
                 .url()}
+              width={300}
+              height={300}
+              format="webp"
               alt={joinNames(welcome.person.name)}
             />
           </div>
@@ -89,7 +93,7 @@ const resources = featuredResources.resourceLinks;
         <div>
           {
             welcome.media.type == "image" ? (
-              <ImageOpt
+              <Image
                 src={urlFor(welcome.media)
                   .width(900)
                   .height(
@@ -99,6 +103,9 @@ const resources = featuredResources.resourceLinks;
                   )
                   .auto("format")
                   .url()}
+                width={900}
+                height={Math.floor(900 / welcome.media.asset.metadata.dimensions.aspectRatio)}
+                format="webp"
                 alt={welcome.media.asset.altText || ""}
                 class="img"
               />
@@ -118,13 +125,16 @@ const resources = featuredResources.resourceLinks;
           <h2 slot="header" class="text-step-4">Upcoming Events</h2>
         </EventsHome>
       </div>
-      <ImageOpt
+      <Image
         class="faded-facade"
         src={urlFor(fadedFacade)
           .width(900)
           .height(Math.floor(900 / fadedFacade.metadata.dimensions.aspectRatio))
           .auto("format")
           .url()}
+        width={900}
+        height={Math.floor(900 / fadedFacade.metadata.dimensions.aspectRatio)}
+        format="webp"
         alt={fadedFacade.altText}
       />
     </section>

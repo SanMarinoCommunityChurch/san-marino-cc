@@ -1,5 +1,6 @@
 ---
-import ImageOpt from "./ImageOpt.astro";
+// import ImageOpt from "./ImageOpt.astro";
+import { Image } from "astro:assets";
 import { urlFor } from "../lib/sanity";
 import Button from "./Button.astro";
 const { content } = Astro.props;
@@ -32,9 +33,12 @@ const { button, heading, image, text } = content;
     <div class="overlay"></div>
   </div>
   <div style="position: relative;">
-    <ImageOpt
+    <Image
       src={urlFor(image).width(900).height(900).auto("format").url()}
       alt={image.asset.altText || ""}
+      width={900}
+      height={900}
+      format="webp"
       class="img"
       style={`background-image: url(${image.asset.metadata.lqip})`}
     />

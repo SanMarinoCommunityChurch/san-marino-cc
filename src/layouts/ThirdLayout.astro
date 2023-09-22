@@ -6,7 +6,8 @@ import MoreLikeThis from "../components/MoreLikeThis.astro";
 import Card from "../components/Card.astro";
 import DateLabel from "../components/Events/DateLabel.astro";
 import { defaultImage } from "../lib/settings";
-import ImageOpt from "../components/ImageOpt.astro";
+// import ImageOpt from "../components/ImageOpt.astro";
+import { Image } from "astro:assets";
 
 const { meta, header, breadcrumbs, preview, featuredImage, moreContent } =
   Astro.props;
@@ -44,9 +45,12 @@ if (featuredImage) {
           </section>
           {
             featuredImage && (
-              <ImageOpt
+              <Image
                 class="img"
                 src={urlFor(featuredImage).width(900).height(featuredImage.crop ? Math.floor(900 / croppedAspectRatio) : Math.floor(900 / featuredImage.asset.metadata.dimensions.aspectRatio)).auto("format").url()}
+                width={900}
+                height={featuredImage.crop ? Math.floor(900 / croppedAspectRatio) : Math.floor(900 / featuredImage.asset.metadata.dimensions.aspectRatio)}
+                format="webp"
                 alt={featuredImage.asset.altText || ""}
                 style={`background-image: url(${featuredImage.asset.metadata.lqip})`}
               />
@@ -75,11 +79,11 @@ if (featuredImage) {
               const image = item.image || item.associatedMinistry.image || defaultImage;
               return (
                 <li>
-                  <Card 
-                    title={item.name} 
+                  <Card
+                    title={item.name}
                     image={image}
                     href={`/connect/events/${item.slug}`}
-                >
+                  >
                     <div slot="label" class="event-date">
                         <DateLabel date={item.date} />
                     </div>
@@ -94,20 +98,13 @@ if (featuredImage) {
                         <span>{item.location}</span>
                     </div>
                 </Card>
-                  </li>
+              </li>
               )
-            }
-              )}  
+            })}  
           </ul>
         }
-          </MoreLikeThis>
-        )
-        // <section class="highlight-section">
-        //   <div class="content-wrapper">
-        //     <slot name="highlight" />
-        //   </div>
-        // </section>
-      }
+        </MoreLikeThis>
+        )}
     </article>
   </main>
 </Layout>

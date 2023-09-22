@@ -1,6 +1,7 @@
 ---
 import { urlFor } from "../lib/sanity";
-import ImageOpt from "./ImageOpt.astro";
+// import ImageOpt from "./ImageOpt.astro";
+import { Image } from "astro:assets";
 const { title = "Explore more", items } = Astro.props;
 ---
 
@@ -26,9 +27,12 @@ const { title = "Explore more", items } = Astro.props;
                 <p>{item.description}</p>
               </div>
               <div class="overlay" />
-              <ImageOpt
+              <Image
                 class="img"
-                src={urlFor(item.image).width(900).auto("format").url()}
+                src={urlFor(item.image).width(600).height(240).auto("format").url()}
+                width={600}
+                height={240}
+                format="webp"
                 alt={item.image.asset.altText || ""}
               />
             </a>

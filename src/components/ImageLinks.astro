@@ -1,6 +1,7 @@
 ---
 import { urlFor } from "../lib/sanity";
-import ImageOpt from "./ImageOpt.astro";
+// import ImageOpt from "./ImageOpt.astro";
+import { Image } from "astro:assets";
 
 const { links } = Astro.props;
 ---
@@ -24,9 +25,12 @@ const { links } = Astro.props;
             {link.description && <p class="description">{link.description}</p>}
           </div>
           <div class="overlay" />
-          <ImageOpt
-            src={urlFor(link.image).width(600).auto("format").url()}
+          <Image
+            src={urlFor(link.image).width(400).height(600).auto("format").url()}
             alt={link.image.asset.altText || ""}
+            width={400}
+            height={600}
+            format="webp"
             class="img"
             style={`background-image: url(${link.image.asset.metadata.lqip})`}
           />

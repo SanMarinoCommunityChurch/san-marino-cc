@@ -3,8 +3,9 @@ import Layout from "../../../layouts/Layout.astro";
 import Button from "../../../components/Button.astro";
 import InnerHero from "../../../components/InnerHero.astro";
 import BreadcrumbAuto from "../../../components/BreadcrumbAuto.astro";
-import Tabs from "../../../components/React/Tabs";
-import ImageOpt from "../../../components/ImageOpt.astro";
+import Tabs from "../../../components/React/Tabs.jsx";
+// import ImageOpt from "../../../components/ImageOpt.astro";
+import { Image } from "astro:assets";
 import { joinTypes } from "../../../utils/format";
 import getYouTubeId from "get-youtube-id";
 import { makeNameSlug } from "../../../lib/people";
@@ -14,8 +15,8 @@ import { DateTime } from "luxon";
 import { getSanityData, urlFor } from "../../../lib/sanity";
 import { allServices } from "../../../lib/services";
 
-// import bgImage from "../../../assets/images/church-ext-2.jpg";
-const bgImage = "./public/church-ext-2.jpg";
+import bgImage from "../../../assets/images/church-ext-2.jpg";
+// const bgImage = "./public/church-ext-2.jpg";
 
 export async function getStaticPaths() {
   const pages = allServices;
@@ -124,7 +125,7 @@ const description = `Watch video from our ${serviceDate} service.`;
                           .toFormat("LLL")}
                       </div>
                     </time>
-                    <ImageOpt src={bgImage} width={500} height={500} alt="" />
+                    <Image src={bgImage} width={300} height={300} alt="" format="webp" />
                   </div>
                   <div class="flow">
                     <div class="text">
@@ -181,7 +182,7 @@ const description = `Watch video from our ${serviceDate} service.`;
                           .toFormat("LLL")}
                       </div>
                     </time>
-                    <ImageOpt src={bgImage} alt="" />
+                    <Image src={bgImage} alt="" width={300} height={300} format="webp" />
                   </div>
                 </a>
               </div>

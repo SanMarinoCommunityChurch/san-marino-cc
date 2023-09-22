@@ -64,7 +64,7 @@ let croppedAspectRatio = 0;
           }
           return (
             <>
-              {mission.type == "missionPartner" && (
+              {mission.type == "missionInvolvement" && (
                 <article class="mission">
                   <img
                     class="img"
@@ -127,7 +127,7 @@ let croppedAspectRatio = 0;
           }
           return (
             <>
-              {mission.type == "missionInvolvement" && (
+              {mission.type == "missionPartner" && (
                 <article class="mission">
                   <img
                     class="img"
@@ -286,7 +286,7 @@ let croppedAspectRatio = 0;
       if (entry.isIntersecting) {
         const id = entry.target.id;
         headerLinks.forEach((link) => {
-          const a = link as HTMLElement;
+          const a = link as HTMLAnchorElement;
           if (a.hash === `#${id}`) {
             a.style.opacity = "1";
           } else {

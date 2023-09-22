@@ -1,5 +1,6 @@
 ---
 import { urlFor } from "../lib/sanity";
+import { Image } from "astro:assets";
 
 const { image, heading = "Contact", name, href, size = "large" } = Astro.props;
 ---
@@ -9,15 +10,14 @@ const { image, heading = "Contact", name, href, size = "large" } = Astro.props;
   style={`--gap-space: ${size == "small" ? "0.75rem" : "1.5rem"}`}
 >
   <div>
-    <img
+    <Image
       src={urlFor(image).width(200).height(200).auto("format").url()}
       alt={image.asset.altText || ""}
       class="img"
+      format="webp"
       style={`--frame-size: ${size == "small" ? "3rem" : "5rem"}`}
       width={200}
       height={200}
-      loading="lazy"
-      decoding="async"
     />
   </div>
   <div>

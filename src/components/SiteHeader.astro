@@ -1,6 +1,5 @@
 ---
 import Button from "./Button.astro";
-import {Image} from "@astrojs/image/components"
 import {urlFor} from "../lib/sanity"
 import { siteSettings } from "../lib/settings";
 import PopoverHeader from "./Svelte/PopoverHeader.svelte";
@@ -170,7 +169,7 @@ const { mainNavigation, fullNavigation, utilityNavigation } = Astro.props;
 
   .nav-grid ul a {
     text-decoration: none;
-    padding: 5px 6px 2px 6px;
+    padding: 4px 6px 3px;
     background: transparent;
     border-radius: 4px;
   }

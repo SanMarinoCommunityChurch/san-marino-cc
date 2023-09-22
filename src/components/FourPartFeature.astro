@@ -1,5 +1,5 @@
 ---
-import { Picture } from "@astrojs/image/components";
+// import { Picture } from "@astrojs/image/components";
 
 import image1 from "../assets/images/easter-cross.jpg";
 import image2 from "../assets/images/grounds.jpg";
@@ -63,13 +63,7 @@ const {
             </div>
           </div>
           <div class="overlay" />
-          <Picture
-            src={item.image}
-            alt={item.alt}
-            widths={[600, 900]}
-            sizes="100vw"
-            class="img"
-          />
+
         </div>
       ))
     }
