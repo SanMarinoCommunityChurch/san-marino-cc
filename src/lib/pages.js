@@ -351,7 +351,21 @@ export const sanityPageData = await getSanityData(`*[_type == 'page'] {
     template == 'missions' => {
       missionsTypes[]{
         heading,
-        text
+        text,
+        "missions": missionList[]->{
+          name,
+          type,
+          "image": image{
+            ...,
+            asset->
+          },
+          "richContent": description[]{
+            ...,
+            _type == 'youtube' => {
+              ...
+            }
+          }
+        }
       }
     },
     template == 'contact' => {

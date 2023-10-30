@@ -35,85 +35,22 @@ let croppedAspectRatio = 0;
   <div class="cluster sticky">
     <div class="small-title">Jump to:</div>
     <a
-      href={`#${slugify(missionsTypes[1].heading)}`}
-      class="text-step-4 heading-link">{missionsTypes[1].heading}</a
-    >
-    <a
       href={`#${slugify(missionsTypes[0].heading)}`}
       class="text-step-4 heading-link">{missionsTypes[0].heading}</a
     >
+    <a
+      href={`#${slugify(missionsTypes[1].heading)}`}
+      class="text-step-4 heading-link">{missionsTypes[1].heading}</a
+    >
   </div>
   <div class="mission-list">
-    <section id={slugify(missionsTypes[1].heading)}>
-      <h2 class="sr-only">{missionsTypes[1].heading}</h2>
-      <div class="text-step-2 colored-link">
-        <PortableText value={missionsTypes[1].text} />
-      </div>
-      {
-        allMissions.map((mission) => {
-          const image = mission.image;
-          if (image) {
-            baseImageHeight = image.asset.metadata.dimensions.height;
-            baseImageWidth = image.asset.metadata.dimensions.height;
-            cropHeight = image.crop
-              ? baseImageHeight -
-                (baseImageHeight * image.crop.top +
-                  baseImageHeight * image.crop.bottom)
-              : baseImageHeight;
-            croppedAspectRatio = baseImageWidth / cropHeight;
-          }
-          return (
-            <>
-              {mission.type == "missionInvolvement" && (
-                <article class="mission">
-                  <img
-                    class="img"
-                    src={urlFor(mission.image)
-                      .width(600)
-                      .height(
-                        image.crop
-                          ? Math.floor(600 / croppedAspectRatio)
-                          : Math.floor(
-                              600 / image.asset.metadata.dimensions.aspectRatio
-                            )
-                      )
-                      .auto("format")
-                      .url()}
-                    alt={`${mission.name} logo`}
-                    width={600}
-                    height={
-                      image.crop
-                        ? Math.floor(600 / croppedAspectRatio)
-                        : Math.floor(
-                            600 / image.asset.metadata.dimensions.aspectRatio
-                          )
-                    }
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <div class="flow">
-                    <h3 class="text-step-3">{mission.name}</h3>
-                    <div class="text flow">
-                      <PortableText
-                        value={mission.richContent}
-                        components={{ type: { youtube: InlineYoutubeEmbed } }}
-                      />
-                    </div>
-                  </div>
-                </article>
-              )}
-            </>
-          );
-        })
-      }
-    </section>
     <section id={slugify(missionsTypes[0].heading)}>
       <h2 class="sr-only">{missionsTypes[0].heading}</h2>
       <div class="text-step-2 colored-link">
         <PortableText value={missionsTypes[0].text} />
       </div>
       {
-        allMissions.map((mission) => {
+        missionsTypes[0].missions.map((mission) => {
           const image = mission.image;
           if (image) {
             baseImageHeight = image.asset.metadata.dimensions.height;
@@ -126,46 +63,101 @@ let croppedAspectRatio = 0;
             croppedAspectRatio = baseImageWidth / cropHeight;
           }
           return (
-            <>
-              {mission.type == "missionPartner" && (
-                <article class="mission">
-                  <img
-                    class="img"
-                    src={urlFor(mission.image)
-                      .width(600)
-                      .height(
-                        image.crop
-                          ? Math.floor(600 / croppedAspectRatio)
-                          : Math.floor(
-                              600 / image.asset.metadata.dimensions.aspectRatio
-                            )
+            <article class="mission">
+              <img
+                class="img"
+                src={urlFor(mission.image)
+                  .width(600)
+                  .height(
+                    image.crop
+                      ? Math.floor(600 / croppedAspectRatio)
+                      : Math.floor(
+                          600 / image.asset.metadata.dimensions.aspectRatio
+                        )
+                  )
+                  .auto("format")
+                  .url()}
+                alt={`${mission.name} logo`}
+                width={600}
+                height={
+                  image.crop
+                    ? Math.floor(600 / croppedAspectRatio)
+                    : Math.floor(
+                        600 / image.asset.metadata.dimensions.aspectRatio
                       )
-                      .auto("format")
-                      .url()}
-                    alt={`${mission.name} logo`}
-                    width={600}
-                    height={
-                      image.crop
-                        ? Math.floor(600 / croppedAspectRatio)
-                        : Math.floor(
-                            600 / image.asset.metadata.dimensions.aspectRatio
-                          )
-                    }
-                    loading="lazy"
-                    decoding="async"
+                }
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="flow">
+                <h3 class="text-step-3">{mission.name}</h3>
+                <div class="text flow">
+                  <PortableText
+                    value={mission.richContent}
+                    components={{ type: { youtube: InlineYoutubeEmbed } }}
                   />
-                  <div class="flow">
-                    <h3 class="text-step-3">{mission.name}</h3>
-                    <div class="text flow">
-                      <PortableText
-                        value={mission.richContent}
-                        components={{ type: { youtube: InlineYoutubeEmbed } }}
-                      />
-                    </div>
-                  </div>
-                </article>
-              )}
-            </>
+                </div>
+              </div>
+            </article>
+          );
+        })
+      }
+    </section>
+    <section id={slugify(missionsTypes[1].heading)}>
+      <h2 class="sr-only">{missionsTypes[1].heading}</h2>
+      <div class="text-step-2 colored-link">
+        <PortableText value={missionsTypes[1].text} />
+      </div>
+      {
+        missionsTypes[1].missions.map((mission) => {
+          const image = mission.image;
+          if (image) {
+            baseImageHeight = image.asset.metadata.dimensions.height;
+            baseImageWidth = image.asset.metadata.dimensions.height;
+            cropHeight = image.crop
+              ? baseImageHeight -
+                (baseImageHeight * image.crop.top +
+                  baseImageHeight * image.crop.bottom)
+              : baseImageHeight;
+            croppedAspectRatio = baseImageWidth / cropHeight;
+          }
+          return (
+            <article class="mission">
+              <img
+                class="img"
+                src={urlFor(mission.image)
+                  .width(600)
+                  .height(
+                    image.crop
+                      ? Math.floor(600 / croppedAspectRatio)
+                      : Math.floor(
+                          600 / image.asset.metadata.dimensions.aspectRatio
+                        )
+                  )
+                  .auto("format")
+                  .url()}
+                alt={`${mission.name} logo`}
+                width={600}
+                height={
+                  image.crop
+                    ? Math.floor(600 / croppedAspectRatio)
+                    : Math.floor(
+                        600 / image.asset.metadata.dimensions.aspectRatio
+                      )
+                }
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="flow">
+                <h3 class="text-step-3">{mission.name}</h3>
+                <div class="text flow">
+                  <PortableText
+                    value={mission.richContent}
+                    components={{ type: { youtube: InlineYoutubeEmbed } }}
+                  />
+                </div>
+              </div>
+            </article>
           );
         })
       }
