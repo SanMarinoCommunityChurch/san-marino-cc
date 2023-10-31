@@ -52,7 +52,7 @@ const { page } = Astro.props;
                   position="relative"
                   name={type.name}
                   theme={
-                    Astro.url.pathname === `/resources/${type.slug}`
+                    Astro.url.pathname === `/resources/${type.slug}/`
                       ? "active"
                       : "default"
                   }
