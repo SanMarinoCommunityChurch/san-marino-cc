@@ -1,5 +1,6 @@
 ---
 import Button from "./Button.astro";
+import FeaturedAnnouncement from "./FeaturedAnnouncement.astro";
 import { urlFor } from "../lib/sanity";
 
 const { hero, fallbackImg } = Astro.props;
@@ -40,6 +41,7 @@ const link2 = links[1];
         )
       }
     </div>
+    <!-- <FeaturedAnnouncement /> -->
   </div>
   <div class="video-controls cluster">
     <Button
@@ -77,7 +79,7 @@ const link2 = links[1];
     justify-content: center;
     text-align: center;
     align-items: flex-start;
-    height: clamp(70vh, 45rem, 80vh);
+    min-height: clamp(70vh, 45rem, 80vh);
     padding-block-start: var(--space-3xl);
     padding-block-end: var(--space-3xl);
   }
