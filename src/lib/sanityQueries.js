@@ -451,6 +451,20 @@ const posts = `*[_type == 'post']|order(publishDate desc) {
           asset->
         }
       }
+    },
+    _type == 'reference' => @-> {
+      "refType": _type,
+      "_type": _type,
+      name,
+      preview,
+      location,
+      "type": eventType->name,
+      date,
+      "image": image{
+        ...,
+        asset->
+      },
+      "slug": slug.current
     }
   },
   "image": image{

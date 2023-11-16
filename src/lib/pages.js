@@ -104,6 +104,36 @@ export const homePage = await getSanityData(`*[_type == 'homePage'][0] {
         pageSlug,
         name,
       }
+    },
+    showFeaturedAnnouncement == true => {
+      featuredAnnouncement{
+        title,
+        description,
+        items[]->{
+          _type == 'event' => {
+            "refType": _type,
+            "name": name,
+            "type": eventType->name,
+            "date": date,
+            "image": image{
+              ...,
+              asset->
+            },
+            "slug": slug.current
+          },
+          _type == 'post' => {
+            "refType": _type,
+            "name": name,
+            "type": category->name,
+            "date": publishDate,
+            "image": image{
+              ...,
+              asset->
+            },
+            "slug": slug.current
+          }
+        }
+      }
     }
   },
   welcome{

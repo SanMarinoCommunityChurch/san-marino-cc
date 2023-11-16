@@ -1,4 +1,5 @@
 ---
+// @ts-nocheck
 import ThirdLayout from "../../../layouts/ThirdLayout.astro";
 import Card from "../../../components/Card.astro";
 import DateLabel from "../../../components/Events/DateLabel.astro";
@@ -226,7 +227,14 @@ const readableDate = DateTime.fromISO(page.date)
               </li>
             </ul>
           </div>
-          <Image src={bgImage} alt="" width={500} height={500} class="img" format="webp" />
+          <Image
+            src={bgImage}
+            alt=""
+            width={500}
+            height={500}
+            class="img"
+            format="webp"
+          />
         </div>
         <div class="event-box-lower">
           {

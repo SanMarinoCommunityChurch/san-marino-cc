@@ -31,6 +31,7 @@ const {
   seo,
 } = homePage;
 const resources = featuredResources.resourceLinks;
+// console.log(hero);
 ---
 
 <Layout
@@ -104,7 +105,9 @@ const resources = featuredResources.resourceLinks;
                   .auto("format")
                   .url()}
                 width={900}
-                height={Math.floor(900 / welcome.media.asset.metadata.dimensions.aspectRatio)}
+                height={Math.floor(
+                  900 / welcome.media.asset.metadata.dimensions.aspectRatio
+                )}
                 format="webp"
                 alt={welcome.media.asset.altText || ""}
                 class="img"

@@ -5,7 +5,8 @@ import { urlFor } from "../lib/sanity";
 
 const { hero, fallbackImg } = Astro.props;
 
-const { eyebrow, header, description, links, media } = hero;
+const { eyebrow, header, description, links, featuredAnnouncement, media } =
+  hero;
 const link1 = links[0];
 const link2 = links[1];
 ---
@@ -41,7 +42,11 @@ const link2 = links[1];
         )
       }
     </div>
-    <!-- <FeaturedAnnouncement /> -->
+    {
+      featuredAnnouncement && (
+        <FeaturedAnnouncement content={featuredAnnouncement} />
+      )
+    }
   </div>
   <div class="video-controls cluster">
     <Button

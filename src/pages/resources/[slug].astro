@@ -1,10 +1,12 @@
 ---
+// @ts-nocheck
 import ResourceLayout from "../../layouts/ResourceLayout.astro";
 import { allPosts } from "../../lib/posts";
 import { PortableText } from "astro-portabletext";
 import PostCategory from "../../components/PostCategory.astro";
 import InlineImage from "../../components/InlineImage.astro";
 import InlineYoutubeEmbed from "../../components/InlineYoutubeEmbed.astro";
+import InlineEvent from "../../components/InlineEvent.astro";
 import PreviewFeature from "../../components/PreviewFeature.astro";
 import { urlFor } from "../../lib/sanity";
 import { randomizeAndSlice, filterAgainst } from "../../utils/data";
@@ -47,6 +49,7 @@ const filteredPosts = otherPosts.filter(
 );
 const randomPosts = randomizeAndSlice(filteredPosts, 3);
 // empty array is not falsey
+// console.log(page.richContent);
 ---
 
 <ResourceLayout
@@ -76,6 +79,7 @@ const randomPosts = randomizeAndSlice(filteredPosts, 3);
           image: InlineImage,
           previewFeature: PreviewFeature,
           youtube: InlineYoutubeEmbed,
+          event: InlineEvent,
         },
       }}
     />

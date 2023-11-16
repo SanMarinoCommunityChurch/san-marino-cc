@@ -1,83 +1,79 @@
 ---
-import { defaultImage } from "../lib/settings";
 import { urlFor } from "../lib/sanity";
 import { Image } from "astro:assets";
+import { DateTime } from "luxon";
 
-const heading = "Christmas at Community Church";
-const introText =
-  "Join us for Christmas events and services this season at Community Church!";
-const events = [
-  {
-    name: "Christmas Craft Workshop",
-    date: "Dec. 3",
-    type: "Event",
-    image: defaultImage,
-    link: {
-      name: "Learn More",
-      href: "/connect/events/12-3-2023-christmas-craft-workshop",
-    },
-  },
-  {
-    name: "Christmas Services Schedule",
-    date: "Dec. 24-25",
-    type: "Services",
-    image: defaultImage,
-    link: {
-      name: "Learn More",
-      href: "/connect/events/12-3-2023-christmas-craft-workshop",
-    },
-  },
-];
+const { content } = Astro.props;
 ---
 
 <div class="featured-announcement-banner">
   <div class="grid">
     <div class="about | flow">
       <i class="fa-duotone fa-info-circle fa-lg" style="var(--svg-fill)"></i>
-      <h2 class="text-step-3">{heading}</h2>
-      <p>{introText}</p>
+      <h2 class="text-step-3">{content.title}</h2>
+      <p>{content.description}</p>
     </div>
     {
-      events.map((event) => (
-        <a class="announcement-link" href={event.link.href}>
-          <div class="relative | flow">
-            <p class="small-title">
-              {event.date}
-              <span>•</span>
-              {event.type}
-            </p>
-            <h3 class="text-step-2">{event.name}</h3>
-            <div class="cluster">
-              <p>{event.link.name}</p>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 448 512"
-                width="14"
-                height="14"
-                fill="var(--svg-fill)"
-                class="astro-5ac3tuzn"
-              >
-                <path
-                  d="M440.6 273.4c4.7-4.5 7.4-10.8 7.4-17.4s-2.7-12.8-7.4-17.4l-176-168c-9.6-9.2-24.8-8.8-33.9 .8s-8.8 24.8 .8 33.9L364.1 232 24 232c-13.3 0-24 10.7-24 24s10.7 24 24 24l340.1 0L231.4 406.6c-9.6 9.2-9.9 24.3-.8 33.9s24.3 9.9 33.9 .8l176-168z"
-                  class="astro-5ac3tuzn"
-                />
-              </svg>
-            </div>
-          </div>
-          <div class="overlay" />
-          <Image
-            src={urlFor(defaultImage)
-              .width(800)
-              .height(600)
-              .auto("format")
-              .url()}
-            width={800}
-            height={600}
-            alt=""
-            format="webp"
-          />
-        </a>
-      ))
+      content.items &&
+        content.items.map((item) => {
+          const itemType = item.refType;
+          const eventSlugParent = "/connect/events";
+          const resourceSlugParent = "/resources";
+          const readableDate = DateTime.fromISO(item.date)
+            .setZone("America/Los_Angeles")
+            .toLocaleString(DateTime.DATE_MED);
+
+          return (
+            <a
+              class="announcement-link"
+              href={
+                itemType == "event"
+                  ? `${eventSlugParent}/${item.slug}`
+                  : `${resourceSlugParent}/${item.slug}`
+              }
+            >
+              <div class="relative | flow">
+                {itemType == "event" ? (
+                  <p class="small-title">
+                    {readableDate} <span>•</span> Event
+                  </p>
+                ) : (
+                  <p class="small-title">{item.type}</p>
+                )}
+                <h3 class="text-step-2">{item.name}</h3>
+                <div class="cluster">
+                  <p>Learn More</p>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 448 512"
+                    width="14"
+                    height="14"
+                    fill="var(--svg-fill)"
+                    class="astro-5ac3tuzn"
+                  >
+                    <path
+                      d="M440.6 273.4c4.7-4.5 7.4-10.8 7.4-17.4s-2.7-12.8-7.4-17.4l-176-168c-9.6-9.2-24.8-8.8-33.9 .8s-8.8 24.8 .8 33.9L364.1 232 24 232c-13.3 0-24 10.7-24 24s10.7 24 24 24l340.1 0L231.4 406.6c-9.6 9.2-9.9 24.3-.8 33.9s24.3 9.9 33.9 .8l176-168z"
+                      class="astro-5ac3tuzn"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <div class="overlay" />
+              <Image
+                src={urlFor(item.image)
+                  .width(800)
+                  .height(600)
+                  .auto("format")
+                  .url()}
+                width={800}
+                height={600}
+                alt={item.image.asset.altText || item.name || ""}
+                format="webp"
+                style={`background-image: url(${item.image.asset.metadata.lqip})`}
+              />
+            </a>
+          );
+        })
     }
   </div>
   <div class="bg-overlay"></div>
@@ -144,7 +140,7 @@ const events = [
         position: absolute;
         z-index: 1;
         inset: 0;
-        background: linear-gradient(to bottom right, #172554eb, #1e3b8a8f);
+        background: linear-gradient(to bottom right, #172554f0 40%, #1e3b8a3b);
         opacity: 1;
         transition: opacity 0.5s ease;
       }
@@ -156,6 +152,9 @@ const events = [
         inset: 0;
         margin: 0;
         object-fit: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
         transition: transform 0.3s ease;
       }
 
