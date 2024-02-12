@@ -72,6 +72,21 @@ const allNavigation = await getSanityData(`*[_type == 'navigation']{
   }
 }`);
 
+const mainNavigation =
+  await getSanityData(`*[_type == 'navigation' && _id == '0cde77d9-0c19-4642-84df-0523c76cec63'][0]{
+    name,
+    entries[]{
+      _type == 'reference' => @-> {
+        "type": _type,
+        _id,
+        name,
+        sectionSlug,
+        pageSlug,
+        description
+      }
+    }
+  }`);
+
 // const getNavigationSet = (id) => {
 //   const navSet = navigationSets.find((nav) => nav._id === id);
 
@@ -128,9 +143,9 @@ const fullNavigation = allNavigation.find(
 const utilityNavigation = allNavigation.find(
   (nav) => nav._id === "ba5e977f-7457-4dda-b26e-c616e37a0fd2"
 );
-const mainNavigation = allNavigation.find(
-  (nav) => nav._id === "0cde77d9-0c19-4642-84df-0523c76cec63"
-);
+// const mainNavigation = allNavigation.find(
+//   (nav) => nav._id === "0cde77d9-0c19-4642-84df-0523c76cec63"
+// );
 
 const filterLocalNav = (pageId) => {
   // if page id exists in a navigation section, return the entire list of pages of that section
@@ -176,7 +191,7 @@ function constructHref(navItem) {
 
 export {
   // fullNavigation,
-  // mainNavigation,
+  mainNavigation,
   // utilityNavigation,
   // mainNavigationFiltered,
   // filterLocalNav,

@@ -1,5 +1,5 @@
 ---
-import { allNavigation } from "../lib/navigation";
+import { allNavigation, mainNavigation } from "../lib/navigation";
 import { SEO } from "astro-seo";
 import { siteSettings, defaultOgImage } from "../lib/settings";
 import { urlFor } from "../lib/sanity";
@@ -14,16 +14,17 @@ const fullNavigation = allNavigation.find(
 const utilityNavigation = allNavigation.find(
   (nav) => nav._id === "ba5e977f-7457-4dda-b26e-c616e37a0fd2"
 );
-const mainNavigation = allNavigation.find(
-  (nav) => nav._id === "0cde77d9-0c19-4642-84df-0523c76cec63"
-);
+// const mainNavigation = allNavigation.find(
+//   (nav) => nav._id === "0cde77d9-0c19-4642-84df-0523c76cec63"
+// );
+console.log(mainNavigation.entries);
 
 const { meta } = Astro.props;
 const { title, description, ogTitle, ogImage, ogImageExternal, ogDescription } =
   meta;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -40,14 +41,14 @@ const { title, description, ogTitle, ogImage, ogImageExternal, ogDescription } =
           image: ogImageExternal
             ? ogImageExternal
             : ogImage
-            ? urlFor(ogImage).width(1200).height(630).auto("format").url()
-            : urlFor(defaultOgImage)
-                .width(1200)
-                .height(630)
-                .fit("crop")
-                .crop("center")
-                .auto("format")
-                .url(),
+              ? urlFor(ogImage).width(1200).height(630).auto("format").url()
+              : urlFor(defaultOgImage)
+                  .width(1200)
+                  .height(630)
+                  .fit("crop")
+                  .crop("center")
+                  .auto("format")
+                  .url(),
         },
         optional: {
           description: ogDescription || siteSettings.siteDescription,
@@ -94,7 +95,8 @@ const { title, description, ogTitle, ogImage, ogImageExternal, ogDescription } =
     <style>
       @font-face {
         font-family: "Freight Sans";
-        src: url("/fonts/FreightSans-Black.woff2") format("woff2"),
+        src:
+          url("/fonts/FreightSans-Black.woff2") format("woff2"),
           url("/fonts/FreightSans-Black.woff") format("woff");
         font-weight: 900;
         font-style: normal;
@@ -103,7 +105,8 @@ const { title, description, ogTitle, ogImage, ogImageExternal, ogDescription } =
 
       @font-face {
         font-family: "Freight Sans";
-        src: url("/fonts/FreightSans-SemiBold.woff2") format("woff2"),
+        src:
+          url("/fonts/FreightSans-SemiBold.woff2") format("woff2"),
           url("/fonts/FreightSans-SemiBold.woff") format("woff");
         font-weight: 600;
         font-style: normal;
@@ -112,7 +115,8 @@ const { title, description, ogTitle, ogImage, ogImageExternal, ogDescription } =
 
       @font-face {
         font-family: "Portada Text";
-        src: url("/fonts/PortadaText-Regular.woff2") format("woff2"),
+        src:
+          url("/fonts/PortadaText-Regular.woff2") format("woff2"),
           url("/fonts/PortadaText-Regular.woff") format("woff");
         font-weight: 400;
         font-style: normal;
@@ -121,7 +125,8 @@ const { title, description, ogTitle, ogImage, ogImageExternal, ogDescription } =
 
       @font-face {
         font-family: "Portada Text";
-        src: url("/fonts/PortadaText-Italic.woff2") format("woff2"),
+        src:
+          url("/fonts/PortadaText-Italic.woff2") format("woff2"),
           url("/fonts/PortadaText-Italic.woff") format("woff");
         font-weight: 400;
         font-style: italic;
@@ -130,7 +135,8 @@ const { title, description, ogTitle, ogImage, ogImageExternal, ogDescription } =
 
       @font-face {
         font-family: "Portada Text";
-        src: url("/fonts/PortadaText-Bold.woff2") format("woff2"),
+        src:
+          url("/fonts/PortadaText-Bold.woff2") format("woff2"),
           url("/fonts/PortadaText-Bold.woff") format("woff");
         font-weight: 700;
         font-style: normal;
