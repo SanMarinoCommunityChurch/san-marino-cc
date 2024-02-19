@@ -1,126 +1,130 @@
-# [[redirects]]
-#   from = "/welcome"
-#   to = "/welcome/im-new"
+[[redirects]]
+  from = "/welcome"
+  to = "/welcome/im-new"
 
-# [[redirects]]
-#   from = "/worship"
-#   to = "/worship/live"
+[[redirects]]
+  from = "/worship"
+  to = "/worship/live"
 
-# [[redirects]]
-#   from = "/connect"
-#   to = "/connect/events"
+[[redirects]]
+  from = "/worship/services"
+  to = "/worship/services/1"
 
-# [[redirects]]
-#   from = "/who-we-are"
-#   to = "/who-we-are/mission-and-beliefs"
+[[redirects]]
+  from = "/connect"
+  to = "/connect/events"
 
-# [[redirects]]
-#   from = "/resources/blog"
-#   to = "/resources"
+[[redirects]]
+  from = "/who-we-are"
+  to = "/who-we-are/mission-and-beliefs"
 
-# [[redirects]]
-#   from = "/welcome/sunday-service-times"
-#   to = "/welcome/our-services"
+[[redirects]]
+  from = "/resources/blog"
+  to = "/resources"
 
-# [[redirects]]
-#   from = "/welcome/first-time-visitors"
-#   to = "/welcome/im-new"
+[[redirects]]
+  from = "/welcome/sunday-service-times"
+  to = "/welcome/our-services"
 
-# [[redirects]]
-#   from = "/about/what-we-believe"
-#   to = "/who-we-are/mission-and-beliefs"
+[[redirects]]
+  from = "/welcome/first-time-visitors"
+  to = "/welcome/im-new"
 
-# [[redirects]]
-#   from = "/about/our-history"
-#   to = "/who-we-are/our-history"
+[[redirects]]
+  from = "/about/what-we-believe"
+  to = "/who-we-are/mission-and-beliefs"
 
-# [[redirects]]
-#   from = "/about/staff"
-#   to = "/who-we-are/leadership"
+[[redirects]]
+  from = "/about/our-history"
+  to = "/who-we-are/our-history"
 
-# [[redirects]]
-#   from = "/about/elders-deacons"
-#   to = "/who-we-are/leadership"
+[[redirects]]
+  from = "/about/staff"
+  to = "/who-we-are/leadership"
 
-# [[redirects]]
-#   from = "/about/news"
-#   to = "/resources/news"
+[[redirects]]
+  from = "/about/elders-deacons"
+  to = "/who-we-are/leadership"
 
-# [[redirects]]
-#   from = "/connect/programs-events"
-#   to = "/resources/events"
+[[redirects]]
+  from = "/about/news"
+  to = "/resources/news"
 
-# [[redirects]]
-#   from = "/connect/adult-ministries"
-#   to = "/connect/ministries/adult-ministries"
+[[redirects]]
+  from = "/connect/programs-events"
+  to = "/resources/events"
 
-# [[redirects]]
-#   from = "/connect/youth-ministries"
-#   to = "/connect/ministries/youth-ministries"
+[[redirects]]
+  from = "/connect/adult-ministries"
+  to = "/connect/ministries/adult-ministries"
 
-# [[redirects]]
-#   from = "/connect/childrens-ministries"
-#   to = "/connect/ministries/childrens-ministries"
+[[redirects]]
+  from = "/connect/youth-ministries"
+  to = "/connect/ministries/youth-ministries"
 
-# [[redirects]]
-#   from = "/connect/music-ministries"
-#   to = "/connect/ministries/music-ministries"
+[[redirects]]
+  from = "/connect/childrens-ministries"
+  to = "/connect/ministries/childrens-ministries"
 
-# [[redirects]]
-#   from = "/connect/membership"
-#   to = "/welcome/how-to-join"
+[[redirects]]
+  from = "/connect/music-ministries"
+  to = "/connect/ministries/music-ministries"
 
-# [[redirects]]
-#   from = "/serve/mission-partners"
-#   to = "/connect/missions"
+[[redirects]]
+  from = "/connect/membership"
+  to = "/welcome/how-to-join"
 
-# [[redirects]]
-#   from = "/serve/mission-involvement"
-#   to = "/connect/missions"
+[[redirects]]
+  from = "/serve/mission-partners"
+  to = "/connect/missions"
 
-# [[redirects]]
-#   from = "/serve/deacon-ministries"
-#   to = "/connect/ministries/deacon-ministries"
+[[redirects]]
+  from = "/serve/mission-involvement"
+  to = "/connect/missions"
 
-# [[redirects]]
-#   from = "/serve/pastoral-residency"
-#   to = "/connect/pastoral-residency"
+[[redirects]]
+  from = "/serve/deacon-ministries"
+  to = "/connect/ministries/deacon-ministries"
 
-# [[redirects]]
-#   from = "/give/stewardship-campaign-2022"
-#   to = "/giving/stewardship"
+[[redirects]]
+  from = "/serve/pastoral-residency"
+  to = "/connect/pastoral-residency"
 
-# [[redirects]]
-#   from = "/give/ways-to-give"
-#   to = "/giving"
+[[redirects]]
+  from = "/give/stewardship-campaign-2022"
+  to = "/giving/stewardship"
 
-# [[redirects]]
-#   from = "/give/the-foundation-of-smcc"
-#   to = "/giving/the-foundation-of-smcc"
+[[redirects]]
+  from = "/give/ways-to-give"
+  to = "/giving"
 
-# [[redirects]]
-#   from = "/give/other-giving-opportunities"
-#   to = "/giving/#ways-to-give"
+[[redirects]]
+  from = "/give/the-foundation-of-smcc"
+  to = "/giving/the-foundation-of-smcc"
 
-# [[redirects]]
-#   from = "/watch/traditional-live"
-#   to = "/worship/live"
+[[redirects]]
+  from = "/give/other-giving-opportunities"
+  to = "/giving/#ways-to-give"
 
-# [[redirects]]
-#   from = "/watch/contemporary-live"
-#   to = "/worship/live"
+[[redirects]]
+  from = "/watch/traditional-live"
+  to = "/worship/live"
 
-# [[redirects]]
-#   from = "/watch/sermon-podcast-archive"
-#   to = "/worship/services"
+[[redirects]]
+  from = "/watch/contemporary-live"
+  to = "/worship/live"
 
-# [[redirects]]
-#   from = "/contact/baptisms-memorials-weddings"
-#   to = "/connect/weddings-memorials-and-rentals"
+[[redirects]]
+  from = "/watch/sermon-podcast-archive"
+  to = "/worship/services"
 
-# [[redirects]]
-#   from = "/contact/employment"
-#   to = "/contact"
+[[redirects]]
+  from = "/contact/baptisms-memorials-weddings"
+  to = "/connect/weddings-memorials-and-rentals"
+
+[[redirects]]
+  from = "/contact/employment"
+  to = "/contact"
 
 [functions]
   node_bundler = 'esbuild'
