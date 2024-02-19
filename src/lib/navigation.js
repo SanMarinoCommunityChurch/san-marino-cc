@@ -72,6 +72,7 @@ const allNavigation = await getSanityData(`*[_type == 'navigation']{
   }
 }`);
 
+/* NOTE: unfound bug was returning empty items for main nav query, separated out into its own query */
 const mainNavigation =
   await getSanityData(`*[_type == 'navigation' && _id == '0cde77d9-0c19-4642-84df-0523c76cec63'][0]{
     name,
@@ -83,7 +84,62 @@ const mainNavigation =
         sectionSlug,
         pageSlug,
         description
+      },
+          _type == 'navigationSection' => {
+      "type": _type,
+      name,
+      "image": image{
+        ...,
+        asset->
+      },
+      "pages": pages[]{
+        _type == 'reference' => @-> {
+          "type": _type,
+          _id,
+          name,
+          sectionSlug,
+          pageSlug
+        },
+        _type == 'link' => {
+          ...,
+          "type": _type,
+          "href": href[0]{
+            _type == 'reference' => @-> {
+              "type": _type,
+              sectionSlug,
+              pageSlug
+            },
+            _type == 'externalLink' => {
+              "type": _type,
+              "fullUrl": url,
+            },
+            _type == 'slugString' => {
+              "type": _type,
+              "fullUrl": slug
+            }
+          }
+        }
       }
+    },
+    _type == 'link' => {
+      ...,
+      "type": _type,
+      "href": href[0]{
+        _type == 'reference' => @-> {
+          "type": _type,
+          sectionSlug,
+          pageSlug
+        },
+        _type == 'externalLink' => {
+          "type": _type,
+          "fullUrl": url,
+        },
+        _type == 'slugString' => {
+          "type": _type,
+          "fullUrl": slug
+        }
+      },
+    },
     }
   }`);
 
