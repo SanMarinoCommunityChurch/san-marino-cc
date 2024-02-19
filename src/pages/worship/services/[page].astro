@@ -1,0 +1,106 @@
+---
+import Button from "../../../components/Button.astro";
+import ServicesList from "../../../components/ServicesList.astro";
+import { allServices } from "../../../lib/services";
+import SectionPage from "../../../layouts/SectionPage.astro";
+import type { Page } from "astro";
+
+export async function getStaticPaths({ paginate }) {
+  return paginate(allServices, { pageSize: 10 });
+}
+
+type Props = {
+  page: Page;
+};
+
+const { page } = Astro.props;
+console.log(page);
+---
+
+<SectionPage
+  currentPage={"9ddcd604-b77e-46ad-aab3-76e808feb268"}
+  contentPadding
+>
+  <ServicesList services={page.data} />
+  <div class="pagination-nav">
+    {
+      page.url.prev && (
+        <Button href={page.url.prev} rel="prev" className="prev-page">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 320 512"
+            aria-hidden="true"
+            width="10"
+            height="10"
+            fill="var(--color-primary-100)"
+          >
+            <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z" />
+          </svg>
+          <span>Previous</span>
+        </Button>
+      )
+    }
+    <div class="page-total">
+      {`Page ${page.currentPage} of ${page.lastPage}`}
+    </div>
+    {
+      page.url.next && (
+        <Button href={page.url.next} rel="next" className="next-page">
+          <span>Next</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 320 512"
+            aria-hidden="true"
+            width="10"
+            height="10"
+            fill="var(--color-primary-100)"
+          >
+            <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
+          </svg>
+        </Button>
+      )
+    }
+  </div>
+  <div class="center-items">
+    <Button
+      href="https://www.youtube.com/@smcommunitychurchtraditional/featured"
+      target="_blank"
+    >
+      <span>See More on YouTube</span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 448 512"
+        aria-hidden="true"
+        width="14"
+        height="14"
+        fill="var(--color-primary-100)"
+      >
+        <path
+          d="M440.6 273.4c4.7-4.5 7.4-10.8 7.4-17.4s-2.7-12.8-7.4-17.4l-176-168c-9.6-9.2-24.8-8.8-33.9 .8s-8.8 24.8 .8 33.9L364.1 232 24 232c-13.3 0-24 10.7-24 24s10.7 24 24 24l340.1 0L231.4 406.6c-9.6 9.2-9.9 24.3-.8 33.9s24.3 9.9 33.9 .8l176-168z"
+        ></path></svg
+      >
+    </Button>
+  </div>
+</SectionPage>
+
+<style>
+  .pagination-nav {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    max-width: 25rem;
+    margin-inline: auto;
+
+    & .prev-page {
+      grid-column: 1/2;
+    }
+    & .page-total {
+      grid-column: 2/3;
+    }
+    & .next-page {
+      grid-column: 3/4;
+    }
+  }
+</style>
