@@ -2,10 +2,15 @@ import { previewEvents } from "../../lib/events";
 
 const events = previewEvents;
 
-export function get({ params, request }) {
-  return {
-    body: JSON.stringify({
-      events: events,
-    }),
-  };
+export function GET({ params, request }) {
+  return new Response(
+    JSON.stringify({
+      events,
+    })
+  );
+  // return {
+  //   body: JSON.stringify({
+  //     events: events,
+  //   }),
+  // };
 }
