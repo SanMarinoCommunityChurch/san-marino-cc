@@ -45,7 +45,7 @@ const {
             <time class="post-date" datetime={publishDate}
               >{
                 DateTime.fromISO(publishDate)
-                  .setZone("America/Los_Angeles")
+                  .setZone("America/Los_Angeles", { keepLocalTime: true })
                   .toLocaleString(DateTime.DATE_FULL)
               }</time
             >
