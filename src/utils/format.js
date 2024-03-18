@@ -51,6 +51,15 @@ const getMonth = (dateString) => {
   });
 };
 
+const getMonthAndYear = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", {
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+};
+
 const format12HourTime = (timeString) => {
   let hour = parseInt(timeString, 10);
   let minutes = timeString.split(":")[1];
@@ -124,5 +133,6 @@ export {
   formatDateShort,
   getWeekday,
   getMonth,
+  getMonthAndYear,
   slugify,
 };

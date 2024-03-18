@@ -165,10 +165,11 @@ const pastEventsPreview = `*[_type == 'event' && dateTime(date) < dateTime(now()
   }
 }`;
 
+// Edit to get only future events for event category pages
 const eventTypes = `*[_type == 'eventType'] {
   name,
   "slug": slug.current,
-  "events": *[_type == 'event' && references(^._id)] | order(date asc) {
+  "events": *[_type == 'event' && references(^._id) && dateTime(date) > dateTime(now())] | order(date asc) {
     ...,
     name,
     date,

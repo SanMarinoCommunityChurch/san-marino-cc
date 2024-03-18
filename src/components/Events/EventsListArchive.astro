@@ -3,53 +3,117 @@ import DateLabel from "./DateLabel.astro";
 import { DateTime } from "luxon"
 import { urlFor } from "../../lib/sanity";
 import { defaultImage } from "../../lib/settings";
+import { groupTypes } from "../../utils/data";
+import { getMonthAndYear } from "../../utils/format";
 // import ImageOpt from "../ImageOpt.astro";
 import { Image } from "astro:assets"
 
 const { events } = Astro.props;
+
+const eventsByMonth = groupTypes(events, "date", getMonthAndYear);
 ---
+
+<div>
+{eventsByMonth.map(month => (
+  <section id={month.type}>
+    <h2 class="text-step-4">{month.type}</h2>
     <ul class="flow">
-      {events.map((event) => {
+      {month.entries.map((event) => {
         const image = event.image || event.associatedMinistry.image || defaultImage;
-      return (
-        <li>
-          <a href={`/connect/events/${event.slug}`} class="event-wrapper">
-            <div class="frame">
-              <DateLabel date={event.date} position="top-left" />
-              <Image
-                class="img"
-                src={urlFor(image).width(800).height(800).auto('format').url()}
-                width={800}
-                height={800}
-                format="webp"
-                alt={image.asset.altText || ""}
-                style={`background-image: url(${image.asset.metadata.lqip})`}
-              />
-            </div>
-            <div class="flow text">
-              <div class="small-title category">
-                {`${event.eventType.name} event`}
+        return (
+          <li>
+            <a href={`/connect/events/${event.slug}`} class="event-wrapper">
+              <div class="frame">
+                <DateLabel date={event.date} position="top-left" />
+                <Image
+                  class="img"
+                  src={urlFor(image).width(800).height(800).auto('format').url()}
+                  width={800}
+                  height={800}
+                  format="webp"
+                  alt={image.asset.altText || ""}
+                  style={`background-image: url(${image.asset.metadata.lqip})`}
+                />
               </div>
-              <header class="flow">
-                <h3 class="text-step-2 heading">{event.name}</h3>
-                <time class="time" datetime={event.date}>
-                  {DateTime.fromISO(event.date).setZone('America/Los_Angeles').toLocaleString(DateTime.DATE_HUGE)}
-                  <span class="bullet-spacer">•</span>
-                  {DateTime.fromISO(event.date).setZone('America/Los_Angeles').toLocaleString(DateTime.TIME_SIMPLE)}
-                </time>
-              </header>
-              <p class="text-step--1">{event.preview}</p>
-              <div class="location-footer text-step--1 cluster font-header">
-              <span class="location-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" height="16" width="16" fill="var(--color-primary-800)"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M192 144a48 48 0 1 0 0 96 48 48 0 1 0 0-96z"/><path class="fa-secondary" d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 112a80 80 0 1 1 0 160 80 80 0 1 1 0-160z"/></svg></span>
-              <span>{event.location}</span>
-            </div>
-            </div>
-          </a>
-        </li>
-      )})}
+              <div class="flow text">
+                <div class="small-title category">
+                  {`${event.eventType.name} event`}
+                </div>
+                <header class="flow">
+                  <h3 class="text-step-2 heading">{event.name}</h3>
+                  <time class="time" datetime={event.date}>
+                    {DateTime.fromISO(event.date).setZone('America/Los_Angeles').toLocaleString(DateTime.DATE_HUGE)}
+                    <span class="bullet-spacer">•</span>
+                    {DateTime.fromISO(event.date).setZone('America/Los_Angeles').toLocaleString(DateTime.TIME_SIMPLE)}
+                  </time>
+                </header>
+                <p class="text-step--1">{event.preview}</p>
+                <div class="location-footer text-step--1 cluster font-header">
+                <span class="location-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" height="16" width="16" fill="var(--color-primary-800)"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M192 144a48 48 0 1 0 0 96 48 48 0 1 0 0-96z"/><path class="fa-secondary" d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 112a80 80 0 1 1 0 160 80 80 0 1 1 0-160z"/></svg></span>
+                <span>{event.location}</span>
+              </div>
+              </div>
+            </a>
+          </li>
+        )
+      })}
     </ul>
+  </section>
+))}
+</div>
+<!-- <ul class="flow">
+  {events.map((event) => {
+    const image = event.image || event.associatedMinistry.image || defaultImage;
+  return (
+    <li>
+      <a href={`/connect/events/${event.slug}`} class="event-wrapper">
+        <div class="frame">
+          <DateLabel date={event.date} position="top-left" />
+          <Image
+            class="img"
+            src={urlFor(image).width(800).height(800).auto('format').url()}
+            width={800}
+            height={800}
+            format="webp"
+            alt={image.asset.altText || ""}
+            style={`background-image: url(${image.asset.metadata.lqip})`}
+          />
+        </div>
+        <div class="flow text">
+          <div class="small-title category">
+            {`${event.eventType.name} event`}
+          </div>
+          <header class="flow">
+            <h3 class="text-step-2 heading">{event.name}</h3>
+            <time class="time" datetime={event.date}>
+              {DateTime.fromISO(event.date).setZone('America/Los_Angeles').toLocaleString(DateTime.DATE_HUGE)}
+              <span class="bullet-spacer">•</span>
+              {DateTime.fromISO(event.date).setZone('America/Los_Angeles').toLocaleString(DateTime.TIME_SIMPLE)}
+            </time>
+          </header>
+          <p class="text-step--1">{event.preview}</p>
+          <div class="location-footer text-step--1 cluster font-header">
+          <span class="location-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" height="16" width="16" fill="var(--color-primary-800)"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M192 144a48 48 0 1 0 0 96 48 48 0 1 0 0-96z"/><path class="fa-secondary" d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 112a80 80 0 1 1 0 160 80 80 0 1 1 0-160z"/></svg></span>
+          <span>{event.location}</span>
+        </div>
+        </div>
+      </a>
+    </li>
+  )})}
+</ul> -->
 
 <style>
+  section {
+    margin-block-start: 4rem;
+  }
+
+  section:first-of-type {
+    margin-block-start: 0;
+  }
+
+  h2 {
+    margin-block-end: 1rem;
+  }
 
   ul.flow {
     --flow-space: var(--space-l);
