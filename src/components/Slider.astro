@@ -225,8 +225,7 @@ const { heading, description, slides } = Astro.props;
   import "@splidejs/splide/css";
 
   const splide = new Splide(".resources-slider", {
-    // type: "loop",
-    rewind: true,
+    type: "loop",
     padding: "20%",
     perPage: 2,
     perMove: 1,
