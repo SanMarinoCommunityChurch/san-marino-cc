@@ -126,5 +126,9 @@
   from = "/contact/employment"
   to = "/contact"
 
+[[redirects]]
+  from = "/who-we-are/leadership/erik-wiebe"
+  to = "/who-we-are/leadership"
+
 [functions]
   node_bundler = 'esbuild'

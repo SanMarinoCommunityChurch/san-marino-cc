@@ -567,6 +567,7 @@ const staffMembers = `*[_type == 'person' && type.mainType == 'staff'] | order(o
     asset->
   },
   "type": type.staffSubtype,
+  hideDetailPage
 }`;
 
 const eldersAndDeacons = `*[_type == 'person' && type.mainType == 'eldersAndDeacons'] | order(order asc, lower(name.lastName) asc) {

@@ -8,8 +8,9 @@ import { joinNames, capitalizeFirstLetter } from "../../../utils/format";
 
 export async function getStaticPaths() {
   const pages = allStaff;
+  const filterHidden = pages.filter(person => !person.hideDetailPage)
 
-  return pages.map((page) => {
+  return filterHidden.map((page) => {
     return {
       // params: { slug: makeNameSlug(page.name) },
       params: {slug: page.slug },
