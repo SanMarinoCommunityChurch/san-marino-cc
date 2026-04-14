@@ -1,0 +1,77 @@
+---
+import ImageLink from "@components/ImageLink.astro";
+import type { ValuesSection as ValuesSectionType } from "@content/schemaFragments/sanityComponents";
+
+interface Props {
+    module: ValuesSectionType;
+}
+
+const { module } = Astro.props;
+---
+
+<section class="content flow">
+    <div class="vision-section">
+        {
+            module?.vision.heading && (
+                <Fragment>
+                    <h2 class="small-title center-items">
+                        {module.vision.heading}
+                    </h2>
+                    <div class="center-items text-step-1 paragraphs mx-auto">
+                        {module.vision.text}
+                    </div>
+                </Fragment>
+            )
+        }
+    </div>
+    <div class="mission-section">
+        {
+            module?.mission.heading && (
+                <Fragment>
+                    <h2 class="small-title center-items">
+                        {module.mission.heading}
+                    </h2>
+                    <div class="center-items text-step-1 paragraphs mx-auto">
+                        {module.mission.text}
+                    </div>
+                </Fragment>
+            )
+        }
+        {
+            module?.mission.highlights &&
+                module.mission.highlights.length > 0 && (
+                    <div class="highlights image-links responsive-grid">
+                        {module.mission.highlights.map((item) => (
+                            <ImageLink link={item} />
+                        ))}
+                    </div>
+                )
+        }
+        {
+            module?.mission.textAfter && (
+                <div class="text-after center-items text-step-1 paragraphs mx-auto">
+                    {module.mission.textAfter}
+                </div>
+            )
+        }
+    </div>
+</section>
+{module?.heading && <h2 class="text-step-4 center-items">{module.heading}</h2>}
+
+<style>
+    .content {
+        --flow-space: var(--space-3xl);
+    }
+
+    .small-title {
+        margin-bottom: 1.25rem;
+    }
+
+    :is(.highlights, .text-after) {
+        margin-block-start: var(--space-xl);
+    }
+
+    .responsive-grid {
+        --item-min-width: 15rem;
+    }
+</style>

@@ -1,0 +1,46 @@
+---
+/** Custom block to use with Astro Portable Text component to render Sanity rich content. */
+import ImageCard from "@components/ImageCard.astro";
+
+const { node } = Astro.props;
+---
+
+<div class="preview-feature-block">
+    <h2 class="text-step-4 center-items heading">{node.heading}</h2>
+    <div class="text mx-auto">
+        <p class="center-items">{node.description}</p>
+    </div>
+    <div class="responsive-grid">
+        {
+            node.links.length > 0 &&
+                node.links.map((item: any) => (
+                    <ImageCard
+                        arrow
+                        description={item.description}
+                        href={item.href}
+                        image={item.image}
+                        title={item.heading}
+                    />
+                ))
+        }
+    </div>
+</div>
+
+<style>
+    .preview-feature-block {
+        max-width: none;
+    }
+
+    .heading {
+        margin-bottom: var(--space-l);
+    }
+
+    .text {
+        max-width: 72ch;
+    }
+
+    .responsive-grid {
+        --item-min-width: 24rem;
+        margin-block: var(--space-xl);
+    }
+</style>

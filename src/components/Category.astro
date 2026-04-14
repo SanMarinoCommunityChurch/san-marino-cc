@@ -1,0 +1,81 @@
+---
+interface Props {
+    name?: string;
+    href?: string;
+    size?: "default" | "small";
+    position?: "relative" | "absolute";
+    active?: boolean;
+}
+
+const {
+    name,
+    href,
+    size = "default",
+    position = "relative",
+    active = false,
+} = Astro.props;
+---
+
+{
+    href ? (
+        <a
+            aria-current={active ? "page" : "false"}
+            class="category small-title"
+            data-position={position}
+            data-size={size}
+            href={href}
+        >
+            {name}
+        </a>
+    ) : (
+        <div
+            class="category small-title"
+            data-position={position}
+            data-size={size}
+        >
+            {name}
+        </div>
+    )
+}
+
+<style>
+    .category {
+        position: relative;
+        display: inline-block;
+        color: var(--category-color, var(--color-primary-900));
+        line-height: 1;
+        text-decoration: none;
+        padding: var(--category-padding, 6px 8px);
+        background-color: var(--category-bg, var(--color-primary-100));
+        border-radius: var(--rounded-corners-small);
+
+        &[data-size="default"] {
+            --category-padding: 9px 16px 8px;
+            font-size: 1rem;
+        }
+
+        &[data-position="absolute"] {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            z-index: 10;
+        }
+
+        &[aria-current="page"] {
+            --category-color: #172554;
+            --category-bg: #c0cbf0;
+        }
+    }
+
+    a {
+        transition: all 0.2s ease;
+
+        &:hover {
+            background-color: color-mix(
+                in srgb,
+                var(--category-bg, var(--color-primary-100)),
+                black 5%
+            );
+        }
+    }
+</style>

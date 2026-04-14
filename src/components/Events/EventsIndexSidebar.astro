@@ -1,0 +1,43 @@
+---
+/** Sidebar to accompany events collection lists on index and category pages. */
+import Button from "@components/Button.astro";
+import EventCategoriesList from "./EventCategoriesList.astro";
+---
+
+<aside class="parent flow" style="--flow-space: var(--space-xl);">
+    <div class="flow">
+        <h3 class="text-step-2">Event Categories</h3>
+        <EventCategoriesList />
+    </div>
+    <div class="sidebar-links">
+        <!-- <SidebarLinkItem
+                description="View our calendar for more events and services."
+                href="/calendar"
+                icon="calendar-days"
+                name="View Calendar"
+            /> -->
+        <Button href="/connect/events/archive">
+            <span>View Archive</span>
+            <i class="fa-duotone fa-calendar-check"></i>
+        </Button>
+        <Button href="/calendar" style="outline" theme="primary"
+            ><span>View Calendar</span><i class="fa-duotone fa-calendar-days"
+            ></i></Button
+        >
+    </div>
+</aside>
+
+<style>
+    .sidebar-links {
+        display: flex;
+        flex-direction: row;
+        gap: 1.5rem;
+        align-items: flex-start;
+    }
+
+    .sidebar-links svg {
+        fill: var(--color-primary-50);
+        position: relative;
+        top: -1px;
+    }
+</style>

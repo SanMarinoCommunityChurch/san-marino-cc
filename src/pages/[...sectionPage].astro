@@ -1,0 +1,146 @@
+---
+import ContactIndex from "@layouts/ContactIndex.astro";
+import EventsIndex from "@layouts/EventsIndex.astro";
+import FAQSection from "@components/modules/FAQSection.astro";
+import FeatureList from "@components/modules/FeatureList.astro";
+import GivingIndex from "@layouts/GivingIndex.astro";
+import IntroParagraph from "@components/modules/IntroParagraph.astro";
+import Layout from "@layouts/Layout.astro";
+import LeadershipSection from "@components/modules/LeadershipSection.astro";
+import MinistriesIndex from "@layouts/MinistriesIndex.astro";
+import MissionsSection from "@components/modules/MissionsSection.astro";
+import PageCTA from "@components/modules/PageCTA.astro";
+import PageHeader from "@components/modules/PageHeader.astro";
+import ResourcesIndex from "@layouts/ResourcesIndex.astro";
+import RichContent from "@components/modules/RichContent.astro";
+import TextAndImageBlocks from "@components/modules/TextAndImageBlocks.astro";
+import ValuesSection from "@components/modules/ValuesSection.astro";
+import WorshipLive from "@layouts/WorshipLive.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+    const pages = await getCollection("pages", ({ data }) => {
+        // filter section page types
+        // don't include utility
+        if (data.template) {
+            return [
+                "default",
+                "about",
+                "contact",
+                "give",
+                "contentCTA",
+                "missions",
+                "listing",
+                "leadership",
+                "ministryTypes",
+                "features",
+                "faq",
+                "custom",
+                // "utility",
+            ].includes(data.template);
+        }
+    });
+
+    return pages.map((page) => {
+        return {
+            params: {
+                sectionPage: page.data.sectionSlug
+                    ? `${page.data.sectionSlug}/${page.data.slug}`
+                    : page.data.slug,
+            },
+            props: { page },
+        };
+    });
+}
+
+const { page } = Astro.props;
+
+const noPadding = ["faq", "leadership"];
+---
+
+<Layout
+    meta={{
+        title: page.data.seo.title ?? page.data.name,
+        description: page.data.seo.description,
+        ogTitle: page.data.seo.ogTitle,
+        ogDescription: page.data.seo.ogDescription,
+        ogImage: page.data.seo.ogImage,
+    }}
+>
+    <main data-layout="section" data-template={page.data.template} slot="main">
+        {page.id === "b92afa26-7f3c-4e63-8aa1-90a1b7a9fad2" ? (
+            <WorshipLive page={page} />
+        ) : page.id === "b8529063-8a0d-4580-badd-34fcd8e58777" ? (
+            <ResourcesIndex page={page} />
+        ) : page.id === "5f4b0b1f-524b-4486-91f5-9ef997d08fd1" ? (
+            <EventsIndex page={page} />
+        ) : page.id === "b486a924-0f49-4439-9bc3-2f0fe56e0e78" ? (
+            <EventsIndex archive page={page} />
+        ) : page.id === "c970d4a9-70e6-4a7a-b5e3-6e7568126f96" ? (
+            <MinistriesIndex page={page} />
+        ) : page.id === "a3ff79bf-b5c6-4404-a820-087c8e504007" ? (
+            <GivingIndex page={page} />
+        ) : page.id === "c27d6639-bd40-454d-b210-63ca75b0dbbd" ? (
+            <ContactIndex page={page} />
+        ) : (
+            <Fragment>
+                <PageHeader page={page} />
+                <article class:list={["content-wrapper flow", !noPadding.includes(page.data.template ?? "") && "padding"]}>
+                    {page.data.template === "features" && (
+                        <IntroParagraph module={page.data.content.introParagraph} />
+                        <FeatureList module={page.data.content.featureList} />
+                    )}
+                    {page.data.template === "faq" && (
+                        <FAQSection module={page.data.content.faqSection} />
+                    )}
+                    {page.data.template === "about" && (
+                        <ValuesSection module={page.data.content.valuesSection} />
+                    )}
+                    {page.data.template === "leadership" && (
+                        <LeadershipSection module={page.data.content.leadershipSection} />
+                    )}
+                    <TextAndImageBlocks module={page.data.content.textAndImageBlocks} />
+                    <RichContent module={page.data.content.richContent} />
+                    {page.data.template === "missions" && (
+                        <MissionsSection module={page.data.content.missionsSection} />
+                    )}
+                </article>
+                {
+                    page.data.content.pageCTA && (
+                        <PageCTA module={page.data.content.pageCTA} />
+                    )
+                }
+            </Fragment>
+        )}
+    </main>
+</Layout>
+
+<style>
+    .content-wrapper {
+        margin-block-start: var(--section-spacer-half);
+        margin-block-end: var(--section-spacer);
+
+        &.flow {
+            --flow-space: var(--space-3xl);
+        }
+    }
+
+    .padding {
+        padding-block-start: var(--space-2xl);
+    }
+
+    @media (max-width: 768px) {
+        .content-wrapper {
+            margin-block-start: 3rem;
+            margin-block-end: 3rem;
+
+            &.flow {
+                --flow-space: var(--space-2xl);
+            }
+        }
+
+        .padding {
+            padding-block-start: 1rem;
+        }
+    }
+</style>

@@ -1,0 +1,65 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import EventsIndexList from "@components/Events/EventsIndexList.astro";
+import EventsIndexSidebar from "@components/Events/EventsIndexSidebar.astro";
+import PageHeader from "@components/modules/PageHeader.astro";
+import { isUpcoming } from "@utils/isUpcoming";
+import { sortUpcoming } from "@utils/sortEvents";
+
+interface Props {
+    page: CollectionEntry<"pages">;
+    archive?: boolean;
+}
+
+const { page, archive = false } = Astro.props;
+
+const allEvents = await getCollection("events");
+const upcoming = sortUpcoming(
+    allEvents.filter((event) => isUpcoming(event.data.date)),
+);
+const past = sortUpcoming(
+    allEvents.filter((event) => !isUpcoming(event.data.date)),
+).toReversed();
+---
+
+<PageHeader page={page} />
+<article>
+    <div class="content-wrapper with-sidebar">
+        <div class="main-panel flow">
+            {
+                archive ? (
+                    <section>
+                        {past.length > 0 && (
+                            <EventsIndexList archive events={past} />
+                        )}
+                    </section>
+                ) : (
+                    <section>
+                        {upcoming.length > 0 ? (
+                            <EventsIndexList events={upcoming} />
+                        ) : (
+                            <div style="font-style: italic;">
+                                No upcoming {page.data.name} events at this
+                                time.
+                            </div>
+                        )}
+                    </section>
+                )
+            }
+        </div>
+        <div class="sidebar">
+            <EventsIndexSidebar />
+        </div>
+    </div>
+</article>
+
+<style>
+    h1 {
+        margin-block-end: 2rem;
+    }
+
+    .with-sidebar {
+        --sidebar-gap: 5rem;
+        padding-block: var(--space-3xl);
+    }
+</style>

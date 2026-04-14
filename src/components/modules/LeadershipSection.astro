@@ -1,0 +1,419 @@
+---
+import "@styles/rich-text.css";
+import { joinNames, slugify } from "@utils/format";
+import type { CollectionEntry } from "astro:content";
+import type { LeadershipSection as LeadershipSectionType } from "@content/schemaFragments/sanityComponents";
+import { PortableText } from "astro-portabletext";
+import { STAFF_CATEGORIES } from "@utils/dicts";
+import SanityImage from "@components/SanityImage.astro";
+import { getCollection } from "astro:content";
+
+interface Props {
+    module: LeadershipSectionType;
+}
+
+const { module } = Astro.props;
+
+const people = await getCollection("people");
+const staff = people.filter(
+    (item) => item.data.categoryGroup === "staff" && !item.data.hideDetailPage,
+);
+const elders = people.filter(
+    (item) => item.data.categoryGroup === "eldersAndDeacons",
+);
+
+const staffGroup = Object.entries(
+    Object.groupBy(staff, ({ data }) => data.category as string),
+);
+// sort staffGroup
+const staffGroupSorted: [string, CollectionEntry<"people">[] | undefined][] =
+    [];
+for (const group of staffGroup) {
+    if (group[0] === "clergy") {
+        staffGroupSorted[0] = group;
+    }
+    if (group[0] === "program") {
+        staffGroupSorted[1] = group;
+    }
+    if (group[0] === "admin") {
+        staffGroupSorted[2] = group;
+    }
+}
+
+const eldersGroup = Object.entries(
+    Object.groupBy(elders, ({ data }) => data.category as string),
+);
+---
+
+<div class="cluster sticky">
+    <div class="small-title">Jump to:</div>
+    {
+        module?.sections.map((section) => (
+            <a
+                class="text-step-4 heading-link"
+                href={`#${slugify(section.heading)}`}
+            >
+                {section.heading}
+            </a>
+        ))
+    }
+    <a class="text-step-4 heading-link" href="#about">About</a>
+</div>
+<div class="watch">
+    <section id={slugify(module?.sections[0].heading)}>
+        <h2 class="sr-only">{module?.sections[0].heading}</h2>
+        <div class="text-step-2 colored-link">
+            {
+                module?.sections?.[0].text && (
+                    <PortableText value={module?.sections[0].text} />
+                )
+            }
+        </div>
+        {
+            staffGroupSorted.map(([group, people]) => {
+                let title = "";
+                switch (group) {
+                    case "clergy":
+                        title = "Pastoral Staff";
+                        break;
+                    case "program":
+                        title = "Program Staff";
+                        break;
+                    case "admin":
+                        title = "Administrative Staff";
+                        break;
+                    default:
+                        title = "Staff";
+                        break;
+                }
+
+                return (
+                    <section class="columns" id={group}>
+                        <div>
+                            <h3 class="text-step-3">{title}</h3>
+                        </div>
+                        <ul class="grid">
+                            {people
+                                ?.sort((a, b) => {
+                                    if (a.data.order && b.data.order) {
+                                        return a.data.order > b.data.order
+                                            ? 1
+                                            : -1;
+                                    } else {
+                                        return a.data.name.lastName >
+                                            b.data.name.lastName
+                                            ? 1
+                                            : -1;
+                                    }
+                                })
+                                .map((person) => (
+                                    <li>
+                                        <a
+                                            class="person"
+                                            href={`/who-we-are/leadership/${person.data.slug}`}
+                                        >
+                                            {person.data.image && (
+                                                <div class="frame square">
+                                                    <SanityImage
+                                                        alt={joinNames(
+                                                            person.data.name,
+                                                        )}
+                                                        aspectRatio={[1, 1]}
+                                                        source={
+                                                            person.data.image
+                                                        }
+                                                        width={400}
+                                                    />
+                                                </div>
+                                            )}
+                                            <div class="flow">
+                                                <h3 class="text-step-1">
+                                                    {[
+                                                        person.data.name.title,
+                                                        person.data.name
+                                                            .firstName,
+                                                        person.data.name
+                                                            .lastName,
+                                                    ].join(" ")}
+                                                </h3>
+                                                <p class="text-step--1">
+                                                    <em>{person.data.role}</em>
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                ))}
+                        </ul>
+                    </section>
+                );
+            })
+        }
+    </section>
+    <section id={slugify(module?.sections[1].heading)}>
+        <h2 class="sr-only">{module?.sections[1].heading}</h2>
+        <div class="text-step-2 colored-link">
+            {
+                module?.sections?.[1].text && (
+                    <PortableText value={module?.sections[1].text} />
+                )
+            }
+        </div>
+        {
+            eldersGroup
+                .sort((a, b) => (a[0] > b[0] ? -1 : 1))
+                .map(([group, people]) => {
+                    let title = "Elders";
+                    if (group === "deacon") {
+                        title = "Deacons";
+                    }
+
+                    return (
+                        <section class="columns" id={group}>
+                            <div>
+                                <h3 class="text-step-3">{title}</h3>
+                            </div>
+                            <ul class="grid">
+                                {people
+                                    ?.sort((a, b) => {
+                                        if (
+                                            a.data.name.lastName >
+                                            b.data.name.lastName
+                                        ) {
+                                            return 1;
+                                        } else if (
+                                            a.data.name.lastName <
+                                            b.data.name.lastName
+                                        ) {
+                                            return -1;
+                                        } else {
+                                            return a.data.name.firstName >
+                                                b.data.name.firstName
+                                                ? 1
+                                                : -1;
+                                        }
+                                    })
+                                    .map((person) => (
+                                        <li>
+                                            <div class="person">
+                                                {person.data.image && (
+                                                    <div class="frame square">
+                                                        <SanityImage
+                                                            alt={joinNames(
+                                                                person.data
+                                                                    .name,
+                                                            )}
+                                                            aspectRatio={[1, 1]}
+                                                            source={
+                                                                person.data
+                                                                    .image
+                                                            }
+                                                            width={400}
+                                                        />
+                                                    </div>
+                                                )}
+                                                <div class="flow">
+                                                    <h3 class="text-step-1">
+                                                        {[
+                                                            person.data.name
+                                                                .title,
+                                                            person.data.name
+                                                                .firstName,
+                                                            person.data.name
+                                                                .lastName,
+                                                        ].join(" ")}
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    ))}
+                            </ul>
+                        </section>
+                    );
+                })
+        }
+    </section>
+</div>
+<div id="about"></div>
+
+<style>
+    .sticky {
+        position: sticky;
+        background: white;
+        z-index: 20;
+        padding-block: 1.5rem;
+        top: 5rem;
+        /* border-bottom: 1px solid var(--color-primary-300); */
+    }
+
+    .heading-link {
+        color: var(--color-primary-800);
+        text-decoration: none;
+        font-family: var(--font-secondary);
+        font-weight: var(--font-weight-header);
+        transition: all 0.2s ease;
+    }
+
+    .heading-link:hover {
+        text-decoration: underline;
+        color: var(--color-primary-800);
+        opacity: 1 !important;
+    }
+
+    .sticky.cluster {
+        --cluster-space: 3rem;
+    }
+
+    .columns {
+        display: grid;
+        grid-template-columns: repeat(9, 1fr);
+        gap: 2rem;
+        padding-block-start: var(--space-2xl);
+    }
+
+    .columns > :first-child {
+        grid-column: 1 / 3;
+    }
+
+    .columns > :last-child {
+        grid-column: 3 / 10;
+    }
+
+    .columns h2 {
+        margin-top: var(--space-m);
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        row-gap: 1rem;
+        column-gap: 3rem;
+    }
+
+    .person {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        text-align: center;
+        height: 100%;
+        text-decoration: none;
+        background-color: transparent;
+        padding: var(--space-m);
+        border-radius: var(--rounded-corners);
+        transition: background-color 0.3s ease;
+    }
+
+    .person:hover {
+        background-color: var(--color-primary-100);
+    }
+
+    .person .frame img {
+        transition: transform 0.3s ease;
+    }
+
+    .person:hover .frame img {
+        transform: scale(1.1);
+    }
+
+    .person > .flow {
+        --flow-space: 0.33rem;
+    }
+
+    .frame.square {
+        border-radius: 9999px;
+        max-width: 8rem;
+        margin-bottom: 1rem;
+    }
+
+    .watch {
+        margin-top: 0 !important;
+    }
+
+    .watch [id] {
+        scroll-margin-top: 12rem;
+    }
+
+    .watch [id] {
+        margin-block-start: 2rem;
+    }
+
+    .watch [id] {
+        border-top: 1px solid var(--color-neutral-100);
+        padding-top: var(--space-2xl);
+    }
+
+    .watch [id]:nth-of-type(1) {
+        border-top: 0;
+        padding-top: 0;
+    }
+
+    @media (max-width: 768px) {
+        .columns > :first-child {
+            grid-column: span 9;
+        }
+
+        .columns > :last-child {
+            grid-column: span 9;
+        }
+
+        .grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .sticky.cluster {
+            --cluster-space: 1rem;
+        }
+
+        .heading-link {
+            font-size: var(--step-1);
+        }
+    }
+
+    @media (max-width: 640px) {
+        .grid {
+            grid-template-columns: 1fr;
+        }
+
+        .person {
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        .heading-link {
+            font-size: var(--step-0);
+        }
+
+        .sticky.cluster {
+            --cluster-space: 0.5rem;
+        }
+    }
+</style>
+
+<script>
+    const headerLinks = document.querySelectorAll(".sticky a");
+    const sections = document.querySelectorAll(".watch > section");
+
+    const onIntersect = (entries: any) => {
+        entries.forEach((entry: any) => {
+            if (entry.isIntersecting) {
+                const id = entry.target.id;
+                headerLinks.forEach((link) => {
+                    const a = link as HTMLAnchorElement;
+                    if (a.hash === `#${id}`) {
+                        a.style.opacity = "1";
+                    } else {
+                        a.style.opacity = "0.5";
+                    }
+                });
+            }
+        });
+    };
+
+    const observer = new IntersectionObserver(onIntersect, {
+        rootMargin: "-60px",
+    });
+
+    sections.forEach((el) => {
+        observer.observe(el);
+    });
+</script>

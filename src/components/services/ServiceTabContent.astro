@@ -1,0 +1,103 @@
+---
+import { format, tzDate } from "@formkit/tempo";
+import ContactAvatar from "@components/ContactAvatar.astro";
+import { PortableText } from "astro-portabletext";
+import type { ServiceType } from "@content/services";
+import { capitalizeFirstLetter } from "@utils/format";
+import { format12HourTime } from "@utils/format";
+import { getEntry } from "astro:content";
+import getYouTubeID from "get-youtube-id";
+import { joinNames } from "@utils/format";
+
+interface Props {
+    serviceName?: string | null;
+    serviceDate: string;
+    serviceType: ServiceType;
+}
+
+const {
+    serviceName = "Sunday Service",
+    serviceDate,
+    serviceType,
+} = Astro.props;
+
+const preacher = await getEntry(
+    "people",
+    serviceType.preacher ? serviceType.preacher : "",
+);
+---
+
+<div class="video-wrapper">
+    <div class="yt-lite">
+        <lite-youtube
+            title={capitalizeFirstLetter(serviceType.name)}
+            videoid={getYouTubeID(serviceType.video)}></lite-youtube>
+    </div>
+</div>
+<article class="content-wrapper service-wrapper with-sidebar">
+    <div class="service-info flow">
+        <header>
+            <div class="small-title category">
+                {capitalizeFirstLetter(serviceType.name)} Worship
+            </div>
+            <h2 class="text-step-4">{serviceName}</h2>
+            <time class="small-title time" datetime={serviceDate}>
+                <span
+                    >{
+                        format(
+                            tzDate(serviceDate, "America/Los_Angeles"),
+                            "long",
+                        )
+                    }</span
+                >
+                <span class="bullet-spacer">•</span>
+                <span>{format12HourTime(serviceType.serviceTime)}</span>
+            </time>
+        </header>
+        <PortableText value={serviceType.description} />
+        {
+            serviceType.programLink && (
+                <a
+                    class="program-link"
+                    href={serviceType.programLink}
+                    target="_blank"
+                >
+                    <span>Download Program</span>
+                    <i class="fa-duotone fa-arrow-up-right-from-square fa-xs" />
+                </a>
+            )
+        }
+    </div>
+    <div class="sidebar">
+        {
+            preacher && (
+                <ContactAvatar
+                    heading="Sermon by"
+                    href={
+                        preacher.data.slug
+                            ? `/who-we-are/leadership/${preacher.data.slug}`
+                            : preacher.data.contact?.email
+                              ? `mailto:${preacher.data.contact.email}`
+                              : undefined
+                    }
+                    image={preacher.data.image}
+                    name={joinNames(preacher.data.name)}
+                />
+            )
+        }
+        {
+            serviceType.podcastId && (
+                <iframe
+                    allow="clipboard-write; encrypted-media; fullscreen; picture-in-picture;"
+                    class="podcastEmbed"
+                    height="280"
+                    loading="lazy"
+                    src={`https://open.spotify.com/embed/episode/${serviceType.podcastId}`}
+                    style="border-radius: 12px; border: none"
+                    title={`${serviceName} - ${capitalizeFirstLetter(serviceType.name)} Service`}
+                    width="496"
+                />
+            )
+        }
+    </div>
+</article>

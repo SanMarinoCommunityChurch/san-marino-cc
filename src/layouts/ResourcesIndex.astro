@@ -1,0 +1,31 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import PostCategoriesHeader from "@components/posts/PostCategoriesHeader.astro";
+import PostsList from "@components/posts/PostsList.astro";
+
+interface Props {
+    page: CollectionEntry<"pages">;
+}
+
+const { page } = Astro.props;
+
+const resources = await getCollection("posts");
+---
+
+<PostCategoriesHeader
+    text={page.data.header.description ?? ""}
+    title={page.data.name}
+/>
+<article class="content-wrapper flow">
+    <PostsList
+        posts={resources.sort((a, b) => (a.data.date > b.data.date ? -1 : 1))}
+    />
+</article>
+
+<style>
+    .content-wrapper {
+        --flow-space: var(--space-3xl);
+        margin-block-start: var(--section-spacer-half);
+        margin-block-end: var(--section-spacer);
+    }
+</style>

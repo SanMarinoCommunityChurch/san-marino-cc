@@ -1,0 +1,104 @@
+---
+import { PortableText } from "astro-portabletext";
+import SanityImage from "@components/SanityImage.astro";
+import { type TextAndImageBlocks as TextAndImageBlocksType } from "@content/schemaFragments/sanityComponents";
+
+interface Props {
+    module: TextAndImageBlocksType;
+}
+
+const { module } = Astro.props;
+---
+
+{
+    module.map((section, i) => {
+        let showImage = false;
+        let showVideo = false;
+        if (section.mediaType === "image" && section.media.image) {
+            showImage = true;
+        } else if (section.mediaType === "video" && section.media.video) {
+            showVideo = true;
+        }
+
+        let imageCrop: [number, number] | undefined = undefined;
+        if (section.media.image) {
+            if (section.media.image.frame) {
+                imageCrop =
+                    section.media.image.frameRatio === "1:1"
+                        ? [1, 1]
+                        : section.media.image.frameRatio === "7:5"
+                          ? [7, 5]
+                          : undefined;
+            }
+        }
+
+        return (
+            <section
+                class="with-sidebar intro"
+                data-layout={i % 2 ? "flipped" : "default"}
+            >
+                <div>
+                    {section.heading && (
+                        <h2 class="text-step-4 heading">{section.heading}</h2>
+                    )}
+                    <div class="paragraphs flow colored-link">
+                        <PortableText value={section.text} />
+                    </div>
+                </div>
+                {showImage && (
+                    <div class="image-wraper">
+                        <SanityImage
+                            alt={section.media.image!.asset.altText || ""}
+                            aspectRatio={
+                                imageCrop && imageCrop.length > 0
+                                    ? imageCrop
+                                    : undefined
+                            }
+                            class:list={["image-rounded"]}
+                            source={section.media.image!}
+                            width={600}
+                        />
+                    </div>
+                )}
+                {showVideo && <p>video</p>}
+            </section>
+        );
+    })
+}
+
+<style>
+    .heading {
+        margin-bottom: var(--space-l);
+    }
+
+    .intro {
+        --sidebar-gap: 5rem;
+        --sidebar-min-width: 32rem;
+        align-items: center;
+    }
+
+    [data-layout="flipped"] > :first-child {
+        order: 2;
+    }
+
+    .paragraphs {
+        max-width: var(--paragraph-measure);
+    }
+
+    :global(.intro .paragraphs ul) {
+        list-style-type: disc;
+        margin-inline-start: 1rem;
+    }
+
+    @media (max-width: 1024px) {
+        .intro > :first-child {
+            order: 2;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .intro {
+            --sidebar-gap: 2rem;
+        }
+    }
+</style>

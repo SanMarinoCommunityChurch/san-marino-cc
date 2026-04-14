@@ -1,57 +1,57 @@
 ---
-import { urlFor } from "../../lib/sanity";
-import Card from "../Card.astro";
-import Button from "../Button.astro";
-import DateLabel from "../Events/DateLabel.astro"
-import { DateTime } from "luxon"
-import { defaultImage } from "../../lib/settings";
-import { previewEvents, previewFutureEvents } from "../../lib/events"
+import Button from "@components/Button.astro";
+import Card from "@components/Card.astro";
+import DateLabel from "@components/Events/DateLabel.astro";
+import { getCollection } from "astro:content";
+import { isUpcoming } from "@utils/isUpcoming";
+import { sortUpcoming } from "@utils/sortEvents";
 
-const events = previewFutureEvents;
+const events = await getCollection("events", ({ data }) => {
+  return isUpcoming(data.date); 
+});
 
-// const categoryName = (event) => {
-//   const category = event.eventType == 'ministry' ? event.associatedMinistry.category.name : event.category;
-//   return category;
-// }
+const sorted = sortUpcoming(events);
 ---
 
 <div class="splide events-slider">
   <header class="content-wrapper"><slot name="header" /></header>
-  <div class="event-list">
-    <div class="splide__arrows"></div>
-      <div class="splide__track" style="padding-block: 4rem;">
-      <ul class="splide__list">
-        {
-          events.map((event) => {
-            const image = event.image || event.associatedMinistry.image || defaultImage;
-            return (
-            <li class="splide__slide">
-            <Card 
-              title={event.name} 
-              image={image}
-              href={`/connect/events/${event.slug}`}
-            >
-              <div slot="label" class="event-date">
-                <DateLabel date={event.date} />
-              </div>
-              <div slot="header" class="small-title event-category">
-                {`${event.type} event`}
-              </div>
-              <p slot="body" class="preview text-step--1">
-                {event.preview}
-              </p>
-              <div slot="footer" class="location-footer text-step--1 cluster font-header">
-                <span class="location-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" height="16" width="16" fill="var(--color-primary-800)"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M192 144a48 48 0 1 0 0 96 48 48 0 1 0 0-96z"/><path class="fa-secondary" d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 112a80 80 0 1 1 0 160 80 80 0 1 1 0-160z"/></svg></span>
-                <span>{event.location}</span>
-              </div>
-            </Card>
-            </li>
-          )})
-        }
-    </ul>
-    </div>
-    <ul class="splide__pagination events-pagination" style="bottom: 5rem;"></ul>
-  </div>
+  {events.length > 0 ? (
+      <div class="event-list">
+        <div class="splide__arrows"></div>
+          <div class="splide__track" style="padding-block: 4rem;">
+          <ul class="splide__list">
+            {
+              sorted.map((event) => {
+                // const image = event.image || event.associatedMinistry.image || defaultImage;
+                return (
+                    <li class="splide__slide">
+                        <Card 
+                            href={`/connect/events/${event.data.slug}`}
+                            image={event.data.image}
+                            title={event.data.name}
+                        >
+                            <div class="event-date" slot="label">
+                                <DateLabel date={event.data.date} />
+                            </div>
+                            <div class="small-title event-category" slot="header">
+                                {`${event.data.type} event`}
+                            </div>
+                            <p class="preview text-step--1" slot="body">
+                                {event.data.preview}
+                            </p>
+                            <div class="location-footer text-step--1 cluster font-header" slot="footer">
+                                <span class="location-icon"><svg fill="var(--color-primary-800)" height="16" viewBox="0 0 384 512" width="16" xmlns="http://www.w3.org/2000/svg"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M192 144a48 48 0 1 0 0 96 48 48 0 1 0 0-96z"/><path class="fa-secondary" d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 112a80 80 0 1 1 0 160 80 80 0 1 1 0-160z"/></svg></span>
+                                <span>{event.data.location}</span>
+                            </div>
+                        </Card>
+                    </li>
+              );})
+            }
+        </ul>
+        </div>
+        <ul class="splide__pagination events-pagination" style="bottom: 5rem;"></ul>
+      </div>
+  ) : <p class="empty-list">No upcoming events at this time.</p>}
   <div class="center-items">
     <Button href="/connect/events">See All Events</Button>
   </div>
@@ -60,6 +60,10 @@ const events = previewFutureEvents;
 <style>
   .center-items {
     margin-top: var(--space-2xl);
+  }
+
+  .empty-list {
+    margin-block-start: var(--space-l);
   }
 
   .location-footer.cluster {
@@ -90,8 +94,8 @@ const events = previewFutureEvents;
 </style>
 
 <script>
-  import Splide from "@splidejs/splide";
   import "@splidejs/splide/css";
+  import Splide from "@splidejs/splide";
 
   const homeEvents = new Splide(".events-slider", {
     type: "slide",

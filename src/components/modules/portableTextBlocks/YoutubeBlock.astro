@@ -1,0 +1,12 @@
+---
+/** Custom block to use with Astro Portable Text component to render Sanity rich content. */
+import getYouTubeID from "get-youtube-id";
+
+const { node } = Astro.props;
+
+// TODO: troubleshoot why image doesn't disappear on play
+---
+
+<div class="yt-lite">
+    <lite-youtube videoid={getYouTubeID(node.url)}></lite-youtube>
+</div>

@@ -1,0 +1,76 @@
+---
+import Category from "@components/Category.astro";
+import { getCollection } from "astro:content";
+import v from "voca";
+
+interface Props {
+    title: string;
+    text?: string;
+}
+
+const { title = "Resources", text } = Astro.props;
+
+const categories = await getCollection("postCategories");
+
+let pathname = Astro.url.pathname;
+if (pathname.endsWith("/")) {
+    pathname.slice(0, -1);
+}
+---
+
+<section class="hero center-items flow">
+    <div class="small-title">Resources</div>
+    <h1 class="text-step-6 heading">{title}</h1>
+    {text && <p>{text}</p>}
+    <ul class="cluster categories">
+        <li>
+            <Category
+                active={pathname === "/resources"}
+                href="/resources"
+                name="All"
+            />
+        </li>
+        {
+            categories
+                .sort((a, b) => (a.data.name > b.data.name ? 1 : -1))
+                .map((category) => (
+                    <li>
+                        <Category
+                            active={
+                                pathname ===
+                                `/resources/${v.lowerCase(category.data.slug)}`
+                            }
+                            href={`/resources/${v.lowerCase(category.data.slug)}`}
+                            name={category.data.name}
+                        />
+                    </li>
+                ))
+        }
+    </ul>
+</section>
+
+<style>
+    .hero {
+        --flow-space: 0.5rem;
+        position: relative;
+        padding-top: 6rem;
+        color: var(--color-primary-200);
+        padding-bottom: var(--space-2xl);
+        background: linear-gradient(
+            to bottom right,
+            var(--color-primary-800),
+            var(--color-primary-900)
+        );
+    }
+
+    .heading {
+        color: var(--color-primary-50);
+        margin-bottom: 1rem;
+    }
+
+    .categories {
+        margin-top: 3rem;
+        max-width: 50rem;
+        justify-content: center;
+    }
+</style>

@@ -1,0 +1,243 @@
+---
+import type {
+    NavigationLink,
+    NavigationSection,
+    NavigationSectionPageEntry,
+} from "@content/navigation";
+import { NAVIGATION_IDS } from "@utils/dicts";
+import SanityImage from "@components/SanityImage.astro";
+import { buildNavHref } from "@utils/buildNavHref";
+import { getCollection } from "astro:content";
+
+const navigation = await getCollection("navigation");
+
+const fullNav = navigation.find((item) => item.id === NAVIGATION_IDS.full);
+const utilityNav = navigation.find(
+    (item) => item.id === NAVIGATION_IDS.utility,
+);
+---
+
+<div class="nav-grid content-wrapper">
+    <div class="mobile-overlay"></div>
+    <div class="nav-subgrid">
+        {
+            fullNav?.data.entries.map((navItem) => {
+                let imageLink = (
+                    (navItem as NavigationSection)
+                        .pages[0] as NavigationSectionPageEntry
+                ).sectionSlug
+                    ? `/${((navItem as NavigationSection).pages[0] as NavigationSectionPageEntry).pageSlug.fullUrl}`
+                    : `/${((navItem as NavigationSection).pages[0] as NavigationSectionPageEntry).pageSlug.current}`;
+                return (
+                    <div class="section-column | flow">
+                        {(navItem as NavigationSection).image && (
+                            <a class="img-link" href={imageLink}>
+                                <div class="overlay" />
+                                <SanityImage
+                                    alt={
+                                        (navItem as NavigationSection).image!
+                                            .asset.altText
+                                    }
+                                    aspectRatio={[3, 2]}
+                                    class:list={["nav-img"]}
+                                    loading="eager"
+                                    source={
+                                        (navItem as NavigationSection).image!
+                                    }
+                                    width={300}
+                                />
+                            </a>
+                        )}
+                        <div class="small-title">
+                            {(navItem as NavigationSection).name}
+                        </div>
+                        <ul class="section-list | flow">
+                            {(navItem as NavigationSection).pages.map(
+                                (navChild) => (
+                                    <li>
+                                        <a
+                                            class="header-link"
+                                            href={buildNavHref(navChild as any)}
+                                        >
+                                            {(navChild as any).name}
+                                        </a>
+                                    </li>
+                                ),
+                            )}
+                        </ul>
+                    </div>
+                );
+            })
+        }
+    </div>
+</div>
+<div class="utilities-wrapper">
+    <div class="content-wrapper">
+        <ul class="nav-utilities">
+            {
+                utilityNav?.data.entries.map((navItem) => (
+                    <li class="utility-item">
+                        <a href={buildNavHref(navItem)}>
+                            <i
+                                class:list={`fa-duotone fa-${(navItem as NavigationLink).icon}`}
+                                style="color: var(--color-primary-800);"
+                            />
+                            <div class="small-title">{navItem.name}</div>
+                            <p>{(navItem as NavigationLink).description}</p>
+                        </a>
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
+</div>
+
+<style>
+    .nav-grid {
+        position: relative;
+        z-index: 100;
+    }
+
+    .small-title {
+        color: var(--color-primary-800);
+    }
+
+    .section-column {
+        --flow-space: 1rem;
+    }
+
+    .section-list {
+        --flow-space: 0.25rem;
+        font-size: var(--step--1);
+        margin-left: -6px;
+
+        & a {
+            text-decoration: none;
+            padding: 4px 6px 3px;
+            background: transparent;
+            border-radius: 4px;
+
+            &:hover {
+                background: var(--color-primary-100);
+                color: var(--color-primary-800);
+            }
+        }
+    }
+
+    .header-link {
+        display: inline-block;
+    }
+
+    .img-link {
+        position: relative;
+
+        &:hover .overlay {
+            opacity: 0.7;
+        }
+
+        &:hover .nav-img {
+            filter: saturate(0);
+        }
+    }
+
+    .nav-img {
+        border-radius: var(--rounded-corners);
+    }
+
+    .overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background-color: var(--color-primary-700);
+        border-radius: var(--rounded-corners);
+        mix-blend-mode: multiply;
+        opacity: 0;
+        transition: all 0.2s ease;
+    }
+
+    .nav-subgrid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 2rem;
+        padding-inline-start: 2rem;
+        padding-block-start: 8rem;
+        padding-block-end: 2rem;
+    }
+
+    .utilities-wrapper {
+        padding-block: 1rem;
+        background: var(--color-primary-100);
+        /* color: var(--color-primary-100); */
+    }
+
+    .nav-utilities {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        align-items: flex-start;
+    }
+
+    .utility-item {
+        & a {
+            display: inline-block;
+            text-decoration: none;
+            border-radius: var(--rounded-corners);
+            transition: background-color 0.2s ease;
+            padding: 9px;
+
+            &:hover {
+                background: var(--color-primary-200);
+            }
+        }
+
+        & p {
+            font-size: var(--step--2);
+            margin-top: 6px;
+        }
+    }
+
+    /* Hack to work around mobile nav scroll overlapping logo/navbar  */
+    .mobile-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 92px; /* height of navbar */
+        background-color: white;
+    }
+
+    @media (max-width: 870px) {
+        .img-link {
+            display: none;
+        }
+
+        .nav-subgrid {
+            grid-template-columns: 1fr;
+            padding-inline: 1rem;
+            gap: 1rem;
+            padding-block-start: 7rem;
+        }
+
+        .mobile-overlay {
+            display: block;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .nav-grid ul {
+            --flow-space: 1rem;
+            font-size: var(--step-1);
+        }
+    }
+
+    @media (max-width: 640px) {
+        .nav-utilities {
+            grid-template-columns: 1fr;
+        }
+
+        .mobile-overlay {
+            height: 84px;
+        }
+    }
+</style>

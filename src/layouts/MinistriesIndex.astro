@@ -1,0 +1,50 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import Button from "@components/Button.astro";
+import MinistrySlider from "@components/MinistrySlider.astro";
+import PageHeader from "@components/modules/PageHeader.astro";
+
+interface Props {
+    page: CollectionEntry<"pages">;
+}
+
+const { page } = Astro.props;
+---
+
+<PageHeader page={page} />
+<article class="content-wrapper flow padding">
+    <MinistrySlider module={page.data.content.ministryCategoriesSection} />
+    <div class="center-items">
+        <Button href="#thumbnail-slider">Back to Top</Button>
+    </div>
+</article>
+
+<style>
+    .content-wrapper {
+        margin-block-start: var(--section-spacer-half);
+        margin-block-end: var(--section-spacer);
+
+        &.flow {
+            --flow-space: var(--space-3xl);
+        }
+    }
+
+    .padding {
+        padding-block-start: var(--space-2xl);
+    }
+
+    @media (max-width: 768px) {
+        .content-wrapper {
+            margin-block-start: 3rem;
+            margin-block-end: 3rem;
+
+            &.flow {
+                --flow-space: var(--space-2xl);
+            }
+        }
+
+        .padding {
+            padding-block-start: 1rem;
+        }
+    }
+</style>

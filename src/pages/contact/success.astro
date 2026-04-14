@@ -1,31 +1,60 @@
 ---
-import Form from "../../components/Form.astro";
-import Button from "../../components/Button.astro";
-import UtilityLayout from "../../layouts/UtilityLayout.astro";
+import Button from "@components/Button.astro";
+import Layout from "@layouts/Layout.astro";
+import PageCTA from "@components/modules/PageCTA.astro";
+import PageHeader from "@components/modules/PageHeader.astro";
+import { getEntry } from "astro:content";
+
+const contact = await getEntry("pages", "c27d6639-bd40-454d-b210-63ca75b0dbbd");
+
+const successMessage =
+    "Your form submission has been received. One of our staff will follow up with you shortly.";
 ---
 
-<UtilityLayout
-  currentPage={"c27d6639-bd40-454d-b210-63ca75b0dbbd"}
-  extraData={{
-    title: "Contact Success!",
-    description:
-      "Your form submission has been received. One of our staff will follow up with you shortly.",
-  }}
->
-  <div class="center-items flow">
-    <h2 class="text-step-3">Thank you!</h2>
-    <p>
-      Your form submission has been received. One of our staff will follow up
-      with you shortly.
-    </p>
-  </div>
-  <div class="center-items">
-    <Button href="/contact#forms">See All Forms</Button>
-  </div>
-</UtilityLayout>
+{
+    contact && (
+        <Layout
+            meta={{
+                title: "Contact Success",
+                description: contact.data.header.description ?? "",
+                ogTitle: "Contact Success",
+                ogDescription: contact.data.header.description ?? "",
+                // ogImage: undefined,
+            }}
+        >
+            <main data-layout="utility" data-template="contact" slot="main">
+                <PageHeader page={contact} />
+                <article class="content-wrapper flow">
+                    <div class="center-items flow">
+                        <h2 class="text-step-3">Thank you!</h2>
+                        <p>{successMessage}</p>
+                    </div>
+                    <div class="center-items">
+                        <Button href="/contact#forms">See All Forms</Button>
+                    </div>
+                </article>
+                {contact.data.content.pageCTA && (
+                    <PageCTA module={contact.data.content.pageCTA} />
+                )}
+            </main>
+        </Layout>
+    )
+}
 
 <style>
-  .center-items:first-of-type {
-    margin-top: 3rem;
-  }
+    .content-wrapper {
+        margin-block-start: var(--section-spacer-half);
+        margin-block-end: var(--section-spacer);
+    }
+
+    .content-wrapper.flow {
+        --flow-space: var(--space-3xl);
+    }
+
+    @media (max-width: 768px) {
+        .content-wrapper {
+            margin-block-start: 3rem;
+            margin-block-end: 3rem;
+        }
+    }
 </style>

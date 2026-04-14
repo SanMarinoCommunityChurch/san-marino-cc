@@ -1,216 +1,213 @@
 ---
+import { type CollectionEntry, getCollection } from "astro:content";
+import { format, isBefore, sameDay, tzDate } from "@formkit/tempo";
 import Button from "./Button.astro";
-import { getSanityData, urlFor } from "../lib/sanity";
-import { latestService } from "../lib/services";
+import { Image } from "astro:assets";
+import bgImage from "@assets/images/windows.jpg";
 import { format12HourTime } from "../utils/format";
 import getYouTubeId from "get-youtube-id";
-import { DateTime } from "luxon";
-// import ImageOpt from "./ImageOpt.astro";
-import { Image } from "astro:assets";
+import { sortPast } from "@utils/sortServices";
 
-const bgImage = await getSanityData(
-  `*[_id == "image-49e672b21479083a60c233227848c2b3a74a5eae-1620x1080-jpg"][0]`
+const now = new Date();
+
+const services = await getCollection("services", ({ data }) =>
+    isBefore(tzDate(data.date, "America/Los_Angeles"), now),
 );
 
-const compileServiceTypes = (array) => {
-  const types = [];
-  array.forEach((type) =>
-    types.push(`${format12HourTime(type.serviceTime)} ${type.name}`)
-  );
-  return types;
-};
-
-const today = DateTime.now().setZone("America/Los_Angeles").toISODate();
-// console.log(today);
-
-const latestServiceDate = DateTime.fromISO(latestService.date).setZone(
-  "America/Los_Angeles",
-  { keepLocalTime: true }
-);
-
-// console.log(latestServiceDate.toISODate());
+let latestService: CollectionEntry<"services"> | undefined = undefined;
+if (services.length) {
+    latestService = sortPast(services)[0];
+}
 ---
 
 <article class="video-banner">
-  <div class="content-wrapper flex">
-    <a href="/worship/live" class="video-link">
-      <div class="frame video">
-        <div class="icon">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 512 512"
-            width="40"
-            height="40"
-            fill="var(--color-primary-800)"
-            aria-hidden="true"
-          >
-            <path
-              d="M256 32a224 224 0 1 1 0 448 224 224 0 1 1 0-448zm0 480A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm72.7-256L208 329.7V182.3L328.7 256zM212.5 147.5c-7.4-4.5-16.7-4.7-24.3-.5s-12.3 12.3-12.3 20.9V344c0 8.7 4.7 16.7 12.3 20.9s16.8 4.1 24.3-.5l144-88c7.1-4.4 11.5-12.1 11.5-20.5s-4.4-16.1-11.5-20.5l-144-88z"
-            ></path></svg
-          >
-        </div>
-        <img
-          src={`https://img.youtube.com/vi/${getYouTubeId(
-            latestService.serviceType[0].video.url
-          )}/sddefault.jpg`}
-          width={300}
-          height={225}
-          alt={`Latest service YouTube thumbnail.`}
-          loading="lazy"
-          decoding="async"
-        />
-      </div>
-    </a>
-    <div class="video-text flow">
-      <div class="video-header flow">
-        <div>
-          <h2 class="small-title color-primary-200">
-            {
-              latestServiceDate.toISODate() === today
-                ? "Today"
-                : "Latest Service"
-            }
-          </h2>
-          <h3 class="text-step-3 color-white">
-            {latestServiceDate.toLocaleString(DateTime.DATE_HUGE)}
-          </h3>
-        </div>
-        <p>
-          {compileServiceTypes(latestService.serviceType).join(" & ")}
-        </p>
-      </div>
-      <div class="cluster">
-        <Button href="/worship/live" theme="primary-light">View Service</Button>
-        <a href="/worship/services" class="text-step--1">See all services</a>
-      </div>
-    </div>
-  </div>
-  <Image
-    src={urlFor(bgImage)
-      .width(600)
-      .height(Math.floor(600 / bgImage.metadata.dimensions.aspectRatio))
-      .auto("format")
-      .url()}
-      width={600}
-      height={Math.floor(600 / bgImage.metadata.dimensions.aspectRatio)}
-      format="webp"
-    class="img-overlay"
-    alt={bgImage.altText || ""}
-  />
+    {
+        latestService && (
+            <div class="content-wrapper flex">
+                <a class="video-link" href="/worship/live">
+                    <div class="frame video">
+                        <div class="icon">
+                            <svg
+                                aria-hidden="true"
+                                fill="var(--color-primary-800)"
+                                height="40"
+                                viewBox="0 0 512 512"
+                                width="40"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path d="M256 32a224 224 0 1 1 0 448 224 224 0 1 1 0-448zm0 480A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm72.7-256L208 329.7V182.3L328.7 256zM212.5 147.5c-7.4-4.5-16.7-4.7-24.3-.5s-12.3 12.3-12.3 20.9V344c0 8.7 4.7 16.7 12.3 20.9s16.8 4.1 24.3-.5l144-88c7.1-4.4 11.5-12.1 11.5-20.5s-4.4-16.1-11.5-20.5l-144-88z" />
+                            </svg>
+                        </div>
+                        {latestService.data.types.length > 0 && (
+                            <Image
+                                alt={`${latestService.data.types[0].name}`}
+                                height={225}
+                                src={`https://img.youtube.com/vi/${getYouTubeId(latestService.data.types[0].video)}/sddefault.jpg`}
+                                width={300}
+                            />
+                        )}
+                    </div>
+                </a>
+                <div class="video-text flow">
+                    <div class="video-header flow">
+                        <div>
+                            <h2 class="small-title color-primary-200">
+                                {sameDay(
+                                    tzDate(
+                                        latestService.data.date,
+                                        "America/Los_Angeles",
+                                    ),
+                                    now,
+                                )
+                                    ? "Today"
+                                    : "Latest Service"}
+                            </h2>
+                            <h3 class="text-step-3 color-white">
+                                {format(
+                                    tzDate(
+                                        latestService.data.date,
+                                        "America/Los_Angeles",
+                                    ),
+                                    "full",
+                                )}
+                            </h3>
+                        </div>
+                        <p>
+                            {latestService.data.types
+                                .map(
+                                    (type) =>
+                                        `${format12HourTime(type.serviceTime)} ${type.name}`,
+                                )
+                                .join(" & ")}
+                        </p>
+                    </div>
+                    <div class="cluster">
+                        <Button href="/worship/live" theme="primary-light">
+                            View Service
+                        </Button>
+                        <a class="text-step--1" href="/worship/services">
+                            See all services
+                        </a>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+    <Image alt="" class="img-overlay" format="webp" src={bgImage} width={600} />
 </article>
 
 <style>
-  .video-banner {
-    position: relative;
-    overflow-y: hidden;
-    background: var(--color-primary-900);
-    color: var(--color-primary-100);
-    padding-block: var(--space-xl);
-  }
-
-  .video-banner .content-wrapper {
-    position: relative;
-    z-index: 2;
-  }
-
-  .video-banner .small-title {
-    margin-bottom: 6px;
-  }
-
-  .video-banner .img-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: fit-content;
-    height: 150%;
-    transform: translateY(-25%);
-    object-fit: contain;
-    opacity: 0.5;
-    mix-blend-mode: luminosity;
-    filter: saturate(0);
-    mask-image: linear-gradient(to right, black, transparent);
-    -webkit-mask-image: linear-gradient(to right, black, transparent);
-  }
-
-  .video-banner .flex {
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-xl);
-  }
-
-  .video-banner .frame {
-    position: relative;
-    max-width: 24rem;
-    border-radius: 4px;
-  }
-
-  .video-banner .frame .icon {
-    position: absolute;
-    z-index: 2;
-    inset: 0;
-    display: flex;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .video-banner .frame .icon svg {
-    transition: 0.2s all ease;
-  }
-
-  .video-banner .frame .overlay {
-    position: absolute;
-    inset: 0;
-    opacity: 0.3;
-    background: var(--color-primary-800);
-    transition: 0.2s all ease-in;
-  }
-
-  .video-banner .video-link:hover .frame .overlay {
-    opacity: 0.5;
-  }
-
-  .video-banner .video-link:hover .frame .icon svg {
-    transform: scale(1.2);
-  }
-
-  .video-text.flow {
-    --flow-space: var(--space-m);
-  }
-
-  .video-header.flow {
-    --flow-space: var(--space-s);
-  }
-
-  .video-header h2 {
-    margin-bottom: var(--space-3xs);
-  }
-
-  @media (max-width: 768px) {
-    .video-banner .flex {
-      flex-direction: column;
-      justify-content: flex-start;
-      gap: var(--space-xl);
+    .video-banner {
+        position: relative;
+        overflow-y: hidden;
+        background: var(--color-primary-900);
+        color: var(--color-primary-100);
+        padding-block: var(--space-xl);
     }
 
-    .video-text {
-      text-align: center;
+    .video-banner .content-wrapper {
+        position: relative;
+        z-index: 2;
     }
 
-    .video-text .cluster {
-      --justify: center;
-    }
-
-    .video-link {
-      order: 2;
+    .video-banner .small-title {
+        margin-bottom: 6px;
     }
 
     .video-banner .img-overlay {
-      transform: translateY(0);
-      height: 100%;
-      object-fit: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: fit-content;
+        height: 150%;
+        transform: translateY(-25%);
+        object-fit: contain;
+        opacity: 0.5;
+        mix-blend-mode: luminosity;
+        filter: saturate(0);
+        mask-image: linear-gradient(to right, black, transparent);
+        -webkit-mask-image: linear-gradient(to right, black, transparent);
     }
-  }
+
+    .video-banner .flex {
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-xl);
+    }
+
+    .video-banner .frame {
+        position: relative;
+        max-width: 24rem;
+        border-radius: 4px;
+    }
+
+    .video-banner .frame .icon {
+        position: absolute;
+        z-index: 2;
+        inset: 0;
+        display: flex;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .video-banner .frame .icon svg {
+        transition: 0.2s all ease;
+    }
+
+    .video-banner .frame .overlay {
+        position: absolute;
+        inset: 0;
+        opacity: 0.3;
+        background: var(--color-primary-800);
+        transition: 0.2s all ease-in;
+    }
+
+    .video-banner .video-link:hover .frame .overlay {
+        opacity: 0.5;
+    }
+
+    .video-banner .video-link:hover .frame .icon svg {
+        transform: scale(1.2);
+    }
+
+    .video-text.flow {
+        --flow-space: var(--space-m);
+    }
+
+    .video-header.flow {
+        --flow-space: var(--space-s);
+    }
+
+    .video-header h2 {
+        margin-bottom: var(--space-3xs);
+    }
+
+    @media (max-width: 768px) {
+        .video-banner .flex {
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: var(--space-xl);
+        }
+
+        .video-text {
+            text-align: center;
+        }
+
+        .video-text .cluster {
+            --justify: center;
+        }
+
+        .video-link {
+            order: 2;
+        }
+
+        .video-banner .img-overlay {
+            transform: translateY(0);
+            height: 100%;
+            object-fit: cover;
+        }
+    }
 </style>

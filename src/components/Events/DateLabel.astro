@@ -1,63 +1,68 @@
 ---
-import { DateTime } from "luxon";
+import { format, tzDate } from "@formkit/tempo";
 
-const positions = {
-  "top-right": "top-right",
-  "top-left": "top-left",
-};
+interface Props {
+    date: string;
+    startTime?: string;
+    position?: "top-right" | "top-left";
+}
 
 const { date, startTime, position = "top-right" } = Astro.props;
 
-const month = DateTime.fromISO(date)
-  .setZone("America/Los_Angeles")
-  .toFormat("LLL");
-const day = DateTime.fromISO(date).setZone("America/Los_Angeles").toFormat("d");
+const positions = {
+    "top-right": "top-right",
+    "top-left": "top-left",
+};
+
+const tz = tzDate(date, "America/Los_Angeles");
+const month = format(tz, "MMM");
+const day = format(tz, "D");
 
 const classList = ["date-label", positions[position]];
 ---
 
 <time class:list={classList} datetime={date}>
-  <div class="event-day font-header">{day}</div>
-  <div class="small-title">{month}</div>
-  {
-    startTime && (
-      <div>
-        {DateTime.fromISO(startTime)
-          .setZone("America/Los_Angeles")
-          .toLocaleString(DateTime.TIME_SIMPLE)}
-      </div>
-    )
-  }
+    <div class="event-day font-header">{day}</div>
+    <div class="small-title">{month}</div>
+    <!-- {
+        startTime && (
+            <div>
+                {DateTime.fromISO(startTime)
+                    .setZone("America/Los_Angeles")
+                    .toLocaleString(DateTime.TIME_SIMPLE)}
+            </div>
+        )
+    } -->
 </time>
 
 <style>
-  .date-label {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    background: var(--color-primary-800);
-    color: var(--color-primary-100);
-    border-radius: var(--rounded-corners);
-    padding: 0.5rem 0.75rem;
-    z-index: 10;
-  }
+    .date-label {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        background: var(--color-primary-800);
+        color: var(--color-primary-100);
+        border-radius: var(--rounded-corners);
+        padding: 0.5rem 0.75rem;
+        z-index: 10;
+    }
 
-  .top-right {
-    top: 0.5rem;
-    right: 0.5rem;
-  }
+    .top-right {
+        top: 0.5rem;
+        right: 0.5rem;
+    }
 
-  .top-left {
-    top: 0.5rem;
-    left: 0.5rem;
-  }
+    .top-left {
+        top: 0.5rem;
+        left: 0.5rem;
+    }
 
-  .event-day {
-    font-size: var(--step-3);
-    color: var(--color-white);
-    line-height: 1;
-    margin-bottom: 2px;
-  }
+    .event-day {
+        font-size: var(--step-3);
+        color: var(--color-white);
+        line-height: 1;
+        margin-bottom: 2px;
+    }
 </style>

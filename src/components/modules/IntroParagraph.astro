@@ -1,0 +1,13 @@
+---
+import type { IntroParagraph as IntroParagraphType } from "@content/schemaFragments/sanityComponents";
+
+interface Props {
+    module: IntroParagraphType;
+}
+
+const { module } = Astro.props;
+---
+
+<p class="center-items text-step-1 paragraphs mx-auto">
+    {module}
+</p>
