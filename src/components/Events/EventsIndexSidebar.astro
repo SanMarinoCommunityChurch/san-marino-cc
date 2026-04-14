@@ -2,12 +2,18 @@
 /** Sidebar to accompany events collection lists on index and category pages. */
 import Button from "@components/Button.astro";
 import EventCategoriesList from "./EventCategoriesList.astro";
+
+interface Props {
+    currentPathname?: string;
+}
+
+const { currentPathname } = Astro.props;
 ---
 
 <aside class="parent flow" style="--flow-space: var(--space-xl);">
     <div class="flow">
         <h3 class="text-step-2">Event Categories</h3>
-        <EventCategoriesList />
+        <EventCategoriesList currentPathname={currentPathname} />
     </div>
     <div class="sidebar-links">
         <!-- <SidebarLinkItem

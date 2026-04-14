@@ -6,15 +6,16 @@ import v from "voca";
 interface Props {
     title: string;
     text?: string;
+    currentPathname?: string;
 }
 
-const { title = "Resources", text } = Astro.props;
+const { title = "Resources", text, currentPathname } = Astro.props;
 
 const categories = await getCollection("postCategories");
 
-let pathname = Astro.url.pathname;
-if (pathname.endsWith("/")) {
-    pathname.slice(0, -1);
+// let pathname = Astro.url.pathname;
+if (currentPathname?.endsWith("/")) {
+    currentPathname?.slice(0, -1);
 }
 ---
 
@@ -25,7 +26,7 @@ if (pathname.endsWith("/")) {
     <ul class="cluster categories">
         <li>
             <Category
-                active={pathname === "/resources"}
+                active={currentPathname === "/resources"}
                 href="/resources"
                 name="All"
             />
@@ -37,7 +38,7 @@ if (pathname.endsWith("/")) {
                     <li>
                         <Category
                             active={
-                                pathname ===
+                                currentPathname ===
                                 `/resources/${v.lowerCase(category.data.slug)}`
                             }
                             href={`/resources/${v.lowerCase(category.data.slug)}`}

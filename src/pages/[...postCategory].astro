@@ -39,7 +39,10 @@ const associatedPosts = posts
     }}
 >
     <main data-layout="taxonomy" data-template="post-category" slot="main">
-        <PostCategoriesHeader title={page.data.name} />
+        <PostCategoriesHeader
+            currentPathname={`/resources/${v.lowerCase(page.data.slug)}`}
+            title={page.data.name}
+        />
         <article class="content-wrapper flow">
             <PostsList posts={associatedPosts} />
         </article>

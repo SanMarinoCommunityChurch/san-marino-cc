@@ -90,7 +90,9 @@ const sorted = sortUpcoming(events);
                     </section>
                 </div>
                 <div class="sidebar">
-                    <EventsIndexSidebar />
+                    <EventsIndexSidebar
+                        currentPathname={`/connect/events/${v.lowerCase(page.data.slug)}`}
+                    />
                 </div>
             </div>
         </article>

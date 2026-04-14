@@ -2,18 +2,26 @@
 import { getCollection } from "astro:content";
 import v from "voca";
 
+interface Props {
+    currentPathname?: string;
+}
+
+const { currentPathname } = Astro.props;
+
 const categories = await getCollection("eventCategories");
 
-let pathname = Astro.url.pathname;
-if (pathname.endsWith("/")) {
-    pathname.slice(0, -1);
+// let pathname = Astro.url.pathname;
+if (currentPathname?.endsWith("/")) {
+    currentPathname?.slice(0, -1);
 }
 ---
 
 <ul class="cluster">
     <li>
         <a
-            aria-current={pathname === "/connect/events" ? "page" : "false"}
+            aria-current={currentPathname === "/connect/events"
+                ? "page"
+                : "false"}
             class="small-title category"
             href={`/connect/events`}>All Upcoming</a
         >
@@ -25,7 +33,7 @@ if (pathname.endsWith("/")) {
                 <li>
                     <a
                         aria-current={
-                            pathname ===
+                            currentPathname ===
                             `/connect/events/${v.lowerCase(category.data.slug)}`
                                 ? "page"
                                 : "false"
