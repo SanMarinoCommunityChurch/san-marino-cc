@@ -1,0 +1,109 @@
+---
+import { type CollectionEntry, getEntry } from "astro:content";
+import { format, tzDate } from "@formkit/tempo";
+import Card from "@components/Card.astro";
+import Category from "@components/Category.astro";
+import ContactAvatar from "@components/ContactAvatar.astro";
+import { joinNames } from "@utils/format";
+import v from "voca";
+// import SanityImage from "@components/SanityImage.astro";
+
+interface Props {
+    posts: CollectionEntry<"posts">[];
+}
+
+const { posts } = Astro.props;
+---
+
+<ul class="posts-list grid">
+    {
+        posts.map(async (post) => {
+            const author = await getEntry("people", post.data.authorRef ?? "");
+            const category = await getEntry(
+                "postCategories",
+                post.data.categoryRef ?? "",
+            );
+            return (
+                <li>
+                    <Card
+                        href={`/resources/${v.lowerCase(post.data.slug)}`}
+                        image={post.data.image}
+                        title={post.data.name}
+                    >
+                        {category && (
+                            <Category
+                                name={category.data.name}
+                                position="absolute"
+                                size="small"
+                                slot="label"
+                            />
+                        )}
+                        <time
+                            class="post-date"
+                            datetime={post.data.date}
+                            slot="header"
+                        >
+                            {format(
+                                tzDate(post.data.date, "America/Los_Angeles"),
+                                "long",
+                            )}
+                        </time>
+                        <p class="preview text-step--1" slot="body">
+                            {post.data.preview}
+                        </p>
+                        <div
+                            class="location-footer text-step--1 cluster"
+                            slot="footer"
+                        >
+                            {author && (
+                                <ContactAvatar
+                                    heading="Posted by"
+                                    image={author.data.image}
+                                    name={joinNames(author.data.name)}
+                                    size="small"
+                                />
+                            )}
+                        </div>
+                    </Card>
+                </li>
+            );
+        })
+    }
+</ul>
+
+<style>
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 3rem 1rem;
+    }
+
+    .post-date {
+        font-variant-numeric: lining-nums;
+        font-family: var(--font-secondary);
+        font-weight: var(--font-weight-semi);
+        font-size: var(--step--1);
+        letter-spacing: 1.5pt;
+        text-transform: uppercase;
+    }
+
+    .preview {
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+        overflow: hidden;
+    }
+
+    @media (max-width: 768px) {
+        .grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 640px) {
+        .grid {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+    }
+</style>

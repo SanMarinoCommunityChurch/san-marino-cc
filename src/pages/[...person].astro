@@ -1,0 +1,226 @@
+---
+import BreadcrumbAuto from "@components/BreadcrumbAuto.astro";
+import Layout from "@layouts/Layout.astro";
+import { PortableText } from "astro-portabletext";
+import { STAFF_CATEGORIES } from "@utils/dicts";
+import SanityImage from "@components/SanityImage.astro";
+import { getCollection } from "astro:content";
+import { joinNames } from "@utils/format";
+
+export async function getStaticPaths() {
+    const people = await getCollection(
+        "people",
+        ({ data }) => data.categoryGroup === "staff" && !data.hideDetailPage,
+    );
+
+    return people.map((page) => ({
+        params: { person: `who-we-are/leadership/${page.data.slug}` },
+        props: { page },
+    }));
+}
+
+const { page } = Astro.props;
+
+const breadcrumbs = [
+    {
+        name: "Who We Are",
+        href: "/who-we-are",
+    },
+    {
+        name: "Leadership",
+        href: "/who-we-are/leadership",
+    },
+    {
+        name: joinNames(page.data.name),
+        current: true,
+    },
+];
+---
+
+<Layout
+    meta={{
+        title: joinNames(page.data.name),
+        description: `${joinNames(page.data.name)}, ${page.data.role}, is a member of the ${STAFF_CATEGORIES[page.data.category!]} at San Marino Community Church.`,
+        ogTitle: joinNames(page.data.name),
+        ogDescription: `${joinNames(page.data.name)}, ${page.data.role}, is a member of the ${STAFF_CATEGORIES[page.data.category!]} at San Marino Community Church.`,
+        ogImage: page.data.image,
+    }}
+>
+    <main data-layout="detail" data-template="person" slot="main">
+        <article>
+            <BreadcrumbAuto navigation={breadcrumbs} />
+            <div class="content-wrapper">
+                <div class="sidebar">
+                    {
+                        page.data.image && (
+                            <SanityImage
+                                alt={`${joinNames(page.data.name)} headshot.`}
+                                aspectRatio={[3, 4]}
+                                class:list={["image-rounded"]}
+                                loading="eager"
+                                source={page.data.image}
+                                width={400}
+                            />
+                        )
+                    }
+                    {
+                        page.data.contact && (
+                            <div class="contact">
+                                <h2 class="small-title">Contact</h2>
+                                {page.data.contact.email && (
+                                    <a
+                                        class="cluster contact-link"
+                                        href={`mailto:${page.data.contact.email}`}
+                                    >
+                                        <svg fill="var(--color-primary-800)" height="16" viewBox="0 0 512 512" width="16" xmlns="http://www.w3.org/2000/svg"><defs><style>.fa-secondary{opacity:0.4;}</style></defs><path class="fa-primary" d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48z"/><path class="fa-secondary" d="M0 112V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V112c0 15.1-7.1 29.3-19.2 38.4L275.2 313.6c-11.4 8.5-27 8.5-38.4 0L19.2 150.4C7.1 141.3 0 127.1 0 112z"/></svg>
+                                        <span>Email</span>
+                                    </a>
+                                )}
+                            </div>
+                        )
+                    }
+                </div>
+                <div class="main-panel">
+                    <section class="header flow">
+                        <div>
+                            <div class="eyebrow">
+                                <a
+                                    class="small-title heading-category"
+                                    href={`/who-we-are/leadership`}
+                                >
+                                    <svg
+                                        fill="var(--color-primary-800)"
+                                        height="12"
+                                        viewBox="0 0 448 512"
+                                        width="12"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        ><path
+                                            d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
+                                        ></path></svg
+                                    >
+                                    <span
+                                        >{
+                                            STAFF_CATEGORIES[
+                                                page.data.category!
+                                            ]
+                                        }</span
+                                    >
+                                </a>
+                            </div>
+                            <h1 class="text-step-4">
+                                {joinNames(page.data.name)}
+                            </h1>
+                        </div>
+                    </section>
+                    <div class="rich-text">
+                        <div class="role">{page.data.role}</div>
+                        <PortableText value={page.data.bio} />
+                    </div>
+                </div>
+            </div>
+        </article>
+    </main>
+</Layout>
+
+<style>
+    .content-wrapper {
+        padding-block: var(--space-3xl);
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+        gap: 4rem;
+    }
+
+    .image {
+        border-radius: var(--rounded-corners);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .header.flow {
+        --flow-space: 2rem;
+    }
+
+    .highlight-section {
+        padding-block: var(--space-3xl);
+        background-color: var(--color-primary-50);
+    }
+
+    .breadcrumb-wrapper {
+        position: relative;
+        z-index: 10;
+        padding-inline-start: var(--space-l);
+        top: 1rem;
+        width: fit-content;
+    }
+
+    .eyebrow {
+        margin-bottom: 0.75rem;
+    }
+
+    .heading-category {
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        text-decoration: none;
+        color: var(--color-primary-800);
+        width: fit-content;
+        line-height: 1;
+        padding: 6px 9px;
+        background-color: var(--color-primary-100);
+        border-radius: var(--rounded-corners-small);
+        transition: all 0.2s ease;
+
+        &:hover {
+            background-color: var(--color-primary-200);
+        }
+    }
+
+    .role {
+        font-size: var(--step-1);
+        font-style: italic;
+    }
+
+    .contact {
+        margin-top: 2rem;
+
+        & .small-title {
+            margin-bottom: 9px;
+        }
+    }
+
+    .contact-link {
+        color: var(--color-primary-800);
+    }
+
+    .rich-text {
+        margin-top: 8px;
+        max-width: 750px;
+    }
+
+    .rich-text > * + * {
+        margin-top: var(--space-l);
+    }
+
+    :global([data-template="person"] .rich-text > *) {
+        max-width: none;
+    }
+
+    @media (max-width: 768px) {
+        .content-wrapper {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .image {
+            width: 70%;
+        }
+    }
+
+    @media (max-width: 450px) {
+        .image {
+            width: 100%;
+        }
+    }
+</style>

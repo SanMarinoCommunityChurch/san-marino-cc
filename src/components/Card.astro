@@ -1,107 +1,124 @@
 ---
-import { urlFor } from "../lib/sanity";
-// import ImageOpt from "./ImageOpt.astro";
 import { Image } from "astro:assets";
+import SanityImage from "./SanityImage.astro";
+import type { SanityImage as SanityImageType } from "@content/schemaFragments/sanityComponents";
+import fallbackImage from "@assets/images/windows.jpg";
+
+interface Props {
+    href: string;
+    image?: SanityImageType | null;
+    title: string;
+}
 
 const { href = "/", image, title = "Event Title" } = Astro.props;
 ---
 
 <article class="card">
-  <a href={href}>
-    <slot name="label" />
-    <div class="frame">
-      <Image
-        class="img"
-        src={urlFor(image).width(800).height(480).auto("format").url()}
-        width={800}
-        height={480}
-        format="webp"
-        alt={image.asset.altText || ""}
-        style={`background-image: url(${image.asset.metadata.lqip})`}
-      />
-    </div>
-    <div class="text">
-      <header>
-        <slot name="header">
-          <div class="small-title">Category</div>
-        </slot>
-        <h3 class="card-title text-step-2">{title}</h3>
-      </header>
-      <slot name="body">
-        <p class="text-step--1">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed maxime
-          quam quisquam vero recusandae est!
-        </p></slot
-      >
-      <footer>
-        <slot name="footer">
-          <div class="text-step--1">Footer</div>
-        </slot>
-      </footer>
-    </div>
-  </a>
+    <a href={href}>
+        <slot name="label" />
+        <div class="frame">
+            {
+                image ? (
+                    <SanityImage
+                        alt={image.alt || ""}
+                        aspectRatio={[5, 3]}
+                        class:list={["image-scale-in"]}
+                        source={image}
+                        width={800}
+                    />
+                ) : (
+                    <Image
+                        alt=""
+                        format="webp"
+                        height={480}
+                        src={fallbackImage}
+                        width={800}
+                    />
+                )
+            }
+        </div>
+        <div class="text">
+            <header>
+                <slot name="header">
+                    <div class="small-title">Category</div>
+                </slot>
+                <h3 class="card-title text-step-2">{title}</h3>
+            </header>
+            <slot name="body">
+                <p class="text-step--1">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed
+                    maxime quam quisquam vero recusandae est!
+                </p></slot
+            >
+            <footer>
+                <slot name="footer">
+                    <div class="text-step--1">Footer</div>
+                </slot>
+            </footer>
+        </div>
+    </a>
 </article>
 
 <style>
-  .card {
-    position: relative;
-    max-width: 24rem;
-    border-radius: var(--rounded-corners);
-    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
-    background: var(--color-white);
-    height: 100%;
-    transition: box-shadow 0.3s ease-in-out;
-  }
-
-  .card-title {
-    /* color: var(--color-neutral-800); */
-    margin-bottom: 8px;
-  }
-
-  .card a {
-    text-decoration: none;
-  }
-
-  .frame {
-    --width: 5;
-    --height: 3;
-  }
-
-  .img {
-    transition: transform 0.2s ease-in-out;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
-
-  .text {
-    padding: 1.75rem;
-  }
-
-  .text header {
-    margin-bottom: 1rem;
-  }
-
-  .text footer {
-    margin-top: 2rem;
-  }
-
-  .card:hover {
-    box-shadow: 0px 4px 32px rgba(0, 0, 0, 0.12);
-  }
-
-  .card:hover .frame img {
-    transform: scale(1.05);
-  }
-
-  .card:hover .card-title {
-    text-decoration: underline;
-  }
-
-  @media (max-width: 640px) {
     .card {
-      max-width: none;
+        position: relative;
+        max-width: 24rem;
+        border-radius: var(--rounded-corners);
+        box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        background: var(--color-white);
+        height: 100%;
+        transition: box-shadow 0.3s ease-in-out;
     }
-  }
+
+    .card-title {
+        /* color: var(--color-neutral-800); */
+        margin-bottom: 8px;
+    }
+
+    .card a {
+        text-decoration: none;
+    }
+
+    .frame {
+        --width: 5;
+        --height: 3;
+    }
+
+    .img {
+        transition: transform 0.2s ease-in-out;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .text {
+        padding: 1.75rem;
+    }
+
+    .text header {
+        margin-bottom: 1rem;
+    }
+
+    .text footer {
+        margin-top: 2rem;
+    }
+
+    .card:hover {
+        box-shadow: 0px 4px 32px rgba(0, 0, 0, 0.12);
+    }
+
+    .card:hover .frame img {
+        transform: scale(1.05);
+    }
+
+    .card:hover .card-title {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 640px) {
+        .card {
+            max-width: none;
+        }
+    }
 </style>

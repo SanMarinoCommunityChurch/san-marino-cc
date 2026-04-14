@@ -1,0 +1,140 @@
+---
+import BreadcrumbAuto from "@components/BreadcrumbAuto.astro";
+import EventsIndexList from "@components/Events/EventsIndexList.astro";
+import EventsIndexSidebar from "@components/Events/EventsIndexSidebar.astro";
+import Layout from "@layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { sortUpcoming } from "@utils/sortEvents";
+import v from "voca";
+
+export async function getStaticPaths() {
+    const eventCategories = await getCollection("eventCategories");
+
+    return eventCategories.map((page) => ({
+        params: {
+            eventCategory: `connect/events/${v.lowerCase(page.data.slug)}`,
+        },
+        props: { page },
+    }));
+}
+
+const { page } = Astro.props;
+
+const breadcrumbs = [
+    {
+        name: "Connect",
+        href: "/connect",
+    },
+    {
+        name: "Events",
+        href: "/connect/events",
+    },
+    {
+        name: `${page.data.name} Events`,
+        current: true,
+    },
+];
+
+const events = await getCollection("events", ({ data }) => {
+    return page.data.events.some((event) => event._id === data._id);
+});
+const sorted = sortUpcoming(events);
+---
+
+<Layout
+    meta={{
+        title: `${page.data.name} Events`,
+        description: `${page.data.name} events at San Marino Community Church.`,
+        ogTitle: `${page.data.name} Events`,
+        ogDescription: `${page.data.name} events at San Marino Community Church.`,
+        ogImage: undefined,
+    }}
+>
+    <main data-layout="taxonomy" data-template="event-category" slot="main">
+        <article>
+            <BreadcrumbAuto navigation={breadcrumbs} />
+            <div class="content-wrapper with-sidebar">
+                <div class="main-panel flow">
+                    <section class="header flow">
+                        <div class="eyebrow cluster" slot="eyebrow">
+                            <a
+                                class="small-title heading-category"
+                                href="/connect/events"
+                            >
+                                <svg
+                                    fill="var(--color-primary-800)"
+                                    height="12"
+                                    viewBox="0 0 448 512"
+                                    width="12"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    ><path
+                                        d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
+                                    ></path></svg
+                                >
+                                <span>All Events</span>
+                            </a>
+                        </div>
+                        <h1 class="text-step-6">{page.data.name} Events</h1>
+                    </section>
+                    <section>
+                        {
+                            sorted.length > 0 ? (
+                                <EventsIndexList events={sorted} />
+                            ) : (
+                                <div style="font-style: italic;">
+                                    No upcoming {page.data.name} events at this
+                                    time.
+                                </div>
+                            )
+                        }
+                    </section>
+                </div>
+                <div class="sidebar">
+                    <EventsIndexSidebar />
+                </div>
+            </div>
+        </article>
+    </main>
+</Layout>
+
+<style>
+    .with-sidebar {
+        --sidebar-gap: 5rem;
+        padding-block: var(--space-3xl);
+    }
+
+    .main-panel {
+        --flow-space: 3rem;
+    }
+
+    .header {
+        --flow-space: 2rem;
+    }
+
+    h1 {
+        margin: 0;
+    }
+
+    .eyebrow.cluster {
+        margin-bottom: 0.75rem;
+    }
+
+    .small-title.heading-category {
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        text-decoration: none;
+        color: var(--color-primary-800);
+        width: fit-content;
+        line-height: 1;
+        padding: 6px 9px;
+        background-color: var(--color-primary-100);
+        border-radius: var(--rounded-corners-small);
+        transition: all 0.2s ease;
+    }
+
+    .small-title.heading-category:hover {
+        background-color: var(--color-primary-200);
+    }
+</style>

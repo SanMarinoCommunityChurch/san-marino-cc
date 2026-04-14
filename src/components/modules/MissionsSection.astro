@@ -1,0 +1,257 @@
+---
+import { Image } from "astro:assets";
+import { type MissionsSection as MissionsSectionType } from "@content/schemaFragments/sanityComponents";
+import { PortableText } from "astro-portabletext";
+import { urlForImage } from "@lib/sanity/urlForImage";
+import v from "voca";
+
+interface Props {
+    module: MissionsSectionType;
+}
+
+const { module } = Astro.props;
+
+// TODO: add youtube portable text component
+---
+
+<div class="cluster sticky">
+    <div class="small-title">Jump to:</div>
+    {
+        module?.sections.map((section) => (
+            <a
+                class="text-step-4 heading-link"
+                href={`#${v.slugify(section.heading)}`}
+            >
+                {section.heading}
+            </a>
+        ))
+    }
+</div>
+<div class="mission-list">
+    {
+        module?.sections.map((section) => (
+            <section id={v.slugify(section.heading)}>
+                <h2 class="sr-only">{section.heading}</h2>
+                <div class="text-step-2 colored-link">
+                    <PortableText value={section.text} />
+                </div>
+                <ul>
+                    {section.items.map((item) => {
+                        let baseImageHeight = 0;
+                        let baseImageWidth = 0;
+                        let cropHeight = 0;
+                        let croppedAspectRatio = 0;
+                        if (item.image) {
+                            baseImageHeight =
+                                item.image.asset.metadata.dimensions.height;
+                            baseImageWidth =
+                                item.image.asset.metadata.dimensions.height;
+                            cropHeight = item.image.crop
+                                ? baseImageHeight -
+                                  (baseImageHeight * item.image.crop.top +
+                                      baseImageHeight * item.image.crop.bottom)
+                                : baseImageHeight;
+                            croppedAspectRatio = baseImageWidth / cropHeight;
+                        }
+                        return (
+                            <li>
+                                <article class="mission">
+                                    <div class="image-wrapper">
+                                        {item.image && (
+                                            <Image
+                                                alt={`${item.name} logo.`}
+                                                class:list={["img"]}
+                                                decoding="async"
+                                                height={
+                                                    item.image.crop
+                                                        ? Math.floor(
+                                                              600 /
+                                                                  croppedAspectRatio,
+                                                          )
+                                                        : Math.floor(
+                                                              600 /
+                                                                  item.image
+                                                                      .asset
+                                                                      .metadata
+                                                                      .dimensions
+                                                                      .aspectRatio,
+                                                          )
+                                                }
+                                                loading="lazy"
+                                                src={urlForImage(item.image)
+                                                    .width(600)
+                                                    .height(
+                                                        item.image.crop
+                                                            ? Math.floor(
+                                                                  600 /
+                                                                      croppedAspectRatio,
+                                                              )
+                                                            : Math.floor(
+                                                                  600 /
+                                                                      item.image
+                                                                          .asset
+                                                                          .metadata
+                                                                          .dimensions
+                                                                          .aspectRatio,
+                                                              ),
+                                                    )
+                                                    .auto("format")
+                                                    .url()}
+                                                width={600}
+                                            />
+                                        )}
+                                    </div>
+                                    <div class="flow">
+                                        <h3 class="text-step-3">{item.name}</h3>
+                                        <div class="text flow">
+                                            <PortableText
+                                                value={item.richContent}
+                                            />
+                                        </div>
+                                    </div>
+                                </article>
+                            </li>
+                        );
+                    })}
+                </ul>
+            </section>
+        ))
+    }
+</div>
+
+<style>
+    .mission-list {
+        margin-top: 0;
+
+        & ul > * + * {
+            margin-block-start: var(--space-2xl);
+        }
+    }
+
+    .mission-list > section {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2xl);
+    }
+
+    .mission-list > section + section {
+        margin-top: var(--space-3xl);
+    }
+
+    .mission {
+        display: grid;
+        grid-template-columns: 1fr 2.5fr;
+        gap: 5rem;
+    }
+
+    .img {
+        max-height: 12rem;
+        object-fit: contain;
+        /* justify-self: self-end; */
+    }
+
+    .text ul {
+        list-style: disc;
+        padding-left: 1rem;
+    }
+
+    .text a {
+        color: var(--color-primary-800);
+    }
+
+    .sticky {
+        position: sticky;
+        background: white;
+        z-index: 20;
+        padding-block: 1.5rem;
+        top: 5rem;
+        margin-block: 3rem;
+        /* border-bottom: 1px solid var(--color-primary-300); */
+    }
+
+    .heading-link {
+        color: var(--color-primary-800);
+        text-decoration: none;
+        font-family: var(--font-secondary);
+        font-weight: var(--font-weight-header);
+        transition: all 0.2s ease;
+    }
+
+    .heading-link:hover {
+        text-decoration: underline;
+        color: var(--color-primary-800);
+        opacity: 1 !important;
+    }
+
+    .sticky.cluster {
+        --cluster-space: 3rem;
+    }
+
+    .mission-list [id] {
+        scroll-margin-top: 12rem;
+    }
+
+    .mission-list [id]:last-of-type {
+        border-top: 1px solid var(--color-neutral-100);
+        padding-top: var(--space-3xl);
+    }
+
+    @media (max-width: 768px) {
+        .mission {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .img {
+            height: 10rem;
+            width: fit-content;
+        }
+
+        .sticky.cluster {
+            --cluster-space: 1rem;
+        }
+
+        .heading-link {
+            font-size: var(--step-1);
+        }
+    }
+
+    @media (max-width: 640px) {
+        .heading-link {
+            font-size: var(--step-0);
+        }
+
+        .sticky.cluster {
+            --cluster-space: 0.5rem;
+        }
+    }
+</style>
+
+<script>
+    const headerLinks = document.querySelectorAll(".sticky a");
+    const sections = document.querySelectorAll(".mission-list > section");
+
+    const onIntersect = (entries: any) => {
+        entries.forEach((entry: any) => {
+            if (entry.isIntersecting) {
+                const id = entry.target.id;
+                headerLinks.forEach((link) => {
+                    const a = link as HTMLAnchorElement;
+                    if (a.hash === `#${id}`) {
+                        a.style.opacity = "1";
+                    } else {
+                        a.style.opacity = "0.5";
+                    }
+                });
+            }
+        });
+    };
+
+    const observer = new IntersectionObserver(onIntersect, {
+        rootMargin: "-60px",
+    });
+
+    sections.forEach((el) => {
+        observer.observe(el);
+    });
+</script>

@@ -1,0 +1,210 @@
+---
+import { getCollection, getEntries } from "astro:content";
+import Category from "@components/Category.astro";
+import { type HomeResourcesSection } from "@content/schemaFragments/sanityComponents";
+import SanityImage from "@components/SanityImage.astro";
+import v from "voca";
+
+interface Props {
+    module: HomeResourcesSection;
+}
+
+const { module } = Astro.props;
+
+const postCategories = await getCollection("postCategories");
+
+const posts = await getEntries(
+    module.items.map((item) => ({ collection: "posts", id: item._ref })),
+);
+---
+
+<section aria-labelledby="resources-slider" class="resources splide">
+    <header class="content-wrapper center-items flow">
+        <div>
+            <h2 class="text-step-4" id="resources-slider">{module.heading}</h2>
+            {module.text && <p class="paragraph flow">{module.text}</p>}
+        </div>
+        <ul class="cluster categories">
+            <li><Category href="/resources" name="All" /></li>
+            {
+                postCategories
+                    .sort((a, b) => (a.data.name > b.data.name ? 1 : -1))
+                    .map((category) => (
+                        <li>
+                            <Category
+                                href={`/resources/${v.lowerCase(category.data.slug)}`}
+                                name={category.data.name}
+                            />
+                        </li>
+                    ))
+            }
+        </ul>
+    </header>
+    <div class="posts-list">
+        <div class="splide__arrows"></div>
+        <div class="splide__track">
+            <ul class="splide__list">
+                {
+                    posts.map((post) => (
+                        <li class="splide__slide">
+                            <a
+                                href={`/resources/${v.lowerCase(post.data.slug)}`}
+                            >
+                                {post.data.categoryRef && (
+                                    <Category
+                                        name={
+                                            postCategories.find(
+                                                (c) =>
+                                                    c.id ===
+                                                    post.data.categoryRef,
+                                            )?.data.name
+                                        }
+                                        position="absolute"
+                                        size="small"
+                                    />
+                                )}
+                                <div class="slide-text flow">
+                                    <h3 class="text-step-2 color-white">
+                                        {post.data.name}
+                                    </h3>
+                                    {post.data.preview && (
+                                        <p>{post.data.preview}</p>
+                                    )}
+                                </div>
+                                <div class="overlay" />
+                                <div class="img-wrapper">
+                                    {post.data.image && (
+                                        <SanityImage
+                                            alt={
+                                                post.data.image?.asset
+                                                    .altText || ""
+                                            }
+                                            aspectRatio={[4, 3]}
+                                            class:list={["img"]}
+                                            source={post.data.image}
+                                            width={600}
+                                        />
+                                    )}
+                                </div>
+                            </a>
+                        </li>
+                    ))
+                }
+            </ul>
+            <ul class="splide__pagination"></ul>
+        </div>
+    </div>
+</section>
+
+<style>
+    h2 {
+        margin-block-end: 1rem;
+    }
+
+    .categories {
+        max-width: 50rem;
+        justify-content: center;
+    }
+
+    .posts-list {
+        position: relative;
+        margin-block-start: 3rem;
+    }
+
+    .splide__slide a {
+        display: flex;
+        align-items: flex-end;
+        position: relative;
+        text-decoration: none;
+        min-height: 24rem;
+
+        &:hover h3 {
+            text-decoration: underline;
+        }
+
+        &:hover .img {
+            transform: scale(1.1);
+        }
+    }
+
+    .slide-text {
+        --flow-space: 9px;
+        position: relative;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        padding: 2rem;
+        color: var(--color-primary-100);
+        z-index: 2;
+
+        & p {
+            font-size: var(--step-0);
+            line-height: 1.5;
+        }
+    }
+
+    .overlay {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            to top,
+            var(--color-primary-900),
+            transparent
+        );
+        border-radius: var(--rounded-corners);
+        z-index: 1;
+    }
+
+    .img-wrapper {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: var(--rounded-corners);
+        overflow: hidden;
+    }
+
+    .img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: all 0.3s ease;
+    }
+
+    .splide__pagination {
+        bottom: 0rem;
+    }
+</style>
+
+<script>
+    import "@splidejs/splide/css";
+    import Splide from "@splidejs/splide";
+
+    const splide = new Splide(".resources.splide", {
+        type: "loop",
+        padding: "20%",
+        perPage: 2,
+        perMove: 1,
+        gap: "2em",
+        // autoHeight: true,
+        breakpoints: {
+            1024: {
+                padding: "15%",
+                perPage: 1,
+            },
+            768: {
+                padding: "10%",
+                gap: "1em",
+                perPage: 1,
+            },
+            640: {
+                padding: "2rem",
+                perPage: 1,
+            },
+        },
+    });
+    splide.mount();
+</script>

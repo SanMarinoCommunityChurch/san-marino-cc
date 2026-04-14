@@ -1,209 +1,124 @@
 ---
-import { allNavigation, mainNavigation } from "../lib/navigation";
+import "@styles/site.css";
+import HeadAssets from "@components/document/HeadAssets.astro";
 import { SEO } from "astro-seo";
-import { siteSettings, defaultOgImage } from "../lib/settings";
-import { urlFor } from "../lib/sanity";
+import SiteFooter from "@components/navigation/SiteFooter.astro";
+import SiteHeader from "@components/navigation/SiteHeader.astro";
+import { getEntry } from "astro:content";
+import { urlForImage } from "@lib/sanity/urlForImage";
 
-import SiteHeader from "../components/SiteHeader.astro";
-import SiteFooter from "../components/SiteFooter.astro";
-import "../styles/global.css";
-
-const fullNavigation = allNavigation.find(
-  (nav) => nav._id === "a0714f38-2dff-4ce5-b350-be13904afa67"
-);
-const utilityNavigation = allNavigation.find(
-  (nav) => nav._id === "ba5e977f-7457-4dda-b26e-c616e37a0fd2"
-);
-// const mainNavigation = allNavigation.find(
-//   (nav) => nav._id === "0cde77d9-0c19-4642-84df-0523c76cec63"
-// );
-// console.log(mainNavigation.entries);
+interface Props {
+    meta: {
+        title: string;
+        description?: string;
+        ogTitle: string;
+        ogImage?: any;
+        ogImageExternal?: any;
+        ogDescription?: string;
+    };
+}
 
 const { meta } = Astro.props;
-const { title, description, ogTitle, ogImage, ogImageExternal, ogDescription } =
-  meta;
+
+const siteSettings = await getEntry("siteSettings", "siteSettings");
 ---
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <SEO
-      title={title
-        ? `${title} | ${siteSettings.siteName}`
-        : siteSettings.siteName}
-      description={description || siteSettings.siteDescription}
-      openGraph={{
-        basic: {
-          title: ogTitle,
-          type: "website",
-          image: ogImageExternal
-            ? ogImageExternal
-            : ogImage
-              ? urlFor(ogImage).width(1200).height(630).auto("format").url()
-              : urlFor(defaultOgImage)
-                  .width(1200)
-                  .height(630)
-                  .fit("crop")
-                  .crop("center")
-                  .auto("format")
-                  .url(),
-        },
-        optional: {
-          description: ogDescription || siteSettings.siteDescription,
-        },
-      }}
-    />
-    <link rel="sitemap" href="/sitemap-index.xml" />
-    <link rel="icon" type="image/png" href="/smcc-favicon.png" />
-    <link
-      rel="preload"
-      href="/fonts/FreightSans-Black.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="/fonts/FreightSans-SemiBold.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="/fonts/PortadaText-Regular.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="/fonts/PortadaText-Italic.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <script defer src="/fontawesome/duotone.min.js"></script>
-    <script defer src="/fontawesome/brands.min.js"></script>
-    <script defer src="/fontawesome/fontawesome.min.js"></script>
-    <!-- Fathom - beautiful, simple website analytics -->
-    <script src="https://cdn.usefathom.com/script.js" data-site="BCMEAUYL" defer
-    ></script>
-    <!-- / Fathom -->
-    <style>
-      @font-face {
-        font-family: "Freight Sans";
-        src:
-          url("/fonts/FreightSans-Black.woff2") format("woff2"),
-          url("/fonts/FreightSans-Black.woff") format("woff");
-        font-weight: 900;
-        font-style: normal;
-        font-display: swap;
-      }
+    <head>
+        <meta charset="UTF-8" />
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
+        <SEO
+            description={meta?.description ??
+                siteSettings?.data.siteDescription}
+            openGraph={{
+                basic: {
+                    title: meta.ogTitle ?? siteSettings?.data.siteName,
+                    type: "website",
+                    image: meta.ogImageExternal
+                        ? meta.ogImageExternal
+                        : meta.ogImage
+                          ? urlForImage(meta.ogImage)
+                                .width(1200)
+                                .height(630)
+                                .auto("format")
+                                .url()
+                          : urlForImage(siteSettings!.data.ogImage!)
+                                .width(1200)
+                                .height(630)
+                                .fit("crop")
+                                .crop("center")
+                                .auto("format")
+                                .url(),
+                },
+                optional: {
+                    description:
+                        meta.ogDescription ??
+                        siteSettings?.data.siteDescription,
+                },
+            }}
+            title={meta.title
+                ? `${meta.title} | ${siteSettings?.data.siteName}`
+                : siteSettings?.data.siteName}
+        />
+        <HeadAssets />
+        <slot name="pageHead" />
+    </head>
+    <body>
+        <SiteHeader />
+        <slot name="main" />
+        <SiteFooter />
+    </body>
+</html>
 
-      @font-face {
-        font-family: "Freight Sans";
-        src:
-          url("/fonts/FreightSans-SemiBold.woff2") format("woff2"),
-          url("/fonts/FreightSans-SemiBold.woff") format("woff");
-        font-weight: 600;
-        font-style: normal;
-        font-display: swap;
-      }
-
-      @font-face {
-        font-family: "Portada Text";
-        src:
-          url("/fonts/PortadaText-Regular.woff2") format("woff2"),
-          url("/fonts/PortadaText-Regular.woff") format("woff");
-        font-weight: 400;
-        font-style: normal;
-        font-display: swap;
-      }
-
-      @font-face {
-        font-family: "Portada Text";
-        src:
-          url("/fonts/PortadaText-Italic.woff2") format("woff2"),
-          url("/fonts/PortadaText-Italic.woff") format("woff");
-        font-weight: 400;
-        font-style: italic;
-        font-display: swap;
-      }
-
-      @font-face {
-        font-family: "Portada Text";
-        src:
-          url("/fonts/PortadaText-Bold.woff2") format("woff2"),
-          url("/fonts/PortadaText-Bold.woff") format("woff");
-        font-weight: 700;
-        font-style: normal;
-        font-display: swap;
-      }
-    </style>
-    <slot name="pageHead" />
-  </head>
-  <body>
-    <SiteHeader
-      mainNavigation={mainNavigation}
-      fullNavigation={fullNavigation}
-      utilityNavigation={utilityNavigation}
-    />
-    <slot name="main" />
-    <SiteFooter
-      fullNavigation={fullNavigation}
-      utilityNavigation={utilityNavigation}
-    />
-    <style is:global>
-      .content-wrapper {
+<style is:global>
+    .content-wrapper {
         position: relative;
         max-width: clamp(16rem, var(--wrapper-max-width, 100vw), 80rem);
         padding-inline: var(--gutter);
         margin-inline: auto;
-      }
+    }
 
-      .with-sidebar {
+    .with-sidebar {
         --sidebar-gap: 3rem;
         --sidebar-min-width: 25rem;
         --main-min-width: 50%;
         display: flex;
         flex-wrap: wrap;
         gap: var(--sidebar-gap);
-      }
+    }
 
-      .with-sidebar > :last-child {
+    .with-sidebar > :last-child {
         flex-basis: var(--sidebar-min-width);
         flex-grow: 1;
-      }
+    }
 
-      .with-sidebar > :first-child {
+    .with-sidebar > :first-child {
         flex-basis: 0;
         flex-grow: 999;
         min-inline-size: var(--main-min-width);
-      }
+    }
 
-      .flow {
+    .flow {
         --flow-space: 1rem;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
-      }
+    }
 
-      .flow > * {
+    .flow > * {
         margin-block: 0;
-      }
+    }
 
-      .flow > * + * {
+    .flow > * + * {
         margin-block-start: var(--flow-space);
-      }
+    }
 
-      .flex {
+    .flex {
         display: flex;
-      }
+    }
 
-      .cluster {
+    .cluster {
         --cluster-space: 1rem;
         --justify: flex-start;
         --align: center;
@@ -212,21 +127,21 @@ const { title, description, ogTitle, ogImage, ogImageExternal, ogDescription } =
         gap: var(--cluster-space);
         justify-content: var(--justify);
         align-items: var(--align);
-      }
+    }
 
-      .responsive-grid {
+    .responsive-grid {
         --gap: 1rem;
         --item-min-width: 30rem;
         --item-max-width: 1fr;
         display: grid;
         grid-gap: var(--gap);
         grid-template-columns: repeat(
-          auto-fit,
-          minmax(min(var(--item-min-width), 100%), var(--item-max-width))
+            auto-fit,
+            minmax(min(var(--item-min-width), 100%), var(--item-max-width))
         );
-      }
+    }
 
-      .frame {
+    .frame {
         --width: 4;
         --height: 3;
         aspect-ratio: var(--width) / var(--height);
@@ -234,92 +149,103 @@ const { title, description, ogTitle, ogImage, ogImageExternal, ogDescription } =
         display: flex;
         justify-content: center;
         align-items: center;
-      }
+    }
 
-      .frame.video {
+    .frame.video {
         --width: 16;
         --height: 9;
-      }
+    }
 
-      .frame.square {
+    .frame.square {
         --width: 1;
         --height: 1;
-      }
+    }
 
-      .frame.avatar {
+    .frame.avatar {
         --width: 1;
         --height: 1;
         width: 5rem;
         height: 5rem;
         border-radius: 9999px;
-      }
+    }
 
-      .frame > img,
-      .frame > video,
-      .frame > picture {
+    .frame > img,
+    .frame > video,
+    .frame > picture {
         inline-size: 100%;
         block-size: 100%;
         object-fit: cover;
-      }
+    }
 
-      .center-items {
+    .center-items {
         display: flex;
         justify-content: center;
         align-items: center;
         text-align: center;
-      }
+    }
 
-      .small-title {
+    .small-title {
         font-family: var(--font-secondary);
         font-weight: var(--font-weight-semi);
         font-size: var(--step--1);
         letter-spacing: 1.5pt;
         text-transform: uppercase;
-      }
+    }
 
-      .paragraphs.flow {
+    .paragraphs.flow {
         --flow-space: 1.5rem;
-      }
+    }
 
-      .paragraphs {
+    .paragraphs {
         max-width: 67ch;
-      }
+    }
 
-      :where(a, button):not(
-          .btn,
-          .logo,
-          .link,
-          .fc-button,
-          .fc-col-header-cell-cushion,
-          .fc-daygrid-day-number,
-          .fc-list-day-text,
-          .fc-list-day-side-text
-        ) {
+    /* Global image link overlay color */
+    .image-links .image-link {
+        &:nth-child(2) {
+            --overlay-color: #115e59;
+        }
+
+        &:nth-child(3) {
+            --overlay-color: #c06507;
+        }
+    }
+
+    :where(a, button):not(
+        .btn,
+        .logo,
+        .link,
+        .fc-button,
+        .fc-col-header-cell-cushion,
+        .fc-daygrid-day-number,
+        .fc-list-day-text,
+        .fc-list-day-side-text
+    ) {
         text-decoration: underline;
-      }
+    }
 
-      :where(a, button):not(.btn, .logo):hover {
+    :where(a, button):not(.btn, .logo):hover {
         text-decoration: none;
-      }
+    }
 
-      .colored-link a {
+    .colored-link a {
         color: var(--color-primary-800);
-      }
+    }
 
-      .fc-event {
+    .fc-event {
         cursor: pointer;
-      }
+    }
 
-      .events-pagination .splide__pagination__page.is-active {
+    .events-pagination .splide__pagination__page.is-active {
         background: var(--color-primary-300) !important;
-      }
+    }
 
-      .splide__pagination__page.is-active {
+    .splide__pagination__page.is-active {
         background: var(--color-primary-300) !important;
-      }
+    }
 
-      /* Worship Live YT Embed */
-      .yt-lite {
+    /* Worship Live YT Embed */
+    .yt-lite {
         background-color: #000;
         position: relative;
         display: block;
@@ -329,10 +255,11 @@ const { title, description, ogTitle, ogImage, ogImageExternal, ogDescription } =
         cursor: pointer;
         width: clamp(20rem, 50vw, 80%);
         height: auto;
-      }
+        aspect-ratio: 16/9;
+    }
 
-      /* gradient */
-      .yt-lite::before {
+    /* gradient */
+    /* .yt-lite::before {
         content: "";
         display: block;
         position: absolute;
@@ -344,26 +271,26 @@ const { title, description, ogTitle, ogImage, ogImageExternal, ogDescription } =
         padding-bottom: 50px;
         width: 100%;
         transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
-      }
+    } */
 
-      /* responsive iframe with a 16:9 aspect ratio
+    /* responsive iframe with a 16:9 aspect ratio
     thanks https://css-tricks.com/responsive-iframes/
 */
-      .yt-lite::after {
+    /* .yt-lite::after {
         content: "";
         display: block;
         padding-bottom: calc(100% / (16 / 9));
-      }
-      .yt-lite > iframe {
+    } */
+    .yt-lite > iframe {
         width: 100%;
         height: 100%;
         position: absolute;
         top: 0;
         left: 0;
-      }
+    }
 
-      /* play button */
-      .yt-lite > .lty-playbtn {
+    /* play button */
+    .yt-lite > .lty-playbtn {
         width: 70px;
         height: 46px;
         background-color: #212121;
@@ -372,53 +299,53 @@ const { title, description, ogTitle, ogImage, ogImageExternal, ogDescription } =
         border-radius: 14%; /* TODO: Consider replacing this with YT's actual svg. Eh. */
         transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
         border: none;
-      }
-      .yt-lite:hover > .lty-playbtn {
+    }
+    .yt-lite:hover > .lty-playbtn {
         background-color: #f00;
         opacity: 1;
-      }
-      /* play button triangle */
-      .yt-lite > .lty-playbtn:before {
+    }
+    /* play button triangle */
+    .yt-lite > .lty-playbtn:before {
         content: "";
         border-style: solid;
         border-width: 11px 0 11px 19px;
         border-color: transparent transparent transparent #fff;
-      }
+    }
 
-      .yt-lite > .lty-playbtn,
-      .yt-lite > .lty-playbtn:before {
+    .yt-lite > .lty-playbtn,
+    .yt-lite > .lty-playbtn:before {
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate3d(-50%, -50%, 0);
-      }
+    }
 
-      /* Post-click styles */
-      .yt-lite.lyt-activated {
+    /* Post-click styles */
+    .yt-lite.lyt-activated {
         cursor: unset;
-      }
-      .yt-lite.lyt-activated::before,
-      .yt-lite.lyt-activated > .lty-playbtn {
+    }
+    .yt-lite.lyt-activated::before,
+    .yt-lite.lyt-activated > .lty-playbtn {
         opacity: 0;
         pointer-events: none;
-      }
+    }
 
-      .live .video-wrapper {
+    .live .video-wrapper {
         background-color: var(--color-neutral-100);
         margin-block: var(--space-xl);
         display: flex;
         justify-content: center;
-      }
+    }
 
-      .live .service-tabs.center-items {
+    .live .service-tabs.center-items {
         gap: 1rem;
-      }
+    }
 
-      .live.inner .service-tabs {
+    .live.inner .service-tabs {
         margin-top: -2.5rem;
-      }
+    }
 
-      .live .service-tab {
+    .live .service-tab {
         background: transparent;
         color: var(--color-primary-800);
         text-decoration: none;
@@ -432,18 +359,19 @@ const { title, description, ogTitle, ogImage, ogImageExternal, ogDescription } =
         cursor: pointer;
         letter-spacing: 0.02em;
         transition: all 0.2s ease;
-      }
 
-      .live .service-tab:hover {
-        background: var(--color-primary-100);
-      }
+        &[data-state="active"] {
+            background: var(--color-primary-800);
+            color: var(--color-white);
+        }
 
-      .live .service-tab[data-headlessui-state~="selected"] {
-        background: var(--color-primary-800);
-        color: var(--color-white);
-      }
+        &[data-state="inactive"]:hover {
+            background: var(--color-primary-100);
+            color: var(--color-primary-800);
+        }
+    }
 
-      .program-link {
+    .program-link {
         text-decoration: none;
         font-family: var(--font-secondary);
         font-weight: var(--font-weight-semi);
@@ -462,53 +390,53 @@ const { title, description, ogTitle, ogImage, ogImageExternal, ogDescription } =
         transition: all 0.2s ease-in-out;
         background-color: var(--color-primary-800);
         color: var(--color-white);
-      }
+    }
 
-      .program-link:hover {
+    .program-link:hover {
         background-color: var(--color-primary-900);
-      }
+    }
 
-      .live .service-wrapper {
+    .live .service-wrapper {
         margin-block: var(--space-2xl);
-      }
+    }
 
-      .live .service-wrapper h3 {
+    .live .service-wrapper h3 {
         margin-block: 0.5rem;
-      }
+    }
 
-      .live .time {
+    .live .time {
         font-variant-numeric: lining-nums;
-      }
+    }
 
-      .live .bullet-spacer {
+    .live .bullet-spacer {
         color: var(--color-primary-300);
         margin-inline: 0.25rem;
-      }
+    }
 
-      .live .with-sidebar {
+    .live .with-sidebar {
         --sidebar-gap: 4rem;
-      }
+    }
 
-      .live .service-info {
+    .live .service-info {
         max-width: 48rem;
-      }
+    }
 
-      .live .with-sidebar > .flow:first-child {
+    .live .with-sidebar > .flow:first-child {
         --flow-space: 2rem;
-      }
+    }
 
-      .live .sidebar .frame.square {
+    .live .sidebar .frame.square {
         border-radius: 9999px;
         width: 5rem;
         height: 5rem;
-      }
+    }
 
-      .live .sidebar.flex {
+    .live .sidebar.flex {
         gap: 1.5rem;
         align-items: center;
-      }
+    }
 
-      .live .small-title.category {
+    .live .small-title.category {
         font-size: 13px;
         display: inline-block;
         color: var(--color-primary-800);
@@ -516,52 +444,50 @@ const { title, description, ogTitle, ogImage, ogImageExternal, ogDescription } =
         padding: 4px 6px;
         background-color: var(--color-primary-100);
         border-radius: var(--rounded-corners-small);
-      }
+    }
 
-      .live .small-title.category.contemporary {
+    .live .small-title.category.contemporary {
         background-color: var(--color-secondary-50);
         color: var(--color-secondary-600);
-      }
+    }
 
-      .live .service-date {
+    .live .service-date {
         margin-top: var(--space-m);
         font-size: var(--step-1);
         font-style: italic;
-      }
+    }
 
-      .live .contact-avatar .frame.square {
+    .live .contact-avatar .frame.square {
         border-radius: 9999px;
         width: 5rem;
         height: 5rem;
-      }
+    }
 
-      .live .contact-avatar.flex {
+    .live .contact-avatar.flex {
         gap: 1.5rem;
         align-items: center;
-      }
+    }
 
-      .live .contact-avatar .small-title {
+    .live .contact-avatar .small-title {
         color: var(--color-primary-800);
         margin-bottom: 3px;
-      }
+    }
 
-      .live .service-info .text-step-4 {
+    .live .service-info .text-step-4 {
         margin-top: 8px;
-      }
+    }
 
-      .podcastEmbed {
+    .podcastEmbed {
         margin-top: 2rem;
         width: 100%;
-      }
-      /* 
+    }
+    /* 
       @media (max-width: 1024px) {
       } */
 
-      @media (max-width: 640px) {
+    @media (max-width: 640px) {
         .live .service-tabs.center-items {
-          flex-direction: column;
+            flex-direction: column;
         }
-      }
-    </style>
-  </body>
-</html>
+    }
+</style>

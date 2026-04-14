@@ -1,0 +1,69 @@
+---
+import { getCollection } from "astro:content";
+import v from "voca";
+
+const categories = await getCollection("eventCategories");
+
+let pathname = Astro.url.pathname;
+if (pathname.endsWith("/")) {
+    pathname.slice(0, -1);
+}
+---
+
+<ul class="cluster">
+    <li>
+        <a
+            aria-current={pathname === "/connect/events" ? "page" : "false"}
+            class="small-title category"
+            href={`/connect/events`}>All Upcoming</a
+        >
+    </li>
+    {
+        categories
+            ?.sort((a, b) => (a.data.name > b.data.name ? 1 : -1))
+            .map((category) => (
+                <li>
+                    <a
+                        aria-current={
+                            pathname ===
+                            `/connect/events/${v.lowerCase(category.data.slug)}`
+                                ? "page"
+                                : "false"
+                        }
+                        class="small-title category"
+                        href={`/connect/events/${v.lowerCase(category.data.slug)}`}
+                    >
+                        {category.data.name}
+                    </a>
+                </li>
+            ))
+    }
+</ul>
+
+<style>
+    .cluster {
+        --cluster-space: 1rem;
+    }
+
+    .category {
+        font-size: 14px;
+        display: inline-block;
+        text-decoration: none;
+        color: var(--color-primary-800);
+        width: fit-content;
+        line-height: 1;
+        padding: 6px 9px;
+        background-color: var(--color-primary-100);
+        border-radius: var(--rounded-corners-small);
+        transition: all 0.2s ease;
+
+        &:hover {
+            background-color: var(--color-primary-200);
+        }
+
+        &[aria-current="page"] {
+            background-color: var(--color-primary-800);
+            color: var(--color-primary-50);
+        }
+    }
+</style>

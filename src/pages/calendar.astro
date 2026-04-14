@@ -1,0 +1,190 @@
+---
+import Button from "@components/Button.astro";
+import Layout from "@layouts/Layout.astro";
+import PageHeader from "@components/modules/PageHeader.astro";
+import { getEntry } from "astro:content";
+
+const page = await getEntry("pages", "88b9cf6b-df9d-4ba2-bed0-e4cddf91201b");
+---
+
+{
+    page && (
+        <Layout
+            meta={{
+                title: page.data.seo.title ?? page.data.name ?? "Calendar",
+                description: page.data.seo.description,
+                ogTitle: page.data.seo.ogTitle ?? "Calendar",
+                ogDescription: page.data.seo.ogDescription,
+                ogImage: page.data.seo.ogImage,
+            }}
+        >
+            <main
+                data-layout="utility"
+                data-template={page.data.template}
+                slot="main"
+            >
+                <PageHeader page={page} />
+                <article class="content-wrapper flow">
+                    <div id="calendar">
+                        <div id="loading" style="text-align: center;">
+                            ...Loading calendar
+                        </div>
+                    </div>
+                    <div class="center-items cluster">
+                        <Button href="/connect/events">See All Events</Button>
+                        <Button href="/worship/services">
+                            See All Services
+                        </Button>
+                    </div>
+                </article>
+            </main>
+        </Layout>
+    )
+}
+
+<style>
+    .content-wrapper {
+        --flow-space: var(--space-3xl);
+        margin-block-start: var(--section-spacer-half);
+        margin-block-end: var(--section-spacer);
+    }
+
+    @media (max-width: 768px) {
+        .content-wrapper {
+            margin-block-start: 3rem;
+            margin-block-end: 3rem;
+        }
+    }
+</style>
+
+<style is:global>
+    .fc-event {
+        cursor: pointer !important;
+    }
+
+    .fc-h-event {
+        background-color: var(--color-primary-800);
+        border: var(--color-primary-800) 1px solid;
+    }
+
+    .fc-daygrid-event-dot {
+        border-color: var(--color-primary-400);
+    }
+
+    .tippy-box {
+        background-color: var(--color-primary-900);
+    }
+
+    .tippy-arrow {
+        color: var(--color-primary-900);
+    }
+
+    .tooltip-title {
+        font-family: var(--font-secondary);
+        font-weight: var(--font-weight-header);
+        font-size: var(--step-0);
+        line-height: 1.15;
+    }
+
+    .tippy-content > * + * {
+        margin-top: 9px;
+    }
+</style>
+
+<script>
+    import "tippy.js/dist/tippy.css";
+    import { Calendar } from "@fullcalendar/core";
+    // import { capitalizeFirstLetter } from "../../utils/format";
+    import dayGridPlugin from "@fullcalendar/daygrid";
+    import googleCalendarPlugin from "@fullcalendar/google-calendar";
+    import listPlugin from "@fullcalendar/list";
+    import tippy from "tippy.js";
+    // import v from "voca";
+
+    const calendarElement = document.querySelector("#calendar") as HTMLElement;
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+
+    // async function getEventData() {
+    //     const res = await fetch(`/api/events.json`, {
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //         },
+    //     });
+    //     if (res.ok) {
+    //         const data = await res.json();
+    //         const { upcoming_events } = data;
+    //         if (upcoming_events.length) {
+    //             return upcoming_events as Array<any>;
+    //         } else {
+    //             return [];
+    //         }
+    //     }
+    //     return [];
+    // }
+
+    // const events = await getEventData();
+
+    // const calendarItems = [
+    //     ...events.map((event) => ({
+    //         id: event.id,
+    //         title: event.title,
+    //         start: event.date,
+    //         // end: ,
+    //         extendedProps: {
+    //             type: "event",
+    //             // description: event.,
+    //             location: event.location,
+    //             category: event.category,
+    //             // image: ,
+    //             permalink: event.permalink,
+    //         },
+    //     })),
+    // ];
+
+    const calendar = new Calendar(calendarElement, {
+        plugins: [dayGridPlugin, listPlugin, googleCalendarPlugin],
+        googleCalendarApiKey: "AIzaSyALfrmXSrV_Qxgtod5Jvu9FBQrnzRmYsRQ",
+        initialView: mediaQuery.matches ? "listWeek" : "dayGridMonth",
+        headerToolbar: {
+            start: "title",
+            center: "dayGridMonth,listWeek",
+            end: "today prev,next",
+        },
+        buttonText: {
+            today: "Today",
+            dayGridMonth: "View Month",
+            listWeek: "View List",
+        },
+        eventSources: [
+            {
+                googleCalendarId:
+                    "c_634dd972237f4bda93a24955f2b6032fb19b779f1a17aa6170da70e79197663d@group.calendar.google.com",
+            },
+            // {
+            //     events: calendarItems,
+            // },
+        ],
+        eventClick: (info) => {
+            info.jsEvent.preventDefault();
+            const instance = tippy(info.el, {
+                trigger: "click",
+                interactive: true,
+                allowHTML: true,
+            });
+
+            console.log(info.event);
+
+            instance.setContent(
+                `<div><div class="tooltip-title">${info.event.title}</div><a href="${info.event.url}" target="_blank" style="display: block; margin-top: 6px">Google Calendar Link</a></div>`,
+            );
+
+            instance.show();
+        },
+    });
+
+    calendar.render();
+    mediaQuery.addEventListener("change", () => {
+        // console.log("media breakpoint");
+        calendar.render();
+    });
+</script>

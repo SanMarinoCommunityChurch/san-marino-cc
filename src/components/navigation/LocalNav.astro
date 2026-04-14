@@ -1,0 +1,152 @@
+---
+import type {
+    NavigationSection,
+    NavigationSectionPageEntry,
+} from "@content/navigation";
+import { NAVIGATION_IDS } from "@utils/dicts";
+import { buildNavHref } from "@utils/buildNavHref";
+import { getEntry } from "astro:content";
+
+interface Props {
+    pageID: string;
+}
+
+const { pageID } = Astro.props;
+
+// todo: add override for giving pages
+
+const fullNav = await getEntry("navigation", NAVIGATION_IDS.full);
+const section = fullNav?.data.entries.find((item) => {
+    if (item.type === "navigationSection") {
+        return item.pages.find(
+            (page) => (page as NavigationSectionPageEntry)._id === pageID,
+        );
+    }
+});
+
+let currentPage = Astro.url.pathname;
+if (currentPage.endsWith("/")) {
+    currentPage = currentPage.slice(0, -1);
+}
+
+let isGivingSection = false;
+if (
+    ["/giving/stewardship", "/giving/the-foundation-of-smcc"].includes(
+        currentPage,
+    )
+) {
+    isGivingSection = true;
+}
+
+const givingLocalNav = {
+    name: "Giving",
+    pages: [
+        {
+            name: "Ways to Give",
+            href: "/giving",
+        },
+        {
+            name: "The Foundation of SMCC",
+            href: "/giving/the-foundation-of-smcc",
+        },
+        {
+            name: "Stewardship",
+            href: "/giving/stewardship",
+        },
+    ],
+};
+---
+
+{
+    section ? (
+        <div class="local-nav cluster">
+            <div class="small-title">{section.name}</div>
+            <div class="divider">|</div>
+            <ul class="cluster">
+                {(section as NavigationSection).pages.map((page) => {
+                    const pageUrl = buildNavHref(page);
+                    return (
+                        <li class="text-step--1">
+                            <a
+                                class:list={[
+                                    "link",
+                                    pageUrl === currentPage && "active",
+                                ]}
+                                href={pageUrl}
+                            >
+                                {page.name}
+                            </a>
+                        </li>
+                    );
+                })}
+            </ul>
+        </div>
+    ) : isGivingSection ? (
+        <div class="local-nav cluster">
+            <div class="small-title">{givingLocalNav.name}</div>
+            <div class="divider">|</div>
+            <ul class="cluster">
+                {givingLocalNav.pages.map((item) => (
+                    <li class="text-step--1">
+                        <a
+                            class:list={[
+                                "link",
+                                item.href === currentPage && "active",
+                            ]}
+                            href={item.href}
+                        >
+                            {item.name}
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    ) : undefined
+}
+
+<style>
+    .local-nav {
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--rounded-corners);
+        background: var(--color-primary-800);
+        color: var(--color-primary-100);
+        position: absolute;
+        bottom: -6rem;
+
+        & ul.cluster {
+            position: relative;
+            top: 0;
+        }
+    }
+
+    .divider {
+        color: var(--color-primary-300);
+        position: relative;
+        top: 0;
+    }
+
+    .link {
+        --active-color: var(--color-primary-300);
+        --active-decoration: none;
+        text-decoration: none;
+        background-color: #ffffff00;
+        padding: 4px 8px 3px;
+        border-radius: var(--rounded-corners-small);
+        transition: background-color 0.1s ease;
+
+        &.active {
+            color: var(--color-primary-300);
+        }
+
+        &:hover {
+            color: var(--color-primary-100);
+            background-color: #ffffff20;
+        }
+    }
+
+    @media (max-width: 450px) {
+        .local-nav {
+            display: none;
+        }
+    }
+</style>

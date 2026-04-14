@@ -1,99 +1,107 @@
 ---
-import { urlFor } from "../lib/sanity";
-// import ImageOpt from "./ImageOpt.astro";
-import { Image } from "astro:assets";
+import SanityImage from "@components/SanityImage.astro";
+import type { SanityImage as SanityImageType } from "@content/schemaFragments/sanityComponents";
+
+interface Props {
+    image?: SanityImageType | null;
+    title?: string;
+    description?: string | null;
+    href?: string;
+    arrow?: boolean;
+}
 
 const {
-  image,
-  title = "Title",
-  description = "Description",
-  href = "#",
-  arrow,
+    image,
+    title = "Title",
+    description = "Description",
+    href = "#",
+    arrow,
 } = Astro.props;
 ---
 
-<article class="img-card">
-  <a href={href} class="flow">
-    <div class="frame">
-      <Image
-        class="img"
-        src={urlFor(image).width(600).height(375).auto("format").url()}
-        width={600}
-        height={375}
-        format="webp"
-        alt={image.asset.altText || ""}
-        style={`background-image: url(${image.asset.metadata.lqip})`}
-      />
-    </div>
-    <div class="cluster">
-      <h3 class="text-step-2">{title}</h3>
-      {
-        arrow && (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 448 512"
-            width="16"
-            height="16"
-            fill="var(--svg-fill)"
-          >
-            <path d="M440.6 273.4c4.7-4.5 7.4-10.8 7.4-17.4s-2.7-12.8-7.4-17.4l-176-168c-9.6-9.2-24.8-8.8-33.9 .8s-8.8 24.8 .8 33.9L364.1 232 24 232c-13.3 0-24 10.7-24 24s10.7 24 24 24l340.1 0L231.4 406.6c-9.6 9.2-9.9 24.3-.8 33.9s24.3 9.9 33.9 .8l176-168z" />
-          </svg>
-        )
-      }
-    </div>
-    <p class="text-step--1">{description}</p>
-  </a>
-</article>
+<div class="img-card">
+    <a class="flow" href={href}>
+        <div class="frame">
+            {
+                image && (
+                    <SanityImage
+                        aspectRatio={[24, 15]}
+                        class:list={["image-scale-in"]}
+                        source={image}
+                        width={600}
+                    />
+                )
+            }
+        </div>
+        <div class="cluster">
+            <h3 class="text-step-2">{title}</h3>
+            {
+                arrow && (
+                    <svg
+                        fill="var(--svg-fill)"
+                        height="16"
+                        viewBox="0 0 448 512"
+                        width="16"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path d="M440.6 273.4c4.7-4.5 7.4-10.8 7.4-17.4s-2.7-12.8-7.4-17.4l-176-168c-9.6-9.2-24.8-8.8-33.9 .8s-8.8 24.8 .8 33.9L364.1 232 24 232c-13.3 0-24 10.7-24 24s10.7 24 24 24l340.1 0L231.4 406.6c-9.6 9.2-9.9 24.3-.8 33.9s24.3 9.9 33.9 .8l176-168z" />
+                    </svg>
+                )
+            }
+        </div>
+        <p class="text-step--1">{description}</p>
+    </a>
+</div>
 
 <style>
-  .img-card {
-    max-width: 30rem;
-  }
+    .img-card {
+        max-width: 30rem;
+    }
 
-  .img-card a {
-    text-decoration: none;
-    border-radius: var(--rounded-corners);
-    background-color: transparent;
-    padding: 0.75rem;
-    transition: background-color 0.2s ease;
-  }
+    .img-card a {
+        text-decoration: none;
+        border-radius: var(--rounded-corners);
+        background-color: transparent;
+        padding: 0.75rem;
+        transition: background-color 0.2s ease;
+    }
 
-  .img-card:hover a {
-    background-color: var(--color-primary-100);
-  }
+    .img-card:hover a {
+        background-color: var(--color-primary-100);
+    }
 
-  .img-card:hover svg {
-    transform: translateX(5px);
-  }
+    .img-card:hover svg {
+        transform: translateX(5px);
+    }
 
-  .img-card:hover .frame img {
-    transform: scale(1.05);
-  }
+    .img-card:hover .frame img {
+        transform: scale(1.05);
+    }
 
-  .frame {
-    --width: 8;
-    --height: 5;
-    border-radius: var(--rounded-corners);
-  }
+    .frame {
+        --width: 8;
+        --height: 5;
+        border-radius: var(--rounded-corners);
+    }
 
-  .frame img {
-    border-radius: var(--rounded-corners);
-    transition: transform 0.3s ease;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
+    .frame img {
+        border-radius: var(--rounded-corners);
+        transition: transform 0.3s ease;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
 
-  .cluster {
-    --cluster-space: 9px;
-  }
+    .cluster {
+        --cluster-space: 9px;
+    }
 
-  .text-step--1 {
-    color: var(--color-body-text);
-  }
+    .text-step--1 {
+        color: var(--color-body-text);
+    }
 
-  svg {
-    --svg-fill: var(--color-primary-400);
-    transition: transform 0.2s ease;
-  }
+    svg {
+        --svg-fill: var(--color-primary-400);
+        transition: transform 0.2s ease;
+    }
 </style>

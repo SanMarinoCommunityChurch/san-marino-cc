@@ -1,0 +1,17 @@
+---
+/** Custom block to use with Astro Portable Text component to render Sanity rich content. */
+import SanityImage from "@components/SanityImage.astro";
+
+const { node } = Astro.props;
+---
+
+{
+    node && (
+        <SanityImage
+            alt={node.asset.altText || ""}
+            class:list={["image-rounded"]}
+            source={node}
+            width={800}
+        />
+    )
+}

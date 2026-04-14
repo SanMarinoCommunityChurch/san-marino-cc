@@ -1,30 +1,30 @@
 /*  @link https://utopia.fyi/type/calculator?c=320,15,1.2,1280,17,1.2,8,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
 :root {
-  /* swap for tailwind blue */
-  --color-white: #fff;
-  --color-primary-base: hsl(217, 87%, 15%);
-  --color-primary-50: hsl(217, 87%, 98%);
-  --color-primary-100: #eff6ff /*hsl(217, 87%, 96%)*/;
-  --color-primary-200: #dbeafe /*hsl(217, 87%, 90%)*/;
-  --color-primary-300: #bfdbfe /*hsl(217, 87%, 80%)*/;
-  --color-primary-400: #93c5fd /* hsl(217, 87%, 70%) */;
-  --color-primary-500: hsl(217, 87%, 60%);
-  --color-primary-600: hsl(217, 87%, 50%);
-  --color-primary-700: #1e40af /* hsl(217, 87%, 40%) */;
-  --color-primary-800: #1e3a8a /*#01117e hsl(217, 87%, 30%)*/;
-  --color-primary-900: #172554 /*#010e65 hsl(217, 87%, 20%)*/;
-  --color-primary-950: hsl(217, 87%, 5%);
-  --color-neutral-50: hsl(216, 33%, 97%);
-  --color-neutral-100: hsl(214, 15%, 91%);
-  --color-neutral-200: hsl(210, 16%, 82%);
-  --color-neutral-300: hsl(211, 13%, 65%);
-  --color-neutral-400: hsl(211, 10%, 53%);
-  --color-neutral-500: hsl(211, 12%, 43%);
-  --color-neutral-600: hsl(209, 14%, 37%);
-  --color-neutral-700: hsl(209, 18%, 30%);
-  --color-neutral-800: hsl(209, 20%, 25%);
-  --color-neutral-900: hsl(210, 24%, 16%);
-  /*--color-neutral-100: hsl(209, 34%, 96%);
+    /* swap for tailwind blue */
+    --color-white: #fff;
+    --color-primary-base: hsl(217, 87%, 15%);
+    --color-primary-50: hsl(217, 87%, 98%);
+    --color-primary-100: #eff6ff /*hsl(217, 87%, 96%)*/;
+    --color-primary-200: #dbeafe /*hsl(217, 87%, 90%)*/;
+    --color-primary-300: #bfdbfe /*hsl(217, 87%, 80%)*/;
+    --color-primary-400: #93c5fd /* hsl(217, 87%, 70%) */;
+    --color-primary-500: hsl(217, 87%, 60%);
+    --color-primary-600: hsl(217, 87%, 50%);
+    --color-primary-700: #1e40af /* hsl(217, 87%, 40%) */;
+    --color-primary-800: #1e3a8a /*#01117e hsl(217, 87%, 30%)*/;
+    --color-primary-900: #172554 /*#010e65 hsl(217, 87%, 20%)*/;
+    --color-primary-950: hsl(217, 87%, 5%);
+    --color-neutral-50: hsl(216, 33%, 97%);
+    --color-neutral-100: hsl(214, 15%, 91%);
+    --color-neutral-200: hsl(210, 16%, 82%);
+    --color-neutral-300: hsl(211, 13%, 65%);
+    --color-neutral-400: hsl(211, 10%, 53%);
+    --color-neutral-500: hsl(211, 12%, 43%);
+    --color-neutral-600: hsl(209, 14%, 37%);
+    --color-neutral-700: hsl(209, 18%, 30%);
+    --color-neutral-800: hsl(209, 20%, 25%);
+    --color-neutral-900: hsl(210, 24%, 16%);
+    /*--color-neutral-100: hsl(209, 34%, 96%);
   --color-neutral-200: hsl(209, 34%, 90%);
   --color-neutral-300: hsl(209, 34%, 80%);
   --color-neutral-400: hsl(209, 34%, 70%);
@@ -34,66 +34,67 @@
   --color-neutral-800: hsl(209, 34%, 30%);
   --color-neutral-900: hsl(209, 34%, 20%);
   --color-neutral-950: hsl(209, 34%, 10%);*/
-  --color-secondary-50: hsl(188, 33%, 94%);
-  --color-secondary-100: hsl(190, 34%, 86%);
-  --color-secondary-200: hsl(189, 34%, 76%);
-  --color-secondary-300: hsl(188, 35%, 66%);
-  --color-secondary-400: hsl(189, 35%, 57%);
-  --color-secondary-500: hsl(189, 35%, 52%);
-  --color-secondary-600: hsl(189, 32%, 47%);
-  --color-secondary-700: hsl(189, 32%, 42%);
-  --color-secondary-800: hsl(188, 32%, 46%);
-  --color-secondary-900: hsl(188, 32%, 31%);
-  /*--color-tertiary: hsl(57, 100%, 80%);*/
-  --color-tertiary-50: hsl(351, 78%, 98%);
-  --color-tertiary-100: hsl(347, 70%, 96%);
-  --color-tertiary-200: hsl(349, 70%, 92%);
-  --color-tertiary-300: hsl(349, 72%, 89%);
-  --color-tertiary-400: hsl(348, 72%, 85%);
-  --color-tertiary-500: hsl(348, 71%, 81%);
-  --color-tertiary-600: hsl(348, 45%, 73%);
-  --color-tertiary-900: hsl(347, 17%, 32%);
-  --color-header-text: var(--color-primary-800);
-  --color-body-text: var(--color-neutral-700);
-  --step--2: clamp(0.65rem, calc(0.62rem + 0.14vw), 0.74rem);
-  --step--1: clamp(0.78rem, calc(0.75rem + 0.17vw), 0.89rem);
-  --step-0: clamp(0.94rem, calc(0.9rem + 0.21vw), 1.06rem);
-  --step-1: clamp(1.13rem, calc(1.08rem + 0.25vw), 1.28rem);
-  --step-2: clamp(1.35rem, calc(1.29rem + 0.3vw), 1.53rem);
-  --step-3: clamp(1.62rem, calc(1.55rem + 0.36vw), 1.84rem);
-  --step-4: clamp(1.94rem, calc(1.86rem + 0.43vw), 2.2rem);
-  --step-5: clamp(2.33rem, calc(2.23rem + 0.52vw), 2.64rem);
-  --step-6: clamp(2.8rem, calc(2.68rem + 0.62vw), 3.17rem);
-  --step-7: clamp(3.36rem, calc(3.21rem + 0.75vw), 3.81rem);
-  --step-8: clamp(4.03rem, calc(3.85rem + 0.9vw), 4.57rem);
-  --space-3xs: clamp(0.25rem, calc(0.25rem + 0vw), 0.25rem);
-  --space-2xs: clamp(0.5rem, calc(0.48rem + 0.1vw), 0.56rem);
-  --space-xs: clamp(0.69rem, calc(0.65rem + 0.21vw), 0.81rem);
-  --space-s: clamp(0.94rem, calc(0.9rem + 0.21vw), 1.06rem);
-  --space-m: clamp(1.44rem, calc(1.38rem + 0.31vw), 1.63rem);
-  --space-l: clamp(1.88rem, calc(1.79rem + 0.42vw), 2.13rem);
-  --space-xl: clamp(2.81rem, calc(2.69rem + 0.63vw), 3.19rem);
-  --space-2xl: clamp(3.75rem, calc(3.58rem + 0.83vw), 4.25rem);
-  --space-3xl: clamp(5.63rem, calc(5.38rem + 1.25vw), 6.38rem);
-  --space-s-l: clamp(0.94rem, calc(0.54rem + 1.98vw), 2.13rem);
-  --space-m-2xl: clamp(1.44rem, calc(0.5rem + 4.69vw), 4.25rem);
-  --gutter: var(--space-s-l);
-  --font-primary: "Portada Text", var(--font-sans);
-  --font-secondary: "Freight Sans", var(--font-sans);
-  --font-emphasis: var(--font-sans);
-  --font-sans: system-ui, "Segoe UI", Helvetica, Arial, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji";
-  --font-weight-text: 400;
-  --font-weight-semi: 600;
-  --font-weight-header: 900;
-  --rounded-corners: 6px;
-  --rounded-corners-small: 4px;
-  --shadow-none: 0px 0px 0px rgb(0 0 0 / 0);
-  --shadow-base: 0px 4px 16px rgb(0 0 0 / 0.05);
-  --shadow-large: 0px 4px 32px rgb(0 0 0 / 0.12);
-  --section-spacer: 10rem;
-  --section-spacer-half: 6rem;
-  --paragraph-measure: 67ch;
+    --color-secondary-50: hsl(188, 33%, 94%);
+    --color-secondary-100: hsl(190, 34%, 86%);
+    --color-secondary-200: hsl(189, 34%, 76%);
+    --color-secondary-300: hsl(188, 35%, 66%);
+    --color-secondary-400: hsl(189, 35%, 57%);
+    --color-secondary-500: hsl(189, 35%, 52%);
+    --color-secondary-600: hsl(189, 32%, 47%);
+    --color-secondary-700: hsl(189, 32%, 42%);
+    --color-secondary-800: hsl(188, 32%, 46%);
+    --color-secondary-900: hsl(188, 32%, 31%);
+    /*--color-tertiary: hsl(57, 100%, 80%);*/
+    --color-tertiary-50: hsl(351, 78%, 98%);
+    --color-tertiary-100: hsl(347, 70%, 96%);
+    --color-tertiary-200: hsl(349, 70%, 92%);
+    --color-tertiary-300: hsl(349, 72%, 89%);
+    --color-tertiary-400: hsl(348, 72%, 85%);
+    --color-tertiary-500: hsl(348, 71%, 81%);
+    --color-tertiary-600: hsl(348, 45%, 73%);
+    --color-tertiary-900: hsl(347, 17%, 32%);
+    --color-header-text: var(--color-primary-800);
+    --color-body-text: var(--color-neutral-700);
+    --step--2: clamp(0.65rem, calc(0.62rem + 0.14vw), 0.74rem);
+    --step--1: clamp(0.78rem, calc(0.75rem + 0.17vw), 0.89rem);
+    --step-0: clamp(0.94rem, calc(0.9rem + 0.21vw), 1.06rem);
+    --step-1: clamp(1.13rem, calc(1.08rem + 0.25vw), 1.28rem);
+    --step-2: clamp(1.35rem, calc(1.29rem + 0.3vw), 1.53rem);
+    --step-3: clamp(1.62rem, calc(1.55rem + 0.36vw), 1.84rem);
+    --step-4: clamp(1.94rem, calc(1.86rem + 0.43vw), 2.2rem);
+    --step-5: clamp(2.33rem, calc(2.23rem + 0.52vw), 2.64rem);
+    --step-6: clamp(2.8rem, calc(2.68rem + 0.62vw), 3.17rem);
+    --step-7: clamp(3.36rem, calc(3.21rem + 0.75vw), 3.81rem);
+    --step-8: clamp(4.03rem, calc(3.85rem + 0.9vw), 4.57rem);
+    --space-3xs: clamp(0.25rem, calc(0.25rem + 0vw), 0.25rem);
+    --space-2xs: clamp(0.5rem, calc(0.48rem + 0.1vw), 0.56rem);
+    --space-xs: clamp(0.69rem, calc(0.65rem + 0.21vw), 0.81rem);
+    --space-s: clamp(0.94rem, calc(0.9rem + 0.21vw), 1.06rem);
+    --space-m: clamp(1.44rem, calc(1.38rem + 0.31vw), 1.63rem);
+    --space-l: clamp(1.88rem, calc(1.79rem + 0.42vw), 2.13rem);
+    --space-xl: clamp(2.81rem, calc(2.69rem + 0.63vw), 3.19rem);
+    --space-2xl: clamp(3.75rem, calc(3.58rem + 0.83vw), 4.25rem);
+    --space-3xl: clamp(5.63rem, calc(5.38rem + 1.25vw), 6.38rem);
+    --space-s-l: clamp(0.94rem, calc(0.54rem + 1.98vw), 2.13rem);
+    --space-m-2xl: clamp(1.44rem, calc(0.5rem + 4.69vw), 4.25rem);
+    --gutter: var(--space-s-l);
+    --font-primary: "Portada Text", var(--font-sans);
+    --font-secondary: "Freight Sans", var(--font-sans);
+    --font-emphasis: var(--font-sans);
+    --font-sans:
+        system-ui, "Segoe UI", Helvetica, Arial, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji";
+    --font-weight-text: 400;
+    --font-weight-semi: 600;
+    --font-weight-header: 900;
+    --rounded-corners: 6px;
+    --rounded-corners-small: 4px;
+    --shadow-none: 0px 0px 0px rgb(0 0 0 / 0);
+    --shadow-base: 0px 4px 16px rgb(0 0 0 / 0.05);
+    --shadow-large: 0px 4px 32px rgb(0 0 0 / 0.12);
+    --section-spacer: 10rem;
+    --section-spacer-half: 6rem;
+    --paragraph-measure: 67ch;
 }
 
 /*! modern-normalize v1.1.0 | MIT License | https://github.com/sindresorhus/modern-normalize */
@@ -110,7 +111,7 @@ Use a better box model (opinionated).
 *,
 ::before,
 ::after {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 /**
@@ -120,10 +121,10 @@ Use a better box model (opinionated).
 */
 
 html {
-  line-height: 1.6; /* 1 */
-  -webkit-text-size-adjust: 100%; /* 2 */
-  -moz-tab-size: 4; /* 3 */
-  tab-size: 4; /* 3 */
+    line-height: 1.6; /* 1 */
+    -webkit-text-size-adjust: 100%; /* 2 */
+    -moz-tab-size: 4; /* 3 */
+    tab-size: 4; /* 3 */
 }
 
 /*
@@ -137,11 +138,11 @@ Sections
 */
 
 body {
-  margin: 0; /* 1 */
-  font-size: var(--step-0);
-  font-family: var(--font-primary);
-  font-weight: var(--font-weight-text);
-  color: var(--color-body-text);
+    margin: 0; /* 1 */
+    font-size: var(--step-0);
+    font-family: var(--font-primary);
+    font-weight: var(--font-weight-text);
+    color: var(--color-body-text);
 }
 
 /*
@@ -155,8 +156,8 @@ Grouping content
 */
 
 hr {
-  height: 0; /* 1 */
-  color: inherit; /* 2 */
+    height: 0; /* 1 */
+    color: inherit; /* 2 */
 }
 
 /*
@@ -169,7 +170,7 @@ Add the correct text decoration in Chrome, Edge, and Safari.
 */
 
 abbr[title] {
-  text-decoration: underline dotted;
+    text-decoration: underline dotted;
 }
 
 /**
@@ -178,7 +179,7 @@ Add the correct font weight in Edge and Safari.
 
 b,
 strong {
-  font-weight: bolder;
+    font-weight: bolder;
 }
 
 /**
@@ -190,9 +191,10 @@ code,
 kbd,
 samp,
 pre {
-  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo,
-    monospace; /* 1 */
-  font-size: 1em; /* 2 */
+    font-family:
+        ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo,
+        monospace; /* 1 */
+    font-size: 1em; /* 2 */
 }
 
 /**
@@ -200,7 +202,7 @@ Add the correct font size in all browsers.
 */
 
 small {
-  font-size: 80%;
+    font-size: 80%;
 }
 
 /**
@@ -209,18 +211,18 @@ Prevent 'sub' and 'sup' elements from affecting the line height in all browsers.
 
 sub,
 sup {
-  font-size: 75%;
-  line-height: 0;
-  position: relative;
-  vertical-align: baseline;
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
 }
 
 sub {
-  bottom: -0.25em;
+    bottom: -0.25em;
 }
 
 sup {
-  top: -0.5em;
+    top: -0.5em;
 }
 
 /*
@@ -234,8 +236,8 @@ Tabular data
 */
 
 table {
-  text-indent: 0; /* 1 */
-  border-color: inherit; /* 2 */
+    text-indent: 0; /* 1 */
+    border-color: inherit; /* 2 */
 }
 
 /*
@@ -253,10 +255,10 @@ input,
 optgroup,
 select,
 textarea {
-  font-family: inherit; /* 1 */
-  font-size: 100%; /* 1 */
-  line-height: 1.15; /* 1 */
-  margin: 0; /* 2 */
+    font-family: inherit; /* 1 */
+    font-size: 100%; /* 1 */
+    line-height: 1.15; /* 1 */
+    margin: 0; /* 2 */
 }
 
 /**
@@ -265,7 +267,7 @@ Remove the inheritance of text transform in Edge and Firefox.
 
 button,
 select {
-  text-transform: none;
+    text-transform: none;
 }
 
 /**
@@ -276,7 +278,7 @@ button,
 [type="button"],
 [type="reset"],
 [type="submit"] {
-  -webkit-appearance: button;
+    -webkit-appearance: button;
 }
 
 /**
@@ -284,8 +286,8 @@ Remove the inner border and padding in Firefox.
 */
 
 ::-moz-focus-inner {
-  border-style: none;
-  padding: 0;
+    border-style: none;
+    padding: 0;
 }
 
 /**
@@ -293,7 +295,7 @@ Restore the focus styles unset by the previous rule.
 */
 
 :-moz-focusring {
-  outline: 1px dotted ButtonText;
+    outline: 1px dotted ButtonText;
 }
 
 /**
@@ -302,7 +304,7 @@ See: https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d4
 */
 
 :-moz-ui-invalid {
-  box-shadow: none;
+    box-shadow: none;
 }
 
 /**
@@ -310,7 +312,7 @@ Remove the padding so developers are not caught out when they zero out 'fieldset
 */
 
 legend {
-  padding: 0;
+    padding: 0;
 }
 
 /**
@@ -318,7 +320,7 @@ Add the correct vertical alignment in Chrome and Firefox.
 */
 
 progress {
-  vertical-align: baseline;
+    vertical-align: baseline;
 }
 
 /**
@@ -327,7 +329,7 @@ Correct the cursor style of increment and decrement buttons in Safari.
 
 ::-webkit-inner-spin-button,
 ::-webkit-outer-spin-button {
-  height: auto;
+    height: auto;
 }
 
 /**
@@ -336,8 +338,8 @@ Correct the cursor style of increment and decrement buttons in Safari.
 */
 
 [type="search"] {
-  -webkit-appearance: textfield; /* 1 */
-  outline-offset: -2px; /* 2 */
+    -webkit-appearance: textfield; /* 1 */
+    outline-offset: -2px; /* 2 */
 }
 
 /**
@@ -345,7 +347,7 @@ Remove the inner padding in Chrome and Safari on macOS.
 */
 
 ::-webkit-search-decoration {
-  -webkit-appearance: none;
+    -webkit-appearance: none;
 }
 
 /**
@@ -354,8 +356,8 @@ Remove the inner padding in Chrome and Safari on macOS.
 */
 
 ::-webkit-file-upload-button {
-  -webkit-appearance: button; /* 1 */
-  font: inherit; /* 2 */
+    -webkit-appearance: button; /* 1 */
+    font: inherit; /* 2 */
 }
 
 /*
@@ -368,7 +370,7 @@ Add the correct display in Chrome and Safari.
 */
 
 summary {
-  display: list-item;
+    display: list-item;
 }
 
 /*
@@ -378,12 +380,12 @@ Picallili and Tailwind
 */
 
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
 
 body {
-  min-height: 100vh;
-  text-rendering: optimizeSpeed;
+    min-height: 100vh;
+    text-rendering: optimizeSpeed;
 }
 
 blockquote,
@@ -399,7 +401,7 @@ hr,
 figure,
 p,
 pre {
-  margin: 0;
+    margin: 0;
 }
 
 h1,
@@ -408,143 +410,143 @@ h3,
 h4,
 h5,
 h6 {
-  font-size: inherit;
-  font-weight: inherit;
-  font-family: var(--font-secondary);
-  font-weight: var(--font-weight-header);
-  color: var(--color-header-text);
-  line-height: 1.2;
+    font-size: inherit;
+    font-weight: inherit;
+    font-family: var(--font-secondary);
+    font-weight: var(--font-weight-header);
+    color: var(--color-header-text);
+    line-height: 1.2;
 }
 
 ol,
 ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 a {
-  color: inherit;
-  text-decoration: inherit;
+    color: inherit;
+    text-decoration: inherit;
 }
 
 img,
 picture {
-  max-width: 100%;
-  height: auto;
-  display: block;
+    max-width: 100%;
+    height: auto;
+    display: block;
 }
 
 input,
 button,
 textarea,
 select {
-  font: inherit;
+    font: inherit;
 }
 
 /* Remove all animations and transitions for people that prefer not to see them */
 @media (prefers-reduced-motion: reduce) {
-  html:focus-within {
-    scroll-behavior: auto;
-  }
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+    html:focus-within {
+        scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }
 
 /* Misc utilities */
 
 .sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
 }
 
 .relative {
-  position: relative;
+    position: relative;
 }
 
 .icon {
-  width: 1em;
-  height: 1em;
+    width: 1em;
+    height: 1em;
 }
 
 .icon-small {
-  width: 0.75em;
-  height: 0.75em;
+    width: 0.75em;
+    height: 0.75em;
 }
 
 .mx-auto {
-  margin-inline: auto;
+    margin-inline: auto;
 }
 
 /* Typography utilities */
 .text-step--2 {
-  font-size: var(--step--2);
+    font-size: var(--step--2);
 }
 
 .text-step--1 {
-  font-size: var(--step--1);
+    font-size: var(--step--1);
 }
 
 .text-step-0 {
-  font-size: var(--step-0);
+    font-size: var(--step-0);
 }
 
 .text-step-1 {
-  font-size: var(--step-1);
+    font-size: var(--step-1);
 }
 
 .text-step-2 {
-  font-size: var(--step-2);
+    font-size: var(--step-2);
 }
 
 .text-step-3 {
-  font-size: var(--step-3);
+    font-size: var(--step-3);
 }
 
 .text-step-4 {
-  font-size: var(--step-4);
+    font-size: var(--step-4);
 }
 
 .text-step-5 {
-  font-size: var(--step-5);
+    font-size: var(--step-5);
 }
 
 .text-step-6 {
-  font-size: var(--step-6);
+    font-size: var(--step-6);
 }
 
 .text-step-7 {
-  font-size: var(--step-7);
+    font-size: var(--step-7);
 }
 
 .text-step-8 {
-  font-size: var(--step-8);
+    font-size: var(--step-8);
 }
 
 .text-step-9 {
-  font-size: var(--step-9);
+    font-size: var(--step-9);
 }
 
 .font-header {
-  font-family: var(--font-secondary);
-  font-weight: var(--font-weight-header);
+    font-family: var(--font-secondary);
+    font-weight: var(--font-weight-header);
 }
 
 .leading-tight {
-  line-height: 1.15;
+    line-height: 1.15;
 }
 
 /*
@@ -569,67 +571,67 @@ select {
 .menu-toggle,
 .disclosure-button,
 .video-tabs-list button {
-  position: relative;
-  display: block;
-  border: 0;
-  margin: 0;
-  appearance: none;
-  background-color: transparent;
-  color: inherit;
-  cursor: pointer;
-  z-index: 20;
+    position: relative;
+    display: block;
+    border: 0;
+    margin: 0;
+    appearance: none;
+    background-color: transparent;
+    color: inherit;
+    cursor: pointer;
+    z-index: 20;
 }
 
 .disclosure-button,
 .video-tabs-list button {
-  width: 100%;
-  text-decoration: none !important;
-  text-align: left;
-  padding: 0;
+    width: 100%;
+    text-decoration: none !important;
+    text-align: left;
+    padding: 0;
 }
 
 .video-tabs-list button {
-  border-radius: var(--rounded-corners);
-  background-color: var(--color-primary-100);
-  transition: all 0.3s ease;
+    border-radius: var(--rounded-corners);
+    background-color: var(--color-primary-100);
+    transition: all 0.3s ease;
 }
 
 .video-tabs-list button.active {
-  color: var(--color-primary-100);
-  background-color: var(--color-primary-800);
+    color: var(--color-primary-100);
+    background-color: var(--color-primary-800);
 }
 
 .video-tabs-list button.active h2 {
-  color: var(--color-primary-100);
+    color: var(--color-primary-100);
 }
 
 /* Color utilities */
 .color-white {
-  color: var(--color-white);
+    color: var(--color-white);
 }
 
 .color-primary-50 {
-  color: var(--color-primary-50);
+    color: var(--color-primary-50);
 }
 
 .color-primary-500 {
-  color: var(--color-primary-500);
+    color: var(--color-primary-500);
 }
 
 .color-primary-200 {
-  color: var(--color-primary-200);
+    color: var(--color-primary-200);
 }
 
 .color-neutral-700 {
-  color: var(--color-neutral-700);
+    color: var(--color-neutral-700);
 }
 
 .color-neutral-800 {
-  color: var(--color-neutral-800);
+    color: var(--color-neutral-800);
 }
 
 .color-neutral-900 {
-  color: var(--color-neutral-900);
+    color: var(--color-neutral-900);
 }
 
 /* Composition utilities */

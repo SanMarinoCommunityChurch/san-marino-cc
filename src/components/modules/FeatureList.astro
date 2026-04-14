@@ -1,0 +1,30 @@
+---
+import Feature from "@components/Feature.astro";
+import type { FeatureList as FeatureListType } from "@content/schemaFragments/sanityComponents";
+
+interface Props {
+    module: FeatureListType;
+}
+
+const { module } = Astro.props;
+---
+
+{
+    module.length > 0 && (
+        <section class="features flow">
+            {module.map((feature, i) => (
+                <Feature
+                    content={feature}
+                    layout={i % 2 ? "image-right" : "image-left"}
+                    theme={i % 2 ? "dark" : "light"}
+                />
+            ))}
+        </section>
+    )
+}
+
+<style>
+    .features {
+        --flow-space: var(--space-3xl);
+    }
+</style>

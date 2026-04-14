@@ -1,207 +1,212 @@
 ---
 const baseStyles = {
-  solid: "solid",
-  outline: "outline",
-  nav: "navLink",
-  none: "no-style",
+    solid: "solid",
+    outline: "outline",
+    nav: "navLink",
+    none: "no-style",
 };
 
 const themes = {
-  solid: {
-    primary: "primary",
-    "primary-2": "primary-2",
-    "primary-light": "primary-light",
-    "neutral-light": "neutral-light",
-    "neutral-dark": "neutral-dark",
-    secondary: "secondary",
-    white: "white",
-  },
-  outline: {
-    primary: "primary",
-    neutral: "neutral",
-    secondary: "secondary",
-  },
-  nav: {
-    neutral: "neutral",
-    primary: "primary",
-  },
-  none: {
-    primary: "primary",
-    "primary-light": "primary-light",
-  },
+    solid: {
+        primary: "primary",
+        "primary-2": "primary-2",
+        "primary-light": "primary-light",
+        "neutral-light": "neutral-light",
+        "neutral-dark": "neutral-dark",
+        secondary: "secondary",
+        white: "white",
+    },
+    outline: {
+        primary: "primary",
+        neutral: "neutral",
+        secondary: "secondary",
+    },
+    nav: {
+        neutral: "neutral",
+        primary: "primary",
+    },
+    none: {
+        primary: "primary",
+        "primary-light": "primary-light",
+    },
 };
 
 const sizes = {
-  base: "base",
-  large: "large",
-  none: "no-size",
+    base: "base",
+    large: "large",
+    none: "no-size",
 };
 
 const widths = {
-  fit: "w-fit",
+    fit: "w-fit",
 };
 
 const {
-  style = "solid",
-  theme = "primary",
-  size = "base",
-  width,
-  href,
-  className,
-  ...props
+    style = "solid",
+    theme = "primary",
+    size = "base",
+    width,
+    href,
+    className,
+    ...props
 } = Astro.props;
 
+// @ts-ignore
 const classList = [
-  "btn",
-  baseStyles[style],
-  themes[style][theme],
-  sizes[size],
-  widths[width],
-  className,
+    "btn",
+    // @ts-ignore
+    baseStyles[style],
+    // @ts-ignore
+    themes[style][theme],
+    // @ts-ignore
+    sizes[size],
+    // @ts-ignore
+    widths[width],
+    className,
 ];
 ---
 
 {
-  href ? (
-    <a href={href} class:list={classList} {...props}>
-      <slot>Link</slot>
-    </a>
-  ) : (
-    <button class:list={classList} {...props}>
-      <slot>Button</slot>
-    </button>
-  )
+    href ? (
+        <a class:list={classList} href={href} {...props}>
+            <slot />
+        </a>
+    ) : (
+        <button class:list={classList} {...props}>
+            <slot />
+        </button>
+    )
 }
 
 <style>
-  button {
-    padding: 0;
-    border: 0;
-    margin: 0;
-    appearance: none;
-    background-color: transparent;
-    cursor: pointer;
-  }
+    button {
+        padding: 0;
+        border: 0;
+        margin: 0;
+        appearance: none;
+        background-color: transparent;
+        cursor: pointer;
+    }
 
-  a {
-    text-decoration: none;
-  }
+    a {
+        text-decoration: none;
+    }
 
-  button,
-  a {
-    font-family: var(--font-secondary);
-    font-weight: var(--font-weight-semi);
-    letter-spacing: 1.5pt;
-    text-transform: uppercase;
-    border-radius: 4px;
-    color: inherit;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.45rem;
-    transition: all 0.2s ease-in-out;
-  }
+    button,
+    a {
+        font-family: var(--font-secondary);
+        font-weight: var(--font-weight-semi);
+        letter-spacing: 1.5pt;
+        text-transform: uppercase;
+        border-radius: 4px;
+        color: inherit;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.45rem;
+        transition: all 0.2s ease-in-out;
+    }
 
-  button {
-    font-family: var(--font-secondary) !important;
-    font-weight: var(--font-weight-semi) !important;
-    text-transform: uppercase !important;
-  }
+    button {
+        font-family: var(--font-secondary) !important;
+        font-weight: var(--font-weight-semi) !important;
+        text-transform: uppercase !important;
+    }
 
-  .no-style.primary {
-    color: var(--color-primary-900);
-  }
+    .no-style.primary {
+        color: var(--color-primary-900);
+    }
 
-  .no-style.primary-light {
-    color: var(--color-primary-100);
-  }
+    .no-style.primary-light {
+        color: var(--color-primary-100);
+    }
 
-  .solid.primary,
-  .navLink.primary {
-    background-color: var(--color-primary-800);
-    color: var(--color-white);
-  }
+    .solid.primary,
+    .navLink.primary {
+        background-color: var(--color-primary-800);
+        color: var(--color-white);
+    }
 
-  .solid.primary:hover,
-  .navLink.primary:hover {
-    background-color: var(--color-primary-900);
-  }
+    .solid.primary:hover,
+    .navLink.primary:hover {
+        background-color: var(--color-primary-900);
+    }
 
-  .solid.primary-2 {
-    background-color: var(--color-primary-800);
-    color: var(--color-white);
-  }
+    .solid.primary-2 {
+        background-color: var(--color-primary-800);
+        color: var(--color-white);
+    }
 
-  .solid.primary-2:hover {
-    background-color: var(--color-primary-900);
-  }
+    .solid.primary-2:hover {
+        background-color: var(--color-primary-900);
+    }
 
-  .solid.primary-light {
-    background-color: var(--color-primary-200);
-    color: var(--color-primary-800);
-  }
+    .solid.primary-light {
+        background-color: var(--color-primary-200);
+        color: var(--color-primary-800);
+    }
 
-  .solid.primary-light:hover {
-    background-color: var(--color-primary-100);
-  }
+    .solid.primary-light:hover {
+        background-color: var(--color-primary-100);
+    }
 
-  .solid.white {
-    background-color: var(--color-white);
-    color: var(--color-primary-900);
-  }
+    .solid.white {
+        background-color: var(--color-white);
+        color: var(--color-primary-900);
+    }
 
-  .solid.white:hover {
-    background-color: var(--color-primary-100);
-  }
+    .solid.white:hover {
+        background-color: var(--color-primary-100);
+    }
 
-  .solid.secondary {
-    background-color: rgb(0, 131, 144);
-    color: var(--color-white);
-  }
+    .solid.secondary {
+        background-color: rgb(0, 131, 144);
+        color: var(--color-white);
+    }
 
-  .solid.secondary:hover {
-    background-color: rgb(0, 114, 124);
-  }
+    .solid.secondary:hover {
+        background-color: rgb(0, 114, 124);
+    }
 
-  .navLink.neutral {
-    background-color: transparent;
-    color: var(--color-header-text);
-  }
+    .navLink.neutral {
+        background-color: transparent;
+        color: var(--color-header-text);
+    }
 
-  .navLink.neutral:hover {
-    background-color: var(--color-primary-100);
-  }
+    .navLink.neutral:hover {
+        background-color: var(--color-primary-100);
+    }
 
-  .outline.primary {
-    border: 1px solid var(--color-primary-700);
-    color: var(--color-primary-700);
-    background-color: transparent;
-  }
+    .outline.primary {
+        border: 1px solid var(--color-primary-700);
+        color: var(--color-primary-700);
+        background-color: transparent;
+    }
 
-  .outline.primary:hover {
-    background-color: var(--color-primary-800);
-    color: var(--color-primary-100);
-  }
+    .outline.primary:hover {
+        background-color: var(--color-primary-800);
+        color: var(--color-primary-100);
+    }
 
-  .base {
-    font-size: var(--step--1);
-    line-height: 1.15;
-    padding: 0.75em 1em 0.7rem;
-  }
+    .base {
+        font-size: var(--step--1);
+        line-height: 1.15;
+        padding: 0.75em 1em 0.7rem;
+    }
 
-  .no-size {
-    font-size: var(--step--1);
-    line-height: 1.15;
-    padding: 0;
-  }
+    .no-size {
+        font-size: var(--step--1);
+        line-height: 1.15;
+        padding: 0;
+    }
 
-  .large {
-    font-size: var(--step-1);
-    line-height: 1.15;
-    padding: 1em 1.5em;
-  }
+    .large {
+        font-size: var(--step-1);
+        line-height: 1.15;
+        padding: 1em 1.5em;
+    }
 
-  .w-fit {
-    width: fit-content;
-  }
+    .w-fit {
+        width: fit-content;
+    }
 </style>

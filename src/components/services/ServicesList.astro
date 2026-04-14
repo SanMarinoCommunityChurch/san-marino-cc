@@ -1,0 +1,30 @@
+---
+import { type CollectionEntry } from "astro:content";
+import ServicePreview from "./ServicePreview.astro";
+
+interface Props {
+    services: CollectionEntry<"services">[];
+    showVideoThumbnail?: boolean;
+}
+
+const { services, showVideoThumbnail = false } = Astro.props;
+---
+
+<ul class="flow">
+    {
+        services.map((service) => (
+            <li>
+                <ServicePreview
+                    service={service}
+                    showVideoThumbnail={showVideoThumbnail}
+                />
+            </li>
+        ))
+    }
+</ul>
+
+<style>
+    ul.flow {
+        --flow-space: var(--space-l);
+    }
+</style>

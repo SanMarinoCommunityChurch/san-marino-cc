@@ -1,0 +1,137 @@
+---
+import { type CollectionEntry, getEntry } from "astro:content";
+import { type HomeWelcomeSection } from "@content/schemaFragments/sanityComponents";
+import SanityImage from "@components/SanityImage.astro";
+import getYouTubeID from "get-youtube-id";
+import { joinNames } from "@utils/format";
+
+interface Props {
+    module: HomeWelcomeSection;
+}
+
+const { module } = Astro.props;
+
+let person: CollectionEntry<"people"> | undefined = undefined;
+if (module.personRef) {
+    person = await getEntry("people", module.personRef);
+}
+
+// todo: check crop if media type is image
+---
+
+<article class="welcome" id="welcome">
+    <div class="content-wrapper with-sidebar">
+        <div class="flow">
+            {
+                person && (
+                    <Fragment>
+                        <div class="frame avatar">
+                            {person.data.image && (
+                                <SanityImage
+                                    alt={joinNames(person.data.name)}
+                                    aspectRatio={[1, 1]}
+                                    source={person.data.image}
+                                    width={300}
+                                />
+                            )}
+                        </div>
+                        <h2 class="text-step-2">{module.heading}</h2>
+                        {module.text && <p>{module.text}</p>}
+                        <p class="small-title">
+                            — {joinNames(person.data.name)}
+                        </p>
+                    </Fragment>
+                )
+            }
+            <div class="meet-grid">
+                {
+                    module.links.map((link) => (
+                        <a
+                            class="flow"
+                            href={
+                                link.href.sectionSlug
+                                    ? `/${link.href.pageSlug.fullUrl}`
+                                    : `/${link.href.pageSlug.current}`
+                            }
+                        >
+                            <i
+                                class:list={`fa-duotone fa-${link.icon}`}
+                                style="color: var(--color-primary-800);"
+                            />
+                            <h3 class="small-title">{link.title}</h3>
+                            <p class="text-step--1">{link.text}</p>
+                        </a>
+                    ))
+                }
+            </div>
+        </div>
+        <div>
+            {
+                module.media.type == "image" ? (
+                    <SanityImage
+                        alt={module.media.asset.altText || ""}
+                        class:list={["img"]}
+                        source={module.media}
+                        width={900}
+                    />
+                ) : (
+                    <lite-youtube videoid={getYouTubeID(module.media.url)} />
+                )
+            }
+        </div>
+    </div>
+</article>
+
+<style>
+    .welcome {
+        margin-block: var(--section-spacer);
+    }
+
+    .content-wrapper.with-sidebar {
+        --sidebar-gap: 3rem;
+        --sidebar-min-width: 34rem;
+        align-items: center;
+    }
+
+    .meet-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.25rem;
+        border-top: 1px solid var(--color-primary-200);
+        margin-top: 2rem;
+        padding-top: 1rem;
+
+        & a {
+            text-decoration: none;
+            border-radius: var(--rounded-corners);
+            padding: 0.75rem;
+            transition: background-color 0.2s ease;
+
+            &:hover {
+                background-color: var(--color-primary-100);
+            }
+        }
+
+        & .flow {
+            align-items: flex-start;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .welcome {
+            margin-block: var(--section-spacer-half);
+        }
+
+        .meet-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .with-sidebar > :first-child {
+            order: 2;
+        }
+
+        .with-sidebar > :last-child {
+            order: 1;
+        }
+    }
+</style>

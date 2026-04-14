@@ -1,0 +1,28 @@
+---
+import ImageBlock from "./portableTextBlocks/ImageBlock.astro";
+import { PortableText } from "astro-portabletext";
+import type { PortableText as PortableTextType } from "@content/schemaFragments/sanityComponents";
+import PreviewFeatureBlock from "./portableTextBlocks/PreviewFeatureBlock.astro";
+
+interface Props {
+    module: PortableTextType;
+}
+
+const { module } = Astro.props;
+---
+
+{
+    module.length > 0 && (
+        <section class="content rich-text">
+            <PortableText
+                components={{
+                    type: {
+                        previewFeature: PreviewFeatureBlock,
+                        image: ImageBlock,
+                    },
+                }}
+                value={module}
+            />
+        </section>
+    )
+}

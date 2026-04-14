@@ -1,46 +1,71 @@
 ---
-const { navigation, className } = Astro.props;
+interface Props {
+    navigation?: { current?: boolean; href?: string; name: string }[];
+    position?: "relative" | "absolute";
+}
+
+const { navigation, position = "relative" } = Astro.props;
 ---
 
-<ul class:list={["text-step--1 cluster small-title", className]}>
-  <li><a href="/" class="breadcrumb-link">Home</a></li>
-  {
-    navigation &&
-      navigation.map((item) => (
-        <Fragment>
-          <li>
-            <span class="divider">&gt;</span>
-            {!item.current ? (
-              <a href={item.href} class="breadcrumb-link">
-                {item.name}
-              </a>
-            ) : (
-              <Fragment>{item.name}</Fragment>
-            )}
-          </li>
-        </Fragment>
-      ))
-  }
+<ul
+    class:list={[
+        "breadcrumb-wrapper | text-step--1 cluster small-title",
+        position,
+    ]}
+>
+    <li><a class="breadcrumb-link" href="/">Home</a></li>
+    {
+        navigation &&
+            navigation.map((item) => (
+                <Fragment>
+                    <li>
+                        <span class="divider">&gt;</span>
+                        {!item.current ? (
+                            <a class="breadcrumb-link" href={item.href}>
+                                {item.name}
+                            </a>
+                        ) : (
+                            <Fragment>{item.name}</Fragment>
+                        )}
+                    </li>
+                </Fragment>
+            ))
+    }
 </ul>
 
 <style>
-  .divider {
-    color: var(--color-primary-300);
-    margin-right: 0.55rem;
-    position: relative;
-    top: -1px;
-  }
+    .divider {
+        color: var(--color-primary-300);
+        margin-right: 0.55rem;
+        position: relative;
+        top: -1px;
+    }
 
-  .breadcrumb-link {
-    color: var(--color-primary-700);
-    text-decoration: none;
-  }
+    .breadcrumb-wrapper {
+        z-index: 10;
+        padding-inline-start: var(--space-l);
+        top: 1rem;
+        width: fit-content;
 
-  .breadcrumb-link:hover {
-    text-decoration: underline;
-  }
+        &.relative {
+            position: relative;
+        }
 
-  .cluster {
-    --cluster-space: 0.5rem;
-  }
+        &.absolute {
+            position: absolute;
+        }
+    }
+
+    .breadcrumb-link {
+        color: var(--color-primary-700);
+        text-decoration: none;
+    }
+
+    .breadcrumb-link:hover {
+        text-decoration: underline;
+    }
+
+    .cluster {
+        --cluster-space: 0.5rem;
+    }
 </style>

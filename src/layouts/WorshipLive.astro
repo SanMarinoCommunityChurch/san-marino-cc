@@ -1,0 +1,155 @@
+---
+import { capitalizeFirstLetter, format12HourTime } from "@utils/format";
+import { format, isBefore, tzDate } from "@formkit/tempo";
+import Button from "@components/Button.astro";
+import type { CollectionEntry } from "astro:content";
+import ServiceTabContent from "@components/services/ServiceTabContent.astro";
+import ServiceTabs from "@components/services/ServiceTabs.vue";
+import ServicesList from "@components/services/ServicesList.astro";
+import { getCollection } from "astro:content";
+import { sortPast } from "@utils/sortServices";
+
+interface Props {
+    page: CollectionEntry<"pages">;
+}
+
+const { page } = Astro.props;
+
+const eyebrow = "San Marino Community Church";
+
+const now = new Date();
+const allServices = await getCollection("services");
+const sorted = sortPast(
+    allServices.filter((item) =>
+        isBefore(tzDate(item.data.date, "America/Los_Angeles"), now),
+    ),
+);
+
+let latestService: CollectionEntry<"services"> | undefined = undefined;
+if (sorted.length) {
+    latestService = sorted[0];
+}
+---
+
+<section class="hero center-items flow">
+    <div class="small-title">{eyebrow}</div>
+    <h1 class="text-step-6">{page.data.name}</h1>
+    <div class="service-date">
+        {
+            latestService && (
+                <time
+                    datetime={format(
+                        tzDate(latestService.data.date, "America/Los_Angeles"),
+                        "YYYY-MM-DD",
+                    )}
+                >
+                    {format(
+                        tzDate(latestService.data.date, "America/Los_Angeles"),
+                        "full",
+                    )}
+                </time>
+            )
+        }
+    </div>
+</section>
+<article class="flow">
+    <div class="live">
+        <!-- server render tab content panes: max 3 -->
+        {
+            latestService && (
+                <ServiceTabs
+                    client:load
+                    serviceTypes={latestService.data.types.map((type) => ({
+                        serviceTime: format12HourTime(type.serviceTime),
+                        serviceTitle: `${capitalizeFirstLetter(type.name)} Worship`,
+                    }))}
+                >
+                    {latestService.data.types.length > 0 && (
+                        <ServiceTabContent
+                            serviceDate={latestService.data.date}
+                            serviceName={latestService.data.name}
+                            serviceType={latestService.data.types[0]}
+                            slot="tab-content-1"
+                        />
+                    )}
+                    {latestService.data.types.length > 1 && (
+                        <ServiceTabContent
+                            serviceDate={latestService.data.date}
+                            serviceName={latestService.data.name}
+                            serviceType={latestService.data.types[1]}
+                            slot="tab-content-2"
+                        />
+                    )}
+                    {latestService.data.types.length > 2 && (
+                        <ServiceTabContent
+                            serviceDate={latestService.data.date}
+                            serviceName={latestService.data.name}
+                            serviceType={latestService.data.types[2]}
+                            slot="tab-content-3"
+                        />
+                    )}
+                </ServiceTabs>
+            )
+        }
+    </div>
+</article>
+{
+    sorted.length > 3 && (
+        <section class="content-wrapper flow" id="recent-services">
+            <h2 class="text-step-3">Recent Services</h2>
+            <ServicesList services={sorted.slice(1, 4)} showVideoThumbnail />
+            <div class="center-items">
+                <Button href="/worship/services">See All Services</Button>
+            </div>
+        </section>
+    )
+}
+
+<style>
+    .hero {
+        --flow-space: 0.5rem;
+        position: relative;
+        padding-top: 4rem;
+        padding-bottom: var(--space-xl);
+    }
+
+    .bg-image {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: -1;
+    }
+
+    .underline {
+        text-decoration: underline;
+        display: inline-block;
+        width: fit-content;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    .service-date {
+        margin-top: var(--space-m);
+        font-size: var(--step-1);
+        font-style: italic;
+    }
+
+    #recent-services {
+        margin-top: 1rem;
+        margin-bottom: 5rem;
+        padding-top: 3rem;
+        border-top: 1px solid var(--color-neutral-200);
+    }
+
+    #recent-services .center-items {
+        padding-top: var(--space-l);
+    }
+
+    .blank {
+        margin-block: var(--section-spacer);
+    }
+</style>

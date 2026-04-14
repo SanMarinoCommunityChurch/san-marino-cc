@@ -1,277 +1,153 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Button from "../components/Button.astro";
-import HomePageHero from "../components/HomePageHero.astro";
-import FeaturedVideoBanner from "../components/FeaturedVideoBanner.astro";
-import FeatureList from "../components/FeatureList.astro";
-import EventsHome from "../components/Events/EventsHome.astro";
-import CTA from "../components/CTA.astro";
-import ImageLinks from "../components/ImageLinks.astro";
-import Slider from "../components/Slider.astro";
-import { siteSettings } from "../lib/settings";
-import { homePage } from "../lib/pages";
-import getYouTubeID from "get-youtube-id";
-import { allPosts } from "../lib/posts";
-import { urlFor, getSanityData } from "../lib/sanity";
-import { joinNames } from "../utils/format";
-// import ImageOpt from "../components/ImageOpt.astro";
+import Button from "@components/Button.astro";
+import EventsHome from "@components/Events/EventsHome.astro";
+import FeatureList from "@components/modules/FeatureList.astro";
+import FeaturedVideoBanner from "@components/FeaturedVideoBanner.astro";
+import HomeCTA from "@components/modules/HomeCTA.astro";
+import HomePageHero from "@components/modules/HomePageHero.astro";
+import HomeResources from "@components/modules/HomeResources.astro";
+import HomeWelcome from "@components/modules/HomeWelcome.astro";
 import { Image } from "astro:assets";
+import ImageLink from "@components/ImageLink.astro";
+import type { ImageLink as ImageLinkType } from "@content/schemaFragments/sanityComponents";
+import Layout from "@layouts/Layout.astro";
+import SanityImage from "@components/SanityImage.astro";
+import bgImage from "@assets/images/church-ext-2.jpg";
+import { getEntry } from "astro:content";
+// import getYouTubeID from "get-youtube-id";
+// import { joinNames } from "@utils/format";
 
-const fadedFacade = await getSanityData(
-  `*[_id == "image-37f76aac3b4cccb1fb411cd57856963bd8d61405-1365x2048-jpg"][0]`
-);
-
-const {
-  hero,
-  welcome,
-  welcomeLinks,
-  features,
-  homeCta,
-  featuredResources,
-  seo,
-} = homePage;
-const resources = featuredResources.resourceLinks;
-// console.log(hero);
+const page = await getEntry("homePage", "homePage");
 ---
 
 <Layout
-  meta={{
-    title: seo.title || undefined,
-    description: seo.description || undefined,
-    ogTitle: seo.ogTitle || seo.title || undefined,
-    ogDescription: seo.ogDescription || seo.description || undefined,
-    ogImage: seo.ogImage || undefined,
-  }}
+    meta={{
+        title: page!.data.seo.title ?? page!.data.title,
+        description: page!.data.seo.description,
+        ogTitle: page!.data.seo.ogTitle,
+        ogDescription: page!.data.seo.ogDescription,
+        ogImage: page!.data.seo.ogImage,
+    }}
 >
-  <main slot="main">
-    <HomePageHero hero={hero} fallbackImg={siteSettings.image} />
-    <FeaturedVideoBanner />
-    <section id="welcome-questions" class="content-wrapper">
-      <h2 class="center-items">{welcomeLinks.heading}</h2>
-      <ImageLinks links={welcomeLinks.links} />
-    </section>
-    <article id="welcome" class="welcome">
-      <div class="content-wrapper with-sidebar">
-        <div class="flow">
-          <div class="frame avatar">
+    <main slot="main">
+        <HomePageHero module={page!.data.content.hero} />
+        <FeaturedVideoBanner />
+        <section class="content-wrapper" id="welcome-questions">
+            <h2 class="center-items">
+                {page!.data.content.linksSection.heading}
+            </h2>
+            <!-- TODO: fix link hrefs -->
+            <div class="image-links responsive-grid">
+                {
+                    page!.data.content.linksSection.items.map((item) => (
+                        <ImageLink
+                            link={item as ImageLinkType}
+                            orientation="vertical"
+                        />
+                    ))
+                }
+            </div>
+        </section>
+        <HomeWelcome module={page!.data.content.welcomeSection} />
+        <section class="content-wrapper flow" id="features">
+            <FeatureList module={page!.data.content.featureList} />
+        </section>
+        <section id="events">
+            <div class="">
+                <EventsHome>
+                    <h2 class="text-step-4" slot="header">Upcoming Events</h2>
+                </EventsHome>
+            </div>
             <Image
-              src={urlFor(welcome.person.image)
-                .width(300)
-                .height(300)
-                .auto("format")
-                .url()}
-              width={300}
-              height={300}
-              format="webp"
-              alt={joinNames(welcome.person.name)}
-            />
-          </div>
-          <h2 class="text-step-2">{welcome.heading}</h2>
-          <p>{welcome.text}</p>
-          <p class="small-title">— {joinNames(welcome.person.name)}</p>
-          <div class="meet-grid">
-            {
-              welcome.links.map((link) => (
-                <a
-                  href={
-                    link.href.sectionSlug
-                      ? `/${link.href.pageSlug.fullUrl}`
-                      : `/${link.href.pageSlug.current}`
-                  }
-                  class="flow"
-                >
-                  <i
-                    class={`fa-duotone fa-${link.icon}`}
-                    style="color: var(--color-primary-800);"
-                  />
-                  <h3 class="small-title">{link.name}</h3>
-                  <p class="text-step--1">{link.text}</p>
-                </a>
-              ))
-            }
-          </div>
-        </div>
-        <div>
-          {
-            welcome.media.type == "image" ? (
-              <Image
-                src={urlFor(welcome.media)
-                  .width(900)
-                  .height(
-                    Math.floor(
-                      900 / welcome.media.asset.metadata.dimensions.aspectRatio
-                    )
-                  )
-                  .auto("format")
-                  .url()}
-                width={900}
-                height={Math.floor(
-                  900 / welcome.media.asset.metadata.dimensions.aspectRatio
-                )}
+                alt=""
+                class="faded-facade"
                 format="webp"
-                alt={welcome.media.asset.altText || ""}
-                class="img"
-              />
-            ) : (
-              <lite-youtube videoid={getYouTubeID(welcome.media.url)} />
-            )
-          }
-        </div>
-      </div>
-    </article>
-    <section id="features" class="content-wrapper flow">
-      <FeatureList features={features} />
-    </section>
-    <section id="events">
-      <div class="">
-        <EventsHome>
-          <h2 slot="header" class="text-step-4">Upcoming Events</h2>
-        </EventsHome>
-      </div>
-      <Image
-        class="faded-facade"
-        src={urlFor(fadedFacade)
-          .width(900)
-          .height(Math.floor(900 / fadedFacade.metadata.dimensions.aspectRatio))
-          .auto("format")
-          .url()}
-        width={900}
-        height={Math.floor(900 / fadedFacade.metadata.dimensions.aspectRatio)}
-        format="webp"
-        alt={fadedFacade.altText}
-      />
-    </section>
-    <CTA content={homeCta} />
-    <section id="resources">
-      <Slider
-        heading={featuredResources.heading}
-        description={featuredResources.description}
-        slides={resources}
-      />
-      <div class="center-items">
-        <Button href="/resources">See All Resources</Button>
-      </div>
-    </section>
-  </main>
+                src={bgImage}
+                width={900}
+            />
+        </section>
+        <HomeCTA module={page!.data.content.cta} />
+        <section id="resources">
+            <HomeResources module={page!.data.content.resourcesSection} />
+            <div class="center-items">
+                <Button href="/resources">See All Resources</Button>
+            </div>
+        </section>
+    </main>
 
-  <style>
-    #welcome,
-    #welcome-questions,
-    #events,
-    #resources {
-      margin-block: var(--section-spacer);
-    }
+    <style>
+        #welcome-questions,
+        #events,
+        #resources {
+            margin-block: var(--section-spacer);
+        }
 
-    #welcome-questions .center-items {
-      font-size: var(--step-3);
-      margin-bottom: 3rem;
-    }
+        #welcome-questions .center-items {
+            font-size: var(--step-3);
+            margin-bottom: 3rem;
+        }
 
-    #events {
-      margin-block-end: 0;
-    }
+        #events {
+            margin-block-end: 0;
+        }
 
-    #events {
-      position: relative;
-      padding-block: var(--section-spacer-half);
-      /* background: no-repeat left/contain url("/faded-facade.png"); */
-    }
+        #events {
+            position: relative;
+            padding-block: var(--section-spacer-half);
+            /* background: no-repeat left/contain url("/faded-facade.png"); */
+        }
 
-    .faded-facade {
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      z-index: -1;
-      height: 100%;
-      width: auto;
-      opacity: 0.2;
-      filter: saturate(0);
-      -webkit-mask-image: linear-gradient(to right, black, transparent);
-      mask-image: linear-gradient(to right, black, transparent);
-    }
+        .image-links.responsive-grid {
+            --item-min-width: 15rem;
+        }
 
-    #resources {
-      margin-top: 4rem;
-    }
+        .faded-facade {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            z-index: -1;
+            height: 100%;
+            width: auto;
+            opacity: 0.2;
+            filter: saturate(0);
+            -webkit-mask-image: linear-gradient(to right, black, transparent);
+            mask-image: linear-gradient(to right, black, transparent);
+        }
 
-    #resources .center-items {
-      margin-top: 4rem;
-    }
+        #resources {
+            margin-top: 4rem;
+        }
 
-    #welcome .content-wrapper.with-sidebar {
-      --sidebar-gap: 3rem;
-      --sidebar-min-width: 34rem;
-      align-items: center;
-    }
+        #resources .center-items {
+            margin-top: 4rem;
+        }
 
-    #features.flow {
-      --flow-space: var(--space-3xl);
-    }
+        #features.flow {
+            --flow-space: var(--space-3xl);
+        }
 
-    iframe {
-      border: 0;
-      width: 100%;
-    }
+        iframe {
+            border: 0;
+            width: 100%;
+        }
 
-    .meet-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.25rem;
-      border-top: 1px solid var(--color-primary-200);
-      margin-top: 2rem;
-      padding-top: 1rem;
-    }
+        @media (max-width: 768px) {
+            #welcome-questions,
+            #events,
+            #resources {
+                margin-block: var(--section-spacer-half);
+            }
 
-    .meet-grid a {
-      text-decoration: none;
-      border-radius: var(--rounded-corners);
-      padding: 0.75rem;
-      transition: background-color 0.2s ease;
-    }
+            #events {
+                margin-block-end: 0;
+            }
+        }
 
-    .meet-grid a:hover {
-      background-color: var(--color-primary-100);
-    }
-
-    .meet-grid .flow {
-      align-items: flex-start;
-    }
-
-    @media (max-width: 768px) {
-      .meet-grid {
-        grid-template-columns: 1fr;
-      }
-
-      #welcome,
-      #welcome-questions,
-      #events,
-      #resources {
-        margin-block: var(--section-spacer-half);
-      }
-
-      #events {
-        margin-block-end: 0;
-      }
-
-      #welcome .with-sidebar > :first-child {
-        order: 2;
-      }
-
-      #welcome .with-sidebar > :last-child {
-        order: 1;
-      }
-    }
-
-    @media (max-width: 640px) {
-      #resources {
-        margin-top: 2rem;
-      }
-    }
-  </style>
+        @media (max-width: 640px) {
+            #resources {
+                margin-top: 2rem;
+            }
+        }
+    </style>
 </Layout>
-
-<script>
-  import "lite-youtube-embed/src/lite-yt-embed.js";
-  import "lite-youtube-embed/src/lite-yt-embed.css";
-</script>

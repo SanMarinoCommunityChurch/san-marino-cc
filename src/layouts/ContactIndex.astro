@@ -1,0 +1,149 @@
+---
+import { type CollectionEntry, getEntry } from "astro:content";
+import Form from "@components/Form.astro";
+import ImageLink from "@components/ImageLink.astro";
+import type { ImageLink as ImageLinkType } from "@content/schemaFragments/sanityComponents";
+import PageCTA from "@components/modules/PageCTA.astro";
+import PageHeader from "@components/modules/PageHeader.astro";
+import { PortableText } from "astro-portabletext";
+
+interface Props {
+    page: CollectionEntry<"pages">;
+}
+
+const { page } = Astro.props;
+
+const generalContact = await getEntry(
+    "forms",
+    "e8c86294-ce8a-4564-a8ee-42cd81769516",
+);
+
+const homePage = await getEntry("homePage", "homePage");
+---
+
+<PageHeader page={page} />
+<article class="content-wrapper flow">
+    <div class="contact-info">
+        <div>
+            <iframe
+                allowfullscreen=""
+                height="450"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6606.317427444416!2d-118.11509741454164!3d34.11668631239753!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2c4cbbc2e5e83%3A0xa506500431a79522!2s1750%20Virginia%20Rd%2C%20San%20Marino%2C%20CA%2091108!5e0!3m2!1sen!2sus!4v1689104480012!5m2!1sen!2sus"
+                style="border:0;"
+                title="San Marino Community Church Location"
+                width="600"></iframe>
+        </div>
+        {
+            page.data.content.contactSection && (
+                <div class="flow text">
+                    <div class="flow">
+                        <h2 class="text-step-3">Find Us</h2>
+                        <div class="grid">
+                            <PortableText
+                                value={page.data.content.contactSection.info}
+                            />
+                        </div>
+                    </div>
+                    <div class="flow">
+                        <h2 class="text-step-3">Hours</h2>
+                        <div class="grid">
+                            <PortableText
+                                value={page.data.content.contactSection.hours}
+                            />
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+    </div>
+    {
+        homePage && (
+            <section id="forms">
+                <h2 class="center-items">
+                    {homePage.data.content.linksSection.heading}
+                </h2>
+                {/* TODO: fix link hrefs */}
+                <div class="image-links responsive-grid">
+                    {homePage.data.content.linksSection.items.map((item) => (
+                        <ImageLink
+                            link={item as ImageLinkType}
+                            orientation="vertical"
+                        />
+                    ))}
+                </div>
+            </section>
+        )
+    }
+    {
+        generalContact && (
+            <section>
+                <Form form={generalContact} />
+            </section>
+        )
+    }
+</article>
+{page.data.content.pageCTA && <PageCTA module={page.data.content.pageCTA} />}
+
+<style>
+    .content-wrapper {
+        --flow-space: var(--space-3xl);
+        margin-block-start: var(--section-spacer-half);
+        margin-block-end: var(--section-spacer);
+    }
+
+    .contact-info {
+        display: grid;
+        grid-template-columns: 1fr 1.25fr;
+        gap: 5rem;
+    }
+
+    .flow.text > :last-child {
+        margin-top: var(--space-2xl);
+    }
+
+    iframe {
+        width: 100%;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+        gap: 1rem;
+    }
+
+    #forms {
+        margin-block-start: var(--section-spacer-half);
+    }
+
+    #forms .center-items {
+        font-size: var(--step-2);
+        margin-bottom: 3rem;
+    }
+
+    .image-links.responsive-grid {
+        --item-min-width: 15rem;
+    }
+
+    @media (max-width: 1024px) {
+        .contact-info {
+            grid-template-columns: 1fr;
+        }
+
+        .contact-info > :last-child {
+            order: 1;
+        }
+
+        .contact-info > :first-child {
+            order: 2;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .content-wrapper {
+            margin-block-start: 3rem;
+            margin-block-end: 3rem;
+        }
+    }
+</style>

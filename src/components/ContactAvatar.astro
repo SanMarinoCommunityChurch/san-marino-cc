@@ -1,59 +1,92 @@
 ---
-import { urlFor } from "../lib/sanity";
 import { Image } from "astro:assets";
+import SanityImage from "@components/SanityImage.astro";
+import { type SanityImage as SanityImageType } from "@content/schemaFragments/sanityComponents";
+import fallbackImage from "@assets/images/outside-stained-glass.jpg";
+
+interface Props {
+    image?: SanityImageType | null;
+    heading?: string;
+    name: string;
+    href?: string;
+    size?: "small" | "large";
+}
 
 const { image, heading = "Contact", name, href, size = "large" } = Astro.props;
 ---
 
 <div
-  class="contact flex"
-  style={`--gap-space: ${size == "small" ? "0.75rem" : "1.5rem"}`}
+    class="contact flex"
+    data-size={size}
+    style={`--gap-space: ${size == "small" ? "0.75rem" : "1.5rem"}`}
 >
-  <div>
-    <Image
-      src={urlFor(image).width(200).height(200).auto("format").url()}
-      alt={image.asset.altText || ""}
-      class="img"
-      format="webp"
-      style={`--frame-size: ${size == "small" ? "3rem" : "5rem"}`}
-      width={200}
-      height={200}
-    />
-  </div>
-  <div>
-    <div class="small-title">{heading}</div>
-    {
-      href ? (
-        <a href={href} class="text-step--1">
-          {name}
-        </a>
-      ) : (
-        <div class="text-step--1">{name}</div>
-      )
-    }
-  </div>
+    <div>
+        {
+            image ? (
+                <SanityImage
+                    alt={image.asset.altText || name || ""}
+                    aspectRatio={[1, 1]}
+                    class:list={["img"]}
+                    source={image}
+                    width={200}
+                />
+            ) : (
+                <Image
+                    alt=""
+                    class="img fallback"
+                    format="webp"
+                    height={200}
+                    src={fallbackImage}
+                    width={200}
+                />
+            )
+        }
+    </div>
+    <div>
+        <div class="small-title">{heading}</div>
+        {
+            href ? (
+                <a class="text-step--1" href={href}>
+                    {name}
+                </a>
+            ) : (
+                <div class="text-step--1">{name}</div>
+            )
+        }
+    </div>
 </div>
 
 <style>
-  .img {
-    width: var(--frame-size);
-    height: var(--frame-size);
-    border-radius: 9999px;
-  }
+    .contact {
+        & .frame.square {
+            border-radius: 9999px;
+            width: var(--frame-size);
+            height: var(--frame-size);
+        }
 
-  .contact .frame.square {
-    border-radius: 9999px;
-    width: var(--frame-size);
-    height: var(--frame-size);
-  }
+        &.flex {
+            gap: var(--gap-space, 1.5rem);
+            align-items: center;
+        }
 
-  .contact.flex {
-    gap: var(--gap-space, 1.5rem);
-    align-items: center;
-  }
+        &[data-size="small"] {
+            --frame-size: 3rem;
+        }
+    }
 
-  .small-title {
-    color: var(--color-primary-800);
-    margin-bottom: 3px;
-  }
+    .img {
+        width: var(--frame-size, 5rem);
+        height: var(--frame-size, 5rem);
+        border-radius: 9999px;
+
+        &.fallback {
+            position: relative;
+            top: 0;
+        }
+    }
+
+    .small-title {
+        color: var(--color-primary-800);
+        margin-bottom: 3px;
+    }
 </style>

@@ -1,0 +1,96 @@
+---
+/** Events collection list for "show more" and preview sections, displaying as a grid of cards. */
+import Card from "@components/Card.astro";
+import { type CollectionEntry } from "astro:content";
+import DateLabel from "./DateLabel.astro";
+import v from "voca";
+
+interface Props {
+    events: CollectionEntry<"events">[];
+}
+
+const { events } = Astro.props;
+---
+
+<ul class="events-card-list grid">
+    {
+        events.map((event) => (
+            <li>
+                <Card
+                    href={`/connect/events/${v.lowerCase(event.data.slug)}`}
+                    image={event.data.image}
+                    title={event.data.name}
+                >
+                    <div class="event-date" slot="label">
+                        <DateLabel date={event.data.date} />
+                    </div>
+                    <div class="small-title event-category" slot="header">
+                        {event.data.eventType?.name} event
+                    </div>
+                    <p class="preview text-step--1" slot="body">
+                        {event.data.preview}
+                    </p>
+                    <div class="location-footer text-step--1 cluster font-header" slot="footer">
+                        <span class="location-icon"><svg fill="var(--color-primary-800)" height="16" viewBox="0 0 384 512" width="16" xmlns="http://www.w3.org/2000/svg"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M192 144a48 48 0 1 0 0 96 48 48 0 1 0 0-96z"/><path class="fa-secondary" d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 112a80 80 0 1 1 0 160 80 80 0 1 1 0-160z"/></svg></span>
+                        <span>{event.data.location}</span>
+                    </div>
+                </Card>
+            </li>
+        ))
+    }
+</ul>
+
+<style>
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 3rem 1rem;
+    }
+
+    .preview {
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+        overflow: hidden;
+    }
+
+    .location-footer {
+        &.cluster {
+            gap: 4px;
+        }
+
+        & .location-icon {
+            display: flex;
+        }
+    }
+
+    .event-category {
+        display: inline-block;
+        color: var(--color-primary-900);
+        line-height: 1;
+        padding: 4px 6px;
+        margin-bottom: 10px;
+        background-color: var(--color-primary-100);
+        border-radius: var(--rounded-corners-small);
+    }
+
+    @media (max-width: 768px) {
+        .grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .preview {
+            -webkit-line-clamp: none;
+            -webkit-box-orient: vertical;
+            display: block;
+            overflow: unset;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .grid {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+    }
+</style>

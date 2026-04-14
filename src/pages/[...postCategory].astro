@@ -1,0 +1,55 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PostCategoriesHeader from "@components/posts/PostCategoriesHeader.astro";
+import PostsList from "@components/posts/PostsList.astro";
+import { getCollection } from "astro:content";
+import v from "voca";
+
+export async function getStaticPaths() {
+    const allCategories = await getCollection("postCategories");
+    const allPosts = await getCollection("posts");
+
+    return allCategories.map((page) => {
+        return {
+            params: {
+                postCategory: `resources/${v.lowerCase(page.data.slug)}`,
+            },
+            props: {
+                page,
+                posts: allPosts,
+            },
+        };
+    });
+}
+
+const { page, posts } = Astro.props;
+
+const associatedPosts = posts
+    .filter((post) => post.data.categoryRef === page.data._id)
+    .sort((a, b) => (a.data.date > b.data.date ? -1 : 1));
+---
+
+<Layout
+    meta={{
+        title: `${page.data.name} Resources`,
+        description: `View ${page.data.name} Resources.`,
+        ogTitle: `${page.data.name} Resources`,
+        ogDescription: `View ${page.data.name} Resources`,
+        ogImage: undefined,
+    }}
+>
+    <main data-layout="taxonomy" data-template="post-category" slot="main">
+        <PostCategoriesHeader title={page.data.name} />
+        <article class="content-wrapper flow">
+            <PostsList posts={associatedPosts} />
+        </article>
+    </main>
+</Layout>
+
+<style>
+    .content-wrapper {
+        --flow-space: var(--space-3xl);
+        margin-block-start: var(--section-spacer-half);
+        margin-block-end: var(--section-spacer);
+    }
+</style>
