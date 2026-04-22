@@ -5,8 +5,8 @@ import BreadcrumbAuto from "@components/BreadcrumbAuto.astro";
 import Button from "@components/Button.astro";
 import Category from "@components/Category.astro";
 import ContactAvatar from "@components/ContactAvatar.astro";
+import EventBlock from "@components/modules/portableTextBlocks/EventBlock.astro";
 import ImageBlock from "@components/modules/portableTextBlocks/ImageBlock.astro";
-// import InlineEvent from "@components/InlineEvent.astro";
 import Layout from "@layouts/Layout.astro";
 // import MiniPreviewCard from "@components/MiniPreviewCard.astro";
 import { PortableText } from "astro-portabletext";
@@ -147,7 +147,7 @@ const relatedPosts = posts
                                 image: ImageBlock,
                                 previewFeature: PreviewFeatureBlock,
                                 youtube: YoutubeBlock,
-                                // event: InlineEvent,
+                                reference: EventBlock,
                             },
                         }}
                         value={page.data.richContent}

@@ -5,6 +5,7 @@ import ImageBlock from "@components/modules/portableTextBlocks/ImageBlock.astro"
 import ImageCard from "@components/ImageCard.astro";
 import PageCTA from "@components/modules/PageCTA.astro";
 import { PortableText } from "astro-portabletext";
+import PreviewFeatureBlock from "@components/modules/portableTextBlocks/PreviewFeatureBlock.astro";
 import TextAndImageBlocks from "@components/modules/TextAndImageBlocks.astro";
 import YoutubeBlock from "@components/modules/portableTextBlocks/YoutubeBlock.astro";
 import { buildNavHref } from "@utils/buildNavHref";
@@ -113,7 +114,7 @@ if (page.data.header.bgImage) {
                     components={{
                         type: {
                             image: ImageBlock,
-                            // previewFeature: PreviewFeature,
+                            previewFeature: PreviewFeatureBlock,
                             youtube: YoutubeBlock,
                         },
                     }}

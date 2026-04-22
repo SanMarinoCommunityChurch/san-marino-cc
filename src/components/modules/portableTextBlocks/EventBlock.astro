@@ -1,3 +1,42 @@
 ---
 /** Custom block to use with Astro Portable Text component to render Sanity rich content. */
+import Card from "@components/Card.astro";
+import DateLabel from "@components/Events/DateLabel.astro";
+import { getEntry } from "astro:content";
+import v from "voca";
+
+const { node } = Astro.props;
+
+const event = await getEntry("events", node._ref);
 ---
+
+{event && (
+    <Card
+        href={`/connect/events/${v.lowerCase(event.data.slug)}`}
+        image={event.data.image}
+        title={event.data.name}
+    >
+        <div class="event-date" slot="label">
+            <DateLabel date={event.data.date} />
+        </div>
+        <div class="small-title event-category" slot="header">
+            {event.data.eventType?.name} event
+        </div>
+        <p class="preview text-step--1" slot="body">
+            {event.data.preview}
+        </p>
+        <div class="location-footer text-step--1 cluster font-header" slot="footer">
+            <span class="location-icon"><svg fill="var(--color-primary-800)" height="16" viewBox="0 0 384 512" width="16" xmlns="http://www.w3.org/2000/svg"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M192 144a48 48 0 1 0 0 96 48 48 0 1 0 0-96z"/><path class="fa-secondary" d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 112a80 80 0 1 1 0 160 80 80 0 1 1 0-160z"/></svg></span>
+            <span>{event.data.location}</span>
+        </div>
+    </Card>
+)}
+
+<style>
+    :global(.rich-text .card) {
+        margin-inline: unset;
+        max-width: 23rem;
+        display: inline-flex;
+        margin-inline-end: 2rem;
+    }
+</style>

@@ -3,16 +3,15 @@
     "include": [".astro/types.d.ts", "**/*", "declarations.d.ts"],
     "exclude": ["dist"],
     "compilerOptions": {
-        "baseUrl": ".",
         "paths": {
-            "@assets/*": ["src/assets/*"],
-            "@components/*": ["src/components/*"],
-            "@content/*": ["src/content/*"],
-            "@data/*": ["src/data/*"],
-            "@layouts/*": ["src/layouts/*"],
-            "@lib/*": ["src/lib/*"],
-            "@styles/*": ["src/styles/*"],
-            "@utils/*": ["src/utils/*"]
+            "@assets/*": ["./src/assets/*"],
+            "@components/*": ["./src/components/*"],
+            "@content/*": ["./src/content/*"],
+            "@data/*": ["./src/data/*"],
+            "@layouts/*": ["./src/layouts/*"],
+            "@lib/*": ["./src/lib/*"],
+            "@styles/*": ["./src/styles/*"],
+            "@utils/*": ["./src/utils/*"]
         },
         "jsx": "preserve"
     }

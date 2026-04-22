@@ -3,6 +3,7 @@ import ImageBlock from "./portableTextBlocks/ImageBlock.astro";
 import { PortableText } from "astro-portabletext";
 import type { PortableText as PortableTextType } from "@content/schemaFragments/sanityComponents";
 import PreviewFeatureBlock from "./portableTextBlocks/PreviewFeatureBlock.astro";
+import YoutubeBlock from "./portableTextBlocks/YoutubeBlock.astro";
 
 interface Props {
     module: PortableTextType;
@@ -19,6 +20,7 @@ const { module } = Astro.props;
                     type: {
                         previewFeature: PreviewFeatureBlock,
                         image: ImageBlock,
+                        youtube: YoutubeBlock,
                     },
                 }}
                 value={module}
