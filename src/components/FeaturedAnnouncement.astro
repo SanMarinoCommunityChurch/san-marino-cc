@@ -6,10 +6,12 @@ import SanityImage from "./SanityImage.astro";
 interface Props {
     title?: string;
     text?: string | null;
+    link?: string | null;
     links: Array<CollectionEntry<"events"> | CollectionEntry<"posts">>;
 }
 
-const { title, text, links } = Astro.props;
+// `link` is relative url attached to heading, `links` are the dynamic entries
+const { title, text, link, links } = Astro.props;
 ---
 
 <div class="featured-announcement-banner">
@@ -17,7 +19,17 @@ const { title, text, links } = Astro.props;
         <div class="about | flow">
             <i class="fa-duotone fa-info-circle fa-lg" style="var(--svg-fill)"
             ></i>
-            <h2 class="text-step-3">{title}</h2>
+            <h2 class="text-step-3">
+                {
+                    link ? (
+                        <a class="heading-link" href={link}>
+                            {title}
+                        </a>
+                    ) : (
+                        title
+                    )
+                }
+            </h2>
             {text && <p>{text}</p>}
         </div>
         {
@@ -200,6 +212,10 @@ const { title, text, links } = Astro.props;
                 color: var(--color-primary-50);
             }
         }
+    }
+
+    .heading-link {
+        text-decoration-thickness: 2px;
     }
 
     .grid {

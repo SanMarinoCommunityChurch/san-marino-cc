@@ -250,6 +250,7 @@ export const HOME_PAGE_QUERY = groq`*[_type == "homePage"] {
             featuredAnnouncement{
                 title,
                 "text": description,
+                link,
                 "items": coalesce(items[]->{
                     _id,
                     "type": _type,

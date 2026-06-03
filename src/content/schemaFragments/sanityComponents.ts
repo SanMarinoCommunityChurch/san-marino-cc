@@ -256,6 +256,7 @@ export const HomeHero = z.object({
         .object({
             title: z.string(),
             text: z.string().nullish(),
+            link: z.string().nullish(),
             items: z.array(
                 z.object({
                     _id: z.string(),
