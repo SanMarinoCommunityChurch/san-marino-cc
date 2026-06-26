@@ -73,7 +73,8 @@ const { module } = Astro.props;
 
     .intro {
         --sidebar-gap: 5rem;
-        --sidebar-min-width: 32rem;
+        --sidebar-min-width: 31rem;
+        --main-min-width: 40%;
         align-items: center;
     }
 
@@ -91,14 +92,16 @@ const { module } = Astro.props;
     }
 
     @media (max-width: 1024px) {
+        .intro {
+            flex-direction: column;
+            --sidebar-gap: 2rem;
+        }
+
         .intro > :first-child {
             order: 2;
         }
     }
 
-    @media (max-width: 768px) {
-        .intro {
-            --sidebar-gap: 2rem;
-        }
-    }
+    /* @media (max-width: 768px) {
+    } */
 </style>
