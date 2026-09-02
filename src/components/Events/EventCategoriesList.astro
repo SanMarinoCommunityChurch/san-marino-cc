@@ -46,6 +46,17 @@ if (currentPathname?.endsWith("/")) {
                 </li>
             ))
     }
+    <li>
+        <a
+            aria-current={currentPathname === `/connect/events/special`
+                ? "page"
+                : "false"}
+            class="small-title category"
+            href={`/connect/events/special`}
+        >
+            Special
+        </a>
+    </li>
 </ul>
 
 <style>

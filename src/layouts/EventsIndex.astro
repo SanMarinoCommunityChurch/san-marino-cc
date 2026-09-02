@@ -14,11 +14,13 @@ interface Props {
 const { page, archive = false } = Astro.props;
 
 const allEvents = await getCollection("events");
+const allSpecialEvents = await getCollection("eventsSpecial");
+const combinedEvents = [...allEvents, ...allSpecialEvents];
 const upcoming = sortUpcoming(
-    allEvents.filter((event) => isUpcoming(event.data.date)),
+    combinedEvents.filter((event) => isUpcoming(event.data.date)),
 );
 const past = sortUpcoming(
-    allEvents.filter((event) => !isUpcoming(event.data.date)),
+    combinedEvents.filter((event) => !isUpcoming(event.data.date)),
 ).toReversed();
 ---
 

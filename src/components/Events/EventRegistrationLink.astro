@@ -1,0 +1,83 @@
+---
+import Button from "@components/Button.astro";
+import { Image } from "astro:assets";
+import bgImage from "@assets/images/church-ext-2.jpg";
+
+interface Props {
+    heading?: string;
+    text?: string | null;
+    registerLink?: string | null;
+    buttonText?: string;
+}
+
+const {
+    heading = "Registration",
+    text = "Please register for this event by clicking below and filling out the form.",
+    registerLink,
+    buttonText = "Register Now",
+} = Astro.props;
+---
+
+<div class="event-box-wrapper">
+    <div class="event-box">
+        <div class="text | flow">
+            <h2 class="text-step-2">{heading}</h2>
+            {
+                registerLink && (
+                    <>
+                        <p>{text}</p>
+                        <Button
+                            href={registerLink}
+                            size="medium"
+                            target="_blank"
+                        >
+                            {buttonText}
+                        </Button>
+                    </>
+                )
+            }
+        </div>
+        <Image
+            alt=""
+            class="event-box-image"
+            format="webp"
+            height={500}
+            src={bgImage}
+            width={500}
+        />
+    </div>
+</div>
+
+<style>
+    .event-box-wrapper {
+        --shadow: 0px 4px 40px hsl(217deg 87% 40% / 15%);
+        box-shadow: var(--shadow);
+        border-radius: var(--rounded-corners);
+    }
+
+    .event-box {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        padding: 2rem;
+        border-top-left-radius: var(--rounded-corners);
+        border-top-right-radius: var(--rounded-corners);
+        background: var(--color-primary-100);
+        overflow: hidden;
+
+        & .text {
+            position: relative;
+            z-index: 2;
+        }
+    }
+
+    .event-box-image {
+        position: absolute;
+        z-index: 1;
+        inset: 0;
+        border-radius: var(--rounded-corners);
+        filter: saturate(0);
+        opacity: 0.75;
+        mix-blend-mode: overlay;
+    }
+</style>

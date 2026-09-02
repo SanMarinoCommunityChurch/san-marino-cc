@@ -3,8 +3,8 @@ import type { CollectionEntry } from "astro:content";
 
 /** Sort events in upcoming order by datetime. */
 export const sortUpcoming = (
-    events: CollectionEntry<"events">[],
-): CollectionEntry<"events">[] => {
+    events: (CollectionEntry<"events"> | CollectionEntry<"eventsSpecial">)[],
+): (CollectionEntry<"events"> | CollectionEntry<"eventsSpecial">)[] => {
     return events.sort((a, b) => {
         const eventA = parse(a.data.date, "YYYY-MM-DD HH:mm", "en-US");
         const eventB = parse(b.data.date, "YYYY-MM-DD HH:mm", "en-US");

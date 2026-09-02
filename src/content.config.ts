@@ -1,5 +1,6 @@
 import { events } from "@content/events";
 import { eventCategories } from "@content/eventCategories";
+import { eventsSpecial } from "@content/eventsSpecial";
 import { posts } from "@content/posts";
 import { postCategories } from "@content/postCategories";
 import { ministries } from "@content/ministries";
@@ -15,6 +16,7 @@ import { siteSettings } from "@content/siteSettings";
 export const collections = {
     events,
     eventCategories,
+    eventsSpecial,
     posts,
     postCategories,
     ministries,

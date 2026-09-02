@@ -1,0 +1,132 @@
+---
+import { diffDays, format, tzDate } from "@formkit/tempo";
+import { type EventScheduleItem } from "@content/eventsSpecial";
+import { PortableText } from "astro-portabletext";
+
+interface Props {
+    item: EventScheduleItem;
+    isLast?: boolean;
+}
+
+const { item, isLast = false } = Astro.props;
+
+const startDate = tzDate(item.date, "America/Los_Angeles");
+let endDate;
+let mainTime = format(startDate, {time: "short"});
+if (item.endDate) {
+    endDate = tzDate(item.endDate, "America/Los_Angeles");
+    if (!diffDays(startDate, endDate)) {
+        mainTime += ` – ${format(endDate, {time: "short"})}`;
+    }
+}
+---
+
+<div class="schedule-item" data-last={isLast}>
+    <h3>{item.title}</h3>
+    <time
+        class="date"
+        datetime={format(
+            tzDate(item.date, "America/Los_Angeles"),
+            "YYYY-MM-DD",
+        )}
+    >
+        <span
+            >{
+                format(startDate, {
+                    date: "full",
+                })
+            }</span
+        >
+        <span class="bullet-spacer">•</span>
+        <span
+            >{mainTime}</span
+        >
+    </time>
+    {item.location && (
+        <div class="location-footer text-step--1 cluster font-header">
+            <span class="location-icon">
+                <svg
+                    fill="var(--color-primary-800)"
+                    height="16"
+                    viewBox="0 0 384 512"
+                    width="16"
+                    xmlns="http://www.w3.org/2000/svg"
+                    ><defs
+                        ><style>
+                            .fa-secondary {
+                                opacity: 0.4;
+                            }
+                        </style></defs><path
+                        class="fa-primary"
+                        d="M192 144a48 48 0 1 0 0 96 48 48 0 1 0 0-96z"></path><path
+                        class="fa-secondary"
+                        d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 112a80 80 0 1 1 0 160 80 80 0 1 1 0-160z"
+                    ></path>
+                </svg>
+            </span>
+            <span>{item.location}</span>
+        </div>
+    )}
+    <div class="rich-text flow">
+        <PortableText value={item.description} />
+    </div>
+</div>
+
+<style>
+    .schedule-item {
+        position: relative;
+        padding-inline-start: var(--space-m);
+        padding-block-end: var(
+            --schedule-item-padding-bottom,
+            var(--space-2xl)
+        );
+        border-inline-start: 1px solid
+            var(--schedule-item-border, var(--color-primary-300));
+
+        &[data-last="true"] {
+            --schedule-item-padding-bottom: 0;
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            /* top: 0.25rem; */
+            left: calc(var(--space-m) / -2 + 0.25rem);
+            height: 1rem;
+            width: 1rem;
+            background-color: white;
+            border: 1px solid var(--color-primary-300);
+            border-radius: 999px;
+        }
+
+        & h3 {
+            position: relative;
+            top: -6px;
+            font-size: var(--step-2);
+        }
+    }
+
+    .rich-text {
+        margin-block-start: var(--space-s);
+    }
+
+    .date {
+        font-variant-numeric: lining-nums;
+        font-family: var(--font-secondary);
+        font-weight: var(--font-weight-semi);
+    }
+
+    .bullet-spacer {
+        color: var(--color-primary-300);
+        margin-inline: 0.25rem;
+    }
+
+    .location-footer {
+        margin-block-start: 0.5rem;
+        gap: 4px;
+
+        & .location-icon {
+            display: flex;
+        }
+    }
+</style>

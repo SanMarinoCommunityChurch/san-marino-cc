@@ -7,7 +7,7 @@ import SanityImage from "@components/SanityImage.astro";
 import v from "voca";
 
 interface Props {
-    events: CollectionEntry<"events">[];
+    events: (CollectionEntry<"events">|CollectionEntry<"eventsSpecial">)[];
     archive?: boolean;
 }
 
@@ -50,54 +50,90 @@ const items = Object.entries(grouped);
                                 </div>
                                 <div class="text flow">
                                     <div class="category small-title">
-                                        {event.data.eventType?.name} Event
+                                        {event.collection === "events" ?event.data.eventType?.name : "Special"} Event
                                     </div>
                                     <header class="flow">
                                         <h3 class="text-step-2 heading">
-                                            {event.data.name}
+                                            {event.collection === "events" ? event.data.name : event.data.title}
                                         </h3>
-                                        <time
-                                            class="time"
-                                            datetime={format(
-                                                tzDate(
-                                                    event.data.date,
-                                                    "America/Los_Angeles",
-                                                ),
-                                                "YYYY-MM-DD",
-                                            )}
-                                        >
-                                            <span>
-                                                {format(
+                                        {event.collection === "events" ? (
+                                            <time
+                                                class="time"
+                                                datetime={format(
                                                     tzDate(
                                                         event.data.date,
                                                         "America/Los_Angeles",
                                                     ),
-                                                    {
-                                                        date: "full",
-                                                    },
+                                                    "YYYY-MM-DD",
                                                 )}
-                                            </span>
-                                            <span class="bullet-spacer">•</span>
-                                            <span>
-                                                {format(
+                                            >
+                                                <span>
+                                                    {format(
+                                                        tzDate(
+                                                            event.data.date,
+                                                            "America/Los_Angeles",
+                                                        ),
+                                                        {
+                                                            date: "full",
+                                                        },
+                                                    )}
+                                                </span>
+                                                <span class="bullet-spacer">•</span>
+                                                <span>
+                                                    {format(
+                                                        tzDate(
+                                                            event.data.date,
+                                                            "America/Los_Angeles",
+                                                        ),
+                                                        {
+                                                            time: "short",
+                                                        },
+                                                    )}
+                                                </span>
+                                            </time>
+                                        ): <time
+                                                class="time"
+                                                datetime={format(
                                                     tzDate(
                                                         event.data.date,
                                                         "America/Los_Angeles",
                                                     ),
-                                                    {
-                                                        time: "short",
-                                                    },
+                                                    "YYYY-MM-DD",
                                                 )}
-                                            </span>
-                                        </time>
+                                            >
+                                                <span>
+                                                    {format(
+                                                        tzDate(
+                                                            event.data.date,
+                                                            "America/Los_Angeles",
+                                                        ),
+                                                        {
+                                                            date: "full",
+                                                        },
+                                                    )}
+                                                </span>
+                                                {event.data.hasEndDate && event.data.endDate && (
+                                                    <span>– {format(
+                                                        tzDate(
+                                                            event.data.endDate,
+                                                            "America/Los_Angeles",
+                                                        ),
+                                                        {
+                                                            date: "full",
+                                                        },
+                                                    )}</span>
+                                                )}
+                                            </time>}
                                     </header>
                                     <p class="text-step--1">
                                         {event.data.preview}
                                     </p>
-                                    <div class="location-footer text-step--1 cluster font-header">
-                                        <span class="location-icon"><svg fill="var(--color-primary-800)" height="16" viewBox="0 0 384 512" width="16" xmlns="http://www.w3.org/2000/svg"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M192 144a48 48 0 1 0 0 96 48 48 0 1 0 0-96z"/><path class="fa-secondary" d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 112a80 80 0 1 1 0 160 80 80 0 1 1 0-160z"/></svg></span>
-                                        <span>{event.data.location}</span>
-                                    </div>
+                                    {event.collection === "events" && (
+                                        <div class="location-footer text-step--1 cluster font-header">
+                                            <span class="location-icon"><svg fill="var(--color-primary-800)" height="16" viewBox="0 0 384 512" width="16" xmlns="http://www.w3.org/2000/svg"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M192 144a48 48 0 1 0 0 96 48 48 0 1 0 0-96z"/><path class="fa-secondary" d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 112a80 80 0 1 1 0 160 80 80 0 1 1 0-160z"/></svg></span>
+                                            <span>{event.data.location}</span>
+                                        </div>
+                                    )}
                                 </div>
                             </a>
                         </li>
