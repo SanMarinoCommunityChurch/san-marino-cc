@@ -38,7 +38,7 @@ import {
 
 <style>
 .event__tabs-list {
-    --cluster-space: 0.75rem;
+    --cluster-space: 0.75rem !important;
     position: relative;
     border-block-end: 1px solid var(--color-neutral-100);
 }
@@ -84,5 +84,15 @@ import {
     background-color: var(--color-primary-700);
     height: 100%;
     width: 100%;
+}
+
+@media screen and (max-width: 375px) {
+    .event__tabs-list {
+        --cluster-space: 2px !important;
+    }
+
+    .event__tabs-trigger {
+        font-size: 16px;
+    }
 }
 </style>
