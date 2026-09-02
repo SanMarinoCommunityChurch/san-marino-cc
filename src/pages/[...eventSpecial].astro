@@ -107,6 +107,7 @@ if (page.data.hasEndDate && page.data.endDate) {
                             >{mainDate}</time
                         >
                     </div>
+                    <Button href="#info">View Details</Button>
                 </header>
                 {
                     page.data.image && (
@@ -124,7 +125,7 @@ if (page.data.hasEndDate && page.data.endDate) {
                     )
                 }
             </div>
-            <div class="tabs-wrapper content-wrapper">
+            <div class="tabs-wrapper content-wrapper" id="info">
                 <EventsSpecialTabs client:load>
                     <section
                         class="tabs-content"
@@ -308,14 +309,17 @@ if (page.data.hasEndDate && page.data.endDate) {
 
     .featured-image {
         border-radius: var(--rounded-corners);
-        margin-block: var(--space-xl);
+        margin-block: var(--space-l);
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
+        max-width: 54rem;
+        margin-inline: auto;
     }
 
     .tabs-wrapper {
         margin-block-end: var(--space-3xl);
+        scroll-margin-block-start: 7rem;
     }
 
     .tabs-content {
