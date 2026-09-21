@@ -199,24 +199,6 @@ const eldersGroup = Object.entries(
                                         .map((person) => (
                                             <li>
                                                 <div class="person">
-                                                    {person.data.image && (
-                                                        <div class="frame square">
-                                                            <SanityImage
-                                                                alt={joinNames(
-                                                                    person.data
-                                                                        .name,
-                                                                )}
-                                                                aspectRatio={[
-                                                                    1, 1,
-                                                                ]}
-                                                                source={
-                                                                    person.data
-                                                                        .image
-                                                                }
-                                                                width={400}
-                                                            />
-                                                        </div>
-                                                    )}
                                                     <div class="flow">
                                                         <h3 class="text-step-1">
                                                             {[
