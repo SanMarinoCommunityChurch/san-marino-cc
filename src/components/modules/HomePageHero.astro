@@ -1,5 +1,9 @@
 ---
-import { type CollectionEntry, getEntry } from "astro:content";
+import {
+    type CollectionEntry,
+    type DataEntryMap,
+    getEntry,
+} from "astro:content";
 import Button from "@components/Button.astro";
 import FeaturedAnnouncement from "@components/FeaturedAnnouncement.astro";
 import { type HomeHero as HomeHeroType } from "@content/schemaFragments/sanityComponents";
@@ -19,18 +23,28 @@ const imagePoster = await getImage({
     format: "webp",
 });
 
-const featuredLinks: (CollectionEntry<"events"> | CollectionEntry<"posts">)[] =
-    [];
+const featuredLinks: (
+    | CollectionEntry<"events">
+    | CollectionEntry<"posts">
+    | CollectionEntry<"eventsSpecial">
+)[] = [];
 
 if (
     module.showFeaturedAnnouncement &&
     module.featuredAnnouncement?.items.length
 ) {
     for (const item of module.featuredAnnouncement.items) {
-        const ref = await getEntry(
-            item.type === "event" ? "events" : "posts",
-            item._id,
-        );
+        let entryType = "events";
+        switch (item.type) {
+            case "eventSpecial":
+                entryType = "eventsSpecial";
+                break;
+            case "post":
+                entryType = "posts";
+            default:
+                break;
+        }
+        const ref = await getEntry(entryType as keyof DataEntryMap, item._id);
         if (ref) {
             featuredLinks.push(ref);
         }

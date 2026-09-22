@@ -7,7 +7,11 @@ interface Props {
     title?: string;
     text?: string | null;
     link?: string | null;
-    links: Array<CollectionEntry<"events"> | CollectionEntry<"posts">>;
+    links: Array<
+        | CollectionEntry<"events">
+        | CollectionEntry<"posts">
+        | CollectionEntry<"eventsSpecial">
+    >;
 }
 
 // `link` is relative url attached to heading, `links` are the dynamic entries
@@ -45,24 +49,28 @@ const { title, text, link, links } = Astro.props;
                     <a
                         class="announcement-link"
                         href={
-                            item.collection == "events"
+                            item.collection.includes("event")
                                 ? `${eventSlugParent}/${item.data.slug}`
                                 : `${resourceSlugParent}/${item.data.slug}`
                         }
                     >
                         <div class="relative | flow">
-                            {item.collection == "events" ? (
+                            {item.collection.includes("event") ? (
                                 <p class="small-title">
                                     {readableDate} <span>•</span> Event
                                 </p>
                             ) : (
                                 <p class="small-title">Post</p>
                             )}
-                            <h3 class="text-step-2">{item.data.name}</h3>
+                            <h3 class="text-step-2">
+                                {item.collection === "eventsSpecial"
+                                    ? item.data.title
+                                    : item.data.name}
+                            </h3>
                             <div class="cluster">
                                 <p>
                                     View{" "}
-                                    {item.collection === "events"
+                                    {item.collection.includes("event")
                                         ? "Event"
                                         : "Post"}
                                 </p>
