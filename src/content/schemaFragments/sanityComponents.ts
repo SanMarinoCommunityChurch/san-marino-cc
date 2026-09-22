@@ -260,7 +260,7 @@ export const HomeHero = z.object({
             items: z.array(
                 z.object({
                     _id: z.string(),
-                    type: z.enum(["event", "post"]),
+                    type: z.enum(["event", "post", "eventSpecial"]),
                 }),
             ),
         })
