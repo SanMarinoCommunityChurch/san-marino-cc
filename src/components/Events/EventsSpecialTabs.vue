@@ -23,6 +23,9 @@ import {
             <tabs-trigger class="event__tabs-trigger" value="tab-schedule"
                 >Schedule</tabs-trigger
             >
+            <tabs-trigger class="event__tabs-trigger" value="tab-register"
+                >Registration</tabs-trigger
+            >
         </tabs-list>
         <tabs-content value="tab-overview">
             <slot name="tab-overview"></slot>
@@ -32,6 +35,9 @@ import {
         </tabs-content>
         <tabs-content value="tab-schedule">
             <slot name="tab-schedule"></slot>
+        </tabs-content>
+        <tabs-content value="tab-register">
+            <slot name="tab-register"></slot>
         </tabs-content>
     </tabs-root>
 </template>

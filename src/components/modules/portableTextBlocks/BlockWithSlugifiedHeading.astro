@@ -1,0 +1,28 @@
+---
+/** Custom Block component that overrides default rendering for select styles. */
+import type { BlockProps } from "astro-portabletext/types";
+import { usePortableText } from "astro-portabletext";
+import v from "voca";
+
+type Props = BlockProps;
+
+const props = Astro.props;
+const { getDefaultComponent } = usePortableText(props.node);
+
+let Block = getDefaultComponent();
+
+const HeadingTag = props.node.style;
+const heading = props.node.children[0].text;
+---
+
+{
+    ["h2", "h3"].includes(props.node.style) ? (
+        <HeadingTag id={heading && v.slugify(heading)}>
+            <slot />
+        </HeadingTag>
+    ) : (
+        <Block {...props}>
+            <slot />
+        </Block>
+    )
+}

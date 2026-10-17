@@ -40,8 +40,15 @@ export const eventsSpecial = defineCollection({
         showRegistration: z.boolean(),
         registerText: z.string().nullish(),
         registerLink: z.string().nullish(),
+        overviewTOC: z.array(
+            z.object({
+                title: z.string(),
+                href: z.string(),
+            }),
+        ),
         richContent: z.array(z.any()),
         speakers: z.array(z.union([z.any(), EventSpeaker])),
         scheduleItems: z.array(EventScheduleItem),
+        registerDescription: z.array(z.any()),
     }),
 });

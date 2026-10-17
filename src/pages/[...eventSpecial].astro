@@ -1,6 +1,7 @@
 ---
 import "@styles/rich-text.css";
 import { diffMonths, diffYears, format, tzDate } from "@formkit/tempo";
+import BlockWithSlugifiedHeading from "@components/modules/portableTextBlocks/BlockWithSlugifiedHeading.astro";
 import BreadcrumbAuto from "@components/BreadcrumbAuto.astro";
 import Button from "@components/Button.astro";
 import EventRegistrationLink from "@components/Events/EventRegistrationLink.astro";
@@ -135,9 +136,33 @@ if (page.data.hasEndDate && page.data.endDate) {
                         <h2 class="sr-only">Overview</h2>
                         <div class="with-sidebar">
                             <div class="main-panel">
+                                {
+                                    page.data.overviewTOC.length > 0 && (
+                                        <div class="toc">
+                                            <div class="cluster">
+                                                <p class="small-title">
+                                                    Go to:
+                                                </p>
+                                                {page.data.overviewTOC.map(
+                                                    (item) => (
+                                                        <Button
+                                                            className="toc-link"
+                                                            href={`#${item.href}`}
+                                                            size="none"
+                                                            theme="primary-light"
+                                                        >
+                                                            {item.title}
+                                                        </Button>
+                                                    ),
+                                                )}
+                                            </div>
+                                        </div>
+                                    )
+                                }
                                 <div class="rich-text">
                                     <PortableText
                                         components={{
+                                            block: BlockWithSlugifiedHeading,
                                             type: {
                                                 image: ImageBlock,
                                                 youtube: YoutubeBlock,
@@ -226,6 +251,30 @@ if (page.data.hasEndDate && page.data.endDate) {
                                 }
                             </div>
                         </div>
+                    </section>
+                    <section
+                        class="tabs-content"
+                        id="register"
+                        slot="tab-register"
+                    >
+                        <h2 class="sr-only">Register</h2>
+                        {
+                            page.data.registerDescription.length > 0 && (
+                                <div class="rich-text | register-description">
+                                    <PortableText
+                                        value={page.data.registerDescription}
+                                    />
+                                </div>
+                            )
+                        }
+                        {
+                            page.data.showRegistration && (
+                                <EventRegistrationLink
+                                    registerLink={page.data.registerLink}
+                                    text={page.data.registerText}
+                                />
+                            )
+                        }
                     </section>
                 </EventsSpecialTabs>
             </div>
@@ -348,6 +397,23 @@ if (page.data.hasEndDate && page.data.endDate) {
 
     .related-content {
         --flow-space: 2.5rem;
+    }
+
+    .toc {
+        position: sticky;
+        top: 92px;
+        background: white;
+        z-index: 5;
+        padding-block: 1.5rem;
+        margin-block-start: -1.5rem;
+    }
+
+    .toc-link {
+        padding: 0.25rem 0.5rem;
+    }
+
+    .register-description {
+        margin-block-end: var(--space-xl);
     }
 
     @media (max-width: 768px) {

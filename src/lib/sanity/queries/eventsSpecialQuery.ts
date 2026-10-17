@@ -15,6 +15,10 @@ export const EVENTS_SPECIAL_QUERY = groq`*[_type == "eventSpecial"] {
         ...,
         asset->
     },
+    "overviewTOC": coalesce(overviewTOC[] {
+        title,
+        href
+    }, []),
     "richContent": coalesce(description[] {
         ...,
         _type == "image" => {
@@ -44,5 +48,8 @@ export const EVENTS_SPECIAL_QUERY = groq`*[_type == "eventSpecial"] {
         "description": coalesce(description[] {
             ...
         }, [])
+    }, []),
+    "registerDescription": coalesce(registerDescription[] {
+        ...
     }, [])
 }`;
